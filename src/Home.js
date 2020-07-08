@@ -2,21 +2,14 @@ import React from 'react';
 import Amplify from 'aws-amplify';
 import { AmplifyAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
 import awsconfig from './aws-exports';
+import QRCodeGenerator from './Components/LocationPage/QRCodeGenerator'
 
 Amplify.configure(awsconfig);
 
-const App = () => (
+const Home = () => (
   <div>
-<h1>Hello</h1>
-  <AmplifyAuthenticator>
-    <div>
-      My App
-      <AmplifySignOut />
-    </div>
-    My app
-  </AmplifyAuthenticator>
+    <QRCodeGenerator />
   </div>
-  
 );
 
-export default App;
+export default Home;
