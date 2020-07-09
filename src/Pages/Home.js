@@ -1,8 +1,18 @@
-const { Component } = require("react");
+import React from 'react';
+import { AmplifyAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
 
-// Auth
-// After auth, send to ManagerPage
+const Home = () => (
+    <div>
+        <h1>Hello</h1>
+        <AmplifyAuthenticator>
+            <div>
+                My App
+                <AmplifySignOut />
+            </div>
+            My app
+        </AmplifyAuthenticator>
+    </div>
 
-class Home extends Component {
-    
-}
+);
+
+export default Home;
