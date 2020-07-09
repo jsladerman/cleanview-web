@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import QRCodeGenerator from '../Components/LocationPage/QRCodeGenerator'
 import AnalyticsDashboard from '../Components/LocationPage/AnalyticsDashboard'
 
-class LocationDashboard extends Component {
+class LocationPage extends Component {
     constructor() {
         super();
         this.state = {
@@ -23,4 +23,4 @@ class LocationDashboard extends Component {
     }
 }
 
-export default LocationDashboard;
+export default LocationPage;
