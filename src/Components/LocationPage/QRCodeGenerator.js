@@ -1,20 +1,18 @@
 import React, {Component } from 'react';
-
+import './css/QRCodeGenerator.css'
 class QRCodeGenerator extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      name: "CleanView",
-      data: "cleanview.io",
+      name: props.name,
+      data: props.surveyURL,
+      url: "https://api.qrserver.com/v1/create-qr-code/?data=" + props.surveyURL 
     };
   }
 
   downloadQRCode = () => {
-    fetch(
-      "https://api.qrserver.com/v1/create-qr-code/?data=" +
-        this.state.data +
-        "&size=500x500"
-    ).then((response) => {
+    fetch(this.state.url + "&size=500x500")
+    .then((response) => {
       response.blob().then((blob) => {
         let url = window.URL.createObjectURL(blob);
         let a = document.createElement("a");
@@ -27,8 +25,11 @@ class QRCodeGenerator extends Component {
 
   render() {
     return (
-      <div id="container">
-        <button onClick={this.downloadQRCode}>Download QR Code!</button>
+      <div id="qr-code-block">
+          <h3>Here is the QR code for your survey (click to download):</h3>
+          <a href="#">
+            <img src={this.state.url + "&size=100x100"} alt="" title="" onClick={this.downloadQRCode}/>
+          </a>
       </div>
     );
   }

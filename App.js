@@ -1,9 +1,8 @@
 import React from 'react';
-import QRCodeGenerator from "./src/Components/LocationPage/QRCodeGenerator";
-
+import LocationPage from './src/Pages/LocationPage'
 
 const App = () => (
-    <QRCodeGenerator/>
+    <LocationPage />
 );
 
 export default App;
