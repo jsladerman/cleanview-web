@@ -1,24 +1,28 @@
 import React from 'react';
 import styles from './Home.css';
-import { AmplifyAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
+import { Auth } from 'aws-amplify';
+import { AmplifyAuthenticator, AmplifySignIn, AmplifySignOut} from '@aws-amplify/ui-react';
 
 const Home = () => {
     return(
-        <div>
-            <AmplifyAuthenticator style={divStyle}>
-                <div>
-                    My App
-                    <AmplifySignOut />
-                </div>
-                My app
+            <AmplifyAuthenticator >
+                <AmplifySignIn headerText="Sign in to your account"
+                               slot="sign-in" handleAuthStateChange={onSignIn}/>
+                <button onClick={signOut}>Sign out</button>
             </AmplifyAuthenticator>
-        </div>
     );
 };
 
-const divStyle = {
-    position: 'absolute',
-    marginLeft: 823,
-};
+async function signOut() {
+    try {
+        await Auth.signOut();
+    } catch (error) {
+        console.log('error signing out: ', error);
+    }
+}
+
+function onSignIn() {
+    // TODO: redirect
+}
 
 export default Home;
