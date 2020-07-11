@@ -1,5 +1,5 @@
 const { Component } = require("react");
 
-class LocationDashboard extends Component {
+class AddLocation extends Component {
     
 }
