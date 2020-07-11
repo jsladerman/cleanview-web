@@ -1,19 +1,19 @@
 {
     "dev": {
         "awscloudformation": {
-            "AuthRoleName": "amplify-cleanviewweb-dev-194731-authRole",
-            "UnauthRoleArn": "arn:aws:iam::676044961909:role/amplify-cleanviewweb-dev-194731-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::676044961909:role/amplify-cleanviewweb-dev-194731-authRole",
+            "AuthRoleName": "amplify-cleanviewweb-dev-200726-authRole",
+            "UnauthRoleArn": "arn:aws:iam::676044961909:role/amplify-cleanviewweb-dev-200726-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::676044961909:role/amplify-cleanviewweb-dev-200726-authRole",
             "Region": "us-east-1",
-            "DeploymentBucketName": "amplify-cleanviewweb-dev-194731-deployment",
-            "UnauthRoleName": "amplify-cleanviewweb-dev-194731-unauthRole",
-            "StackName": "amplify-cleanviewweb-dev-194731",
-            "StackId": "arn:aws:cloudformation:us-east-1:676044961909:stack/amplify-cleanviewweb-dev-194731/3c5a7310-c0ac-11ea-8139-0ab6cdd0d422",
-            "AmplifyAppId": "d2c9efjwe45j7p"
+            "DeploymentBucketName": "amplify-cleanviewweb-dev-200726-deployment",
+            "UnauthRoleName": "amplify-cleanviewweb-dev-200726-unauthRole",
+            "StackName": "amplify-cleanviewweb-dev-200726",
+            "StackId": "arn:aws:cloudformation:us-east-1:676044961909:stack/amplify-cleanviewweb-dev-200726/829e6790-c30a-11ea-805c-0eb5b83f8639",
+            "AmplifyAppId": "df3x4k8u67hjc"
         },
         "categories": {
             "auth": {
-                "cleanviewwebb11b4fcc": {}
+                "cleanviewweb63661d3b": {}
             }
         }
     }
