@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './Home.css';
+import styles from './css/Home.css';
 import { Auth } from 'aws-amplify';
 import { AmplifyAuthenticator, AmplifySignIn, AmplifySignOut} from '@aws-amplify/ui-react';
 
