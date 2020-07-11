@@ -7,23 +7,16 @@ body {
     height: calc(100% - 40px);
     position: absolute;
     border: 20px solid transparent;
-    background-color: #fbfbfb;
+    background-color: white;
     border-radius: 10px;
     border-image: url(../images/CleanView-QR-Background.png) 30 round;
-    overflow: hidden;
+    overflow: scroll;
 }
 
 .authenticator {
     position: relative;
     top: -75px;
-    transform: translateX(31%);
-    /*margin: auto auto;*/
-    /*vertical-align: middle;*/
-    /*margin-left: 25%;*/
-    /*margin-right: 25%;*/
-    /*bottom: 10%;*/
-    /*top: 10%;*/
-    /*box-shadow: 15px 40px 35px rgba(0, 0, 0, 0.5);*/
+    transform: translateX(35.5%);
 }
 
 .logo {
@@ -35,17 +28,22 @@ body {
 .title-message {
     position: relative;
     top: -80px;
-    transform: translateX(calc(31% + 75px));
+    transform: translateX(calc(31% + 133px));
 }
 
 .subtitle-message {
     position: relative;
     top: -90px;
-    transform: translateX(calc(31% + 70px));
+    transform: translateX(calc(31% + 133px));
 }
 
 :root{
-    --amplify-primary-color: #23A6BD;
-    --amplify-primary-tint: #23A6BD;
+    --amplify-primary-color: #23C9AD;
+    --amplify-primary-tint: #23C9AD;
     --amplify-primary-shade: #209AB0;
+    --amplify-secondary-contrast: white;
+    --amplify-tertiary-color: white;
+    --amplify-white: lightgrey;
+    --amplify-grey: black;
+
 }
