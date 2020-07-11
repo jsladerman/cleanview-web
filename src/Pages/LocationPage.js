@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import QRCodeGenerator from '../Components/LocationPage/QRCodeGenerator'
-import AnalyticsDashboard from '../Components/LocationPage/AnalyticsDashboard'
+import QRCodeGenerator from '../Components/ManagedLocationPage/QRCodeGenerator'
+import AnalyticsDashboard from '../Components/ManagedLocationPage/AnalyticsDashboard'
 
 class LocationPage extends Component {
     constructor() {
