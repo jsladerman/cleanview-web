@@ -1,6 +1,6 @@
 {
 	"auth": {
-		"cleanviewwebb11b4fcc": {
+		"cleanviewweb63661d3b": {
 			"service": "Cognito",
 			"providerPlugin": "awscloudformation",
 			"dependsOn": [],
