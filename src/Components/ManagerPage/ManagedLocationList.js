@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { API } from 'aws-amplify';
 import Auth from "@aws-amplify/auth";
 import ManagedLocationListItem from './ManagedLocationListItem'
+import AddLocation from './AddLocation'
 
 
 // Lists all Locations
@@ -62,6 +63,7 @@ class ManagedLocationList extends Component {
             <div className="Location List">
             <h3>All Locations</h3>
                 {locationItems}
+            <AddLocation />
             </div>
     );
     }
