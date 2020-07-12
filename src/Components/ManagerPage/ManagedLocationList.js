@@ -18,13 +18,16 @@ class ManagedLocationList extends Component {
     }
 
     async getData() {
+        let user = await Auth.currentUserInfo()
+        console.log(user.username)
+
         const apiName = 'manageLocationApi'; // replace this with your api name.
         const path = '/manageLocation'; //replace this with the path you have configured on your API
         const myParams = {
             headers: {},
             response: true,
             queryStringParameters: {
-                manager: await Auth.currentUserInfo["username"]
+                manager: user.username
             },
         };
 
@@ -42,7 +45,7 @@ class ManagedLocationList extends Component {
 
     render() {
         let locationItems;
-        if(this.state.locations) {
+        if(this.state.locations.length > 0) {
             locationItems = this.state.locations.map(loc => {
                 return(
                     <ManagedLocationListItem 

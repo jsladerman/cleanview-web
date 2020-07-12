@@ -61,9 +61,14 @@ const convertUrlType = (param, type) => {
 app.get(path, function (req, res) {
   const queryParams = {
     TableName: tableName,
-    ProjectionExpression: "id, loc_name, manager, addr_city, cleaning_practices"
+    IndexName: "manager",
+    ProjectionExpression: "id, loc_name, manager, addr_city, cleaning_practices",
+    KeyConditionExpression: "manager = :man",
+    ExpressionAttributeValues: {
+      ":man": req.query.manager
+    }
   };
-  dynamodb.scan(queryParams, (err, data) => {
+  dynamodb.query(queryParams, (err, data) => {
     if (err) {
       res.json({ error: "Could not load items: " + err });
     } else {
