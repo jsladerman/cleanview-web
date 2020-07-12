@@ -14,22 +14,7 @@
 		}
 	},
 	"function": {
-		"ManageLocationLambda": {
-			"build": true,
-			"providerPlugin": "awscloudformation",
-			"service": "Lambda",
-			"dependsOn": [
-				{
-					"category": "storage",
-					"resourceName": "locations",
-					"attributes": [
-						"Name",
-						"Arn"
-					]
-				}
-			]
-		},
-		"testLambda": {
+		"manageLocationLambda": {
 			"build": true,
 			"providerPlugin": "awscloudformation",
 			"service": "Lambda",
@@ -50,27 +35,13 @@
 		}
 	},
 	"api": {
-		"ManageLocationAPI": {
+		"manageLocationApi": {
 			"service": "API Gateway",
 			"providerPlugin": "awscloudformation",
 			"dependsOn": [
 				{
 					"category": "function",
-					"resourceName": "ManageLocationLambda",
-					"attributes": [
-						"Name",
-						"Arn"
-					]
-				}
-			]
-		},
-		"testAPI": {
-			"service": "API Gateway",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [
-				{
-					"category": "function",
-					"resourceName": "testLambda",
+					"resourceName": "manageLocationLambda",
 					"attributes": [
 						"Name",
 						"Arn"

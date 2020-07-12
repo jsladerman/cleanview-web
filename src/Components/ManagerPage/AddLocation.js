@@ -15,12 +15,12 @@ class AddLocation extends Component {
     }
 
     async makeLocation(values)  {
-        const apiName = 'ManageLocationAPI'; // replace this with your api name.
+        const apiName = 'manageLocationApi'; // replace this with your api name.
         const path = '/manageLocation'; //replace this with the path you have configured on your API
         const requestData = {
             body: {
                 id: uuid(),
-                name: values.name,
+                loc_name: values.name,
                 manager: await Auth.currentAuthenticatedUser().then(user => user["username"]),
                 addr_line_1: values.addr.line1,
                 addr_city: values.addr.line2,

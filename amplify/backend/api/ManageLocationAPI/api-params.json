@@ -2,7 +2,7 @@
     "paths": [
         {
             "name": "/manageLocation",
-            "lambdaFunction": "ManageLocationLambda",
+            "lambdaFunction": "manageLocationLambda",
             "privacy": {
                 "private": true,
                 "auth": [
@@ -14,11 +14,11 @@
             }
         }
     ],
-    "resourceName": "ManageLocationAPI",
-    "apiName": "ManageLocationAPI",
+    "resourceName": "manageLocationApi",
+    "apiName": "manageLocationApi",
     "functionArns": [
         {
-            "lambdaFunction": "ManageLocationLambda"
+            "lambdaFunction": "manageLocationLambda"
         }
     ],
     "privacy": {
@@ -30,12 +30,11 @@
     "dependsOn": [
         {
             "category": "function",
-            "resourceName": "ManageLocationLambda",
+            "resourceName": "manageLocationLambda",
             "attributes": [
                 "Name",
                 "Arn"
             ]
         }
-    ],
-    "uuid": "c315cc8b"
+    ]
 }
