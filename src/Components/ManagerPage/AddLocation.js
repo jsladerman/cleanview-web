@@ -1,5 +1,6 @@
-import {API} from 'aws-amplify';
 import React, {Component} from 'react';
+import styles from './css/AddLocation.css'
+import {API} from 'aws-amplify';
 import Auth from "@aws-amplify/auth"
 import uuid from 'react-uuid';
 import {Formik, Form, Field} from 'formik';
@@ -49,41 +50,43 @@ class AddLocation extends Component {
             })
     };
 
-
     render() {
-
-        // TODO: make new DyanmoDB table with the 
-
         return (
-            <Formik onSubmit={(values) => this.makeLocation(values)}
-                    initialValues={{
-                        name: '',
-                        addr: {
-                            line1: '',
-                            line2: '',
-                            city: '',
-                            state: '',
-                            zip: ''
-                        },
-                        type: 'restaurant'
-                    }}
-            >
-                <Form>
-                    <label>Location Name: <Field type="input" name="name"/> </label> <br/>
+            <div className="form">
+                {/*<section className="container">*/}
+                {/*    <input className="one"></input>*/}
+                {/*    <input className="two"></input>*/}
+                {/*</section>*/}
+                <Formik onSubmit={(values) => this.makeLocation(values)}
+                        initialValues={{
+                            name: '',
+                            addr: {
+                                line1: '',
+                                line2: '',
+                                city: '',
+                                state: '',
+                                zip: ''
+                            },
+                            type: 'restaurant'
+                        }}
+                >
+                    <Form>
+                        <label>Location Name <br/><Field type="input" name="name"/> </label><br/>
+                        <label>Address Line 1 <br/><Field type="input" name="addr.line1"/> </label> <br/>
+                        <label>Address Line 2 <br/><Field type="input" name="addr.line2"/> </label> <br/>
+                        <label>City <br/><Field type="input" name="addr.city"/> </label> <br/>
+                        <label>State <br/><Field type="input" name="addr.state"/> </label> <br/>
+                        <label>Zip Code <br/><Field type="input" name="addr.zip"/> </label> <br/>
+                        <label>Location Type <br/><Field as="select" name="type" multiple={false}>
+                            <option value="restaurant">Restaurant</option>
+                            <option value="gym">Gym</option>
+                            <option value="other">Other</option>
+                        </Field> </label> <br/>
+                        <button type="submit" style={{marginTop: "8px"}}>Submit</button>
+                    </Form>
+                </Formik>
+            </div>
 
-                    <label>Address Line 1 : <Field type="input" name="addr.line1"/> </label> <br/>
-                    <label>Address Line 2: <Field type="input" name="addr.line2"/> </label> <br/>
-                    <label>City: <Field type="input" name="addr.city"/> </label> <br/>
-                    <label>State: <Field type="input" name="addr.state"/> </label> <br/>
-                    <label>Zip Code: <Field type="input" name="addr.zip"/> </label> <br/>
-                    <label>Location Type <Field as="select" name="type" multiple={false}>
-                        <option value="restaurant">Restaurant</option>
-                        <option value="gym">Gym</option>
-                        <option value="other">Other</option>
-                    </Field> </label> <br/>
-                    <button type="submit">Submit</button>
-                </Form>
-            </Formik>
         );
     }
 }

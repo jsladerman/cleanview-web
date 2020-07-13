@@ -61,10 +61,10 @@ class ManagedLocationList extends Component {
         }
         return (
             <div className="Location List">
-                <h3>All Locations</h3>
-                {locationItems}
+                {/*<h3>All Locations</h3>*/}
+                {/*{locationItems}*/}
                 <AddLocation/>
-                <button onClick={this.getData}>Get Data</button>
+                {/*<button onClick={this.getData}>Get Data</button>*/}
             </div>
         );
     }
