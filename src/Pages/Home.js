@@ -5,11 +5,13 @@ import { AmplifyAuthenticator, AmplifySignIn, AmplifySignOut} from '@aws-amplify
 
 const Home = () => {
     return(
-            <AmplifyAuthenticator >
-                <AmplifySignIn headerText="Sign in to your account"
-                               slot="sign-in" handleAuthStateChange={onSignIn}/>
-                <button onClick={signOut}>Sign out</button>
-            </AmplifyAuthenticator>
+            // <AmplifyAuthenticator >
+            //     <AmplifySignIn headerText="Sign in to your account"
+            //                    slot="sign-in" handleAuthStateChange={onSignIn}/>
+            //     <button onClick={signOut}>Sign out</button>
+            // </AmplifyAuthenticator>
+
+            <h1>:)</h1>
     );
 };
 
