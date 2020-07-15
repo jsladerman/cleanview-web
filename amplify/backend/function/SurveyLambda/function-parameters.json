@@ -1,0 +1,14 @@
+{
+  "mutableParametersState": {
+    "permissions": {
+      "storage": {
+        "locations": [
+          "create",
+          "read",
+          "update"
+        ]
+      }
+    }
+  },
+  "lambdaLayers": []
+}

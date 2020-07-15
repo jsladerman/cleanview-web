@@ -1,0 +1,53 @@
+{
+    "paths": [
+        {
+            "name": "/survey",
+            "lambdaFunction": "SurveyLambda",
+            "privacy": {
+                "open": true
+            }
+        },
+        {
+            "name": "/responses",
+            "lambdaFunction": "ResponseLambda",
+            "privacy": {
+                "open": true
+            }
+        }
+    ],
+    "resourceName": "SurveyApi",
+    "apiName": "SurveyApi",
+    "functionArns": [
+        {
+            "lambdaFunction": "SurveyLambda"
+        },
+        {
+            "lambdaFunction": "ResponseLambda"
+        }
+    ],
+    "privacy": {
+        "auth": 0,
+        "unauth": 0,
+        "authRoleName": "amplify-cleanviewweb-dev-200726-authRole",
+        "unAuthRoleName": "amplify-cleanviewweb-dev-200726-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "SurveyLambda",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        },
+        {
+            "category": "function",
+            "resourceName": "ResponseLambda",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ],
+    "uuid": "2578ac37"
+}
