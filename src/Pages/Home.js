@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Card from 'react-bootstrap/Card';
 import styles from './css/Home.css';
 import Modal from '@trendmicro/react-modal';
 import '@trendmicro/react-modal/dist/react-modal.css';
@@ -21,12 +22,23 @@ class Home extends Component {
         console.log(this.state.showModal);
         return (
             <div>
-                <Modal show={this.state.showModal} onClose={this.showModal} showCloseButton={false}>
-                    <ManagedLocationList/>
-                </Modal>
-                <button onClick={this.showModal}
-                        style={{visibility: this.state.showModal ? 'hidden' : 'visible'}}>Test Modal
-                </button>
+                {/*<Card style={{ width: '18rem' }}>*/}
+                {/*    /!*<Card.Img variant="top" src="holder.js/100px180" />*!/*/}
+                {/*    <Card.Body>*/}
+                {/*        <Card.Title>Card Title</Card.Title>*/}
+                {/*        <Card.Text>*/}
+                {/*            Some quick example text to build on the card title and make up the bulk of*/}
+                {/*            the card's content.*/}
+                {/*        </Card.Text>*/}
+                {/*    </Card.Body>*/}
+                {/*</Card>*/}
+                {/*<Modal style={{borderRadius:'200px'}} show={this.state.showModal}*/}
+                {/*       onClose={this.showModal} showCloseButton={false}>*/}
+                {/*    <ManagedLocationList/>*/}
+                {/*</Modal>*/}
+                {/*<button onClick={this.showModal}*/}
+                {/*        style={{visibility: this.state.showModal ? 'hidden' : 'visible'}}>Test Modal*/}
+                {/*</button>*/}
                 <AmplifyAuthenticator>
                     <AmplifySignIn headerText="Sign in to your account"
                                    slot="sign-in" onFormSubmit={this.onSignInSubmit}/>
@@ -42,7 +54,7 @@ class Home extends Component {
             Auth.signOut()
                 .then(response => {
                     console.log(response);
-                    this.setState({signedIn: false});
+                    this.setState({signedIn: false, showModal: false});
                 });
         } catch (error) {
             console.log('error signing out: ', error);
@@ -56,7 +68,7 @@ class Home extends Component {
                     bypassCache: true
                 }).then(user => {
                     console.log(user);
-                    this.setState({signedIn: true})
+                    this.setState({signedIn: true, showModal: false})
                 })
                     .catch(err => console.log("Error: " + err)),
             1500

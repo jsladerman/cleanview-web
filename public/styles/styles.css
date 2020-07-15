@@ -1,10 +1,10 @@
 body {
     margin: 0;
- }
+}
 
 .page {
-    width: calc(100% - 40px);
-    height: calc(100% - 40px);
+    width: 100%;
+    height: 100%;
     position: absolute;
     border: 20px solid transparent;
     background-color: white;
@@ -13,31 +13,45 @@ body {
     overflow: scroll;
 }
 
-.authenticator {
-    position: relative;
-    top: -75px;
-    transform: translateX(35.5%);
-}
-
 .logo {
     margin-bottom: 25px;
     position: relative;
     background-color: transparent;
 }
 
+.signInDiv {
+    width: 50%;
+    margin: auto;
+    transform: translateY(-20px);
+    /*border: 3px solid green;*/
+    /*padding: 10px;*/
+}
+
+.authenticator {
+    position: relative;
+    right: 35.5%;
+    margin-left: 55%;
+}
+
+
 .title-message {
     position: relative;
-    top: -80px;
-    transform: translateX(calc(31% + 133px));
+    white-space: nowrap;
+    top: -30px;
+    width: 50%;
+    margin: auto;
 }
 
 .subtitle-message {
     position: relative;
-    top: -90px;
-    transform: translateX(calc(31% + 133px));
+    white-space: nowrap;
+    top: -25px;
+    width: 50%;
+    left: 35px;
+    margin: auto;
 }
 
-:root{
+:root {
     --amplify-primary-color: #23C9AD;
     --amplify-primary-tint: #23C9AD;
     --amplify-primary-shade: #209AB0;
