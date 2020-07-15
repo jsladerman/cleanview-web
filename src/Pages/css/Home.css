@@ -1,0 +1,20 @@
+.sign-in-div {
+    width: 50%;
+    margin: auto;
+    transform: translateY(-20px);
+    text-align: center;
+}
+
+.title-message {
+    position: relative;
+    white-space: nowrap;
+    top: -30px;
+    margin: auto;
+}
+
+.subtitle-message {
+    position: relative;
+    white-space: nowrap;
+    top: -25px;
+    margin: auto;
+}
