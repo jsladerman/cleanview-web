@@ -5,7 +5,7 @@ import '@trendmicro/react-modal/dist/react-modal.css';
 import {Auth} from 'aws-amplify';
 import {AmplifyAuthenticator, AmplifySignIn,} from '@aws-amplify/ui-react';
 import ManagedLocationList from '../Components/ManagerPage/ManagedLocationList';
-
+import ManagedLocationInfo from '../Components/ManagedLocationPage/ManagedLocationInfo'
 
 class Home extends Component {
     constructor(props) {
@@ -20,19 +20,27 @@ class Home extends Component {
         console.log("Signed in: " + this.state.signedIn);
         console.log(this.state.showModal);
         return (
-            <div>
+            <div class = "sign-in-div">
+                <h2 class="title-message">Welcome back to CleanView</h2>
+                <p class="subtitle-message">Log in to launch your management dashboard</p>
+                
                 <Modal show={this.state.showModal} onClose={this.showModal} showCloseButton={false}>
                     <ManagedLocationList/>
                 </Modal>
                 <button onClick={this.showModal}
                         style={{visibility: this.state.showModal ? 'hidden' : 'visible'}}>Test Modal
                 </button>
-                <AmplifyAuthenticator>
-                    <AmplifySignIn headerText="Sign in to your account"
-                                   slot="sign-in" onFormSubmit={this.onSignInSubmit}/>
-                    {/*<ManagedLocationList/>*/}
-                    <button onClick={this.signOut}>Sign out</button>
-                </AmplifyAuthenticator>
+
+                <div class="sign-in">
+                    <AmplifyAuthenticator>
+                        <AmplifySignIn headerText="Sign in to your account"
+                                    slot="sign-in" onFormSubmit={this.onSignInSubmit}/>
+                        {/*<ManagedLocationList/>*/}
+                        <button onClick={this.signOut}>Sign out</button>
+                    </AmplifyAuthenticator>
+                </div>
+
+                <ManagedLocationInfo />
             </div>
         );
     }
