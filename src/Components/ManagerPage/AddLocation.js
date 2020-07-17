@@ -25,7 +25,8 @@ class AddLocation extends Component {
                     .then(user => user["username"])
                     .catch(error => console.log("Error: " + error)),
                 addr_line_1: values.addr.line1,
-                addr_city: values.addr.line2,
+                addr_line_2: values.addr.line2,
+                addr_city: values.addr.city,
                 addr_state: values.addr.state,
                 loc_type: values.type,
                 survey_link: "google.com",

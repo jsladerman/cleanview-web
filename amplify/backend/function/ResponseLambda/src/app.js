@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and limitations 
 
 
 const AWS = require('aws-sdk')
+var multipart = require('parse-multipart');
+
 var awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
 var bodyParser = require('body-parser')
 var express = require('express')
@@ -174,7 +176,14 @@ app.post(path, function(req, res) {
   if (userIdPresent) {
     req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
   }
-
+    console.log("Body: " + req.body)
+    console.log("Body.body: " + req.body.body)
+    console.log("Body[body]: " + req.body["body"])
+    var body = req.body['data'];
+    var boundary = "----WebKitFormBoundaryDtbT5UpPj83kllfw";
+    var parts = multipart.Parse(body,boundary);
+    console.log(parts)
+    
   let putItemParams = {
     TableName: tableName,
     Item: req.body
