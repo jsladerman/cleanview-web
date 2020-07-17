@@ -63,11 +63,7 @@
                     "attributes": [
                         "Name",
                         "Arn"
-                    ],
-                    "attributeEnvMap": {
-                        "Name": "TABLE_NAME",
-                        "Arn": "TABLE_ARN"
-                    }
+                    ]
                 }
             ]
         }

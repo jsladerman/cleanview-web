@@ -1,4 +1,9 @@
-/*
+/* Amplify Params - DO NOT EDIT
+	ENV
+	REGION
+	STORAGE_SURVEYRESPONSESTABLE_ARN
+	STORAGE_SURVEYRESPONSESTABLE_NAME
+Amplify Params - DO NOT EDIT *//*
 Copyright 2017 - 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at
     http://aws.amazon.com/apache2.0/
@@ -9,9 +14,11 @@ See the License for the specific language governing permissions and limitations 
 
 
 const AWS = require('aws-sdk')
+const formidable = require('formidable');
 var awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
 var bodyParser = require('body-parser')
 var express = require('express')
+const { uuid } = require('uuidv4')
 
 AWS.config.update({ region: process.env.TABLE_REGION });
 
@@ -34,6 +41,7 @@ const hashKeyPath = '/:' + partitionKeyName;
 const sortKeyPath = hasSortKey ? '/:' + sortKeyName : '';
 // declare a new express app
 var app = express()
+app.use(bodyParser.urlencoded())
 app.use(bodyParser.json())
 app.use(awsServerlessExpressMiddleware.eventContext())
 
@@ -164,20 +172,44 @@ app.put(path, function(req, res) {
 * HTTP post method for insert object *
 *************************************/
 
-app.post(path, function(req, res) {
+app.post(path, async function(req, res) {
 
   if (userIdPresent) {
     req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
   }
 
+  var formParams = {};
+  const form = formidable({multiples: false});
+  await new Promise((resolve, reject) => {
+    form.parse(req, (err, fields, files) => {
+      if(err) {
+        reject(err);
+        return;
+      }
+      console.log("Before set: " + formParams)
+      formParams = fields
+      console.log("Fields: ", fields)
+      console.log("Files: ", files)
+      console.log("After set: ", formParams)
+    })
+  
+    
+    resolve();
+  })
+  console.log("Before UUID: ", formParams)
+    formParams.id = uuid()
+    console.log("After uuid ", formParams)
+  
   let putItemParams = {
     TableName: tableName,
-    Item: req.body
+    Item: formParams
   }
+
   dynamodb.put(putItemParams, (err, data) => {
     if(err) {
       res.statusCode = 500;
       res.json({error: err, url: req.url, body: req.body});
+      console.log("Error: " + err)
     } else{
       res.json({success: 'post call succeed!', url: req.url, data: data})
     }
