@@ -4,6 +4,7 @@ import '@trendmicro/react-modal/dist/react-modal.css';
 import {Auth} from 'aws-amplify';
 import {AmplifyAuthenticator, AmplifySignIn,} from '@aws-amplify/ui-react';
 import ManagedLocationList from '../Components/ManagerPage/ManagedLocationList';
+import ManagedLocationInfo from '../Components/ManagedLocationPage/ManagedLocationInfo'
 
 class Home extends Component {
     constructor(props) {
@@ -25,8 +26,11 @@ class Home extends Component {
                         <AmplifySignIn headerText="Sign in to your account"
                                     slot="sign-in" onFormSubmit={this.onSignInSubmit}/>
                         {/*<ManagedLocationList/>*/}
+                        <button onClick={this.signOut}>Sign out</button>
                     </AmplifyAuthenticator>
                 </div>
+
+                <ManagedLocationInfo />
 
             </div>
         );

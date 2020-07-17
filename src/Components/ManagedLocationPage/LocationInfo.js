@@ -18,14 +18,14 @@ class LocationInfo extends Component{
                 <h2>{this.props.data.loc_name}</h2>
                 <h4>{this.props.data.manager}</h4>
                 <h6 id="location-confirmation">{this.props.data.is_confirmed}</h6>
-                <h6>Link: {this.props.data.survey_link}</h6>
+                {/* <h6>Link: {this.props.data.survey_link}</h6> */}
             </div>
 
             <div id="location-detailed-info">
                 {/* Subscription information */}
                 <h5>Subscription information</h5>
                 <div>
-                    <p><span className="location-info-field-name">Status: </span>{this.props.data.subscriptions_status}</p>
+                    <p><span className="location-info-field-name">Status: </span>{this.props.data.subscription_status}</p>
                     <p><span className="location-info-field-name">Expires: </span>{this.props.data.subscription_end_date}</p>
                 </div>
 
@@ -43,7 +43,8 @@ class LocationInfo extends Component{
                     <p> <span className="location-info-field-name">Business type: </span> {this.props.data.loc_type} </p>
                 </div>
                 <div>
-                    <p><span className="location-info-field-name">Address: </span> {this.props.data.addr_line1}</p>
+                    {/* <p><span className="location-info-field-name">Address: </span> {this.props.data.addr_line1}</p> */}
+                    <p><span className="location-info-field-name">Address:</span></p>
                     <p>{this.props.data.addr_city} {this.props.data.addr_state}</p>
                 </div>
             </div>
