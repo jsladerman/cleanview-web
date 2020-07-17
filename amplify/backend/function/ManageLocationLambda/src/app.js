@@ -58,6 +58,24 @@ const convertUrlType = (param, type) => {
 /********************************
  * HTTP Get method for list objects *
  ********************************/
+app.get(path, function(req, res){
+  const queryParams = {
+    TableName: tableName,
+    ProjectionExpression: "id, loc_name, manager, is_confirmed, subscription_status, subscription_end_date, employee_masks, social_distancing, dining_in, loc_type, addr_line1, addr_city, addr_state",
+    KeyConditionExpression: "id = :id",
+    ExpressionAttributeValues: {
+      ":id": req.query.id
+    }
+  };
+  dynamodb.query(queryParams, (err, data) => {
+    if (err) {
+      res.json({ error: "Could not load items: " + err });
+    } else {
+      res.json(data.Items);
+    }
+  });
+});
+
 app.get(path, function (req, res) {
   const queryParams = {
     TableName: tableName,

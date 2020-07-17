@@ -2,7 +2,6 @@
     width: 50%;
     margin: auto;
     transform: translateY(-20px);
-    text-align: center;
 }
 
 .title-message {
@@ -10,6 +9,7 @@
     white-space: nowrap;
     top: -30px;
     margin: auto;
+    text-align: center;
 }
 
 .subtitle-message {
@@ -17,4 +17,9 @@
     white-space: nowrap;
     top: -25px;
     margin: auto;
+    text-align: center;
+}
+
+.sign-in{
+    text-align: center;
 }

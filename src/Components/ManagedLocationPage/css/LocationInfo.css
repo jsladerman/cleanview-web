@@ -1,0 +1,20 @@
+.location-info-field-name{
+    font-weight: 600;
+}
+
+.location_info{
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    clear: left; 
+    float: left; 
+    position: relative; 
+    left: 50%;
+}
+
+.location-detailed-info{
+    display: block;
+    float: left;
+    position: relative;
+    right: 50%;
+}

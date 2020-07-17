@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Auth } from 'aws-amplify';
 import QRCodeGenerator from './QRCodeGenerator'
 import AnalyticsDashboard from './AnalyticsDashboard'
 import LocationInfo from './LocationInfo'
-import Nav from 'react-bootstrap/Nav'
 import Tab from 'react-bootstrap/Tab'
 import Tabs from 'react-bootstrap/Tabs'
+import {API} from 'aws-amplify';
 // const { Component } = require("react");
 
 class ManagedLocationInfo extends Component {
@@ -23,15 +22,29 @@ class ManagedLocationInfo extends Component {
     }
 
     //Replace location_id with this.props.location_id
-    location_id = '1234';
+    
     getData = () => {
-        const response_data = {
-            location_name: 'Location 1',
-            dine_in: 'true',
-        }
-        this.setState({data: response_data});   // Setting state as a JSON
-    }
+        const apiName = 'manageLocationApi';
+        const path = '/manageLocation';
+        const myParams = {
+            headers: {},
+            response: true,
+            queryStringParameters: {
+                id: '4323841-865-8664-ce7a-f32b7b13dcbd'
+            },
+        };
 
+        API.get(apiName, path, myParams)
+            .then(response => {
+                this.setState({
+                    data: response["data"][0],
+                });
+                console.log(this.state.data)
+            })
+            .catch(error => {
+                console.log("Error: " + error)
+            })
+    }
 
     render(){
         return (
