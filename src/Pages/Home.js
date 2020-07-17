@@ -17,21 +17,16 @@ class Home extends Component {
     render() {
         console.log("Signed in: " + this.state.signedIn);
         return (
-            <div class = "sign-in-div">
-                <h2 class="title-message">Welcome back to CleanView</h2>
-                <p class="subtitle-message">Log in to launch your management dashboard</p>
-
-                <div class="sign-in">
+            <div className="sign-in-div">
+                <h2 className="title-message">Welcome back to CleanView</h2>
+                <p className="subtitle-message">Log in to launch your management dashboard</p>
+                <div className="sign-in">
                     <AmplifyAuthenticator>
                         <AmplifySignIn headerText="Sign in to your account"
                                     slot="sign-in" onFormSubmit={this.onSignInSubmit}/>
-                        {/*<ManagedLocationList/>*/}
                         <button onClick={this.signOut}>Sign out</button>
                     </AmplifyAuthenticator>
                 </div>
-
-                <ManagedLocationInfo />
-
             </div>
         );
     }
@@ -55,13 +50,12 @@ class Home extends Component {
                     bypassCache: true
                 }).then(user => {
                     console.log(user);
-                    this.setState({signedIn: true})
+                    this.setState({signedIn: true, showModal: false})
                 })
                     .catch(err => console.log("Error: " + err)),
             1500
         );
     };
-
 }
 
 export default Home;
