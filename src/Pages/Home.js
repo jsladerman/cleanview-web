@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import styles from './css/Home.css';
+import logo from '../images/CleanView-Logo-Grey-text.png'
 import '@trendmicro/react-modal/dist/react-modal.css';
 import {Auth} from 'aws-amplify';
 import {AmplifyAuthenticator, AmplifySignIn,} from '@aws-amplify/ui-react';
@@ -17,15 +18,18 @@ class Home extends Component {
     render() {
         console.log("Signed in: " + this.state.signedIn);
         return (
-            <div className="sign-in-div">
-                <h2 className="title-message">Welcome back to CleanView</h2>
-                <p className="subtitle-message">Log in to launch your management dashboard</p>
-                <div className="sign-in">
-                    <AmplifyAuthenticator>
-                        <AmplifySignIn headerText="Sign in to your account"
-                                    slot="sign-in" onFormSubmit={this.onSignInSubmit}/>
-                        <button onClick={this.signOut}>Sign out</button>
-                    </AmplifyAuthenticator>
+            <div className="page">
+                <img className="logo" src={logo} alt=""/>
+                <div className="sign-in-div">
+                    <h2 className="title-message">Welcome back to CleanView</h2>
+                    <p className="subtitle-message">Log in to launch your management dashboard</p>
+                    <div className="sign-in">
+                        <AmplifyAuthenticator>
+                            <AmplifySignIn headerText="Sign in to your account"
+                                           slot="sign-in" onFormSubmit={this.onSignInSubmit}/>
+                            <button onClick={this.signOut}>Sign out</button>
+                        </AmplifyAuthenticator>
+                    </div>
                 </div>
             </div>
         );
