@@ -173,7 +173,9 @@ app.put(path, function(req, res) {
 *************************************/
 
 app.post(path, async function(req, res) {
-
+  res.setHeader('Access-Control-Allow-Origin', req.header('origin') );
+  res.setHeader('AMP-Redirect-To', 'https://example.com/forms/thank-you')
+  res.setHeader('Access-Control-Expose-Headers', 'AMP-Redirect-To')
   if (userIdPresent) {
     req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
   }
@@ -186,20 +188,12 @@ app.post(path, async function(req, res) {
         reject(err);
         return;
       }
-      console.log("Before set: " + formParams)
       formParams = fields
-      console.log("Fields: ", fields)
-      console.log("Files: ", files)
-      console.log("After set: ", formParams)
-    })
-  
-    
+    })   
     resolve();
   })
-  console.log("Before UUID: ", formParams)
-    formParams.id = uuid()
-    console.log("After uuid ", formParams)
-  
+  formParams.id = uuid();
+
   let putItemParams = {
     TableName: tableName,
     Item: formParams
