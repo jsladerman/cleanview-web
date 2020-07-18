@@ -14,11 +14,11 @@ See the License for the specific language governing permissions and limitations 
 
 
 const AWS = require('aws-sdk')
-var multipart = require('parse-multipart');
-
+const formidable = require('formidable');
 var awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
 var bodyParser = require('body-parser')
 var express = require('express')
+const { uuid } = require('uuidv4')
 
 AWS.config.update({ region: process.env.TABLE_REGION });
 
@@ -41,6 +41,7 @@ const hashKeyPath = '/:' + partitionKeyName;
 const sortKeyPath = hasSortKey ? '/:' + sortKeyName : '';
 // declare a new express app
 var app = express()
+app.use(bodyParser.urlencoded())
 app.use(bodyParser.json())
 app.use(awsServerlessExpressMiddleware.eventContext())
 
@@ -171,27 +172,38 @@ app.put(path, function(req, res) {
 * HTTP post method for insert object *
 *************************************/
 
-app.post(path, function(req, res) {
-
+app.post(path, async function(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', req.header('origin') );
+  res.setHeader('AMP-Redirect-To', 'https://example.com/forms/thank-you')
+  res.setHeader('Access-Control-Expose-Headers', 'AMP-Redirect-To')
   if (userIdPresent) {
     req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
   }
-    console.log("Body: " + req.body)
-    console.log("Body.body: " + req.body.body)
-    console.log("Body[body]: " + req.body["body"])
-    var body = req.body['data'];
-    var boundary = "----WebKitFormBoundaryDtbT5UpPj83kllfw";
-    var parts = multipart.Parse(body,boundary);
-    console.log(parts)
-    
+
+  var formParams = {};
+  const form = formidable({multiples: false});
+  await new Promise((resolve, reject) => {
+    form.parse(req, (err, fields, files) => {
+      if(err) {
+        reject(err);
+        return;
+      }
+      formParams = fields
+    })   
+    resolve();
+  })
+  formParams.id = uuid();
+
   let putItemParams = {
     TableName: tableName,
-    Item: req.body
+    Item: formParams
   }
+
   dynamodb.put(putItemParams, (err, data) => {
     if(err) {
       res.statusCode = 500;
       res.json({error: err, url: req.url, body: req.body});
+      console.log("Error: " + err)
     } else{
       res.json({success: 'post call succeed!', url: req.url, data: data})
     }
