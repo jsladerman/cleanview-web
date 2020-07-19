@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import * as d3 from 'd3'
+import './css/BarChart.css'
 
 class BarChart extends Component {
     constructor(props) {
@@ -85,6 +86,10 @@ class BarChart extends Component {
                             .attr('transform', 'translate(' + 5 + ',' + 0 + ')')
 
 
+        var div = d3.select('body').append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0)
+
         barplot.append('g')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
         .selectAll('rects')
@@ -96,7 +101,30 @@ class BarChart extends Component {
             .attr('width', xScale.bandwidth()*.95)
             .attr('height', d => yScale(0) - yScale(d.frequency))
             .attr('fill', this.props.color)
-            .attr('id', d => d.value);
+            .attr('id', d => 'bar' + d.value)
+            .on("mouseover", (d, i, g) => {
+                d3.select(g[i])
+                    .attr("stroke", "black")
+                    .attr("stroke-width", "2px")
+
+                div.transition()
+                    .duration(20)
+                    .style('opacity', 1)
+                
+                div.html((d.frequency)*100 + '%') 
+                .style("left", (d3.event.pageX + 10) + "px")
+                .style("top", (d3.event.pageY - 15) + "px");
+            })
+            .on("mouseout", (_, i, g) => {
+                d3.select(g[i])
+                    .attr("stroke", "none")
+                    .attr("stroke-width", "0px")
+
+                    div.transition()
+                    .duration(20)
+                    .style('opacity', 0)
+            })
+            ;
         
         barplot.append('g')
             .attr('id', 'barplotbottomaxis')
@@ -114,7 +142,14 @@ class BarChart extends Component {
                 .attr('text-anchor', 'middle')
                 .style("font-size", this.props.titleSize)
                 .text(this.props.titleText)
+        
+
+                function handleMouseOut(d, i) {
+                    console.log("hey")
+                }
     }
+
+    
 
     render() {
         return <svg ref={node => this.node = node} height={this.props.height} width={this.props.width}> </svg>
