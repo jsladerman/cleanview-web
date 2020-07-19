@@ -137,6 +137,7 @@ class BarChart extends Component {
             .attr('transform', 'translate(' + (margin.left) + ',' + margin.top + ')')
 
         barplot.append('text')
+                .attr('id', 'barplottitle')
                 .attr('x', (margin.left + width/2))
                 .attr('y', (margin.top/2))
                 .attr('text-anchor', 'middle')
