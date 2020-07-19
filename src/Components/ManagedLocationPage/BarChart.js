@@ -5,8 +5,6 @@ class BarChart extends Component {
     constructor(props) {
         super(props)
         this.createBarChart = this.createBarChart.bind(this)
-        
-        
     }
 
 
@@ -22,7 +20,7 @@ class BarChart extends Component {
         const data = [
             {
                 value: 0,
-                frequency: 0.1
+                frequency: 0.02
             },
             {
                 value: 0.5,
@@ -62,18 +60,16 @@ class BarChart extends Component {
             },
             {
                 value: 5,
-                frequency: 0.1
+                frequency: 0.18
             },
         ];
         const size = [this.props.width, this.props.height];
 
-        var margin = {left: 40, bottom: 40}, width = size[0] - margin.left, height = size[1] - margin.bottom
+        var margin = {left: 20, bottom: 40, top: 40}, width = (size[0] - margin.left), height = size[1] - margin.bottom - margin.top
 
         const node = this.node
         const values = data.map(d => d.value)
         const frequencies = data.map(d => d.frequency)
-
-
         const maxFreq = d3.max(frequencies)
 
         const yScale = d3.scaleLinear()
@@ -84,36 +80,44 @@ class BarChart extends Component {
             .domain(values)
             .range([0, width])
 
-        const barplot = d3.select(node)
+        const barplot = d3.select(node).attr('transform', 'translate(' + 5 + ',' + 0 + ')')
 
-        barplot.append('rect')
-            .attr('x', 0)
-            .attr('y', 0)
-            .attr('width', width)
-            .attr('height', height)
-            .attr('fill', 'none')
+
 
         barplot.append('g')
-            .attr('transfom', 'translate(' + margin.left + ", 0)")
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
         .selectAll('rects')
             .data(data)
             .enter()
             .append('rect')
-            .attr('x', d => xScale(d.value) + 10)
+            .attr('x', d => xScale(d.value))
             .attr('y', d => yScale(d.frequency))
             .attr('width', xScale.bandwidth()*.95)
             .attr('height', d => yScale(0) - yScale(d.frequency))
-            .attr('fill', 'blue')
-            .attr('id', d => d.value)
+            .attr('fill', this.props.color)
+            .attr('id', d => d.value);
         
         barplot.append('g')
-            .attr('id', 'bottomaxis')
+            .attr('id', 'barplotbottomaxis')
             .call(d3.axisBottom(xScale))
-            .attr('transform', 'translate(' + xScale.bandwidth()*.5 + ',' + height*1.55 + ')')
-    }
+            .attr('transform', 'translate(' + (margin.left - .75) + ',' + (margin.top + height) + ')')
+
+        barplot.append('g')
+            .attr('id', 'barplotleftaxis')
+            .call(d3.axisLeft(yScale))
+            .attr('transform', 'translate(' + (margin.left) + ',' + margin.top + ')')
+
+        barplot.append('text')
+                .attr('x', (margin.left + width/2))
+                .attr('y', (margin.top/2))
+                .attr('text-anchor', 'middle')
+                .style("font-size", this.props.titleSize)
+                .text("Customer Ratings (by %)")
+    }   
+        
 
     render() {
-        return <svg ref={node => this.node = node}> </svg>
+        return <svg ref={node => this.node = node} height={this.props.height} width={this.props.width}> </svg>
     }
 }
 
