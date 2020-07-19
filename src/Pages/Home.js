@@ -6,6 +6,7 @@ import {Auth} from 'aws-amplify';
 import {AmplifyAuthenticator, AmplifySignIn,} from '@aws-amplify/ui-react';
 import ManagedLocationList from '../Components/ManagerPage/ManagedLocationList';
 import ManagedLocationInfo from '../Components/ManagedLocationPage/ManagedLocationInfo'
+import BarChart from '../Components/ManagedLocationPage/BarChart';
 
 class Home extends Component {
     constructor(props) {
@@ -23,13 +24,14 @@ class Home extends Component {
                 <div className="sign-in-div">
                     <h2 className="title-message">Welcome back to CleanView</h2>
                     <p className="subtitle-message">Log in to launch your management dashboard</p>
-                    <div className="sign-in">
+                    {/* <div className="sign-in">
                         <AmplifyAuthenticator>
                             <AmplifySignIn headerText="Sign in to your account"
                                            slot="sign-in" onFormSubmit={this.onSignInSubmit}/>
                             <button onClick={this.signOut}>Sign out</button>
                         </AmplifyAuthenticator>
-                    </div>
+                    </div> */}
+                    <BarChart width={500} height={150} />
                 </div>
             </div>
         );
