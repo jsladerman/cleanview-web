@@ -63,9 +63,10 @@ class BarChart extends Component {
                 frequency: 0.18
             },
         ];
-        const size = [this.props.width, this.props.height];
-
-        var margin = {left: 20, bottom: 40, top: 40}, width = (size[0] - margin.left), height = size[1] - margin.bottom - margin.top
+        
+        var margin = {left: 20, bottom: 40, top: 40}, 
+            width = (this.props.width - margin.left),
+            height = this.props.height - margin.bottom - margin.top
 
         const node = this.node
         const values = data.map(d => d.value)
@@ -80,8 +81,8 @@ class BarChart extends Component {
             .domain(values)
             .range([0, width])
 
-        const barplot = d3.select(node).attr('transform', 'translate(' + 5 + ',' + 0 + ')')
-
+        const barplot = d3.select(node)
+                            .attr('transform', 'translate(' + 5 + ',' + 0 + ')')
 
 
         barplot.append('g')
@@ -112,9 +113,8 @@ class BarChart extends Component {
                 .attr('y', (margin.top/2))
                 .attr('text-anchor', 'middle')
                 .style("font-size", this.props.titleSize)
-                .text("Customer Ratings (by %)")
-    }   
-        
+                .text(this.props.titleText)
+    }
 
     render() {
         return <svg ref={node => this.node = node} height={this.props.height} width={this.props.width}> </svg>

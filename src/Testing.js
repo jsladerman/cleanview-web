@@ -6,7 +6,12 @@ class Testing extends Component {
         return(
             <div>
                 <h1>Bar chart</h1>
-            <BarChart width={500} height={400} titleSize='12px' color={'blue'}/>
+            <BarChart width={500} 
+            height={400} 
+            titleText='Customer Ratings (by %)'
+            titleSize='12px' 
+            color='blue'/>
+
             </div>
         )
     }
