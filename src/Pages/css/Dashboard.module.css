@@ -1,0 +1,42 @@
+.dashboard {
+    display: block;
+    height: 100vh;
+    width: 100vw;
+    border: 0px solid transparent;
+    white-space: nowrap;
+}
+
+.sidebarChildren {
+    position: relative;
+    background: grey;
+    height: auto;
+    width: 100%;
+}
+
+.dashboardHeader {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    padding-top: 28px;
+    padding-left: 36px;
+    padding-right: 20px;
+}
+
+.dashboardHeaderText {
+    font-weight: bold;
+    font-family: Tahoma, Geneva, sans-serif;
+    padding-top: 8px;
+}
+
+.addLocationButtonDiv {
+    position: relative;
+    background: transparent;
+    border-radius: 12px;
+    margin-right: 150px;
+    margin-left: 40px;
+    box-shadow: 3px 4px 11px -2px rgba(0,0,0,0.75);
+}
+
+.addLocationButton {
+    height: 75px;
+}

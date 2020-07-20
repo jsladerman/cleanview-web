@@ -4,8 +4,6 @@ import logo from '../images/CleanView-Logo-Grey-text.png'
 import {Redirect} from 'react-router-dom';
 import {Auth} from 'aws-amplify';
 import {AmplifyAuthenticator, AmplifySignIn,} from '@aws-amplify/ui-react';
-import ManagedLocationList from '../Components/ManagerPage/ManagedLocationList';
-import ManagedLocationInfo from '../Components/ManagedLocationPage/ManagedLocationInfo'
 
 class Home extends Component {
     constructor(props) {

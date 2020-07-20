@@ -1,0 +1,11 @@
+.body {
+    padding-top: 8px;
+    -webkit-user-select: none;
+}
+
+.flexContainer {
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 20px;
+    flex-wrap: wrap;
+}

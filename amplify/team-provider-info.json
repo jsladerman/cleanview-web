@@ -16,7 +16,9 @@
                 "cleanviewweb63661d3b": {}
             },
             "function": {
-                "manageLocationLambda": {}
+                "manageLocationLambda": {},
+                "SurveyLambda": {},
+                "ResponseLambda": {}
             }
         }
     }
