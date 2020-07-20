@@ -10,11 +10,9 @@ class AddLocation extends Component {
     constructor(props) {
         super(props);
         this.state = {value: ''};
-
-
     }
 
-     makeLocation = async (values) => {
+    makeLocation = async (values) => {
         const apiName = 'manageLocationApi'; // replace this with your api name.
         const path = '/manageLocation'; //replace this with the path you have configured on your API
         const requestData = {
@@ -49,6 +47,7 @@ class AddLocation extends Component {
             .catch(error => {
                 console.log("Error: " + error)
             })
+        this.props.modalFunc();
     };
 
     render() {

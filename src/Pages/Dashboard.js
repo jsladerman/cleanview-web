@@ -44,14 +44,14 @@ class Dashboard extends Component {
                                    onClose={this.toggleModal}
                                    showCloseButton={false}
                                    style={{borderRadius: '100px'}}>
-                                <AddLocation/>
+                                <AddLocation modalFunc={this.toggleModal}/>
                             </Modal>
                             <div className={styles.dashboardHeader}>
                                 <h1 className={styles.dashboardHeaderText}>{this.state.dashboardHeader}</h1>
                                 <div className={styles.addLocationButtonDiv} onClick={this.toggleModal}>
                                     <ClickableOverlay borderRadius='12px'>
                                         <img className={styles.addLocationButton}
-                                             src={require("../images/addLocationButton.png")}/>
+                                             src={require("../images/addLocationButton.png")} alt='Add Location'/>
                                     </ClickableOverlay>
                                 </div>
                             </div>
