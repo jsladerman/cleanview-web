@@ -2,11 +2,13 @@ import React, {Component} from 'react';
 import styles from './css/LocationBox.module.css';
 import Card from 'react-bootstrap/Card'
 import ClickableOverlay from "../Custom/ClickableOverlay";
+import {Redirect} from "react-router-dom";
 
 class LocationBox extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            redirect: null,
             stars: [],
         }
     }
@@ -16,6 +18,9 @@ class LocationBox extends Component {
     }
 
     render() {
+        if (this.state.redirect) {
+            return <Redirect to={this.state.redirect}/>
+        }
         return (
             <div className={styles.outerCard}>
                 <Card border='light' style={cardStyle} onClick={this.openLocation}>
@@ -39,8 +44,9 @@ class LocationBox extends Component {
     }
 
     openLocation = () => {
-        const name = this.props.locationName;
-        alert(name);
+        this.setState({
+            redirect:  '/home/locations/' + this.props.id
+        })
     }
 
     renderRating = () => {
@@ -49,6 +55,7 @@ class LocationBox extends Component {
             arr.push(<img
                 src={require("../../images/star.png")}
                 height="16px"
+                alt=''
                 key={i}
             />);
         }
@@ -60,7 +67,6 @@ class LocationBox extends Component {
 const cardStyle = {
     width: '250px',
     height: 'auto',
-    overflow: 'scroll',
     borderRadius: '8px',
     flexShrink: '0',
 }

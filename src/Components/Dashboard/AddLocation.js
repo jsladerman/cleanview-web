@@ -43,20 +43,16 @@ class AddLocation extends Component {
         API.post(apiName, path, requestData)
             .then(response => {
                 console.log("Location Add Successful: " + response);
+                this.props.modalFunc();
             })
             .catch(error => {
                 console.log("Error: " + error)
             })
-        this.props.modalFunc();
     };
 
     render() {
         return (
             <div className="form">
-                {/*<section className="container">*/}
-                {/*    <input className="one"></input>*/}
-                {/*    <input className="two"></input>*/}
-                {/*</section>*/}
                 <Formik onSubmit={(values) => this.makeLocation(values)}
                         initialValues={{
                             name: '',
@@ -68,8 +64,7 @@ class AddLocation extends Component {
                                 zip: ''
                             },
                             type: 'restaurant'
-                        }}
-                >
+                        }}>
                     <Form>
                         <label>Location Name <br/><Field type="input" name="name"/> </label><br/>
                         <label>Address Line 1 <br/><Field type="input" name="addr.line1"/> </label> <br/>

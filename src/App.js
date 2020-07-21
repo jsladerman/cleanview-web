@@ -3,9 +3,9 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link
+    Redirect
 } from "react-router-dom";
-import Home from "./Pages/Home";
+import Login from "./Pages/Login";
 import Dashboard from "./Pages/Dashboard"
 
 class App extends Component {
@@ -13,11 +13,10 @@ class App extends Component {
         return (
             <Router>
                 <Switch>
-                    <Route path='/home'>
-                        <Dashboard/>
-                    </Route>
+                    <Route path='/home' component={Dashboard}/>
+                    <Route path='/login' component={Login}/>
                     <Route path='/'>
-                        <Home/>
+                        <Redirect to='/login'/>
                     </Route>
                 </Switch>
             </Router>

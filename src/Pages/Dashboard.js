@@ -2,35 +2,50 @@ import React, {Component} from 'react';
 import styles from './css/Dashboard.module.css';
 import Auth from "@aws-amplify/auth";
 import {API} from "aws-amplify";
+import {
+    Switch,
+    Route,
+    Redirect,
+} from "react-router-dom";
 import DashboardTopNav from "../Components/Dashboard/DashboardTopNav";
 import DashboardSidebarContent from "../Components/Dashboard/DashboardSidebarContent";
-import Modal from '@trendmicro/react-modal';
 import '@trendmicro/react-modal/dist/react-modal.css';
-import AddLocation from "../Components/Dashboard/AddLocation";
 import Sidebar from 'react-sidebar'
 import LocationsTable from "../Components/Dashboard/LocationsTable";
-import ClickableOverlay from "../Components/Custom/ClickableOverlay";
+import ManagedLocationInfo from "../Components/ManagedLocationPage/ManagedLocationInfo";
 
 class Dashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showModal: false,
+            redirect: null,
             managerName: '',
-            dashboardHeader: '',
-            locationData: [
-                {loc_name: 'test1', a: '1'},
-                {loc_name: 'test2', a: '2'},
-                {loc_name: 'test3', a: '3'},
-            ]
+            locationData: []
         }
     }
 
     componentDidMount() {
-        this.getData();
+        Auth.currentUserInfo()
+            .then(user => {
+                if (user == null) {
+                    this.setState({redirect: '/login'});
+                } else {
+                    this.setState({
+                        managerName: user.username,
+                    });
+                    this.getData();
+                }
+            })
+            .catch(error => {
+                console.log("Error: " + error)
+            });
     }
 
     render() {
+        if (this.state.redirect) {
+            return <Redirect to={this.state.redirect}/>
+        }
+        const path = this.props.match.path;
         return (
             <div className={styles.dashboard}>
                 <DashboardTopNav/>
@@ -40,23 +55,21 @@ class Dashboard extends Component {
                     }
                     children={
                         <div className={styles.sidebarChildren}>
-                            <Modal show={this.state.showModal}
-                                   onClose={this.toggleModal}
-                                   showCloseButton={false}
-                                   style={{borderRadius: '100px'}}>
-                                <AddLocation modalFunc={this.toggleModal}/>
-                            </Modal>
-                            <div className={styles.dashboardHeader}>
-                                <h1 className={styles.dashboardHeaderText}>{this.state.dashboardHeader}</h1>
-                                <div className={styles.addLocationButtonDiv} onClick={this.toggleModal}>
-                                    <ClickableOverlay borderRadius='12px'>
-                                        <img className={styles.addLocationButton}
-                                             src={require("../images/addLocationButton.png")} alt='Add Location'/>
-                                    </ClickableOverlay>
-                                </div>
-                            </div>
-                            <LocationsTable
-                                locations={this.state.locationData}/>
+                            <Switch>
+                                <Route path={path + '/locations/:id'} render={(props) =>
+                                    <ManagedLocationInfo
+                                        {...props}
+                                        id={props.match.params.id}
+                                        locations={this.state.locationData}/>}
+                                />
+                                <Route render={(props) =>
+                                    <LocationsTable
+                                        {...props}
+                                        managerName={this.state.managerName}
+                                        locations={this.state.locationData}
+                                        getDataFunc={this.getData}/>}
+                                />
+                            </Switch>
                         </div>
                     }
                     transitions={false}
@@ -69,41 +82,26 @@ class Dashboard extends Component {
 
     getData = () => {
         console.log("Get Data");
-        Auth.currentUserInfo()
-            .then(user => {
-                console.log(user.username);
+        const apiName = 'manageLocationApi'; // replace this with your api name.
+        const path = '/manageLocation'; //replace this with the path you have configured on your API
+        const myParams = {
+            headers: {},
+            response: true,
+            queryStringParameters: {
+                manager: this.state.managerName
+            },
+        };
+
+        API.get(apiName, path, myParams)
+            .then(response => {
+                console.log(response["data"])
                 this.setState({
-                    managerName: user.username,
-                    dashboardHeader: user.username + '\'s Locations'
+                    locationData: response["data"],
                 });
-                const apiName = 'manageLocationApi'; // replace this with your api name.
-                const path = '/manageLocation'; //replace this with the path you have configured on your API
-                const myParams = {
-                    headers: {},
-                    response: true,
-                    queryStringParameters: {
-                        manager: user.username
-                    },
-                };
-
-                API.get(apiName, path, myParams)
-                    .then(response => {
-                        this.setState({
-                            // locationData: [response["data"]],
-                        });
-                        console.log(response)
-                    })
-                    .catch(error => {
-                        console.log("Error: " + error)
-                    })
             })
-            .catch(error => "Error: " + error);
-    };
-
-    toggleModal = () => {
-        this.setState({
-            showModal: !this.state.showModal
-        });
+            .catch(error => {
+                console.log("Error: " + error)
+            })
     };
 
 }

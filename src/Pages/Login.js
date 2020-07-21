@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import styles from './css/Home.css';
+import styles from './css/Login.css';
 import logo from '../images/CleanView-Logo-Grey-text.png'
 import {Redirect} from 'react-router-dom';
 import {Auth} from 'aws-amplify';
 import {AmplifyAuthenticator, AmplifySignIn,} from '@aws-amplify/ui-react';
 
-class Home extends Component {
+class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -69,4 +69,4 @@ class Home extends Component {
     }
 }
 
-export default Home;
+export default Login;
