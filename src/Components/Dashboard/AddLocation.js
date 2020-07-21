@@ -10,11 +10,9 @@ class AddLocation extends Component {
     constructor(props) {
         super(props);
         this.state = {value: ''};
-
-
     }
 
-     makeLocation = async (values) => {
+    makeLocation = async (values) => {
         const apiName = 'manageLocationApi'; // replace this with your api name.
         const path = '/manageLocation'; //replace this with the path you have configured on your API
         const requestData = {
@@ -45,6 +43,7 @@ class AddLocation extends Component {
         API.post(apiName, path, requestData)
             .then(response => {
                 console.log("Location Add Successful: " + response);
+                this.props.modalFunc();
             })
             .catch(error => {
                 console.log("Error: " + error)
@@ -54,10 +53,6 @@ class AddLocation extends Component {
     render() {
         return (
             <div className="form">
-                {/*<section className="container">*/}
-                {/*    <input className="one"></input>*/}
-                {/*    <input className="two"></input>*/}
-                {/*</section>*/}
                 <Formik onSubmit={(values) => this.makeLocation(values)}
                         initialValues={{
                             name: '',
@@ -69,8 +64,7 @@ class AddLocation extends Component {
                                 zip: ''
                             },
                             type: 'restaurant'
-                        }}
-                >
+                        }}>
                     <Form>
                         <label>Location Name <br/><Field type="input" name="name"/> </label><br/>
                         <label>Address Line 1 <br/><Field type="input" name="addr.line1"/> </label> <br/>

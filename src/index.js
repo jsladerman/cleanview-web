@@ -6,13 +6,16 @@ import App from './App';
 import Amplify from 'aws-amplify';
 import awsconfig from './aws-exports';
 import Testing from './Testing';
+import {BrowserRouter} from "react-router-dom";
 
 
 Amplify.configure(awsconfig);
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Testing />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <BrowserRouter>
+        <React.StrictMode>
+            <App/>
+        </React.StrictMode>
+    </BrowserRouter>,
+    document.getElementById('root')
 );
