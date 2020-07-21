@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
-import "./css/BinaryPieChart.css";
+import "../css/BinaryPieChart.css";
 
 class BinaryPieChart extends Component {
   constructor(props) {
@@ -96,7 +96,6 @@ class BinaryPieChart extends Component {
         height={this.props.height}
         width={this.props.width}
       >
-        {" "}
       </svg>
     );
   }

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
-import "./css/BarChart.css";
+import "../css/BarChart.css";
+import { contours } from "d3";
 
 class BarChart extends Component {
   constructor(props) {
@@ -64,7 +65,7 @@ class BarChart extends Component {
       },
     ];
 
-    var margin = { left: 20, bottom: 60, top: 40 },
+    const margin = { left: 20, bottom: 60, top: 40 },
       width = this.props.width - margin.left,
       height = this.props.height - margin.bottom - margin.top;
 
@@ -96,10 +97,9 @@ class BarChart extends Component {
       .append("rect")
       .attr("x", (d) => xScale(d.value))
       .attr("y", (d) => yScale(d.frequency))
-      .attr("width", xScale.bandwidth() * 0.95)
+      .attr("width", xScale.bandwidth() * this.props.bar_width)
       .attr("height", (d) => yScale(0) - yScale(d.frequency))
       .attr("fill", this.props.color)
-      .attr("id", (d) => "bar" + d.value)
       .on("mouseover", (d, i, g) => {
         d3.select(g[i]).attr("stroke", "black").attr("stroke-width", "2px");
 
@@ -116,20 +116,34 @@ class BarChart extends Component {
         div.transition().duration(20).style("opacity", 0);
       });
 
-    barplot
-      .append("g")
-      .attr("id", "barplotbottomaxis")
-      .call(d3.axisBottom(xScale).tickValues(["0", "1", "2", "3", "4", "5"]))
-      .attr(
-        "transform",
-        "translate(" + (margin.left - 0.75) + "," + (margin.top + height) + ")"
-      );
-
-    barplot
-      .append("g")
-      .attr("id", "barplotleftaxis")
-      .call(d3.axisLeft(yScale))
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    const customTicks = this.props.tickVals
+    if(customTicks === null) {
+        barplot
+        .append("g")
+        .attr("id", "barplotbottomaxis")
+        .call(d3.axisBottom(xScale))
+        .attr(
+          "transform",
+          "translate(" + (margin.left - 0.75) + "," + (margin.top + height) + ")"
+        );
+    } else {
+      barplot
+        .append("g")
+        .attr("id", "barplotbottomaxis")
+        .call(d3.axisBottom(xScale).tickValues(customTicks))
+        .attr(
+          "transform",
+          "translate(" + (margin.left - 0.75) + "," + (margin.top + height) + ")"
+        );
+    }
+    
+    const leftAxis = this.props.leftAxis != null ? this.props.leftAxis : true
+    if(leftAxis)
+      barplot
+        .append("g")
+        .attr("id", "barplotleftaxis")
+        .call(d3.axisLeft(yScale))
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     barplot
       .append("text")
@@ -146,7 +160,7 @@ class BarChart extends Component {
       .attr("x", margin.left + width / 2)
       .attr("y", height + margin.top + margin.bottom / 2 + 10)
       .attr("text-anchor", "middle")
-      .text("Customer Rating");
+      .text(this.props.bottomAxisText);
   }
 
   render() {
@@ -156,7 +170,6 @@ class BarChart extends Component {
         height={this.props.height}
         width={this.props.width}
       >
-        {" "}
       </svg>
     );
   }
