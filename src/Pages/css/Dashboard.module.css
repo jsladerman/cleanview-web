@@ -1,0 +1,14 @@
+.dashboard {
+    display: block;
+    height: 100vh;
+    width: 100vw;
+    border: 0 solid transparent;
+    white-space: nowrap;
+}
+
+.sidebarChildren {
+    position: relative;
+    background: white;
+    height: auto;
+    width: 100%;
+}

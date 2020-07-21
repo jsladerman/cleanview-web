@@ -1,67 +1,62 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import QRCodeGenerator from './QRCodeGenerator'
 import AnalyticsDashboard from './AnalyticsDashboard'
 import LocationInfo from './LocationInfo'
 import Tab from 'react-bootstrap/Tab'
 import Tabs from 'react-bootstrap/Tabs'
-import {API} from 'aws-amplify';
-// const { Component } = require("react");
+import {Redirect} from "react-router-dom";
 
 class ManagedLocationInfo extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
-            //Data: anything we retrieve from the Query
-            data: {}
+            redirect: null,
+            data: null
         }
     }
 
-    componentWillMount = () => {
-        this.getData();
+    componentDidMount = () => {
+        if (!this.getLocationData()) {
+            console.log("NO MATCH");
+            this.setState({redirect: '/home'})
+        }
     }
 
-    //Replace location_id with this.props.location_id
-    
-    getData = () => {
-        const apiName = 'manageLocationApi';
-        const path = '/manageLocation';
-        const myParams = {
-            headers: {},
-            response: true,
-            queryStringParameters: {
-                id: '4323841-865-8664-ce7a-f32b7b13dcbd'
-            },
-        };
-
-        API.get(apiName, path, myParams)
-            .then(response => {
-                this.setState({
-                    data: response["data"][0],
-                });
-                console.log(this.state.data)
-            })
-            .catch(error => {
-                console.log("Error: " + error)
-            })
-    }
-
-    render(){
+    render() {
+        if (this.state.redirect) {
+            return <Redirect to={this.state.redirect}/>
+        }
+        if (!this.state.data) {
+            return null;
+        }
+        console.log("DATA" + this.state.data);
         return (
-            <div class = "managedLocationTab">
+            <div className="managedLocationTab">
                 <Tabs defaultActiveKey='profile' id='uncontrolled-tab-example'>
                     <Tab eventKey='locationInfo' title='Info'>
-                        <LocationInfo data={this.state.data} />
+                        <LocationInfo data={this.state.data}/>
                     </Tab>
                     <Tab eventKey='qrCode' title='QR Code'>
-                        <QRCodeGenerator />
+                        <QRCodeGenerator/>
                     </Tab>
                     <Tab eventKey='analyticsDashboard' title='Analytics'>
-                        <AnalyticsDashboard />
+                        <AnalyticsDashboard/>
                     </Tab>
                 </Tabs>
             </div>
         );
+    }
+
+    getLocationData = () => {
+        const locations = this.props.locations;
+        for (const index in locations) {
+            if (locations[index]['id'] === this.props.id) {
+                this.setState({data: locations[index]});
+                return true;
+            }
+        }
+        return false;
     }
 
 }

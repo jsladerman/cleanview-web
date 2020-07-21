@@ -1,21 +1,23 @@
 import React, {Component} from 'react';
-import styles from './css/Home.css';
+import styles from './css/Login.css';
 import logo from '../images/CleanView-Logo-Grey-text.png'
-import '@trendmicro/react-modal/dist/react-modal.css';
+import {Redirect} from 'react-router-dom';
 import {Auth} from 'aws-amplify';
 import {AmplifyAuthenticator, AmplifySignIn,} from '@aws-amplify/ui-react';
-import ManagedLocationList from '../Components/ManagerPage/ManagedLocationList';
-import ManagedLocationInfo from '../Components/ManagedLocationPage/ManagedLocationInfo'
 
-class Home extends Component {
+class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
             signedIn: false,
+            goToDashboard: false
         }
     }
 
     render() {
+        if (this.state.goToDashboard) {
+            return <Redirect to='/home'/>;
+        }
         console.log("Signed in: " + this.state.signedIn);
         return (
             <div className="page">
@@ -28,6 +30,7 @@ class Home extends Component {
                             <AmplifySignIn headerText="Sign in to your account"
                                            slot="sign-in" onFormSubmit={this.onSignInSubmit}/>
                             <button onClick={this.signOut}>Sign out</button>
+                            <button onClick={this.goToDashboard}>Dashboard</button>
                         </AmplifyAuthenticator>
                     </div>
                 </div>
@@ -60,6 +63,10 @@ class Home extends Component {
             1500
         );
     };
+
+    goToDashboard = () => {
+        this.setState({goToDashboard: true});
+    }
 }
 
-export default Home;
+export default Login;
