@@ -6,6 +6,7 @@ import LocationInfo from './LocationInfo'
 import Tab from 'react-bootstrap/Tab'
 import Tabs from 'react-bootstrap/Tabs'
 import {Redirect} from "react-router-dom";
+import MenuManager from './MenuManager';
 
 class ManagedLocationInfo extends Component {
     constructor(props) {
@@ -42,6 +43,9 @@ class ManagedLocationInfo extends Component {
                     </Tab>
                     <Tab eventKey='analyticsDashboard' title='Analytics'>
                         <AnalyticsDashboard/>
+                    </Tab>
+                    <Tab eventKey='menuManager' title="Menu Management">
+                        <MenuManager />
                     </Tab>
                 </Tabs>
             </div>
