@@ -80,7 +80,12 @@ class MenuManager extends Component {
     }
 
     // Ideal Structure
-    // Display what menu link is there right now or if there is a PDF menu
+    // Display what menu link is there right now
+
+    // Want to use a different menu?
+    // Put in link here
+    // OR
+    // Upload this PDF
 
     render() {
         return(
