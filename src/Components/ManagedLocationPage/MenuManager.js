@@ -9,18 +9,40 @@ class MenuManager extends Component {
         this.state = {
             loc_id: '4323841-865-8664-ce7a-f32b7b13dcbd',
             menu_link: '',
-            titleText: "Right now, we don't have a menu for this location. Let's change that."
+            switchVal: 'pdf'
         }
-        this.updateTitleText = this.updateTitleText.bind(this);
+
         this.updateMenuURL = this.updateMenuURL.bind(this);
-        this.getData = this.getData.bind(this)
+        this.updateSwitchVal = this.updateSwitchVal.bind(this)
+        this.updateDataFromDB = this.updateDataFromDB.bind(this)
+        this.titleText = this.titleText.bind(this)
     }
 
     componentDidMount() {
-        this.updateTitleText()
+        this.updateDataFromDB()
     }
 
-    getData = async () => {
+    titleText = (menu_link) => {
+        if(menu_link === ''|| menu_link === null) {
+            return(
+                <h1>Right now, we don't have a menu for this location. Let's change that.</h1>
+            );
+        } else {
+            return(
+                <h2>
+                    <div>
+                        Your menu link right now is: {" "}
+                        <a rel="noopener noreferrer" href={this.state.menu_link} target="_blank">{this.state.menu_link}</a>
+                    </div>
+                    <div>
+                        If that doesn't look right, change it below.
+                    </div>
+                </h2>
+            );
+        }
+    }
+
+    updateDataFromDB = async () => {
         const apiName = 'manageLocationApi';
         const path = '/manageLocation/object'
         const requestData = {
@@ -33,10 +55,13 @@ class MenuManager extends Component {
 
         API.get(apiName, path, requestData)
             .then(response => {
-                console.log(response)
                 if(response.data.body.menu_link) {
                     let currState = this.state
                     currState.menu_link = response.data.body.menu_link
+                    this.setState(currState)
+                } else {
+                    let currState = this.state
+                    currState.menu_link = ''
                     this.setState(currState)
                 }
             })
@@ -45,50 +70,33 @@ class MenuManager extends Component {
             });
     }
 
-    updateTitleText() {
-        this.getData()
-
-        if (this.state.menu_link !== '') {
-            let currState = this.state
-            currState.titleText = "Your menu link right now is: " + this.state.menu_link + ". If that doesn't look right, change it below."
-            this.setState(currState)
-        }
-
-    }
-
-    updateMenuURL = async (values) => {
+    updateMenuURL = async (urlVal) => {
         const apiName = 'manageLocationApi';
         const path = '/manageLocation';
         const requestData = {
             headers: {},
             response: true,
             body: {
-                menu_link: values.url,
+                menu_link: urlVal,
                 loc_id: this.state.loc_id
             },
-        };
+        }
 
         API.patch(apiName, path, requestData)
             .then(response => {
-                console.log("Update successful: " + response.body);
-                this.updateTitleText()
+                console.log("Update successful");
+                this.updateDataFromDB()
             })
             .catch(error => {
                 console.log("Error: " + error)
             })
-        
+
     }
 
-    uploadFile = (e) => {
-        const file = e.target.files[0];
-        const filename = this.state.loc_id + '.pdf'
-        Storage.put( filename, file, {
-            level: 'public',
-            contentDisposition: 'inline; filename="' + filename + '"',
-            contentType: 'application/pdf'
-        })
-        .then(result => console.log(result))
-        .catch(err => console.log(err))
+    updateSwitchVal = (values) => {
+        let currState = this.state;
+        currState.switchVal = values.choice
+        this.setState(currState);
     }
 
     // Ideal Structure
@@ -103,41 +111,102 @@ class MenuManager extends Component {
     render() {
         return(
             <div>
-                <h2>{this.state.titleText}</h2>
-                <Formik onSubmit={(values) => this.updateMenuURL(values)}
+            {this.titleText(this.state.menu_link)}
+
+            {/* Using validate here because Formik has no 'OnChange field' */}
+            <Formik validate = { (values) => this.updateSwitchVal(values) }
                     initialValues = {{
-                        url: ''
-                    }}
-                >
-                    <Form>
-                        
-                        <Field as='select' name='choice'>
-                            <option value="none">No menu</option>
-                            <option value="pdf">Uploaded PDF menu</option>
-                            <option value="link">Link to existing menu</option>
-                        </Field>
+                        choice: this.state.switchVal
+                    }} 
+                    >
+                <Form>
+                    <Field as='select' name='choice' >
+                        <option value="none">No menu</option>
+                        <option value="pdf">Uploaded PDF menu</option>
+                        <option value="url">Link to existing menu</option>
+                    </Field>
+                </Form>
+            </Formik>
+            <br />
+            <br />
+            <InputSwitch    value= {this.state.switchVal}
+                            loc_id= {this.state.loc_id}
+                            handleChange={this.updateMenuURL}
+                            menu_link = {this.props.menu_link}
+            />
+        </div>
+        )
+    }
+}
+
+class InputSwitch extends Component {
+    render() {
+       switch(this.props.value) {
+           case 'url':
+               return(
+                   <URLMenuUpload handleChange={this.props.handleChange} menu_link={this.props.menu_link}/>
+               );
+            case 'pdf':
+                return (
+                    <PDFMenuUpload loc_id={this.props.loc_id} handleChange={this.props.handleChange} />
+                );
+            default:
+                return(
                     <div>
+                        <button type="button" onClick={() => this.props.handleChange('')}>Yeah, I'm sure.</button>
+                    </div>
+                );
+       }
+    }
+}
+
+class URLMenuUpload extends Component {
+    render() {
+        return(
+            <div>
+                <Formik onSubmit={(values) => this.props.handleChange(values.url)}
+                initialValues = {{
+                    url: this.props.menu_link
+                }}>
+                    <Form>
                         <label>
-                            Put ya website in
+                            Put ya website in: {" "}
                             <Field type="url" name="url"></Field>
                         </label>
-                    <div>
-                    <div>
-                        <Field type="file">Submit file</Field>
-                    </div>
-                    </div>
-                        <button type="submit" style={{marginTop: "8px"}}>Submit</button>
+                        <div>
+                            <button type='submit'>Save</button>
                         </div>
                     </Form>
                 </Formik>
-                <br />
-                <br />
-                <input
-              type="file" accept='.pdf'
-              onChange={(evt) => this.uploadFile(evt)}
-          />
             </div>
-        )
+        );
+    }
+}
+
+class PDFMenuUpload extends Component {
+
+    uploadFile = (e, handleChangeFunc) => {
+        const file = e.target.files[0];
+        const filename = this.props.loc_id + '.pdf'
+        Storage.put( filename, file, {
+            level: 'public',
+            contentDisposition: 'inline; filename="' + filename + '"',
+            contentType: 'application/pdf'
+        })
+        .then(result => console.log(result))
+        .catch(err => console.log(err))
+
+        // TODO: CHANGE ON DEV VS PROD
+        const url = "https://cleanview-menu-images200726-dev.s3.amazonaws.com/public/" + filename;
+        handleChangeFunc(url)
+    }
+
+    render() {
+        return(
+            <div>
+                <input type="file" accept='.pdf' onChange={ (evt) => this.uploadFile(evt, this.props.handleChange)}/>
+            </div>
+        );
     }
 }
 

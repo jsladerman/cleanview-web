@@ -1,6 +1,7 @@
 import React, {Component } from 'react';
 import './css/QRCodeGenerator.css'
 class QRCodeGenerator extends Component {
+  // TODO: GET URL FROM DB, NOT PASSED IN AS PROP
   constructor(props) {
     super(props);
     this.state = {
