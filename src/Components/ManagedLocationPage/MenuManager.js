@@ -153,6 +153,9 @@ class InputSwitch extends Component {
             default:
                 return(
                     <div>
+                        This button will delete the menu you have on file.
+                        Are you sure you want to press it?
+                        <br/>
                         <button type="button" onClick={() => this.props.handleChange('')}>Yeah, I'm sure.</button>
                     </div>
                 );
