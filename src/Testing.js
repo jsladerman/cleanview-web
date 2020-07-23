@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import BarChart from './Components/ManagedLocationPage/DashboardWidgets/BarChart';
-import BinaryPieChart from './Components/ManagedLocationPage/DashboardWidgets/BinaryPieChart';
-import SurveyResponseFrequencyChart from './Components/ManagedLocationPage/DashboardWidgets/SurveyResponseFrequencyChart'
+import BarChart from './Components/ManagedLocationPage/AnalyticsWidgets/BarChart';
+import BinaryPieChart from './Components/ManagedLocationPage/AnalyticsWidgets/BinaryPieChart';
+import SurveyResponseFrequencyChart from './Components/ManagedLocationPage/AnalyticsWidgets/SurveyResponseFrequencyChart'
 
 
 class Testing extends Component {

@@ -15,6 +15,10 @@
 		"SurveyResponsesTable": {
 			"service": "DynamoDB",
 			"providerPlugin": "awscloudformation"
+		},
+		"MenuImages": {
+			"service": "S3",
+			"providerPlugin": "awscloudformation"
 		}
 	},
 	"function": {

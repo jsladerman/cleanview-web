@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Formik, Form, Field} from 'formik';
-import {API} from 'aws-amplify';
+import {API, Storage} from 'aws-amplify';
 
 
 class MenuManager extends Component {
@@ -79,9 +79,22 @@ class MenuManager extends Component {
         
     }
 
+    uploadFile = (e) => {
+        const file = e.target.files[0];
+        const filename = this.state.loc_id + '.pdf'
+        Storage.put( filename, file, {
+            level: 'public',
+            contentDisposition: 'inline; filename="' + filename + '"',
+            contentType: 'application/pdf'
+        })
+        .then(result => console.log(result))
+        .catch(err => console.log(err))
+    }
+
     // Ideal Structure
     // Display what menu link is there right now
 
+    // TODO: Radio buttons for selection
     // Want to use a different menu?
     // Put in link here
     // OR
@@ -97,15 +110,32 @@ class MenuManager extends Component {
                     }}
                 >
                     <Form>
-                    <label>
-                        Put ya website in
-                        <Field type="url" name="url"></Field>
-                    </label>
+                        
+                        <Field as='select' name='choice'>
+                            <option value="none">No menu</option>
+                            <option value="pdf">Uploaded PDF menu</option>
+                            <option value="link">Link to existing menu</option>
+                        </Field>
                     <div>
-                    <button type="submit" style={{marginTop: "8px"}}>Submit</button>
+                        <label>
+                            Put ya website in
+                            <Field type="url" name="url"></Field>
+                        </label>
+                    <div>
+                    <div>
+                        <Field type="file">Submit file</Field>
                     </div>
+                    </div>
+                        <button type="submit" style={{marginTop: "8px"}}>Submit</button>
+                        </div>
                     </Form>
                 </Formik>
+                <br />
+                <br />
+                <input
+              type="file" accept='.pdf'
+              onChange={(evt) => this.uploadFile(evt)}
+          />
             </div>
         )
     }

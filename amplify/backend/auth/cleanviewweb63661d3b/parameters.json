@@ -1,6 +1,6 @@
 {
     "identityPoolName": "cleanviewweb63661d3b_identitypool_63661d3b",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "cleanv63661d3b",
     "userPoolName": "cleanviewweb63661d3b_userpool_63661d3b",
     "autoVerifiedAttributes": [
