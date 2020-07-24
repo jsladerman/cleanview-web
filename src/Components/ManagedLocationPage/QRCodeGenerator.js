@@ -1,17 +1,18 @@
 import React, {Component } from 'react';
 import './css/QRCodeGenerator.css'
 class QRCodeGenerator extends Component {
+  // TODO: GET URL FROM DB, NOT PASSED IN AS PROP
   constructor(props) {
     super(props);
     this.state = {
       name: props.name,
-      data: props.surveyURL,
-      url: "https://api.qrserver.com/v1/create-qr-code/?data=" + props.surveyURL 
+      url: "https://api.qrserver.com/v1/create-qr-code/?data=https://b4fxzcx3f0.execute-api.us-east-1.amazonaws.com/dev/survey/" + this.props.id,
     };
+    console.log(this.state.url)
   }
 
   downloadQRCode = () => {
-    fetch(this.state.url + "&size=500x500")
+    fetch(this.url + "&size=500x500")
     .then((response) => {
       response.blob().then((blob) => {
         let url = window.URL.createObjectURL(blob);

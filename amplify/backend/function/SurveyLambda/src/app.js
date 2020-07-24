@@ -52,7 +52,7 @@ app.get("/survey/:id", function (req, res) {
   const { id } = req.params;
   var params = {
     TableName: tableName,
-    ProjectionExpression: "id, loc_name",
+    ProjectionExpression: "id, loc_name, menu_link",
     Key: { "id": id },
   };
 
@@ -79,6 +79,7 @@ app.get("/survey/:id", function (req, res) {
       let itemData = data.Item
       let name = itemData.loc_name;
       let loc_id = itemData.id
+      let menu_link = itemData.menu_link
       res.send(`<!doctype html>
 <html ⚡>
   <head>
@@ -120,6 +121,7 @@ app.get("/survey/:id", function (req, res) {
         <fieldset>
         <div>
             <input type='hidden' name='loc_id' value='${loc_id}'> </input>
+            <input type='hidden' name='menu_link' value='${menu_link}'> </input>
             <p>How old are you?</p>
             <amp-selector name='age' class='age-selector' layout='container' on='select: AMP.setState({
                 selectedOption: event.targetOption,
@@ -164,6 +166,7 @@ app.get("/survey/:id", function (req, res) {
     }
   });
 });
+
 
 /****************************
  * Example post method *

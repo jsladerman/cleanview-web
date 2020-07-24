@@ -5,21 +5,28 @@ import AnalyticsDashboard from './AnalyticsDashboard'
 import LocationInfo from './LocationInfo'
 import Tab from 'react-bootstrap/Tab'
 import Tabs from 'react-bootstrap/Tabs'
-import {Redirect} from "react-router-dom";
+import {Redirect} from 'react-router-dom';
+import MenuManager from './MenuManager';
+import {API} from 'aws-amplify';
+import Auth from '@aws-amplify/auth';
 
 class ManagedLocationInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
             redirect: null,
-            data: null
+            tab: this.props.match.params.tab,
+            data: this.props.locations
         }
     }
 
     componentDidMount = () => {
-        if (!this.getLocationData()) {
-            console.log("NO MATCH");
-            this.setState({redirect: '/home'})
+        this.setLocationInfo();
+        const tab = this.state.tab;
+
+        if (tab !== 'info' && tab !== 'qr'
+            && tab !== 'analytics' && tab !== 'menu-manager'){
+            this.setTabURL('info')
         }
     }
 
@@ -28,28 +35,78 @@ class ManagedLocationInfo extends Component {
             return <Redirect to={this.state.redirect}/>
         }
         if (!this.state.data) {
-            return null;
+            return <h1>LOADING</h1>;
         }
-        console.log("DATA" + this.state.data);
         return (
-            <div className="managedLocationTab">
-                <Tabs defaultActiveKey='profile' id='uncontrolled-tab-example'>
-                    <Tab eventKey='locationInfo' title='Info'>
-                        <LocationInfo data={this.state.data}/>
+            <div className='managedLocationTab'>
+                <Tabs activeKey={this.state.tab} onSelect={this.setTabURL}>
+                    <Tab eventKey='info' title='Info'>
+                        <LocationInfo
+                            data={this.state.data}/>
                     </Tab>
-                    <Tab eventKey='qrCode' title='QR Code'>
-                        <QRCodeGenerator/>
+                    <Tab eventKey='qr' title='QR Code'>
+                        <QRCodeGenerator
+                            name={this.state.data.loc_name}
+                            id={this.props.id}/>
                     </Tab>
-                    <Tab eventKey='analyticsDashboard' title='Analytics'>
-                        <AnalyticsDashboard/>
+                    <Tab eventKey='analytics' title='Analytics'>
+                        <AnalyticsDashboard
+                            id={this.props.id}/>
+                    </Tab>
+                    <Tab eventKey='menu-manager' title='Menu Management'>
+                        <MenuManager
+                            locationData={this.state.data}
+                            id={this.props.id}/>
                     </Tab>
                 </Tabs>
             </div>
         );
     }
 
-    getLocationData = () => {
-        const locations = this.props.locations;
+    setLocationInfo = () => {
+        if (this.state.data.length) {
+            if (!this.findLocationFromArr(this.state.data))
+                this.setState({redirect: '/home'})
+        } else
+            this.pullData();
+    }
+
+    pullData = () => {
+        Auth.currentUserInfo()
+            .then(user => {
+                if (user == null)
+                    this.setState({redirect: '/login'});
+                else
+                    this.getLocations(user.username);
+            })
+            .catch(error => {
+                console.log('Error: ' + error)
+            });
+    };
+
+    getLocations = (managerName) => {
+        const apiName = 'manageLocationApi'; // replace this with your api name.
+        const path = '/manageLocation'; //replace this with the path you have configured on your API
+        const myParams = {
+            headers: {},
+            response: true,
+            queryStringParameters: {
+                manager: managerName
+            },
+        };
+
+        API.get(apiName, path, myParams)
+            .then(response => {
+                this.setState({data: response['data']})
+                if (!this.findLocationFromArr(response['data']))
+                    this.setState({redirect: '/home'})
+            })
+            .catch(error => {
+                console.log('Error: ' + error)
+            })
+    };
+
+    findLocationFromArr = (locations) => {
         for (const index in locations) {
             if (locations[index]['id'] === this.props.id) {
                 this.setState({data: locations[index]});
@@ -57,6 +114,13 @@ class ManagedLocationInfo extends Component {
             }
         }
         return false;
+    }
+
+    setTabURL = (tab) => {
+        let newURL = this.props.location.pathname;
+        newURL = newURL.split('/').slice(0, -1).join('/') + '/' + tab;
+        this.props.history.replace(newURL);
+        this.setState({tab: tab});
     }
 
 }

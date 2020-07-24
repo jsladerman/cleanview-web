@@ -16,7 +16,7 @@ class Login extends Component {
 
     render() {
         if (this.state.goToDashboard) {
-            return <Redirect to='/home'/>;
+            return <Redirect push to='/home'/>;
         }
         console.log("Signed in: " + this.state.signedIn);
         return (

@@ -78,90 +78,26 @@ app.get(path, function(req, res){
   });
 });
 
-app.get(path + hashKeyPath, function (req, res) {
-  var condition = {};
-  condition[partitionKeyName] = {
-    ComparisonOperator: "EQ",
-  };
-
-  if (userIdPresent && req.apiGateway) {
-    condition[partitionKeyName]["AttributeValueList"] = [
-      req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH,
-    ];
-  } else {
-    try {
-      condition[partitionKeyName]["AttributeValueList"] = [
-        convertUrlType(req.params[partitionKeyName], partitionKeyType),
-      ];
-    } catch (err) {
-      res.statusCode = 500;
-      res.json({ error: "Wrong column type " + err });
-    }
-  }
-
-  let queryParams = {
-    TableName: tableName,
-    KeyConditions: condition,
-  };
-
-  dynamodb.query(queryParams, (err, data) => {
-    if (err) {
-      res.statusCode = 500;
-      res.json({ error: "Could not load items: " + err });
-    } else {
-      res.json(data.Items);
-    }
-  });
-});
-
 /*****************************************
  * HTTP Get method for get single object *
  *****************************************/
 
-app.get(path + "/object" + hashKeyPath + sortKeyPath, function (req, res) {
-  var params = {};
-  if (userIdPresent && req.apiGateway) {
-    params[partitionKeyName] =
-      req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
-  } else {
-    params[partitionKeyName] = req.params[partitionKeyName];
-    try {
-      params[partitionKeyName] = convertUrlType(
-        req.params[partitionKeyName],
-        partitionKeyType
-      );
-    } catch (err) {
-      res.statusCode = 500;
-      res.json({ error: "Wrong column type " + err });
-    }
-  }
-  if (hasSortKey) {
-    try {
-      params[sortKeyName] = convertUrlType(
-        req.params[sortKeyName],
-        sortKeyType
-      );
-    } catch (err) {
-      res.statusCode = 500;
-      res.json({ error: "Wrong column type " + err });
-    }
-  }
-
+app.get(path + "/object", function (req, res) {
   let getItemParams = {
     TableName: tableName,
-    Key: params,
+    Key: {id: req.query.id},
+    ProjectionExpression: 'id, menu_link',
   };
 
   dynamodb.get(getItemParams, (err, data) => {
     if (err) {
       res.statusCode = 500;
-      res.json({ error: "Could not load items: " + err.message });
+      res.json({ 
+        error: req.query.id + " Could not load items: " + err.message
+       });
+      
     } else {
-      if (data.Item) {
-        res.json(data.Item);
-      } else {
-        res.json(data);
-      }
+      res.json({ body: data.Item })
     }
   });
 });
@@ -262,6 +198,35 @@ app.delete(path + "/object" + hashKeyPath + sortKeyPath, function (req, res) {
 });
 app.listen(3000, function () {
   console.log("App started");
+});
+
+// Patch Request 
+
+app.patch(path, function(req, res) {
+  if (userIdPresent) {
+    req.body["userId"] =
+      req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
+  }
+  var params = {
+    TableName: tableName,
+    Key: {
+      "id": req.body.loc_id
+    },
+    UpdateExpression: "set menu_link = :url",
+    ExpressionAttributeValues: {
+      ":url": req.body.menu_link
+    },
+    ReturnValues:"UPDATED_NEW"
+  }
+  dynamodb.update(params, function(err, data) {
+    if (err) {
+      res.statusCode = 500;
+      res.json({ error: err, url: req.url, body: req.body, url: req.body.menu_link});
+    } else {
+      res.json({ success: "patch call succeed!", url: req.url, data: data });
+    }
+  });
+
 });
 
 // Export the app object. When executing the application local this does nothing. However,

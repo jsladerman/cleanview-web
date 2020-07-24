@@ -43,7 +43,7 @@ class Dashboard extends Component {
 
     render() {
         if (this.state.redirect) {
-            return <Redirect to={this.state.redirect}/>
+            return <Redirect push to={this.state.redirect}/>
         }
         const path = this.props.match.path;
         return (
@@ -56,11 +56,13 @@ class Dashboard extends Component {
                     children={
                         <div className={styles.sidebarChildren}>
                             <Switch>
-                                <Route path={path + '/locations/:id'} render={(props) =>
+                                <Route path={path + '/locations/:id/:tab'} render={(props) =>
                                     <ManagedLocationInfo
                                         {...props}
                                         id={props.match.params.id}
-                                        locations={this.state.locationData}/>}
+                                        tab={props.match.params.tab}
+                                        locations={this.state.locationData}
+                                    />}
                                 />
                                 <Route render={(props) =>
                                     <LocationsTable
