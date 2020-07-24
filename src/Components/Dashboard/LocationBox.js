@@ -19,7 +19,7 @@ class LocationBox extends Component {
 
     render() {
         if (this.state.redirect) {
-            return <Redirect to={this.state.redirect}/>
+            return <Redirect push to={this.state.redirect}/>
         }
         return (
             <div className={styles.outerCard}>
@@ -45,7 +45,7 @@ class LocationBox extends Component {
 
     openLocation = () => {
         this.setState({
-            redirect:  '/home/locations/' + this.props.id
+            redirect:  '/home/locations/' + this.props.id + '/info'
         })
     }
 
