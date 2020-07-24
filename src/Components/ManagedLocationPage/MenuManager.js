@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Formik, Form, Field} from 'formik';
+import {Formik, Form, Field, ErrorMessage} from 'formik';
 import {API, Storage} from 'aws-amplify';
 
 
@@ -169,11 +169,21 @@ class URLMenuUpload extends Component {
                 <Formik onSubmit={(values) => this.props.handleChange(values.url)}
                 initialValues = {{
                     url: this.props.menu_link
+                }}
+                validate={(values) => {
+                    const errors = {}
+                    if(!values.url) {
+                        errors.url = 'Required'
+                    } else if (!values.url.startsWith("https://")) {
+                        errors.url = 'The link must start with "https://".'
+                    }
+                    return errors
                 }}>
                     <Form>
                         <label>
                             Put ya website in: {" "}
                             <Field type="url" name="url"></Field>
+                            <ErrorMessage name="url" component="div"/>
                         </label>
                         <div>
                             <button type='submit'>Save</button>
