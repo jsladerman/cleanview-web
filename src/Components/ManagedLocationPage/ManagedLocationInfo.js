@@ -39,13 +39,13 @@ class ManagedLocationInfo extends Component {
                         <LocationInfo data={this.state.data}/>
                     </Tab>
                     <Tab eventKey='qrCode' title='QR Code'>
-                        <QRCodeGenerator name="billybobs" id="4323841-865-8664-ce7a-f32b7b13dcbd"/>
+                        <QRCodeGenerator name="billybobs" locationData={this.state.data} id={this.props.id}/>
                     </Tab>
                     <Tab eventKey='analyticsDashboard' title='Analytics'>
-                        <AnalyticsDashboard/>
+                        <AnalyticsDashboard id={this.props.id}/>
                     </Tab>
                     <Tab eventKey='menuManager' title="Menu Management">
-                        <MenuManager />
+                        <MenuManager locationData={this.state.data} id={this.props.id} />
                     </Tab>
                 </Tabs>
             </div>

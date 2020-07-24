@@ -7,7 +7,6 @@ class MenuManager extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loc_id: '4323841-865-8664-ce7a-f32b7b13dcbd',
             menu_link: '',
             switchVal: 'pdf'
         }
@@ -49,7 +48,7 @@ class MenuManager extends Component {
             headers: {},
             response: true,
             queryStringParameters: {
-                id: this.state.loc_id
+                id: this.props.id
             }
         }
 
@@ -78,7 +77,7 @@ class MenuManager extends Component {
             response: true,
             body: {
                 menu_link: urlVal,
-                loc_id: this.state.loc_id
+                loc_id: this.props.id
             },
         }
 
@@ -117,7 +116,7 @@ class MenuManager extends Component {
             <Formik validate = { (values) => this.updateSwitchVal(values) }
                     initialValues = {{
                         choice: this.state.switchVal
-                    }} 
+                    }}
                     >
                 <Form>
                     <Field as='select' name='choice' >
@@ -130,7 +129,7 @@ class MenuManager extends Component {
             <br />
             <br />
             <InputSwitch    value= {this.state.switchVal}
-                            loc_id= {this.state.loc_id}
+                            loc_id= {this.props.id}
                             handleChange={this.updateMenuURL}
                             menu_link = {this.props.menu_link}
             />
