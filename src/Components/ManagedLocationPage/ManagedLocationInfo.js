@@ -39,7 +39,7 @@ class ManagedLocationInfo extends Component {
                         <LocationInfo data={this.state.data}/>
                     </Tab>
                     <Tab eventKey='qrCode' title='QR Code'>
-                        <QRCodeGenerator/>
+                        <QRCodeGenerator name="billybobs" id="4323841-865-8664-ce7a-f32b7b13dcbd"/>
                     </Tab>
                     <Tab eventKey='analyticsDashboard' title='Analytics'>
                         <AnalyticsDashboard/>

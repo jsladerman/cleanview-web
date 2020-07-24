@@ -174,7 +174,6 @@ app.put(path, function(req, res) {
 
 app.post(path, async function(req, res) {
   res.setHeader('Access-Control-Allow-Origin', req.header('origin') );
-  res.setHeader('AMP-Redirect-To', 'https://example.com/forms/thank-you')
   res.setHeader('Access-Control-Expose-Headers', 'AMP-Redirect-To')
   if (userIdPresent) {
     req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
@@ -199,6 +198,10 @@ app.post(path, async function(req, res) {
     Item: formParams
   }
 
+  let menu_link = formParams.menu_link
+  res.setHeader('AMP-Redirect-To', menu_link)
+
+
   dynamodb.put(putItemParams, (err, data) => {
     if(err) {
       res.statusCode = 500;
@@ -209,6 +212,7 @@ app.post(path, async function(req, res) {
     }
   });
 });
+
 
 /**************************************
 * HTTP remove method to delete object *
