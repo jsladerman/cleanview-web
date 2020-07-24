@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 import Amplify from 'aws-amplify';
 import awsconfig from './aws-exports';
+import Testing from './Testing';
 import {BrowserRouter} from "react-router-dom";
 
 
