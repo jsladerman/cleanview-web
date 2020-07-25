@@ -3,20 +3,24 @@ import styles from './css/Login.css';
 import logo from '../images/CleanView-Logo-Grey-text.png'
 import {Redirect} from 'react-router-dom';
 import {Auth} from 'aws-amplify';
-import {AmplifyAuthenticator, AmplifySignIn,} from '@aws-amplify/ui-react';
+import {AmplifyAuthenticator, AmplifySignIn, AmplifySignUp} from '@aws-amplify/ui-react';
 
 class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            signedIn: false,
-            goToDashboard: false
+            redirect: null,
+            signedIn: false
         }
     }
 
+    componentDidMount() {
+        this.onSignInSubmit();
+    }
+
     render() {
-        if (this.state.goToDashboard) {
-            return <Redirect push to='/home'/>;
+        if (this.state.redirect) {
+            return <Redirect push to={this.state.redirect}/>
         }
         console.log("Signed in: " + this.state.signedIn);
         return (
@@ -28,9 +32,8 @@ class Login extends Component {
                     <div className="sign-in">
                         <AmplifyAuthenticator>
                             <AmplifySignIn headerText="Sign in to your account"
-                                           slot="sign-in" onFormSubmit={this.onSignInSubmit}/>
+                                           slot="sign-in" handleAuthStateChange={this.onSignInSubmit}/>
                             <button onClick={this.signOut}>Sign out</button>
-                            <button onClick={this.goToDashboard}>Dashboard</button>
                         </AmplifyAuthenticator>
                     </div>
                 </div>
@@ -50,23 +53,17 @@ class Login extends Component {
         }
     };
 
-    onSignInSubmit = () => {
+    onSignInSubmit = (resp) => {
+        console.log(JSON.stringify(resp))
         console.log("onSigninSubmit");
-        setTimeout(() =>
-                Auth.currentAuthenticatedUser({
-                    bypassCache: true
-                }).then(user => {
-                    console.log(user);
-                    this.setState({signedIn: true, showModal: false})
-                })
-                    .catch(err => console.log("Error: " + err)),
-            1500
-        );
+        Auth.currentAuthenticatedUser({
+            bypassCache: true
+        }).then(user => {
+            console.log(user);
+            this.setState({signedIn: true, redirect: '/home/locations'})
+        })
+            .catch(err => console.log("Error: " + err))
     };
-
-    goToDashboard = () => {
-        this.setState({goToDashboard: true});
-    }
 }
 
 export default Login;
