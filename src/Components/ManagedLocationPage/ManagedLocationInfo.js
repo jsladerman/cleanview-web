@@ -55,7 +55,6 @@ class ManagedLocationInfo extends Component {
                     </Tab>
                     <Tab eventKey='menu-manager' title='Menu Management'>
                         <MenuManager
-                            locationData={this.state.data}
                             id={this.props.id}/>
                     </Tab>
                 </Tabs>
