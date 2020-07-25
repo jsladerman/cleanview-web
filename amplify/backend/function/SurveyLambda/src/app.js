@@ -50,10 +50,16 @@ app.get("/survey", function (req, res) {
 app.get("/survey/:id", function (req, res) {
   // TODO : sanitize input
   const { id } = req.params;
+  // the original location id, by UUID standards, is the first 36 characters of the total_id (tot_id)
+  // loc_id + '99strl99strl' + subloc_id = total_id
+  const tot_id = id
+  const divIdx = tot_id.indexOf('99strl99strl')
+  const loc_id = tot_id.substring(0, divIdx)
+
   var params = {
     TableName: tableName,
-    ProjectionExpression: "id, loc_name, menu_link",
-    Key: { "id": id },
+    ProjectionExpression: "loc_name, menu_link",
+    Key: { "id": loc_id },
   };
 
   dynamodb.get(params, function (err, data) {
@@ -65,8 +71,10 @@ app.get("/survey/:id", function (req, res) {
           <body>
               <h1>Sorry, we've hit a snag.</h1>
               <h2>Please re-scan the QR code.</h2>
+              <p>${tot_id}</p>
+              <p>${loc_id}</p>
           </body>`);
-    } else if (!data.Item.loc_name) {
+    } else if (!data.Item || !data.Item.loc_name) {
       res.send(`<!DOCTYPE html>
           <head>
               <title>Re-scan QR code</title>
@@ -74,11 +82,13 @@ app.get("/survey/:id", function (req, res) {
           <body>
               <h1>Sorry, we've hit a snag.</h1>
               <h2>Please re-scan the QR code.</h2>
+              <p>${tot_id}</p>
+              <p>${loc_id}</p>
           </body>`);
     }else {
       let itemData = data.Item
       let name = itemData.loc_name;
-      let loc_id = itemData.id
+      let total_id = tot_id
       let menu_link = itemData.menu_link
       res.send(`<!doctype html>
 <html ⚡>
@@ -120,7 +130,7 @@ app.get("/survey/:id", function (req, res) {
     <form class='user-survey' method='POST' action-xhr=https://b4fxzcx3f0.execute-api.us-east-1.amazonaws.com/dev/responses target="_top"> 
         <fieldset>
         <div>
-            <input type='hidden' name='loc_id' value='${loc_id}'> </input>
+            <input type='hidden' name='total_id' value='${total_id}'> </input>
             <input type='hidden' name='menu_link' value='${menu_link}'> </input>
             <p>How old are you?</p>
             <amp-selector name='age' class='age-selector' layout='container' on='select: AMP.setState({
