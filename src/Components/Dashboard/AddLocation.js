@@ -27,9 +27,7 @@ class AddLocation extends Component {
                 addr_city: values.addr.city,
                 addr_state: values.addr.state,
                 loc_type: values.type,
-                survey_link: "google.com",
                 subscription_status: "free_trial",
-                subscription_end_date: "09/01/2020",
                 cleaning_practices: {
                     employee_masks: 1,
                     social_distancing: 1,
