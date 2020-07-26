@@ -91,87 +91,278 @@ app.get("/survey/:id", function (req, res) {
       let total_id = tot_id
       let menu_link = itemData.menu_link
       res.send(`<!doctype html>
-<html ⚡>
-  <head>
-    <meta charset='utf-8'>
-    <script async src='https://cdn.ampproject.org/v0.js'></script>
-    <title>CleanView</title>
-    <link rel='canonical' href='https://amp.dev/documentation/guides-and-tutorials/start/create/basic_markup/'>
-    <link href='https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;700&display=swap' rel='stylesheet'>
-    <link href='https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,500;0,600;1,600&display=swap' rel='stylesheet'>
-    <meta name='viewport' content='width=device-width,minimum-scale=1,initial-scale=1'>
-    <script type='application/ld+json'>
-      {
-        '@context': 'http://schema.org',
-        '@type': 'NewsArticle',
-        'headline': 'Open-source framework for publishing content',
-        'datePublished': '2015-10-07T12:02:41Z',
-        'image': [
-          'logo.jpg'
-        ]
-      }
-    </script>
-    <script async custom-element='amp-form' src='https://cdn.ampproject.org/v0/amp-form-0.1.js'></script>
-    <script async custom-template='amp-mustache' src='https://cdn.ampproject.org/v0/amp-mustache-0.2.js'></script>
-    <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
-    <script async custom-element='amp-selector' src='https://cdn.ampproject.org/v0/amp-selector-0.1.js'></script>
-    <script type='text/javascript'>
-            function sayHello() {
-               alert('Hello World')
+      <html ⚡>
+
+      <head>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+      
+        <style>
+          html {
+            background-color: #E5E5E5;
+            font-family: Roboto;
+            height: 100%;
+          }
+      
+          h1 {
+            font-size: 24px;
+            background-color: #191A26;
+            margin: 0px 0px 0px 0px;
+            padding: 50px 20px 10px 20px;
+            color: white;
+            font-weight: normal;
+          }
+      
+          label {
+            font-size: 16px;
+          }
+      
+          fieldset {
+            border-style: none;
+            padding-top: 5px;
+            padding-left: 20px;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+          }
+      
+          p {
+            font-size: 16px;
+            margin: 15px 0px 5px 0px;
+          }
+      
+          .selection-button {
+            /* Button design */
+            background-color: #ffffff;
+            border-radius: 10px;
+            display: inline-block;
+            cursor: pointer;
+            width: 55px;
+      
+            /* Text properties */
+            color: #666666;
+            font-size: 14px;
+            padding: 8px 10px;
+            text-align: center;
+      
+            /* Buttons which wrap to the next line will have spacing between top line */
+            margin: 0px 0px 10px 0px;
+          }
+      
+          .selection-button:hover {
+            background: linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
+            background-color: #f6f6f6;
+          }
+      
+          amp-selector [option][selected] {
+            outline: 0px;
+            background: #23C9AD;
+            font-weight: normal;
+            color: white;
+            position: relative;
+          }
+      
+          input[type="submit"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+
+            /* Button design */
+            border: none;
+            background-color: #23C9AD;
+            border-radius: 10px;
+            display: inline-block;
+            cursor: pointer;
+            width: 200px;
+      
+            /* Text properties */
+            color: #ffffff;
+            font-size: 16px;
+            padding: 8px 10px;
+            text-align: center;
+      
+            /* Buttons which wrap to the next line will have spacing between top line */
+            margin: 0px 0px 10px 0px;
+          }
+      
+          input[type="submit"]:hover {
+            background-color: #119c84;
+          }
+      
+          input[type="submit"]:active {
+            outline: 0px;
+            background: #119c84;
+            font-weight: normal;
+            color: #ffffff;
+          }
+      
+          #submit-button-div {
+            position: relative;
+            margin-bottom: 10%;
+            padding-top: 20px;
+            text-align: center;
+          }
+        </style>
+
+        <meta charset='utf-8'>
+        <script async src='https://cdn.ampproject.org/v0.js'></script>
+        <title>CleanView</title>
+        <link rel='canonical' href='https://amp.dev/documentation/guides-and-tutorials/start/create/basic_markup/'>
+        <link href='https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;700&display=swap' rel='stylesheet'>
+        <link href='https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,500;0,600;1,600&display=swap'
+          rel='stylesheet'>
+        <meta name='viewport' content='width=device-width,minimum-scale=1,initial-scale=1'>
+        <script type='application/ld+json'>
+            {
+              '@context': 'http://schema.org',
+              '@type': 'NewsArticle',
+              'headline': 'Open-source framework for publishing content',
+              'datePublished': '2015-10-07T12:02:41Z',
+              'image': [
+                'logo.jpg'
+              ]
             }
-
-    </script>
-    <style amp-custom>
-        
-    </style>
-</head>
-  <body>
-    <h1>Help <strong>${name}</strong> learn about their COVID-19 response:</h1>
-    <form class='user-survey' method='POST' action-xhr=https://b4fxzcx3f0.execute-api.us-east-1.amazonaws.com/dev/responses target="_top"> 
-        <fieldset>
-        <div>
-            <input type='hidden' name='total_id' value='${total_id}'> </input>
-            <input type='hidden' name='menu_link' value='${menu_link}'> </input>
-            <p>How old are you?</p>
-            <amp-selector name='age' class='age-selector' layout='container' on='select: AMP.setState({
-                selectedOption: event.targetOption,
-                allSelectedOptions: event.selectedOptions
-              })'>
+          </script>
+        <script async custom-element='amp-form' src='https://cdn.ampproject.org/v0/amp-form-0.1.js'></script>
+        <script async custom-template='amp-mustache' src='https://cdn.ampproject.org/v0/amp-mustache-0.2.js'></script>
+        <style amp-boilerplate>
+          body {
+            -webkit-animation: -amp-start 8s steps(1, end) 0s 1 normal both;
+            -moz-animation: -amp-start 8s steps(1, end) 0s 1 normal both;
+            -ms-animation: -amp-start 8s steps(1, end) 0s 1 normal both;
+            animation: -amp-start 8s steps(1, end) 0s 1 normal both
+          }
+      
+          @-webkit-keyframes -amp-start {
+            from {
+              visibility: hidden
+            }
+      
+            to {
+              visibility: visible
+            }
+          }
+      
+          @-moz-keyframes -amp-start {
+            from {
+              visibility: hidden
+            }
+      
+            to {
+              visibility: visible
+            }
+          }
+      
+          @-ms-keyframes -amp-start {
+            from {
+              visibility: hidden
+            }
+      
+            to {
+              visibility: visible
+            }
+          }
+      
+          @-o-keyframes -amp-start {
+            from {
+              visibility: hidden
+            }
+      
+            to {
+              visibility: visible
+            }
+          }
+      
+          @keyframes -amp-start {
+            from {
+              visibility: hidden
+            }
+      
+            to {
+              visibility: visible
+            }
+          }
+        </style><noscript>
+          <style amp-boilerplate>
+            body {
+              -webkit-animation: none;
+              -moz-animation: none;
+              -ms-animation: none;
+              animation: none
+            }
+          </style>
+        </noscript>
+        <script async custom-element='amp-selector' src='https://cdn.ampproject.org/v0/amp-selector-0.1.js'></script>
+        <script type='text/javascript'>
+          function sayHello() {
+            alert('Hello World')
+          }
+      
+        </script>
+        <style amp-custom>
+      
+        </style>
+      </head>
+      
+      <body>
+        <h1>Help <strong>${name}</strong> learn about their COVID-19 response:</h1>
+        <form class='user-survey' method='POST'
+          action-xhr=https://b4fxzcx3f0.execute-api.us-east-1.amazonaws.com/dev/responses target="_top">
+          <fieldset>
+            <div>
+              <input type='hidden' name='total_id' value='${total_id}'> </input>
+              <input type='hidden' name='menu_link' value='${menu_link}'> </input>
+              <p>How old are you?</p>
+              <amp-selector name='age' class='age-selector' layout='container' on='select: AMP.setState({
+                      selectedOption: event.targetOption,
+                      allSelectedOptions: event.selectedOptions
+                    })'>
                 <span class='selection-button' option='1'>18 to 25</span>
-                <span type='selection-button' option='2'>26 to 35</span>
-                <span type='selection-button' option='3'>36 to 45</span>
-                <span type='selection-button' option='4'>46 to 55</span>
-                <span type='selection-button' option='5'>55 to 65</span>
-                <span type='selection-button' option='6'>65+</span>
-            </amp-selector>
-        </div>
-        <div>
-            <p>Are the employees wearing masks?</p>
-            <amp-selector class='mask-selector' layout='container' name='employee-masks'>
+                <span class='selection-button' option='2'>26 to 35</span>
+                <span class='selection-button' option='3'>36 to 45</span>
+                <span class='selection-button' option='4'>46 to 55</span>
+                <span class='selection-button' option='5'>55 to 65</span>
+                <span class='selection-button' option='6'>65+</span>
+              </amp-selector>
+            </div>
+            <div>
+              <p>Are the employees wearing masks?</p>
+              <amp-selector class='mask-selector' layout='container' name='employee-masks'>
                 <span class='selection-button' option='y'>Yes</span>
                 <span class='selection-button' option='n'>No</span>
-            </amp-selector>
-        </div>
+              </amp-selector>
+            </div>
+      
+            <div>
+              <p>Is your party at least 6 feet away from other parties?</p>
+              <amp-selector class='six-feet-selector' layout='container' name='six-feet'>
+                <span class='selection-button' option='y'>Yes</span>
+                <span class='selection-button' option='n'>No</span>
+              </amp-selector>
+            </div>
 
-        <div>
-            <p>Have you dined here in the past two weeks?</p>
-            <amp-selector class='mask-selector' layout='container' name='recent-diner'>
+            <div>
+              <p>Do you live within 15 miles of the restaurant?</p>
+              <amp-selector class='tourist-selector' layout='container' name='tourist-diner'>
                 <span class='selection-button' option='y'>Yes</span>
                 <span class='selection-button' option='n'>No</span>
-            </amp-selector>
-        </div>
-          
-        <div>
-            <p>How safe do you feel here?</p>
-            <label>Unsafe</label>
-            <input type='range' id='slider' name='safety-rating' min='1' max='5' step='.5' >
-            <label>Safe</label>
-        </div>
-        <input type='submit' value='Submit and go to menu'></input>
-        </fieldset>
-    </form>
-  </body>
-</html>
+              </amp-selector>
+            </div>
+      
+            <div>
+              <p>How satisfied are you with ${name}'s overall COVID-19 response?</p>
+              <label>Poor</label>
+              <input type='range' id='slider' name='response-rating' min='1' max='5' step='.5'>
+              <label>Excellent</label>
+            </div>
+      
+            <div id='submit-button-div'>
+              <input type='submit' value='Go to Menu'></input>
+            </div>
+      
+          </fieldset>
+        </form>
+      </body>
+      
+      </html>
     `);
     }
   });
