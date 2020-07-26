@@ -107,7 +107,7 @@ app.get("/survey/:id", function (req, res) {
             font-size: 24px;
             background-color: #191A26;
             margin: 0px 0px 0px 0px;
-            padding: 50px 20px 10px 20px;
+            padding: 20px 20px 20px 20px;
             color: white;
             font-weight: normal;
           }
