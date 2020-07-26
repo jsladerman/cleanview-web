@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import styles from './css/LoginBox.module.css'
+import styles from './css/AuthBoxes.module.css'
 import {Redirect} from "react-router-dom";
 import Auth from "@aws-amplify/auth"
 import Form from 'react-bootstrap/Form'
@@ -34,6 +34,10 @@ class LoginBox extends Component {
                     </Form.Group>
                     <Form.Group controlId="password">
                         <Form.Label className={styles.formLabel}>Password</Form.Label>
+                        <Form.Label style={{float:'right', marginTop:'1.5px', cursor: 'pointer'}}
+                                    className={styles.linkText}
+                                    onClick={() => this.props.changeFunc("forgotPassword")}>Forgot password?
+                        </Form.Label>
                         <Form.Control
                             className={styles.formTextBox}
                             ref={val => this.passwordVal = val}
@@ -46,7 +50,7 @@ class LoginBox extends Component {
                 </Button><br/>
                 <div>
                     Don't have an account yet? {' '}
-                    <div className={styles.signUpButton}
+                    <div className={styles.linkText}
                          onClick={() => this.props.changeFunc("signup")}>Sign up
                     </div>
                 </div>

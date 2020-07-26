@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import styles from './css/VerifyAccountBox.module.css'
+import styles from './css/AuthBoxes.module.css'
 import {Redirect} from "react-router-dom";
 import Auth from "@aws-amplify/auth"
 import Form from 'react-bootstrap/Form'
@@ -29,7 +29,7 @@ class VerifyAccountBox extends Component {
                         <Form.Label className={styles.formLabel}>Verification Code</Form.Label>
                         <Form.Control
                             className={styles.formTextBox}
-                            ref={val => this.verificationCode = val}
+                            ref={val => this.verificationCodeVal = val}
                             name="verificationCode" type="text"/>
                     </Form.Group>
                 </Form>
@@ -46,7 +46,7 @@ class VerifyAccountBox extends Component {
     }
 
     verifyAccount = () => {
-        Auth.confirmSignUp(this.props.email, this.verificationCode.value)
+        Auth.confirmSignUp(this.props.email, this.verificationCodeVal.value)
             .then(() => this.props.changeFunc("login"))
             .catch((error) => this.setState({errorMessage: error.message}))
     }

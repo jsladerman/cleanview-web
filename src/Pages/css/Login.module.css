@@ -1,14 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
 .page {
     width: 100%;
     height: 100%;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 .logoSide {
     position: absolute;
     left: 0;
-    /*background: red;*/
     width: 50%;
     height: 100%;
     display: flex;
@@ -42,7 +41,4 @@
     font-weight: 100;
     font-size: 20px;
     margin-bottom: 60px;
-    /*transform: translate(50%);*/
-    /*width: 60%;*/
-    /*margin-bottom: 75px;*/
 }

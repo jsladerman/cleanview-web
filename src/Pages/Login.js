@@ -5,6 +5,7 @@ import Auth from "@aws-amplify/auth"
 import LoginBox from "../Components/Login/LoginBox";
 import SignUpBox from "../Components/Login/SignUpBox";
 import ForgotPasswordBox from "../Components/Login/ForgotPasswordBox";
+import ForgotPasswordResetBox from "../Components/Login/ForgotPasswordResetBox";
 import VerifyAccountBox from "../Components/Login/VerifyAccountBox";
 import {Redirect} from 'react-router-dom';
 import Button from 'react-bootstrap/Button'
@@ -60,7 +61,13 @@ class Login extends Component {
                     changeFunc={this.changeAuthBox}
                     setEmailFunc={this.setEmail}/>
             case 'forgotPassword':
-                return <ForgotPasswordBox changeFunc={this.changeAuthBox}/>
+                return <ForgotPasswordBox
+                    changeFunc={this.changeAuthBox}
+                    setEmailFunc={this.setEmail}/>
+            case 'forgotPasswordReset':
+                return <ForgotPasswordResetBox
+                    changeFunc={this.changeAuthBox}
+                    email={this.state.userEmail}/>
             case 'verifyAccount':
                 return <VerifyAccountBox
                     changeFunc={this.changeAuthBox}
@@ -80,7 +87,7 @@ class Login extends Component {
 }
 
 const learnMoreBtn = {
-    backgroundColor:'#191A26',
+    backgroundColor: '#191A26',
     boxShadow: '0px 4px 11px -2px rgba(0,0,0,0.55)',
     fontWeight: 'bold',
     fontSize: '20px',

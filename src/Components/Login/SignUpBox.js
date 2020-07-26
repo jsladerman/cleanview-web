@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import styles from './css/SignUpBox.module.css'
+import styles from './css/AuthBoxes.module.css'
 import {Redirect} from "react-router-dom";
 import Auth from "@aws-amplify/auth"
 import Form from 'react-bootstrap/Form'
@@ -86,14 +86,12 @@ class SignUpBox extends Component {
 
     signUp = () => {
         if (this.verifyCorrectFormatting()){
+            this.props.setEmailFunc(this.emailVal.value);
             Auth.signUp({
                 username: this.emailVal.value,
                 password: this.passwordVal.value,
                 attributes: {email: this.emailVal.value}})
-                .then((res) => {
-                    console.log(JSON.stringify(res.user));
-                    console.log(res.userConfirmed);
-                    console.log(res.userSub);
+                .then(() => {
                     this.props.changeFunc("verifyAccount")
                     this.props.setEmailFunc(this.emailVal.value)
                 })

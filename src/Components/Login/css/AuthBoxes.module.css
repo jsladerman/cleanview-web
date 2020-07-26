@@ -10,18 +10,22 @@
 
 .headerText {
     text-align: center;
-    font-size: 30px;
+    font-size: 34px;
     font-weight: bold;
 }
 
 .formLabel {
     color: white;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 .formTextBox {
     border-width: 2px;
     height: 45px;
+}
+
+.formTextBox:focus {
+    /*background: #61dafb;*/
 }
 
 .formCheckBox {
@@ -30,23 +34,28 @@
     height: 16px;
     width: auto;
     float: left;
-    bottom: 40px;
+    bottom: 20px;
 }
 
 .checkBoxLabel {
     color: white;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
     font-size: 14px;
     margin-left: 22px;
-}
-
-.formTextBox:focus {
-    /*background: #61dafb;*/
 }
 
 .linkText {
     display: inline;
     color: white;
+    font-family: 'Roboto', sans-serif;
     text-decoration: underline;
     cursor: pointer;
+}
+
+.forgotPasswordMessage {
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    font-size: 20px;
 }
