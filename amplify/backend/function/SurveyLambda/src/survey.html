@@ -1,3 +1,35 @@
+<!DOCTYPE html>
+
+<head>
+  <title>Re-scan QR code</title>
+</head>
+
+<body>
+  <h1>Sorry, we've hit a snag.</h1>
+  <h2>Please re-scan the QR code.</h2>
+  <p>${tot_id}</p>
+  <p>${loc_id}</p>
+</body>`);
+} else if (!data.Item || !data.Item.loc_name) {
+res.send(`
+<!DOCTYPE html>
+
+<head>
+  <title>Re-scan QR code</title>
+</head>
+
+<body>
+  <h1>Sorry, we've hit a snag.</h1>
+  <h2>Please re-scan the QR code.</h2>
+  <p>${tot_id}</p>
+  <p>${loc_id}</p>
+</body>`);
+}else {
+let itemData = data.Item
+let name = itemData.loc_name;
+let total_id = tot_id
+let menu_link = itemData.menu_link
+res.send(`
 <!doctype html>
 <html ⚡>
 
@@ -15,7 +47,7 @@
       font-size: 24px;
       background-color: #191A26;
       margin: 0px 0px 0px 0px;
-      padding: 50px 20px 10px 20px;
+      padding: 20px 20px 20px 20px;
       color: white;
       font-weight: normal;
     }
@@ -216,7 +248,7 @@
     action-xhr=https://b4fxzcx3f0.execute-api.us-east-1.amazonaws.com/dev/responses target="_top">
     <fieldset>
       <div>
-        <input type='hidden' name='tot_id' value='${tot_id}'> </input>
+        <input type='hidden' name='total_id' value='${total_id}'> </input>
         <input type='hidden' name='menu_link' value='${menu_link}'> </input>
         <p>How old are you?</p>
         <amp-selector name='age' class='age-selector' layout='container' on='select: AMP.setState({
