@@ -62,7 +62,7 @@ const convertUrlType = (param, type) => {
 app.get(path, function(req, res){
   const queryParams = {
     TableName: tableName,
-    /*ProjectionExpression: "id, loc_name, manager, is_confirmed, subscription_status, subscription_end_date, employee_masks, social_distancing, dining_in, loc_type, addr_line1, addr_city, addr_state, menu_link, sublocations",*/
+    // ProjectionExpression: "id, loc_name, manager, is_confirmed, subscription_status, subscription_end_date, employee_masks, social_distancing, dining_in, loc_type, addr_line1, addr_city, addr_state, menu_link, sublocations",
     KeyConditionExpression: "manager = :manager",
     IndexName: "manager",
     ExpressionAttributeValues: {
