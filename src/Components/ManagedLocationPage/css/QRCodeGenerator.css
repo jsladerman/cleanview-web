@@ -1,3 +1,46 @@
-#qr-code-block {
-    text-align: center;
+#qr-code-block{
+    width: 90%;
+    margin: 25px 40px 25px 40px;
+    font-family: Roboto;
+}
+
+h2{
+    font-weight: 1000;
+}
+
+h4{
+    font-weight: 600;
+}
+
+.add-new-sublocation{
+    border: 2px solid #E5E5E5;
+    border-radius: 6px;
+    font-family: Roboto;
+}
+
+label{
+    font-family: Roboto;
+}
+
+.qr-header{
+    font-size: 16px;
+}
+
+.col{
+    border: 5px black;
+}
+
+.column-content{
+    align-self: flex-end;
+    width: 100%;
+}
+
+.qr-code-form-column{
+    display: flex;
+}
+
+.qr-code-generator-wrapper{
+    border: 2px #E5E5E5 solid;
+    border-radius: 6px;
+    padding: 5px 5px 5px 5px;
 }

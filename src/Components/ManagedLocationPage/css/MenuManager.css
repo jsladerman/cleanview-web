@@ -1,0 +1,27 @@
+#menu-manager-code-block{
+    width: 90%;
+    margin: 25px 40px 25px 40px;
+    font-family: Roboto;
+}
+
+h4{
+    color: #23A6BD;
+}
+
+label{
+    font-size: 16px;
+}
+
+#remove-menu-button{
+    background-color: #ff6961;
+    color: white;
+}
+
+.menu-manager-button{
+    border: none;
+    border-radius: 6px;
+    padding: 8px 8px;
+    background-color: #E5E5E5;
+    font-family: Roboto;
+
+}
