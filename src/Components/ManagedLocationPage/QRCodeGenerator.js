@@ -147,7 +147,7 @@ class SublocationQRCode extends Component {
   };
 
   render() {
-    const apiEndpoint = "https://api.qrserver.com/v1/create-qr-code/?data=https://b4fxzcx3f0.execute-api.us-east-1.amazonaws.com/dev/survey/"
+    const apiEndpoint = "https://api.qrserver.com/v1/create-qr-code/?data=https://inv6tn1p09.execute-api.us-east-1.amazonaws.com/dev/survey/"
     const sublocationId = this.props.id
     const colorParam = "&color=" + this.props.color
     const browserSizeParam = "&size=100x100"

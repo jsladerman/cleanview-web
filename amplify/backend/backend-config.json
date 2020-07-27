@@ -93,7 +93,7 @@
             "dependsOn": [
                 {
                     "category": "function",
-                    "resourceName": "ResponseLambda",
+                    "resourceName": "SurveyLambda",
                     "attributes": [
                         "Name",
                         "Arn"
@@ -101,7 +101,7 @@
                 },
                 {
                     "category": "function",
-                    "resourceName": "SurveyLambda",
+                    "resourceName": "ResponseLambda",
                     "attributes": [
                         "Name",
                         "Arn"
