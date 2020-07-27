@@ -315,12 +315,13 @@ app.get("/survey/:id", function (req, res) {
                       selectedOption: event.targetOption,
                       allSelectedOptions: event.selectedOptions
                     })'>
-                <span class='selection-button' option='1'>18 to 25</span>
-                <span class='selection-button' option='2'>26 to 35</span>
-                <span class='selection-button' option='3'>36 to 45</span>
-                <span class='selection-button' option='4'>46 to 55</span>
-                <span class='selection-button' option='5'>55 to 65</span>
-                <span class='selection-button' option='6'>65+</span>
+                    <span class='selection-button' option='0-17'>0 to 17</span>
+                    <span class='selection-button' option='18-25'>18 to 25</span>
+                    <span class='selection-button' option='26-35'>26 to 35</span>
+                    <span class='selection-button' option='36-45'>36 to 45</span>
+                    <span class='selection-button' option='46-55'>46 to 55</span>
+                    <span class='selection-button' option='56-65'>56 to 65</span>
+                    <span class='selection-button' option='66+'>66+</span>
               </amp-selector>
             </div>
             <div>
