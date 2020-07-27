@@ -1,44 +1,41 @@
 import React, {Component} from 'react';
 import styles from './css/DashboardSidebarContent.module.css';
-import {Redirect} from "react-router-dom";
+import SidebarButton from "./SidebarButton";
 
 class DashboardSidebarContent extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            redirect: null
-        }
+        this.state = {}
     }
 
+
     render() {
-        if (this.state.redirect) {
-            return <Redirect push to={this.state.redirect}/>
-        }
+        const activeTab = this.getActiveTab();
         return (
             <div>
-                <br/><p>Top</p>
-                <button onClick={this.props.signOutFunc}>
-                    Sign Out
-                </button>
-                <p>Sidebar content</p>
-                <p>Sidebar content</p>
-                <p>Sidebar content</p>
-                <p>Sidebar content</p>
-                <p>Sidebar content</p>
-                <p>Sidebar content</p>
-                <p>Sidebar content</p>
-                <p>Sidebar content</p>
-                <p>Sidebar content</p>
-                <p>Sidebar content</p>
-                <p>Sidebar content</p>
-                <p>Sidebar content</p>
-                <p>Sidebar content</p>
-                <p>Sidebar content</p>
-                <p>Sidebar content</p>
-                <p>Sidebar content</p>
-                <p>Sidebar content</p>
+                <p></p>
+                <SidebarButton
+                    active={activeTab==='locations'}
+                    imgName='locations.svg'
+                    text='Locations'
+                    urlPath='/locations'/>
+                <SidebarButton
+                    active={activeTab==='billing'}
+                    imgName='billing.svg'
+                    text='Billing'
+                    urlPath='/billing'/>
+                <SidebarButton
+                    active={activeTab==='settings'}
+                    imgName='settings.svg'
+                    text='Settings'
+                    urlPath='/settings'/>
             </div>
         );
+    }
+
+    getActiveTab = () => {
+        const pathArr = this.props.path.split('/')
+        return pathArr[pathArr.length - 1]
     }
 
 }
