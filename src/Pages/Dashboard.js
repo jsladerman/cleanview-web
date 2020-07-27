@@ -46,7 +46,8 @@ class Dashboard extends Component {
         if (this.state.redirect) {
             return <Redirect push to={this.state.redirect}/>
         }
-        console.log('PATH ' + JSON.stringify(this.props))
+        let poo = process.env.ENV || 'poo'
+        console.log(poo)
         return (
             <div className={styles.dashboard}>
                 <DashboardTopNav/>
