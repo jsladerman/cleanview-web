@@ -90,6 +90,7 @@ app.get("/survey/:id", function (req, res) {
       let name = itemData.loc_name;
       let total_id = tot_id
       let menu_link = itemData.menu_link
+      // TODO: hard coded endpoint on submit
       res.send(`<!doctype html>
       <html ⚡>
 

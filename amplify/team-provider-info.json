@@ -44,5 +44,28 @@
                 "ResponseLambda": {}
             }
         }
+    },
+    "testenv": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-cleanviewweb-testenv-124548-authRole",
+            "UnauthRoleArn": "arn:aws:iam::676044961909:role/amplify-cleanviewweb-testenv-124548-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::676044961909:role/amplify-cleanviewweb-testenv-124548-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-cleanviewweb-testenv-124548-deployment",
+            "UnauthRoleName": "amplify-cleanviewweb-testenv-124548-unauthRole",
+            "StackName": "amplify-cleanviewweb-testenv-124548",
+            "StackId": "arn:aws:cloudformation:us-east-1:676044961909:stack/amplify-cleanviewweb-testenv-124548/a0a6b2d0-d028-11ea-b3ff-0e229acdb0d3",
+            "AmplifyAppId": "df3x4k8u67hjc"
+        },
+        "categories": {
+            "auth": {
+                "cleanviewweb63661d3b": {}
+            },
+            "function": {
+                "manageLocationLambda": {},
+                "SurveyLambda": {},
+                "ResponseLambda": {}
+            }
+        }
     }
 }
