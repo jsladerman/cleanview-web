@@ -7,6 +7,7 @@ See the License for the specific language governing permissions and limitations 
 */
 
 const AWS = require("aws-sdk");
+const { uuid } = require('uuidv4')
 var awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
 var bodyParser = require("body-parser");
 var express = require("express");
@@ -61,7 +62,7 @@ const convertUrlType = (param, type) => {
 app.get(path, function(req, res){
   const queryParams = {
     TableName: tableName,
-    ProjectionExpression: "id, loc_name, manager, is_confirmed, subscription_status, subscription_end_date, employee_masks, social_distancing, dining_in, loc_type, addr_line1, addr_city, addr_state",
+    ProjectionExpression: "id, loc_name, manager, is_confirmed, subscription_status, subscription_end_date, employee_masks, social_distancing, dining_in, loc_type, addr_line1, addr_city, addr_state, menu_link, sublocations",
     KeyConditionExpression: "manager = :manager",
     IndexName: "manager",
     ExpressionAttributeValues: {
@@ -86,7 +87,7 @@ app.get(path + "/object", function (req, res) {
   let getItemParams = {
     TableName: tableName,
     Key: {id: req.query.id},
-    ProjectionExpression: 'id, menu_link',
+    ProjectionExpression: 'id, menu_link, sublocations',
   };
 
   dynamodb.get(getItemParams, (err, data) => {
@@ -112,6 +113,7 @@ app.put(path, function (req, res) {
       req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
   }
 
+
   let putItemParams = {
     TableName: tableName,
     Item: req.body,
@@ -131,15 +133,27 @@ app.put(path, function (req, res) {
  *************************************/
 
 app.post(path, function (req, res) {
+  
   if (userIdPresent) {
     req.body["userId"] =
       req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
   }
 
+  var d = new Date()
+  var exprDate = new Date(d.setMonth(d.getMonth()+1))
+  req.body["subscription_end_date"] = exprDate.toDateString()
+  req.body["menu_link"] = ''
+  req.body["sublocations"] = [{
+    name: 'Main',
+    id: uuid(),
+    color: '000000'
+  }]
+
   let putItemParams = {
     TableName: tableName,
     Item: req.body,
   };
+
   dynamodb.put(putItemParams, (err, data) => {
     if (err) {
       res.statusCode = 500;
@@ -227,6 +241,35 @@ app.patch(path, function(req, res) {
     }
   });
 
+});
+
+// Patch request for sublocations
+
+app.patch(path + '/sublocations', function(req, res) {
+  if (userIdPresent) {
+    req.body["userId"] =
+      req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
+  }
+  var params = {
+    TableName: tableName,
+    Key: {
+      "id": req.body.loc_id
+    },
+    UpdateExpression: "set sublocations = :sub",
+    ExpressionAttributeValues: {
+      ":sub": req.body.sublocations
+    },
+    ReturnValues:"UPDATED_NEW"
+  }
+
+  dynamodb.update(params, function(err, data) {
+    if (err) {
+      res.statusCode = 500;
+      res.json({ error: err, url: req.url, body: req.body, url: req.body.menu_link});
+    } else {
+      res.json({ success: "patch call succeed!", url: req.url, data: data });
+    }
+  });
 });
 
 // Export the app object. When executing the application local this does nothing. However,
