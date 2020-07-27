@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+.page {
+    width: 100%;
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+}
+
+.logoSide {
+    position: absolute;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.authSide {
+    position: absolute;
+    right: 0;
+    background-image: url('../../images/CleanView-QR-Background.png');
+    background-color: white;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    display: block;
+    height: 300px;
+    margin-top: 85px;
+    margin-bottom: auto;
+}
+
+.infoDiv {
+    text-align: center;
+    font-weight: 100;
+    font-size: 20px;
+    margin-bottom: 60px;
+}

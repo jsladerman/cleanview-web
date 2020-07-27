@@ -17,9 +17,8 @@ class DashboardSidebarContent extends Component {
         return (
             <div>
                 <br/><p>Top</p>
-                <button onClick={() =>
-                    this.setState({redirect: '/login'})}>
-                    Go Back To Login
+                <button onClick={this.props.signOutFunc}>
+                    Sign Out
                 </button>
                 <p>Sidebar content</p>
                 <p>Sidebar content</p>

@@ -19,9 +19,10 @@ class Dashboard extends Component {
         super(props);
         this.state = {
             redirect: null,
-            managerName: '',
+            managerName: null,
             locationData: []
         }
+        this.path = this.props.match.path;
     }
 
     componentDidMount() {
@@ -45,34 +46,16 @@ class Dashboard extends Component {
         if (this.state.redirect) {
             return <Redirect push to={this.state.redirect}/>
         }
-        const path = this.props.match.path;
+        console.log('PATH ' + JSON.stringify(this.props))
         return (
             <div className={styles.dashboard}>
                 <DashboardTopNav/>
                 <Sidebar
                     sidebar={
-                        <DashboardSidebarContent/>
+                        <DashboardSidebarContent signOutFunc={this.signOut}/>
                     }
                     children={
-                        <div className={styles.sidebarChildren}>
-                            <Switch>
-                                <Route path={path + '/locations/:id/:tab'} render={(props) =>
-                                    <ManagedLocationInfo
-                                        {...props}
-                                        id={props.match.params.id}
-                                        tab={props.match.params.tab}
-                                        locations={this.state.locationData}
-                                    />}
-                                />
-                                <Route render={(props) =>
-                                    <LocationsTable
-                                        {...props}
-                                        managerName={this.state.managerName}
-                                        locations={this.state.locationData}
-                                        getDataFunc={this.getData}/>}
-                                />
-                            </Switch>
-                        </div>
+                        this.renderSidebarChildren()
                     }
                     transitions={false}
                     docked={true}
@@ -106,6 +89,52 @@ class Dashboard extends Component {
             })
     };
 
+    signOut = () => {
+        try {
+            Auth.signOut()
+                .then(response => {
+                    console.log(response);
+                    this.setState({redirect: '/login'});
+                });
+        } catch (error) {
+            console.log('Error signing out: ', error);
+        }
+    };
+
+    renderSidebarChildren() {
+        if (!this.state.managerName) {
+            return <img
+                src={require("../images/dashboardLoader.svg")}
+                alt=''
+                height='100%'
+                width='100%'
+            />
+        } else {
+            return (
+                <div className={styles.sidebarChildren}>
+                    <Switch>
+                        <Redirect exact from="/home" to="/home/locations" />
+                        <Route path={this.path + '/locations/:id/:tab'} render={(props) =>
+                            <ManagedLocationInfo
+                                {...props}
+                                id={props.match.params.id}
+                                tab={props.match.params.tab}
+                                locations={this.state.locationData}
+                            />}
+                        />
+                        <Route path={this.path + '/locations'} render={(props) =>
+                            <LocationsTable
+                                {...props}
+                                managerName={this.state.managerName}
+                                locations={this.state.locationData}
+                                getDataFunc={this.getData}/>}
+                        />
+                        <Redirect to="/home/locations" />
+                    </Switch>
+                </div>
+            );
+        }
+    }
 }
 
 const jsStyles = {
