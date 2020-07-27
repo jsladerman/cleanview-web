@@ -1,15 +1,15 @@
 {
     "paths": [
         {
-            "name": "/responses",
-            "lambdaFunction": "ResponseLambda",
+            "name": "/survey",
+            "lambdaFunction": "SurveyLambda",
             "privacy": {
                 "open": true
             }
         },
         {
-            "name": "/survey",
-            "lambdaFunction": "SurveyLambda",
+            "name": "/responses",
+            "lambdaFunction": "ResponseLambda",
             "privacy": {
                 "open": true
             }
@@ -19,10 +19,10 @@
     "apiName": "SurveyApi",
     "functionArns": [
         {
-            "lambdaFunction": "ResponseLambda"
+            "lambdaFunction": "SurveyLambda"
         },
         {
-            "lambdaFunction": "SurveyLambda"
+            "lambdaFunction": "ResponseLambda"
         }
     ],
     "privacy": {
@@ -34,7 +34,7 @@
     "dependsOn": [
         {
             "category": "function",
-            "resourceName": "ResponseLambda",
+            "resourceName": "SurveyLambda",
             "attributes": [
                 "Name",
                 "Arn"
@@ -42,12 +42,12 @@
         },
         {
             "category": "function",
-            "resourceName": "SurveyLambda",
+            "resourceName": "ResponseLambda",
             "attributes": [
                 "Name",
                 "Arn"
             ]
         }
     ],
-    "uuid": "e64ac8cd"
+    "uuid": "319fdcef"
 }

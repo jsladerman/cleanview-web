@@ -90,7 +90,6 @@ app.get("/survey/:id", function (req, res) {
       let name = itemData.loc_name;
       let total_id = tot_id
       let menu_link = itemData.menu_link
-      // TODO: hard coded endpoint on submit
       res.send(`<!doctype html>
       <html ⚡>
 
@@ -136,7 +135,7 @@ app.get("/survey/:id", function (req, res) {
             border-radius: 10px;
             display: inline-block;
             cursor: pointer;
-            width: 60px;
+            width: 55px;
       
             /* Text properties */
             color: #666666;
@@ -206,7 +205,7 @@ app.get("/survey/:id", function (req, res) {
         <meta charset='utf-8'>
         <script async src='https://cdn.ampproject.org/v0.js'></script>
         <title>CleanView</title>
-        <link rel='canonical' href='https://amp.dev/documentation/guides-and-tutorials/start/create/basic_markup/'>
+        <link rel='canonical' href='https://inv6tn1p09.execute-api.us-east-1.amazonaws.com/dev/survey/${tot_id}'>
         <link href='https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;700&display=swap' rel='stylesheet'>
         <link href='https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,500;0,600;1,600&display=swap'
           rel='stylesheet'>
@@ -306,7 +305,7 @@ app.get("/survey/:id", function (req, res) {
       <body>
         <h1>Help <strong>${name}</strong> learn about their COVID-19 response:</h1>
         <form class='user-survey' method='POST'
-          action-xhr=https://b4fxzcx3f0.execute-api.us-east-1.amazonaws.com/dev/responses target="_top">
+          action-xhr=https://inv6tn1p09.execute-api.us-east-1.amazonaws.com/dev/responses target="_top">
           <fieldset>
             <div>
               <input type='hidden' name='total_id' value='${total_id}'> </input>
@@ -316,13 +315,13 @@ app.get("/survey/:id", function (req, res) {
                       selectedOption: event.targetOption,
                       allSelectedOptions: event.selectedOptions
                     })'>
-                <span class='selection-button' option='1'>Under 18</span>
-                <span class='selection-button' option='2'>18 to 25</span>
-                <span class='selection-button' option='3'>26 to 35</span>
-                <span class='selection-button' option='4'>36 to 45</span>
-                <span class='selection-button' option='5'>46 to 55</span>
-                <span class='selection-button' option='6'>55 to 65</span>
-                <span class='selection-button' option='7'>65+</span>
+                    <span class='selection-button' option='0-17'>0 to 17</span>
+                    <span class='selection-button' option='18-25'>18 to 25</span>
+                    <span class='selection-button' option='26-35'>26 to 35</span>
+                    <span class='selection-button' option='36-45'>36 to 45</span>
+                    <span class='selection-button' option='46-55'>46 to 55</span>
+                    <span class='selection-button' option='56-65'>56 to 65</span>
+                    <span class='selection-button' option='66+'>66+</span>
               </amp-selector>
             </div>
             <div>
@@ -350,7 +349,7 @@ app.get("/survey/:id", function (req, res) {
             </div>
       
             <div>
-              <p>How would you rate ${name}'s overall COVID-19 response?</p>
+              <p>How satisfied are you with ${name}'s overall COVID-19 response?</p>
               <label>Poor</label>
               <input type='range' id='slider' name='response-rating' min='1' max='5' step='.5'>
               <label>Excellent</label>

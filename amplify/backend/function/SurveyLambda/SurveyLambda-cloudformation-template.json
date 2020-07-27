@@ -83,7 +83,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-cleanviewweb-testenv-124548-deployment",
-					"S3Key": "amplify-builds/SurveyLambda-6d504d727056556e4a48-build.zip"
+					"S3Key": "amplify-builds/SurveyLambda-4f534f744974346c7474-build.zip"
 				}
 			}
 		},
