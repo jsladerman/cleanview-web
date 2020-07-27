@@ -89,6 +89,10 @@ app.get(path + "/object", function (req, res) {
     ProjectionExpression: 'id, menu_link, sublocations',
   };
 
+  // let environmentURL = process.env.ENV_URL || "https://inv6tn1p09.execute-api.us-east-1.amazonaws.com"
+  let environmentURL = process.env.ENV_URL || "wack"
+
+
   dynamodb.get(getItemParams, (err, data) => {
     if (err) {
       res.statusCode = 500;
@@ -97,7 +101,7 @@ app.get(path + "/object", function (req, res) {
        });
       
     } else {
-      res.json({ body: data.Item })
+      res.json({ body: data.Item, environmentURL: environmentURL})
     }
   });
 });

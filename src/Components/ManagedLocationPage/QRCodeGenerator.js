@@ -8,7 +8,8 @@ class QRCodeGenerator extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      sublocations: ''
+      sublocations: '',
+      environmentURL: ''
     };
     
     this.addSublocation = this.addSublocation.bind(this)
@@ -64,6 +65,7 @@ class QRCodeGenerator extends Component {
       .then(response => {
         let currState = this.state
         currState.sublocations = response.data.body.sublocations
+        currState.environmentURL = response.data.environmentURL
         this.setState(currState)
       })
       .catch(error => {
@@ -79,7 +81,7 @@ class QRCodeGenerator extends Component {
     const subLocationList = this.state.sublocations.map((sublocation) => {
       const total_id = this.props.id + '99strl99strl' + sublocation.id
       return(
-        <SublocationQRCode id={total_id} name={sublocation.name} color={sublocation.color} key={sublocation.id}/>
+        <SublocationQRCode id={total_id} name={sublocation.name} color={sublocation.color} key={sublocation.id} environmentURL={this.state.environmentURL}/>
       )
     })
     return (
@@ -147,7 +149,8 @@ class SublocationQRCode extends Component {
   };
 
   render() {
-    const apiEndpoint = "https://api.qrserver.com/v1/create-qr-code/?data=https://inv6tn1p09.execute-api.us-east-1.amazonaws.com/dev/survey/"
+    
+    const apiEndpoint = "https://api.qrserver.com/v1/create-qr-code/?data=" + this.props.environmentURL + "/dev/survey/"
     const sublocationId = this.props.id
     const colorParam = "&color=" + this.props.color
     const browserSizeParam = "&size=100x100"
