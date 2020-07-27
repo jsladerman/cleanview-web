@@ -114,12 +114,12 @@ class MenuManager extends Component {
             <div class="container-fluid text-wrap" id="menu-manager-code-block">
             <h2>Menu Manager</h2>
             
-            <h4>Current Menu</h4>
+            <h4 className="menu-manager-subheader">Current Menu</h4>
             {this.titleText(this.state.menu_link)}
 
             {/* Using validate here because Formik has no 'OnChange field' */}
             
-            <h4>Edit Menu</h4>
+            <h4 className="menu-manager-subheader">Edit Menu</h4>
             <p>After the customer takes the survey, they will be brought to the menu that you provide here.</p>
             <Formik validate = { (values) => this.updateSwitchVal(values) }
                     initialValues = {{

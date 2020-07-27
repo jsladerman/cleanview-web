@@ -97,7 +97,7 @@ class QRCodeGenerator extends Component {
         <AddNewSublocation handleSubmit={this.addSublocation} />
         <br />
 
-        <h4>Your QR Codes</h4>
+        <h4 className="qr-code-subheader">Your QR Codes</h4>
         <p>Each QR code links to the survey and then to your menu. You can manage your menu on the Menu Manager tab.</p>
         {subLocationList}
       </div>
@@ -109,7 +109,7 @@ class AddNewSublocation extends Component {
   render() {
     return (
       <div>
-        <h4>Create new QR code</h4>
+        <h4 className="qr-code-subheader">Create new QR code</h4>
         <Formik
           onSubmit={(values) => this.props.handleSubmit(values)}
           initialValues={{

@@ -4,12 +4,10 @@
     font-family: Roboto;
 }
 
-h2{
-    font-weight: 1000;
-}
 
-h4{
+.qr-code-subheader{
     font-weight: 600;
+    color: #23A6BD;
 }
 
 .add-new-sublocation{
