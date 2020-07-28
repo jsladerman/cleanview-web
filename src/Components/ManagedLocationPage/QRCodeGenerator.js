@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import './css/QRCodeGenerator.css'
+import styles from './css/QRCodeGenerator.module.css'
 import uuid from 'react-uuid';
 import { API } from 'aws-amplify';
 import { Formik, Form, Field } from 'formik';
+import Button from "react-bootstrap/Button";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
@@ -86,21 +87,25 @@ class QRCodeGenerator extends Component {
       )
     })
     return (
-      <div id="qr-code-block" class="container-fluid text-wrap">
-        <h2>QR Code Management</h2>
-        <p>You can use a single QR code for the whole restaurant, or you can create multiple QR codes to gain more targeted insight.</p>
-        <p>Examples:</p>
-        <ul>
-          <li>Use distinct QR codes for indoor and outdoor tables</li>
-          <li>Use distinct QR codes for each individual table</li>
-        </ul>
-        <AddNewSublocation handleSubmit={this.addSublocation} />
-        <br />
+        <div className={styles.qrCodeBlock}>
+          <div className="container-fluid text-wrap">
+            <h2>QR Code Management</h2>
+            <p>You can use a single QR code for the whole restaurant, or you can create multiple QR codes to gain more
+              targeted insight.</p>
+            <p>Examples:</p>
+            <ul>
+              <li>Use distinct QR codes for indoor and outdoor tables</li>
+              <li>Use distinct QR codes for each individual table</li>
+            </ul>
+            <AddNewSublocation handleSubmit={this.addSublocation}/>
+            <br/>
 
-        <h4 className="qr-code-subheader">Your QR Codes</h4>
-        <p>Each QR code links to the survey and then to your menu. You can manage your menu on the Menu Manager tab.</p>
-        {subLocationList}
-      </div>
+            <h4 className={styles.qrCodeSubheader}>Your QR Codes</h4>
+            <p>Each QR code links to the survey and then to your menu. You can manage your menu on the Menu Manager
+              tab.</p>
+            {subLocationList}
+          </div>
+        </div>
     );
   }
 }
@@ -109,7 +114,7 @@ class AddNewSublocation extends Component {
   render() {
     return (
       <div>
-        <h4 className="qr-code-subheader">Create new QR code</h4>
+        <h4 className={styles.qrCodeSubheader}>Create new QR code</h4>
         <Formik
           onSubmit={(values) => this.props.handleSubmit(values)}
           initialValues={{
@@ -117,17 +122,17 @@ class AddNewSublocation extends Component {
             color: '000000',
           }}
         >
-          <Form class = "qr-code-generator-wrapper">
+          <Form className={styles.qrCodeGeneratorWrapper}>
             <Row>
-              <Col className="qr-code-form-column">
-                <div class="form-group" class="column-contents">
-                  <label>Name </label>
+              <Col className={styles.qrCodeFormColumn}>
+                <div className="form-group" class="column-contents">
+                  <label className={styles.label}>Name </label>
                   <Field type="input" name="name" class="form-control" />
                 </div>
               </Col>
-              <Col className="qr-code-form-column">
+              <Col className={styles.qrCodeFormColumn}>
                 <div class="form-group" class="column-contents">
-                  <label>Color </label>
+                  <label className={styles.label}>Color </label>
                   <Field as="select" name="color" class="form-control">
                     <option value="000000">Black</option>
                     <option value="900C3F">Red</option>
@@ -136,8 +141,8 @@ class AddNewSublocation extends Component {
                   </Field>
                 </div>
               </Col>
-              <Col className="qr-code-form-column">
-                <button id="generate-qr-code-submit" class="btn column-content" type="submit">Generate</button>
+              <Col className={styles.qrCodeFormColumn}>
+                <Button className={styles.generateQrCodeSubmit} type="submit">Generate</Button>
               </Col>
             </Row>
           </Form>
@@ -179,7 +184,7 @@ class SublocationQRCode extends Component {
 
     return (
       <div>
-        <p className="qr-header">{this.props.name} QR code:</p>
+        <p className={styles.qrHeader}>{this.props.name} QR code:</p>
         <a href="#">
           <img src={inBrowserURL} alt="" title="" onClick={() => this.downloadQRCode(this.props.name, downloadURL)} />
         </a>

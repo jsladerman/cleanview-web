@@ -1,28 +1,32 @@
-#menu-manager-code-block{
+.menuManagerCodeBlock{
     width: 90%;
     margin: 25px 40px 25px 40px;
-    font-family: Roboto;
+    font-family: Roboto, serif;
+    color: #191A25;
 }
 
-.menu-manager-subheader{
+.menuManagerSubheader{
     font-weight: bold;
     color: #23A6BD;
 }
 
-label{
+.label{
     font-size: 16px;
+    color: #191A25;
 }
 
-#remove-menu-button{
+.removeMenuButton{
     background-color: #ff6961;
+    border: none;
     color: white;
+    border-radius: 6px;
+    padding: 8px 8px;
 }
 
-.menu-manager-button{
+.menuManagerButton{
     border: none;
     border-radius: 6px;
     padding: 8px 8px;
     background-color: #E5E5E5;
-    font-family: Roboto;
-
+    font-family: Roboto, serif;
 }

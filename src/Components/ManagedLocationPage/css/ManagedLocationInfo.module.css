@@ -8,3 +8,8 @@
 .tab:hover {
     color: #191A25;
 }
+
+.tab:active {
+    outline: none;
+    color: #191A25;
+}

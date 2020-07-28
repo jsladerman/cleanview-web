@@ -39,7 +39,7 @@ class ManagedLocationInfo extends Component {
             return <h1>LOADING</h1>;
         }
         return (
-            <div className='managedLocationTab'>
+            <div>
                 <Tabs activeKey={this.state.tab} onSelect={this.setTabURL}>
                     <Tab tabClassName={styles.tab} eventKey='info' title='Info'>
                         <LocationInfo

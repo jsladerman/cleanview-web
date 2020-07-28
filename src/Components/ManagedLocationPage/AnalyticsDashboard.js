@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import BarChart from './AnalyticsWidgets/BarChart'
 import BinaryPieChart from './AnalyticsWidgets/BinaryPieChart'
 import SurveyResponseFrequencyChart from './AnalyticsWidgets/SurveyResponseFrequencyChart'
-import './css/AnalyticsDashboard.css';
+import styles from './css/AnalyticsDashboard.module.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -17,15 +17,15 @@ class AnalyticsDashboard extends Component {
     // 3) piechart for the rest of the questions (yes/no)
     render() {
         return (
-            <div class="analytics-dashboard-class" id="anal_dash" style={{ paddingLeft: "20px" }}>
+            <div className={styles.analDash} style={{ paddingLeft: "20px" }}>
                 <h2>Analytics Dashboard</h2>
-                <p><span className="field-header">Average Rating: </span> * * * * * (4.6)</p>
-                <p><span className="field-header">Total # of Reviews: </span>342</p>
+                <p><span className={styles.fieldHeader}>Average Rating: </span> * * * * * (4.6)</p>
+                <p><span className={styles.fieldHeader}>Total # of Reviews: </span>342</p>
 
                 <br />
 
                 <Container fluid>
-                    <h4 className="analytics-dashboard-subheader">Customer Demographic Information</h4>
+                    <h4 className={styles.analyticsDashboardSubheader}>Customer Demographic Information</h4>
                     <Row>
                         {/* TODO
                     Put a grid of the Dashboards here (similar to ManagedLocationsInfo) */}
@@ -65,7 +65,7 @@ class AnalyticsDashboard extends Component {
                         </Col>
                     </Row>
 
-                    <h4 className="analytics-dashboard-subheader">General Safety Response</h4>
+                    <h4 className={styles.analyticsDashboardSubheader}>General Safety Response</h4>
                     <Row>
                         <Col>
                             <BinaryPieChart

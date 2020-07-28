@@ -1,22 +1,21 @@
-#qr-code-block{
+.qrCodeBlock{
     width: 90%;
     margin: 25px 40px 25px 40px;
-    font-family: Roboto;
+    font-family: Roboto, serif;
 }
 
-
-.qr-code-subheader{
+.qrCodeSubheader{
     font-weight: 600;
     color: #23A6BD;
 }
 
-label{
+.label{
     font-family: Roboto;
     font-weight: bold;
     color: white;
 }
 
-.qr-header{
+.qrHeader{
     font-size: 16px;
 }
 
@@ -24,24 +23,22 @@ label{
     border: 5px black;
 }
 
-.column-content{
-    align-self: flex-end;
-    width: 100%;
-}
-
-.qr-code-form-column{
+.qrCodeFormColumn{
     display: flex;
 }
 
-.qr-code-generator-wrapper{
+.qrCodeGeneratorWrapper{
     background-color: #191A25;
     max-width: 600px;
     border-radius: 6px;
     padding: 8px;
 }
 
-#generate-qr-code-submit {
+.generateQrCodeSubmit {
     color: white;
+    border: none;
     font-weight: bold;
+    align-self: flex-end;
+    width: 100%;
     background-color: #23A6BD;
 }

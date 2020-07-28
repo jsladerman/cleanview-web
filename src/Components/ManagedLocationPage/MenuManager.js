@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
+import styles from './css/MenuManager.module.css';
 import {Formik, Form, Field, ErrorMessage} from 'formik';
 import {API, Storage} from 'aws-amplify';
-import './css/MenuManager.css';
+import Button from "react-bootstrap/Button";
 
 
 class MenuManager extends Component {
@@ -111,15 +112,15 @@ class MenuManager extends Component {
 
     render() {
         return(
-            <div class="container-fluid text-wrap" id="menu-manager-code-block">
+            <div class="container-fluid text-wrap" className={styles.menuManagerCodeBlock}>
             <h2>Menu Manager</h2>
-            
-            <h4 className="menu-manager-subheader">Current Menu</h4>
+
+            <h4 className={styles.menuManagerSubheader}>Current Menu</h4>
             {this.titleText(this.state.menu_link)}
 
             {/* Using validate here because Formik has no 'OnChange field' */}
-            
-            <h4 className="menu-manager-subheader">Edit Menu</h4>
+
+            <h4 className={styles.menuManagerSubheader}>Edit Menu</h4>
             <p>After the customer takes the survey, they will be brought to the menu that you provide here.</p>
             <Formik validate = { (values) => this.updateSwitchVal(values) }
                     initialValues = {{
@@ -162,7 +163,7 @@ class InputSwitch extends Component {
                         This button will delete the menu you have on file.
                         Are you sure you want to press it?
                         <br/>
-                        <button id="remove-menu-button" class="menu-manager-button" type="button" onClick={() => this.props.handleChange('')}>Yeah, I'm sure.</button>
+                        <Button className={styles.removeMenuButton} type="button" onClick={() => this.props.handleChange('')}>Yeah, I'm sure.</Button>
                     </div>
                 );
        }
@@ -187,13 +188,13 @@ class URLMenuUpload extends Component {
                     return errors
                 }}>
                     <Form>
-                        <label>
+                        <label className={styles.label}>
                             Link to menu (URL): {" "}
-                            <Field type="url" name="url"></Field>
+                            <Field type="url" name="url"/>
                             <ErrorMessage name="url" component="div"/>
                         </label>
                         <div>
-                            <button class="menu-manager-button" type='submit'>Save</button>
+                            <button className={styles.menuManagerButton} type='submit'>Save</button>
                         </div>
                     </Form>
                 </Formik>

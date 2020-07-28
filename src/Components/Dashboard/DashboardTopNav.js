@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import styles from './css/DashboardTopNav.css';
+import styles from './css/DashboardTopNav.module.css';
 import Navbar from 'react-bootstrap/Navbar'
 import Button from 'react-bootstrap/Button'
 
 class DashboardTopNav extends Component {
     render() {
         return (
-            <Navbar sticky='top' variant='dark'>
+            <Navbar sticky='top' style={{backgroundColor: '#191A26'}}>
                 <Navbar.Brand href="/home">
                     <img
                         src={require("../../images/CleanView-Icon-White 1.svg")}
