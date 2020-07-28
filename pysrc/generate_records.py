@@ -1,11 +1,10 @@
 import numpy as np
 import random
-import json
 import uuid
 import boto3
 
 ddb = boto3.resource('dynamodb')
-table = ddb.Table('survey_responses-dev')
+table = ddb.Table('TABLE NAME')
 age = ["0-17", "18-25", "26-35", "36-45", "46-55", "56-65", "66+"]
 employee_masks = [0, 1]
 menu_link = "https://www.google.com"
