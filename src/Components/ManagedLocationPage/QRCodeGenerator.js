@@ -1,8 +1,12 @@
-import React, {Component } from 'react';
-import './css/QRCodeGenerator.css'
+import React, { Component } from 'react';
+import styles from './css/QRCodeGenerator.module.css'
 import uuid from 'react-uuid';
-import {API} from 'aws-amplify';
-import {Formik, Form, Field} from 'formik';
+import { API } from 'aws-amplify';
+import { Formik, Form, Field } from 'formik';
+import Button from "react-bootstrap/Button";
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
 class QRCodeGenerator extends Component {
   // TODO: GET URL FROM DB, NOT PASSED IN AS PROP
   constructor(props) {
@@ -10,7 +14,7 @@ class QRCodeGenerator extends Component {
     this.state = {
       sublocations: ''
     };
-    
+
     this.addSublocation = this.addSublocation.bind(this)
     this.updateDataFromDB = this.updateDataFromDB.bind(this)
 
@@ -29,35 +33,35 @@ class QRCodeGenerator extends Component {
     })
 
     const apiName = 'manageLocationApi';
-        const path = '/manageLocation/sublocations';
-        const requestData = {
-            headers: {},
-            response: true,
-            body: {
-                sublocations: currentSublocations,
-                loc_id: this.props.id
-            },
-        }
+    const path = '/manageLocation/sublocations';
+    const requestData = {
+      headers: {},
+      response: true,
+      body: {
+        sublocations: currentSublocations,
+        loc_id: this.props.id
+      },
+    }
 
-        API.patch(apiName, path, requestData)
-            .then(response => {
-                console.log("Update successful");
-                this.updateDataFromDB()
-            })
-            .catch(error => {
-                console.log("Error: " + error)
-            })
+    API.patch(apiName, path, requestData)
+      .then(response => {
+        console.log("Update successful");
+        this.updateDataFromDB()
+      })
+      .catch(error => {
+        console.log("Error: " + error)
+      })
   }
 
   updateDataFromDB = async () => {
     const apiName = 'manageLocationApi';
     const path = '/manageLocation/object';
     const requestData = {
-        headers: {},
-        response: true,
-        queryStringParameters: {
-            id: this.props.id
-        }
+      headers: {},
+      response: true,
+      queryStringParameters: {
+        id: this.props.id
+      }
     }
 
     API.get(apiName, path, requestData)
@@ -72,35 +76,45 @@ class QRCodeGenerator extends Component {
   }
 
   render() {
-    if(!this.state.sublocations) {
-      return(<p>Looking for sublocations...</p>)
+    if (!this.state.sublocations) {
+      return (<p>Looking for sublocations...</p>)
     }
-    
+
     const subLocationList = this.state.sublocations.map((sublocation) => {
       const total_id = this.props.id + '99strl99strl' + sublocation.id
-      return(
-        <SublocationQRCode id={total_id} name={sublocation.name} color={sublocation.color} key={sublocation.id}/>
+      return (
+        <SublocationQRCode id={total_id} name={sublocation.name} color={sublocation.color} key={sublocation.id} />
       )
     })
     return (
-      <div id="qr-code-block">
-          <h3>QR Code Management</h3>
-          <p>Explanation: You can use this one QR code for the whole restaurant or create as many QR codes as you want.</p>
-          <p>If you want to know how people feel inside vs outside, make a QR code for that!</p>
-          <p>If you want to know how people feel at each individual table, make a QR code for each one!</p>
-          <AddNewSublocation handleSubmit={this.addSublocation}/>
-          <br />
-          {subLocationList}
-      </div>
+        <div className={styles.qrCodeBlock}>
+          <div className="container-fluid text-wrap">
+            <h2>QR Code Management</h2>
+            <p>You can use a single QR code for the whole restaurant, or you can create multiple QR codes to gain more
+              targeted insight.</p>
+            <p>Examples:</p>
+            <ul>
+              <li>Use distinct QR codes for indoor and outdoor tables</li>
+              <li>Use distinct QR codes for each individual table</li>
+            </ul>
+            <AddNewSublocation handleSubmit={this.addSublocation}/>
+            <br/>
+
+            <h4 className={styles.qrCodeSubheader}>Your QR Codes</h4>
+            <p>Each QR code links to the survey and then to your menu. You can manage your menu on the Menu Manager
+              tab.</p>
+            {subLocationList}
+          </div>
+        </div>
     );
   }
 }
 
 class AddNewSublocation extends Component {
   render() {
-    return(
+    return (
       <div>
-        <h4>Add new sublocation</h4>
+        <h4 className={styles.qrCodeSubheader}>Create new QR code</h4>
         <Formik
           onSubmit={(values) => this.props.handleSubmit(values)}
           initialValues={{
@@ -108,17 +122,29 @@ class AddNewSublocation extends Component {
             color: '000000',
           }}
         >
-          <Form>
-            <label>Name: <Field type="input" name="name" /> </label> <br />
-            <label>Color: <Field as="select" name="color">
-                <option value="000000">Black</option>
-                <option value="900C3F">Red</option>
-                <option value="1189D7">Blue</option>
-                <option value="12A501">Green</option>
-                </Field> 
-            </label>
-            <br />
-            <button type="submit">Generate sublocation.</button>
+          <Form className={styles.qrCodeGeneratorWrapper}>
+            <Row>
+              <Col className={styles.qrCodeFormColumn}>
+                <div className="form-group" class="column-contents">
+                  <label className={styles.label}>Name </label>
+                  <Field type="input" name="name" class="form-control" />
+                </div>
+              </Col>
+              <Col className={styles.qrCodeFormColumn}>
+                <div class="form-group" class="column-contents">
+                  <label className={styles.label}>Color </label>
+                  <Field as="select" name="color" class="form-control">
+                    <option value="000000">Black</option>
+                    <option value="900C3F">Red</option>
+                    <option value="1189D7">Blue</option>
+                    <option value="12A501">Green</option>
+                  </Field>
+                </div>
+              </Col>
+              <Col className={styles.qrCodeFormColumn}>
+                <Button className={styles.generateQrCodeSubmit} type="submit">Generate</Button>
+              </Col>
+            </Row>
           </Form>
         </Formik>
       </div>
@@ -135,15 +161,15 @@ class SublocationQRCode extends Component {
 
   downloadQRCode = (name, link) => {
     fetch(link)
-    .then((response) => {
-      response.blob().then((blob) => {
-        let url = window.URL.createObjectURL(blob);
-        let a = document.createElement("a");
-        a.href = url;
-        a.download = "qr_code_" + name + ".jpg";
-        a.click();
+      .then((response) => {
+        response.blob().then((blob) => {
+          let url = window.URL.createObjectURL(blob);
+          let a = document.createElement("a");
+          a.href = url;
+          a.download = "qr_code_" + name + ".jpg";
+          a.click();
+        });
       });
-    });
   };
 
   render() {
@@ -156,12 +182,12 @@ class SublocationQRCode extends Component {
     const downloadSizeParam = "&size=500x500"
     const downloadURL = apiEndpoint + sublocationId + colorParam + downloadSizeParam
 
-    return(
+    return (
       <div>
-        <h4>Here is the {this.props.name} QR code. It links to the survey and then the menu (see menu manager tab).</h4>
+        <p className={styles.qrHeader}>{this.props.name} QR code:</p>
         <a href="#">
-            <img src={inBrowserURL} alt="" title="" onClick={() => this.downloadQRCode(this.props.name, downloadURL)}/>
-          </a>
+          <img src={inBrowserURL} alt="" title="" onClick={() => this.downloadQRCode(this.props.name, downloadURL)} />
+        </a>
       </div>
     );
   }

@@ -21,6 +21,14 @@ if (process.env.ENV && process.env.ENV !== "NONE") {
   tableName = tableName + "-" + process.env.ENV;
 }
 
+// HARD CODED: url endpoints
+let environmentURLSurvey = "https://inv6tn1p09.execute-api.us-east-1.amazonaws.com/dev"
+if(process.env.ENV === 'dev') {
+  environmentURLSurvey = "https://inv6tn1p09.execute-api.us-east-1.amazonaws.com/dev"
+}
+
+
+
 const userIdPresent = false; // TODO: update in case is required to use that definition
 const partitionKeyName = "id";
 const partitionKeyType = "S";
@@ -62,7 +70,6 @@ const convertUrlType = (param, type) => {
 app.get(path, function(req, res){
   const queryParams = {
     TableName: tableName,
-    ProjectionExpression: "id, loc_name, manager, is_confirmed, subscription_status, subscription_end_date, employee_masks, social_distancing, dining_in, loc_type, addr_line1, addr_city, addr_state, menu_link, sublocations",
     KeyConditionExpression: "manager = :manager",
     IndexName: "manager",
     ExpressionAttributeValues: {
@@ -98,7 +105,7 @@ app.get(path + "/object", function (req, res) {
        });
       
     } else {
-      res.json({ body: data.Item })
+      res.json({ body: data.Item, environmentURL: environmentURLSurvey})
     }
   });
 });
