@@ -35,13 +35,13 @@
             "AmplifyAppId": "df3x4k8u67hjc"
         },
         "categories": {
-            "auth": {
-                "cleanviewweb63661d3b": {}
-            },
             "function": {
                 "manageLocationLambda": {},
                 "SurveyLambda": {},
                 "ResponseLambda": {}
+            },
+            "auth": {
+                "cleanviewweb47c57b48": {}
             }
         }
     },
@@ -58,13 +58,13 @@
             "AmplifyAppId": "df3x4k8u67hjc"
         },
         "categories": {
-            "auth": {
-                "cleanviewweb63661d3b": {}
-            },
             "function": {
                 "manageLocationLambda": {},
                 "SurveyLambda": {},
                 "ResponseLambda": {}
+            },
+            "auth": {
+                "cleanviewweb47c57b48": {}
             }
         }
     }
