@@ -22,9 +22,11 @@ if (process.env.ENV && process.env.ENV !== "NONE") {
 }
 
 // HARD CODED: url endpoints
-let environmentURL = "https://ha6zsn1cv7.execute-api.us-east-1.amazonaws.com/dev"
+let environmentURLSurvey = "https://inv6tn1p09.execute-api.us-east-1.amazonaws.com/dev"
 if(process.env.ENV === 'dev') {
-  environmentURL = "https://ha6zsn1cv7.execute-api.us-east-1.amazonaws.com/dev"
+  environmentURLSurvey = "https://inv6tn1p09.execute-api.us-east-1.amazonaws.com/dev"
+} else if(process.env.ENV === 'staging') {
+  environmentURLSurvey = "https://sl3sxmyae0.execute-api.us-east-1.amazonaws.com/staging"
 }
 
 
@@ -105,7 +107,7 @@ app.get(path + "/object", function (req, res) {
        });
       
     } else {
-      res.json({ body: data.Item, environmentURL: environmentURL})
+      res.json({ body: data.Item, environmentURL: environmentURLSurvey})
     }
   });
 });

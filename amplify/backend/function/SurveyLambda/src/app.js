@@ -31,8 +31,8 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 let environmentURL = "https://inv6tn1p09.execute-api.us-east-1.amazonaws.com/dev"
 if(process.ENV === 'dev') {
   environmentURL = "https://inv6tn1p09.execute-api.us-east-1.amazonaws.com/dev"
-} else if(process.env.ENV === 'prod') {
-
+} else if(process.env.ENV === 'staging') {
+  environmentURL = "https://sl3sxmyae0.execute-api.us-east-1.amazonaws.com/staging"
 }
 
 // Enable CORS for all methods
