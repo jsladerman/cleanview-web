@@ -1,20 +1,37 @@
+#location-info-wrapper{
+    font-family: Roboto;
+    margin: 25px 40px 25px 40px;
+}
+
+p{
+    margin: 0px 0px 5px 0px;
+}
+
+h2{
+    font-weight: 1000;
+}
+
+.card-img-top{
+    max-width: 400px;
+    max-height: auto;
+}
+
+#address-line-2-field{
+    text-indent: 4.65em;
+}
+
+.container-fluid{
+    padding: 0px 0px 0px 0px;
+}
+
 .location-info-field-name{
     font-weight: 600;
 }
 
-.location_info{
-    display: flex;
-    align-items: left;
-    justify-content: left;
-    clear: left; 
-    float: left; 
-    position: relative; 
-    left: 50%;
+h5{
+    font-weight: 1000;
 }
 
-.location-detailed-info{
-    display: block;
-    float: left;
-    position: relative;
-    right: 50%;
+#covid-survey-row{
+    margin-top: 20px;
 }

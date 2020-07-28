@@ -1,0 +1,10 @@
+.tab {
+    border-bottom-color: transparent;
+    color: #23C9AD;
+    font-family: Roboto;
+    font-weight: bold;
+}
+
+.tab:hover {
+    color: #191A25;
+}

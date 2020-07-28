@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import styles from './css/ManagedLocationInfo.module.css'
 import PropTypes from 'prop-types';
 import QRCodeGenerator from './QRCodeGenerator'
 import AnalyticsDashboard from './AnalyticsDashboard'
@@ -40,20 +41,20 @@ class ManagedLocationInfo extends Component {
         return (
             <div className='managedLocationTab'>
                 <Tabs activeKey={this.state.tab} onSelect={this.setTabURL}>
-                    <Tab eventKey='info' title='Info'>
+                    <Tab tabClassName={styles.tab} eventKey='info' title='Info'>
                         <LocationInfo
                             data={this.state.data}/>
                     </Tab>
-                    <Tab eventKey='qr' title='QR Code'>
+                    <Tab tabClassName={styles.tab} eventKey='qr' title='QR Code'>
                         <QRCodeGenerator
                             name={this.state.data.loc_name}
                             id={this.props.id}/>
                     </Tab>
-                    <Tab eventKey='analytics' title='Analytics'>
+                    <Tab tabClassName={styles.tab} eventKey='analytics' title='Analytics'>
                         <AnalyticsDashboard
                             id={this.props.id}/>
                     </Tab>
-                    <Tab eventKey='menu-manager' title='Menu Management'>
+                    <Tab tabClassName={styles.tab} eventKey='menu-manager' title='Menu Management'>
                         <MenuManager
                             id={this.props.id}/>
                     </Tab>

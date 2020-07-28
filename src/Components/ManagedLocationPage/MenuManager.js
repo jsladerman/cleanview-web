@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Formik, Form, Field, ErrorMessage} from 'formik';
 import {API, Storage} from 'aws-amplify';
+import './css/MenuManager.css';
 
 
 class MenuManager extends Component {
@@ -24,11 +25,11 @@ class MenuManager extends Component {
     titleText = (menu_link) => {
         if(menu_link === ''|| menu_link === null) {
             return(
-                <h1>Right now, we don't have a menu for this location. Let's change that.</h1>
+                <p>Right now, we don't have a menu for this location. Let's change that.</p>
             );
         } else {
             return(
-                <h2>
+                <p>
                     <div>
                         Your menu link right now is: {" "}
                         <a rel="noopener noreferrer" href={this.state.menu_link} target="_blank">{this.state.menu_link}</a>
@@ -36,7 +37,8 @@ class MenuManager extends Component {
                     <div>
                         If that doesn't look right, change it below.
                     </div>
-                </h2>
+                    <br />
+                </p>
             );
         }
     }
@@ -109,10 +111,16 @@ class MenuManager extends Component {
 
     render() {
         return(
-            <div>
+            <div class="container-fluid text-wrap" id="menu-manager-code-block">
+            <h2>Menu Manager</h2>
+            
+            <h4 className="menu-manager-subheader">Current Menu</h4>
             {this.titleText(this.state.menu_link)}
 
             {/* Using validate here because Formik has no 'OnChange field' */}
+            
+            <h4 className="menu-manager-subheader">Edit Menu</h4>
+            <p>After the customer takes the survey, they will be brought to the menu that you provide here.</p>
             <Formik validate = { (values) => this.updateSwitchVal(values) }
                     initialValues = {{
                         choice: this.state.switchVal
@@ -120,13 +128,12 @@ class MenuManager extends Component {
                     >
                 <Form>
                     <Field as='select' name='choice' >
-                        <option value="none">No menu</option>
-                        <option value="pdf">Uploaded PDF menu</option>
+                        <option value="none">Remove link after survey</option>
+                        <option value="pdf">Link to uploaded pdf</option>
                         <option value="url">Link to existing menu</option>
                     </Field>
                 </Form>
             </Formik>
-            <br />
             <br />
             <InputSwitch    value= {this.state.switchVal}
                             loc_id= {this.props.id}
@@ -155,7 +162,7 @@ class InputSwitch extends Component {
                         This button will delete the menu you have on file.
                         Are you sure you want to press it?
                         <br/>
-                        <button type="button" onClick={() => this.props.handleChange('')}>Yeah, I'm sure.</button>
+                        <button id="remove-menu-button" class="menu-manager-button" type="button" onClick={() => this.props.handleChange('')}>Yeah, I'm sure.</button>
                     </div>
                 );
        }
@@ -181,12 +188,12 @@ class URLMenuUpload extends Component {
                 }}>
                     <Form>
                         <label>
-                            Put ya website in: {" "}
+                            Link to menu (URL): {" "}
                             <Field type="url" name="url"></Field>
                             <ErrorMessage name="url" component="div"/>
                         </label>
                         <div>
-                            <button type='submit'>Save</button>
+                            <button class="menu-manager-button" type='submit'>Save</button>
                         </div>
                     </Form>
                 </Formik>

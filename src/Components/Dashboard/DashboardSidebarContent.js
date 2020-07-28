@@ -34,8 +34,8 @@ class DashboardSidebarContent extends Component {
     }
 
     getActiveTab = () => {
-        const pathArr = this.props.path.split('/')
-        return pathArr[pathArr.length - 1]
+        const pathArr = this.props.path.split('/');
+        return pathArr[2];
     }
 
 }

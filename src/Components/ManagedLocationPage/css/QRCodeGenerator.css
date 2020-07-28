@@ -1,3 +1,47 @@
-#qr-code-block {
-    text-align: center;
+#qr-code-block{
+    width: 90%;
+    margin: 25px 40px 25px 40px;
+    font-family: Roboto;
+}
+
+
+.qr-code-subheader{
+    font-weight: 600;
+    color: #23A6BD;
+}
+
+label{
+    font-family: Roboto;
+    font-weight: bold;
+    color: white;
+}
+
+.qr-header{
+    font-size: 16px;
+}
+
+.col{
+    border: 5px black;
+}
+
+.column-content{
+    align-self: flex-end;
+    width: 100%;
+}
+
+.qr-code-form-column{
+    display: flex;
+}
+
+.qr-code-generator-wrapper{
+    background-color: #191A25;
+    max-width: 600px;
+    border-radius: 6px;
+    padding: 8px;
+}
+
+#generate-qr-code-submit {
+    color: white;
+    font-weight: bold;
+    background-color: #23A6BD;
 }

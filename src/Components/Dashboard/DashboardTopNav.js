@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import styles from './css/DashboardTopNav.css';
 import Navbar from 'react-bootstrap/Navbar'
+import Button from 'react-bootstrap/Button'
 
 class DashboardTopNav extends Component {
     render() {
@@ -14,9 +15,16 @@ class DashboardTopNav extends Component {
                     />
                 </Navbar.Brand>
                 <Navbar.Collapse/>
-                <button style={{marginRight: '10%'}} onClick={this.props.signOutFunc}>
+                <Button style={{
+                    marginRight: '5%',
+                    fontWeight: 'bold',
+                    fontFamily: 'Roboto',
+                    color: '#191A25'
+                }}
+                        variant='light'
+                        onClick={this.props.signOutFunc}>
                     Sign Out
-                </button>
+                </Button>
             </Navbar>
         );
     }
