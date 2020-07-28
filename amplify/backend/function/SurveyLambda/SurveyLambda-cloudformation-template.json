@@ -82,7 +82,7 @@
 				"Layers": [],
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-cleanviewweb-dev-200726-deployment",
+					"S3Bucket": "amplify-cleanviewweb-staging-231426-deployment",
 					"S3Key": "amplify-builds/SurveyLambda-784a3530674b54596c51-build.zip"
 				}
 			}
