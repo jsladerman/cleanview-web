@@ -45,8 +45,8 @@ class MenuManager extends Component {
     }
 
     updateDataFromDB = async () => {
-        const apiName = 'manageLocationApi';
-        const path = '/manageLocation/object'
+        const apiName = 'ManageLocationApi';
+        const path = '/location/object'
         const requestData = {
             headers: {},
             response: true,
@@ -73,8 +73,8 @@ class MenuManager extends Component {
     }
 
     updateMenuURL = async (urlVal) => {
-        const apiName = 'manageLocationApi';
-        const path = '/manageLocation';
+        const apiName = 'ManageLocationApi';
+        const path = '/location/menu';
         const requestData = {
             headers: {},
             response: true,

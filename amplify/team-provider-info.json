@@ -1,0 +1,20 @@
+{
+    "staging": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-cleanviewweb-staging-170737-authRole",
+            "UnauthRoleArn": "arn:aws:iam::676044961909:role/amplify-cleanviewweb-staging-170737-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::676044961909:role/amplify-cleanviewweb-staging-170737-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-cleanviewweb-staging-170737-deployment",
+            "UnauthRoleName": "amplify-cleanviewweb-staging-170737-unauthRole",
+            "StackName": "amplify-cleanviewweb-staging-170737",
+            "StackId": "arn:aws:cloudformation:us-east-1:676044961909:stack/amplify-cleanviewweb-staging-170737/5ee1e650-d116-11ea-8871-12342204bca9",
+            "AmplifyAppId": "d3jrprdg7dypqc"
+        },
+        "categories": {
+            "auth": {
+                "cleanviewwebdd68a0c2": {}
+            }
+        }
+    }
+}

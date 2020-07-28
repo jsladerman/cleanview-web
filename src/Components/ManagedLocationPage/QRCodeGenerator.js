@@ -33,7 +33,7 @@ class QRCodeGenerator extends Component {
       color: values.color,
     })
 
-    const apiName = 'manageLocationApi';
+    const apiName = 'ManageLocationApi';
     const path = '/manageLocation/sublocations';
     const requestData = {
       headers: {},
@@ -55,8 +55,8 @@ class QRCodeGenerator extends Component {
   }
 
   updateDataFromDB = async () => {
-    const apiName = 'manageLocationApi';
-    const path = '/manageLocation/object';
+    const apiName = 'ManageLocationApi';
+    const path = '/location/object';
     const requestData = {
       headers: {},
       response: true,
