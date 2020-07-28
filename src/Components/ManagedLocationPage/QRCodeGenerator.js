@@ -3,6 +3,7 @@ import './css/QRCodeGenerator.css'
 import uuid from 'react-uuid';
 import {API} from 'aws-amplify';
 import {Formik, Form, Field} from 'formik';
+import awsmobile from '../../aws-exports'
 class QRCodeGenerator extends Component {
   // TODO: GET URL FROM DB, NOT PASSED IN AS PROP
   constructor(props) {
@@ -14,6 +15,10 @@ class QRCodeGenerator extends Component {
     
     this.addSublocation = this.addSublocation.bind(this)
     this.updateDataFromDB = this.updateDataFromDB.bind(this)
+    
+    const test = process.env.ENV_URL || "wack"
+    console.log("Wack:", test)
+    console.log("Wacker:", process.env.ENV)
 
   }
   componentDidMount() {

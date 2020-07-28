@@ -90,9 +90,10 @@ app.get(path + "/object", function (req, res) {
   };
 
   // let environmentURL = process.env.ENV_URL || "https://inv6tn1p09.execute-api.us-east-1.amazonaws.com"
-  
-  let environmentURL = process.env.ENV_URL || "wack"
 
+  let environmentURL = process.env.ENV_URL || "wack"
+  console.log(process)
+  console.log(process.env)
 
   dynamodb.get(getItemParams, (err, data) => {
     if (err) {
