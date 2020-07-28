@@ -1,0 +1,14 @@
+.analDash{
+    width: 90%;
+    margin: 25px 40px 25px 40px;
+    font-family: Roboto;
+}
+
+.fieldHeader{
+    font-weight: bold;
+}
+
+.analyticsDashboardSubheader{
+    font-weight: bold;
+    font-size: 20px;
+}
