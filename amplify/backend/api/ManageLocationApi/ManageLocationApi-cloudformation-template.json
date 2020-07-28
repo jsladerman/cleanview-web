@@ -673,7 +673,7 @@
         
         
         
-      "DeploymentAPIGWManageLocationApi": {
+      "DeploymentAPIGWManageLocationApicad145ad": {
         "Type": "AWS::ApiGateway::Deployment",
         "Properties": {
           "Description": "The Development stage deployment of your API.",

@@ -71,7 +71,7 @@ app.get(path, function(req, res){
   const queryParams = {
     TableName: tableName,
     KeyConditionExpression: "manager = :manager",
-    IndexName: "manager",
+    IndexName: "ManagerIndex",
     ExpressionAttributeValues: {
       ":manager": req.query.manager,
     }
@@ -100,7 +100,8 @@ app.get(path + "/object", function (req, res) {
     if (err) {
       res.statusCode = 500;
       res.json({ 
-        error: req.query.id + " Could not load items: " + err.message
+        error:" Could not load items: " + err.message,
+        id: req.query.id
        });
       
     } else {
