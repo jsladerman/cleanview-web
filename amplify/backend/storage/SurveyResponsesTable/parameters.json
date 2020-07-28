@@ -1,5 +1,0 @@
-{
-    "tableName": "survey_responses",
-    "partitionKeyName": "id",
-    "partitionKeyType": "S"
-}
