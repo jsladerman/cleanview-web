@@ -46,13 +46,14 @@ class Dashboard extends Component {
         if (this.state.redirect) {
             return <Redirect push to={this.state.redirect}/>
         }
-        console.log('PATH ' + JSON.stringify(this.props))
         return (
             <div className={styles.dashboard}>
-                <DashboardTopNav/>
+                <DashboardTopNav signOutFunc={this.signOut}/>
                 <Sidebar
                     sidebar={
-                        <DashboardSidebarContent signOutFunc={this.signOut}/>
+                        <DashboardSidebarContent
+                            path={this.props.location.pathname}
+                            parentRedirectFunc={this.redirect}/>
                     }
                     children={
                         this.renderSidebarChildren()
@@ -101,7 +102,12 @@ class Dashboard extends Component {
         }
     };
 
-    renderSidebarChildren() {
+    redirect = (path) => {
+        this.setState({redirect: '/home' + path},
+            () => this.setState({redirect: null}));
+    }
+
+    renderSidebarChildren = () => {
         if (!this.state.managerName) {
             return <img
                 src={require("../images/dashboardLoader.svg")}
@@ -113,7 +119,7 @@ class Dashboard extends Component {
             return (
                 <div className={styles.sidebarChildren}>
                     <Switch>
-                        <Redirect exact from="/home" to="/home/locations" />
+                        <Redirect exact from="/home" to="/home/locations"/>
                         <Route path={this.path + '/locations/:id/:tab'} render={(props) =>
                             <ManagedLocationInfo
                                 {...props}
@@ -129,7 +135,13 @@ class Dashboard extends Component {
                                 locations={this.state.locationData}
                                 getDataFunc={this.getData}/>}
                         />
-                        <Redirect to="/home/locations" />
+                        <Route exact path={this.path + '/billing'} render={(props) =>
+                            <h1 style={{padding: '20px'}}>Billing Page</h1>}
+                        />
+                        <Route path={this.path + '/settings'} render={(props) =>
+                            <h1 style={{padding: '20px'}}>Settings Page</h1>}
+                        />
+                        <Redirect to="/home/locations"/>
                     </Switch>
                 </div>
             );
@@ -140,8 +152,8 @@ class Dashboard extends Component {
 const jsStyles = {
     sidebar: {
         styles: {
-            root: {top: '100px'},
-            sidebar: {width: '150px', backgroundColor: '#30B3CA'},
+            root: {top: '75px'},
+            sidebar: {width: '175px', backgroundColor: '#191A26'},
             overlay: {backgroundColor: 'transparent'}
         }
     }
