@@ -10,14 +10,10 @@
     color: #23A6BD;
 }
 
-.add-new-sublocation{
-    border: 2px solid #E5E5E5;
-    border-radius: 6px;
-    font-family: Roboto;
-}
-
 label{
     font-family: Roboto;
+    font-weight: bold;
+    color: white;
 }
 
 .qr-header{
@@ -38,7 +34,7 @@ label{
 }
 
 .qr-code-generator-wrapper{
-    border: 2px #E5E5E5 solid;
+    background-color: #23A6BD;
     border-radius: 6px;
     padding: 5px 5px 5px 5px;
 }

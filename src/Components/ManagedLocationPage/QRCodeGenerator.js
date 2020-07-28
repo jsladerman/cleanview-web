@@ -137,7 +137,7 @@ class AddNewSublocation extends Component {
                 </div>
               </Col>
               <Col className="qr-code-form-column">
-                <button class="btn btn-secondary column-content" type="submit">Generate</button>
+                <button id="generate-qr-code-submit" class="btn column-content btn-dark" type="submit">Generate</button>
               </Col>
             </Row>
           </Form>
