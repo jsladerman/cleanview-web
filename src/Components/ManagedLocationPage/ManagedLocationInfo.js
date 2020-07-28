@@ -16,7 +16,7 @@ class ManagedLocationInfo extends Component {
         this.state = {
             redirect: null,
             tab: this.props.match.params.tab,
-            data: this.props.locations
+            data: []
         }
     }
 
@@ -63,8 +63,8 @@ class ManagedLocationInfo extends Component {
     }
 
     setLocationInfo = () => {
-        if (this.state.data.length) {
-            if (!this.findLocationFromArr(this.state.data))
+        if (this.props.data) {
+            if (!this.findLocationFromArr(this.props.data))
                 this.setState({redirect: '/home'})
         } else
             this.pullData();
@@ -96,7 +96,6 @@ class ManagedLocationInfo extends Component {
 
         API.get(apiName, path, myParams)
             .then(response => {
-                this.setState({data: response['data']})
                 if (!this.findLocationFromArr(response['data']))
                     this.setState({redirect: '/home'})
             })
