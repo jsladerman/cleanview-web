@@ -28,6 +28,13 @@ if (process.env.ENV && process.env.ENV !== "NONE") {
 }
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
+let environmentURL = "https://inv6tn1p09.execute-api.us-east-1.amazonaws.com/dev"
+if(process.ENV === 'dev') {
+  environmentURL = "https://inv6tn1p09.execute-api.us-east-1.amazonaws.com/dev"
+} else if(process.env.ENV === 'prod') {
+
+}
+
 // Enable CORS for all methods
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -205,7 +212,7 @@ app.get("/survey/:id", function (req, res) {
         <meta charset='utf-8'>
         <script async src='https://cdn.ampproject.org/v0.js'></script>
         <title>CleanView</title>
-        <link rel='canonical' href='https://inv6tn1p09.execute-api.us-east-1.amazonaws.com/dev/survey/${tot_id}'>
+        <link rel='canonical' href='${environmentURL}/survey/${tot_id}'>
         <link href='https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;700&display=swap' rel='stylesheet'>
         <link href='https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,500;0,600;1,600&display=swap'
           rel='stylesheet'>
@@ -305,7 +312,7 @@ app.get("/survey/:id", function (req, res) {
       <body>
         <h1>Help <strong>${name}</strong> learn about their COVID-19 response:</h1>
         <form class='user-survey' method='POST'
-          action-xhr=https://inv6tn1p09.execute-api.us-east-1.amazonaws.com/dev/responses target="_top">
+          action-xhr="${environmentURL}/responses" target="_top">
           <fieldset>
             <div>
               <input type='hidden' name='total_id' value='${total_id}'> </input>
