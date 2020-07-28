@@ -91,9 +91,7 @@ app.get(path + "/object", function (req, res) {
 
   // let environmentURL = process.env.ENV_URL || "https://inv6tn1p09.execute-api.us-east-1.amazonaws.com"
 
-  let environmentURL = process.env.ENV_URL || "wack"
-  console.log(process)
-  console.log(process.env)
+  let env = process.env.ENV || 'wack'
 
   dynamodb.get(getItemParams, (err, data) => {
     if (err) {
@@ -103,7 +101,7 @@ app.get(path + "/object", function (req, res) {
        });
       
     } else {
-      res.json({ body: data.Item, environmentURL: environmentURL})
+      res.json({ body: data.Item, environmentURL: env})
     }
   });
 });

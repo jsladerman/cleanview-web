@@ -15,10 +15,6 @@ class QRCodeGenerator extends Component {
     
     this.addSublocation = this.addSublocation.bind(this)
     this.updateDataFromDB = this.updateDataFromDB.bind(this)
-    
-    const test = process.env.ENV_URL || "wack"
-    console.log("Wack:", test)
-    console.log("Wacker:", process.env.ENV)
 
   }
   componentDidMount() {
