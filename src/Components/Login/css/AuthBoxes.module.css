@@ -1,0 +1,61 @@
+.box {
+    background-color: #191A26;
+    padding: 20px;
+    width: 60%;
+    overflow: scroll;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.headerText {
+    text-align: center;
+    font-size: 34px;
+    font-weight: bold;
+}
+
+.formLabel {
+    color: white;
+    font-family: 'Roboto', sans-serif;
+}
+
+.formTextBox {
+    border-width: 2px;
+    height: 45px;
+}
+
+.formTextBox:focus {
+    /*background: #61dafb;*/
+}
+
+.formCheckBox {
+    position: relative;
+    border-width: 3px;
+    height: 16px;
+    width: auto;
+    float: left;
+    bottom: 20px;
+}
+
+.checkBoxLabel {
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    margin-left: 22px;
+}
+
+.linkText {
+    display: inline;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.forgotPasswordMessage {
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+}

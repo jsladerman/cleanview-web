@@ -1,43 +1,8 @@
 body {
     margin: 0;
- }
-
-.page {
-    width: calc(100% - 40px);
-    height: calc(100% - 40px);
-    position: absolute;
-    border: 20px solid transparent;
-    background-color: white;
-    border-radius: 10px;
-    border-image: url(../images/CleanView-QR-Background.png) 30 round;
-    overflow: scroll;
 }
 
-.authenticator {
-    position: relative;
-    top: -75px;
-    transform: translateX(35.5%);
-}
-
-.logo {
-    margin-bottom: 25px;
-    position: relative;
-    background-color: transparent;
-}
-
-.title-message {
-    position: relative;
-    top: -80px;
-    transform: translateX(calc(31% + 133px));
-}
-
-.subtitle-message {
-    position: relative;
-    top: -90px;
-    transform: translateX(calc(31% + 133px));
-}
-
-:root{
+:root {
     --amplify-primary-color: #23C9AD;
     --amplify-primary-tint: #23C9AD;
     --amplify-primary-shade: #209AB0;
