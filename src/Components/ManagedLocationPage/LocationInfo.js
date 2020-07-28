@@ -12,6 +12,7 @@ class LocationInfo extends Component{
     }
 
     render(){
+        console.log(this.state.data)
         return(
         <div>
             <div id="location-info-header">
@@ -34,7 +35,7 @@ class LocationInfo extends Component{
                 <div>
                     <p> <span className="location-info-field-name">Employees wearing masks? </span>{this.props.data.employee_masks}</p>
                     <p> <span className="location-info-field-name">Are tables 6 feet apart? </span>{this.props.data.social_distancing}</p>
-                    <p> <span className="location-info-field-name">Can customers dine-in? </span>{this.props.data.dining_in}</p>
+                    <p> <span className="location-info-field-name">Can customers dine-in? </span>{this.props.data.cleaning_practices.dining_in}</p>
                 </div>
 
                 {/* Location Information */}
