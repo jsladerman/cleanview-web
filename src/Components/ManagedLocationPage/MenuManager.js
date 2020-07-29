@@ -10,7 +10,8 @@ class MenuManager extends Component {
         super(props);
         this.state = {
             menu_link: '',
-            switchVal: 'pdf'
+            switchVal: 'pdf',
+            backendEnv: 'dev'
         }
 
         this.updateMenuURL = this.updateMenuURL.bind(this);
@@ -60,6 +61,7 @@ class MenuManager extends Component {
                 if(response.data.body.menu_link) {
                     let currState = this.state
                     currState.menu_link = response.data.body.menu_link
+                    currState.backendEnv = response.data.backendEnv
                     this.setState(currState)
                 } else {
                     let currState = this.state
@@ -140,6 +142,7 @@ class MenuManager extends Component {
                             loc_id= {this.props.id}
                             handleChange={this.updateMenuURL}
                             menu_link = {this.props.menu_link}
+                            backendEnv = {this.state.backendEnv}
             />
         </div>
         )
@@ -155,7 +158,7 @@ class InputSwitch extends Component {
                );
             case 'pdf':
                 return (
-                    <PDFMenuUpload loc_id={this.props.loc_id} handleChange={this.props.handleChange} />
+                    <PDFMenuUpload loc_id={this.props.loc_id} handleChange={this.props.handleChange} backendEnv={this.props.backendEnv}/>
                 );
             default:
                 return(
@@ -217,7 +220,7 @@ class PDFMenuUpload extends Component {
         .catch(err => console.log(err))
 
         // TODO: CHANGE ON DEV VS PROD
-        const url = "https://cleanview-menu-images200726-dev.s3.amazonaws.com/public/" + filename;
+        const url = "https://cleanviewweb1b7535894d364601be8133bce58e835a170737-" + this.props.backendEnv + ".s3.us-east-1.amazonaws.com/public/" + filename;
         handleChangeFunc(url)
     }
 

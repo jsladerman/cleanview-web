@@ -29,11 +29,13 @@ if (process.env.ENV && process.env.ENV !== "NONE") {
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 // HARD CODED: url endpoints
-let environmentURL = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
+let environmentURL = "https://ax9vrpeio1.execute-api.us-east-1.amazonaws.com/dev"
 if(process.ENV === 'dev') {
-  environmentURL = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
+  environmentURL = "https://ax9vrpeio1.execute-api.us-east-1.amazonaws.com/dev"
 } else if(process.env.ENV === 'staging') {
   environmentURL = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
+} else if(process.env.ENV === 'prod') {
+  environmentURL = "https://pk58tyr64h.execute-api.us-east-1.amazonaws.com/prod"
 }
 
 // Enable CORS for all methods
@@ -305,7 +307,7 @@ app.get("/survey/:id", function (req, res) {
       <body>
         <h1>Help <strong>${name}</strong> learn about their COVID-19 response:</h1>
         <form class='user-survey' method='POST'
-          action-xhr="${environmentURL}/responses" target="_top">
+          action-xhr="${environmentURL}/response" target="_top">
           <fieldset>
             <div>
               <input type='hidden' name='total_id' value='${total_id}'> </input>
