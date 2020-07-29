@@ -1,7 +1,7 @@
 {
     "paths": [
         {
-            "name": "/dashboard/analytics/survey/responses",
+            "name": "/survey-responses",
             "lambdaFunction": "GetSurveyResponses",
             "privacy": {
                 "private": true,
@@ -33,5 +33,6 @@
                 "Arn"
             ]
         }
-    ]
+    ],
+    "uuid": "4b4014d4"
 }

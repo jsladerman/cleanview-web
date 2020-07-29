@@ -6,6 +6,8 @@ import styles from './css/AnalyticsDashboard.module.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Auth from '@aws-amplify/auth';
+import API from '@aws-amplify/api';
 
 
 class AnalyticsDashboard extends Component {
@@ -24,7 +26,7 @@ class AnalyticsDashboard extends Component {
     // 3) piechart for the rest of the questions (yes/no)
 
     componentDidMount = () => {
-        this.populateStateWithJson();
+        this.pullData();
         for (var i = 0; i < this.state.restaurantSurveyResponses.length; i++) {
             var obj = this.state.restaurantSurveyResponses[i];
             console.log("Age: " + obj.age + ", Rating: " + obj["response-rating"]);
@@ -134,29 +136,26 @@ class AnalyticsDashboard extends Component {
         console.log("This state: " + this.state.restaurantSurveyResponses);
     }
 
-    // Create functions that use this.state.restaurantSurveyResponses and manipulate data
-
-    /*
     pullData = () => {
         Auth.currentUserInfo()
             .then(user => {
                 if (user == null)
                     this.setState({redirect: '/login'});
                 else
-                    this.getRestaurantSurveyData({this.props.id});
+                    this.getRestaurantSurveyData(this.props.id);
             })
             .catch(error => {
-                consoler.log('Error: ' + error)
+                console.log('Error: ' + error)
             });
     }
 
-    getRestaurantSurveyData(restaurantID) => {
-        const apiName = {PLACEHOLDER};
-        const path = {PLACEHOLDER};
+    getRestaurantSurveyData = (restaurantID) => {
+        const apiName = 'GetSurveyResponses';
+        const path = '/survey-responses'
         const myParams = {
             headers: {},
             response: true,
-            queryStringParameters{
+            queryStringParameters: {
                 restaurant_id: restaurantID
             },
         };
@@ -164,13 +163,12 @@ class AnalyticsDashboard extends Component {
         API.get(apiName, path, myParams)
             .then(response => {
                 this.setState({restaurantSurveyResponses: response['data']});
+                console.log(this.state.restaurantSurveyResponses);
             })
             .catch(error => {
                 console.log('Error: ' + error);
             })
     }
-    */
-
 }
 
 export default AnalyticsDashboard;
