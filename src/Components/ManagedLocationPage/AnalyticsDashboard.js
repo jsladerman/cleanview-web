@@ -112,7 +112,11 @@ class AnalyticsDashboard extends Component {
                     <Row>
                         <Col>
                             {this.binaryPieChart('employee-masks', 'Are your employees wearing masks?')}
+                        </Col>
+                        <Col>
                             {this.binaryPieChart('six-feet', 'Are your tables 6 feet apart?')}
+                        </Col>
+                        <Col>
                             {this.binaryPieChart('tourist-diner', 'Are your diners tourists?')}
                         </Col>
                     </Row>
