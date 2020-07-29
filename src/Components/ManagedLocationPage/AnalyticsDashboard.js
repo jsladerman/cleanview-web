@@ -11,15 +11,37 @@ class AnalyticsDashboard extends Component {
         super(props);
         this.state = {
             restaurantSurveyResponses: [],
-            ageFilters: ['0-17', '18-25', '26-35', '36-45', '46-55', '56-65', '66+'],
-            touristFilters: ['1', '0'],
-            timeFilters: 0,
+            filteredData: [],
+            ageIncludeFilters: ['0-17', '18-25', '26-35', '36-45', '46-55', '56-65', '66+'],
+            touristIncludeFilters: ['1', '0'],
+            // QRIncludeFilters: []
+            // timeFilters: 0,
             // Default is 0 hours = all data, else show from the past "x" hours
         }
     }
 
+    filterDataByTourist = () => {
+        let touristFilteredData = this.state.restaurantSurveyResponses.filter(function (e) {
+            return this.state.touristIncludeFilters.includes(e['tourist-diner']);
+        });
+        this.setState({filteredData: touristFilteredData})
+    }
+
     componentDidMount = () => {
         this.populateStateWithJson();
+    }
+
+    averageRating = () => {
+        let total = 0.0;
+        for (var i = 0; i < this.state.restaurantSurveyResponses.length; i++) {
+            var obj = this.state.restaurantSurveyResponses[i];
+            total += obj['response-rating'];
+            console.log(obj['response-rating']);
+        }
+        console.log("Total: " + total);
+        console.log("Responses: " + this.state.restaurantSurveyResponses.length);
+        console.log("Result: " + total / this.state.restaurantSurveyResponses.length)
+        return total / this.state.restaurantSurveyResponses.length;
     }
 
     render() {
@@ -31,8 +53,8 @@ class AnalyticsDashboard extends Component {
         return (
             <div className={styles.analDash} style={{ paddingLeft: "20px" }}>
                 <h2>Analytics Dashboard</h2>
-                <p><span className={styles.fieldHeader}>Average Rating: </span> * * * * * (4.6)</p>
-                <p><span className={styles.fieldHeader}>Total # of Reviews: </span>342</p>
+                <p><span className={styles.fieldHeader}>Average Rating: </span> {this.averageRating()}</p>
+                <p><span className={styles.fieldHeader}>Total # of Reviews: </span> {this.state.restaurantSurveyResponses.length} </p>
 
                 <br />
 
