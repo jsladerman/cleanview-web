@@ -82,6 +82,8 @@ class QRCodeGenerator extends Component {
       return (<p>Looking for sublocations...</p>)
     }
 
+    
+
     console.log('id',this.props.id)
     console.log()
 
