@@ -24,11 +24,13 @@ if(process.env.ENV && process.env.ENV !== "NONE") {
 }
 
 // HARD CODED: url endpoints
-let environmentURLSurvey = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
+let environmentURLSurvey = "https://ax9vrpeio1.execute-api.us-east-1.amazonaws.com/dev"
 if(process.env.ENV === 'dev') {
-  environmentURLSurvey = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
+  environmentURLSurvey = "https://ax9vrpeio1.execute-api.us-east-1.amazonaws.com/dev"
 } else if(process.env.ENV === 'staging') {
   environmentURLSurvey = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
+} else if(process.env.ENV === 'prod') {
+  environmentURLSurvey = "https://pk58tyr64h.execute-api.us-east-1.amazonaws.com/prod"
 }
 
 const userIdPresent = false;
@@ -105,7 +107,7 @@ app.get(path + "/object", function (req, res) {
        });
       
     } else {
-      res.json({ body: data.Item, environmentURL: environmentURLSurvey})
+      res.json({ body: data.Item, environmentURL: environmentURLSurvey, backendEnv: process.env.ENV})
     }
   });
 });

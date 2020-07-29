@@ -13,7 +13,7 @@ class QRCodeGenerator extends Component {
     super(props);
     this.state = {
       sublocations: '',
-      environmentURL: ''
+      environmentURL: '',
     };
 
     this.addSublocation = this.addSublocation.bind(this)
@@ -88,7 +88,7 @@ class QRCodeGenerator extends Component {
     const subLocationList = this.state.sublocations.map((sublocation) => {
       const total_id = this.props.id + '99strl99strl' + sublocation.id
       return(
-        <SublocationQRCode id={total_id} name={sublocation.name} color={sublocation.color} key={sublocation.id} environmentURL={this.state.environmentURL}/>
+        <SublocationQRCode id={total_id} name={sublocation.name} color={sublocation.color} key={sublocation.id} environmentURL={this.state.environmentURL} />
       )
     })
     return (
