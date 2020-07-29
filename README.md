@@ -33,6 +33,7 @@ Use Github as the *ultimate source of truth*. You can always use Github and vers
 
 ### Moving to Staging/Master
 When reviewing a PR, please pull the branch, and run both
+    
     npm start
     amplify env checkout dev
     amplify push
