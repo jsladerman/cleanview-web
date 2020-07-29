@@ -58,7 +58,7 @@ class FilteredDataToRatingBarChart extends Component{
 
         for (var i = 0; i < this.props.filteredData.length; i++) {
             var obj = this.props.filteredData[i];
-            var rating = obj["response-rating"]
+            var rating = parseFloat(obj["response-rating"])
             ratingCounts[2 * rating]++;
         }
 
@@ -75,8 +75,8 @@ class FilteredDataToRatingBarChart extends Component{
             <div>
                 <p>Customer Ratings</p>
                 <BarChart
-                    width={400}
-                    height={400}
+                    width={350}
+                    height={350}
                     bar_width={.9}
                     // titleText='How safe do your customers feel?'
                     // titleSize='12px'

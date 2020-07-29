@@ -5,6 +5,10 @@ import FilteredDataToRatingBarChart from './FilteredDataToCharts/FilteredDataToR
 import FilteredDataToFrequencyChart from './FilteredDataToCharts/FilteredDataToFrequencyChart';
 import styles from './css/AnalyticsDashboard.module.css';
 import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+// import Checkbox from 'react-bootstrap/Checkbox';
 
 class AnalyticsDashboard extends Component {
     constructor(props) {
@@ -12,36 +16,21 @@ class AnalyticsDashboard extends Component {
         this.state = {
             restaurantSurveyResponses: [],
             filteredData: [],
-            ageIncludeFilters: ['0-17', '18-25', '26-35', '36-45', '46-55', '56-65', '66+'],
-            touristIncludeFilters: ['1', '0'],
-            // QRIncludeFilters: []
-            // timeFilters: 0,
-            // Default is 0 hours = all data, else show from the past "x" hours
-        }
-    }
+            ageExcludeFilter: ['0-17', '66+'],
+            touristExcludeFilter: ['1'],
 
-    filterDataByTourist = () => {
-        let touristFilteredData = this.state.restaurantSurveyResponses.filter(function (e) {
-            return this.state.touristIncludeFilters.includes(e['tourist-diner']);
-        });
-        this.setState({filteredData: touristFilteredData})
+            // QR filter
+            // Timestamp filter- default is 0 hours = all data, else show from the past "x" hours
+        }
     }
 
     componentDidMount = () => {
         this.populateStateWithJson();
+        this.filterData();
     }
 
-    averageRating = () => {
-        let total = 0.0;
-        for (var i = 0; i < this.state.restaurantSurveyResponses.length; i++) {
-            var obj = this.state.restaurantSurveyResponses[i];
-            total += obj['response-rating'];
-            console.log(obj['response-rating']);
-        }
-        console.log("Total: " + total);
-        console.log("Responses: " + this.state.restaurantSurveyResponses.length);
-        console.log("Result: " + total / this.state.restaurantSurveyResponses.length)
-        return total / this.state.restaurantSurveyResponses.length;
+    handleClick(cb) {
+       console.log("Clicked, new value = " + cb.checked);
     }
 
     render() {
@@ -53,46 +42,67 @@ class AnalyticsDashboard extends Component {
         return (
             <div className={styles.analDash} style={{ paddingLeft: "20px" }}>
                 <h2>Analytics Dashboard</h2>
-                <p><span className={styles.fieldHeader}>Average Rating: </span> {this.averageRating()}</p>
+                <p><span className={styles.fieldHeader}>Average Rating: </span> {this.averageRating()} / 5</p>
                 <p><span className={styles.fieldHeader}>Total # of Reviews: </span> {this.state.restaurantSurveyResponses.length} </p>
 
                 <br />
 
                 <Container fluid>
                     <h4 className={styles.analyticsDashboardSubheader}>Customer Demographic Information</h4>
-                    
-                    <FilteredDataToAgeBarChart
-                        filteredData={this.state.restaurantSurveyResponses}
-                    />
-                    
-                    <FilteredDataToPieChart
-                        filteredData={this.state.restaurantSurveyResponses}
-                        keyString='tourist-diner'
-                        titleText='Are your diners tourists?'
-                    />
-                    
-                    <FilteredDataToFrequencyChart
-                        filteredData={this.state.restaurantSurveyResponses}
-                    />
+                    <Row className={styles.rowDivider}>
+                        <Col>
+                            <FilteredDataToAgeBarChart
+                                filteredData={this.state.restaurantSurveyResponses}
+                            />
+                        </Col>
+                        
+                        <Col>
+                            <FilteredDataToPieChart
+                                filteredData={this.state.restaurantSurveyResponses}
+                                keyString='tourist-diner'
+                                titleText='Are your diners tourists?'
+                            />
+                        </Col>
+                    </Row>
 
-                    <h4 className={styles.analyticsDashboardSubheader}>General Safety Response</h4>
-                    
-                    <FilteredDataToRatingBarChart
-                        filteredData={this.state.restaurantSurveyResponses}
-                    />
+                    <h4 className={styles.analyticsDashboardSubheader}>Survey Responses</h4>
+                    <Row id={styles.filterCharts} className={styles.rowDivider}>
+                        <Col>
+                            <p>Filter Charts</p>
+                        </Col>
+                    </Row>
 
-                    <FilteredDataToPieChart
-                        filteredData={this.state.restaurantSurveyResponses}
-                        keyString='employee-masks'
-                        titleText='Are your employees wearing masks?'
-                    />
+                    <Row className={styles.rowDivider}>
+                        <Col>
+                            <FilteredDataToRatingBarChart
+                            filteredData={this.state.filteredData}
+                            />
+                        </Col>
 
-                    <FilteredDataToPieChart
-                        filteredData={this.state.restaurantSurveyResponses}
-                        keyString='six-feet'
-                        titleText='Are your tables 6 feet apart?'
-                    />
+                        <Col>
+                            <FilteredDataToFrequencyChart
+                            filteredData={this.state.filteredData}
+                            />
+                        </Col>
+                    </Row>
 
+                    <Row className={styles.rowDivider}>
+                        <Col>
+                            <FilteredDataToPieChart
+                            filteredData={this.state.filteredData}
+                            keyString='employee-masks'
+                            titleText='Are your employees wearing masks?'
+                            />
+                        </Col>
+
+                        <Col>
+                            <FilteredDataToPieChart
+                            filteredData={this.state.filteredData}
+                            keyString='six-feet'
+                            titleText='Are your tables at least 6 feet apart?'
+                            />
+                        </Col>
+                    </Row>
                 </Container>
 
             </div>
@@ -102,7 +112,24 @@ class AnalyticsDashboard extends Component {
     populateStateWithJson = () => {
         let currState = this.state;
         currState.restaurantSurveyResponses = require('./data/mock_records.json');
+        currState.filteredData = currState.restaurantSurveyResponses;
         this.setState(currState);
+    }
+
+    filterData = () => {
+        let newFilteredData = this.state.restaurantSurveyResponses.filter(response =>
+            (!this.state.touristExcludeFilter.includes(response['tourist-diner']) && !this.state.ageExcludeFilter.includes(response['age']) )
+        );
+        this.setState({filteredData: newFilteredData});
+    }
+
+    averageRating = () => {
+        let total = 0.0;
+        for (var i = 0; i < this.state.restaurantSurveyResponses.length; i++) {
+            var obj = this.state.restaurantSurveyResponses[i];
+            total += parseFloat(obj['response-rating']);
+        }
+        return total / this.state.restaurantSurveyResponses.length;
     }
 
     // Create functions that use this.state.restaurantSurveyResponses and manipulate data

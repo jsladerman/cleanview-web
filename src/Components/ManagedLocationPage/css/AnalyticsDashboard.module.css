@@ -10,5 +10,14 @@
 
 .analyticsDashboardSubheader{
     font-weight: bold;
-    font-size: 20px;
+}
+
+#filterCharts{
+    border: 2px #E5E5E5 solid;
+    border-radius: 6px;
+    padding: 6px 6px 6px 6px;
+}
+
+.rowDivider{
+    margin-top: 20px;
 }

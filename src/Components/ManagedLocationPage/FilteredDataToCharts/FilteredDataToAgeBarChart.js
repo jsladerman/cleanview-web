@@ -70,8 +70,8 @@ class FilteredDataToAgeBarChart extends Component{
             <div>
                 <p>Customer Age Distribution</p>
                 <BarChart
-                    width={400}
-                    height={400}
+                    width={350}
+                    height={350}
                     bar_width={.9}
                     // titleText='How safe do your customers feel?'
                     // titleSize='12px'

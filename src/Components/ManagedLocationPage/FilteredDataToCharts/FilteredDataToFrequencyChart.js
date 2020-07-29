@@ -37,7 +37,6 @@ class FilteredDataToFrequencyChart extends Component{
             var obj = this.props.filteredData[i];
             var timeHour = obj["timestamp"].slice(11, 13);  // Get the hour
             
-            console.log(timeHour);
             let index = -1;
             if(timeHour >= 2 && timeHour <= 5){             // 2 am to 5:59 am
                 index = 0;   
@@ -67,8 +66,8 @@ class FilteredDataToFrequencyChart extends Component{
             <div>
               <div>Time of Survey Responses</div>
               <SurveyResponseFrequencyChart
-              height={400}
-              width={400}
+              height={350}
+              width={350}
               color='#30B3CA'
               // titleSize='12px'
               // titleText="Average # of Survey Responses by Time Period"
