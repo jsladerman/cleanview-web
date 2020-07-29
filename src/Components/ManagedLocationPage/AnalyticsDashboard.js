@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import BarChart from './AnalyticsWidgets/BarChart'
-import BinaryPieChart from './AnalyticsWidgets/BinaryPieChart'
-import SurveyResponseFrequencyChart from './AnalyticsWidgets/SurveyResponseFrequencyChart'
+import BarChart from './AnalyticsWidgets/BarChart';
+import BinaryPieChart from './AnalyticsWidgets/BinaryPieChart';
+import SurveyResponseFrequencyChart from './AnalyticsWidgets/SurveyResponseFrequencyChart';
+import data from './data/mock_records.json';
 
 // Intrusctions from Evan:
 // update state with data
@@ -70,8 +71,9 @@ class AnalyticsDashboard extends Component {
 
     populateStateWithJson = () => {
         let currState = this.state;
-        //currState.response = {JSON PLACEHOLDER};
+        currState.restaurantSurveyResponses = require(data);
         this.setState(currState);
+        console.log(this.state.restaurantSurveyResponses)
     }
 
     // Create functions that use this.state.restaurant_survey_responses and manipulate data
