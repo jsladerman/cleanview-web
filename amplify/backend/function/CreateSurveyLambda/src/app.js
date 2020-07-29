@@ -29,9 +29,9 @@ if (process.env.ENV && process.env.ENV !== "NONE") {
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 // HARD CODED: url endpoints
-let environmentURL = "https://ax9vrpeio1.execute-api.us-east-1.amazonaws.com/dev"
+let environmentURL = "https://d9uqja1id6.execute-api.us-east-1.amazonaws.com/dev"
 if(process.ENV === 'dev') {
-  environmentURL = "https://ax9vrpeio1.execute-api.us-east-1.amazonaws.com/dev"
+  environmentURL = "https://d9uqja1id6.execute-api.us-east-1.amazonaws.com/dev"
 } else if(process.env.ENV === 'staging') {
   environmentURL = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
 } else if(process.env.ENV === 'prod') {

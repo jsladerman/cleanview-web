@@ -24,9 +24,9 @@ if(process.env.ENV && process.env.ENV !== "NONE") {
 }
 
 // HARD CODED: url endpoints
-let environmentURLSurvey = "https://ax9vrpeio1.execute-api.us-east-1.amazonaws.com/dev"
+let environmentURLSurvey = "https://d9uqja1id6.execute-api.us-east-1.amazonaws.com/dev"
 if(process.env.ENV === 'dev') {
-  environmentURLSurvey = "https://ax9vrpeio1.execute-api.us-east-1.amazonaws.com/dev"
+  environmentURLSurvey = "https://d9uqja1id6.execute-api.us-east-1.amazonaws.com/dev"
 } else if(process.env.ENV === 'staging') {
   environmentURLSurvey = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
 } else if(process.env.ENV === 'prod') {

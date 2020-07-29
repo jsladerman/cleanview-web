@@ -130,7 +130,8 @@ class AnalyticsDashboard extends Component {
 
     populateStateWithJson = () => {
         let currState = this.state;
-        currState.restaurantSurveyResponses = require('./data/mock_records.json');
+        // currState.restaurantSurveyResponses = require('./data/mock_records.json');
+        currState.restaurantSurveyResponses = this.pullData();
         console.log("Current state: " + currState.restaurantSurveyResponses);
         this.setState(currState);
         console.log("This state: " + this.state.restaurantSurveyResponses);
@@ -151,7 +152,7 @@ class AnalyticsDashboard extends Component {
 
     getRestaurantSurveyData = (restaurantID) => {
         const apiName = 'GetSurveyResponses';
-        const path = '/survey-responses'
+        const path = '/survey-responses/object'
         const myParams = {
             headers: {},
             response: true,
