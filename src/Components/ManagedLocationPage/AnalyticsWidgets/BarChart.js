@@ -17,52 +17,7 @@ class BarChart extends Component {
   }
 
   createBarChart() {
-    const data = [
-      {
-        value: 0,
-        frequency: 0.02,
-      },
-      {
-        value: 0.5,
-        frequency: 0.1,
-      },
-      {
-        value: 1,
-        frequency: 0.1,
-      },
-      {
-        value: 1.5,
-        frequency: 0.1,
-      },
-      {
-        value: 2,
-        frequency: 0.05,
-      },
-      {
-        value: 2.5,
-        frequency: 0.2,
-      },
-      {
-        value: 3,
-        frequency: 0.05,
-      },
-      {
-        value: 3.5,
-        frequency: 0.1,
-      },
-      {
-        value: 4,
-        frequency: 0.1,
-      },
-      {
-        value: 4.5,
-        frequency: 0.1,
-      },
-      {
-        value: 5,
-        frequency: 0.18,
-      },
-    ];
+    const data = this.props.data
 
     const margin = { left: 20, bottom: 60, top: 40 },
       width = this.props.width - margin.left,

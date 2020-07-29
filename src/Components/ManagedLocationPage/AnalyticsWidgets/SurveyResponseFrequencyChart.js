@@ -19,32 +19,7 @@ class SurveyResponseFrequencyChart extends Component {
   }
 
   createChart() {
-    const data = [
-      {
-        label: "2am-6am",
-        numResponses: 0,
-      },
-      {
-        label: "6am-10am",
-        numResponses: 14,
-      },
-      {
-        label: "10am-2pm",
-        numResponses: 25,
-      },
-      {
-        label: "2pm-6pm",
-        numResponses: 23,
-      },
-      {
-        label: "6pm-10pm",
-        numResponses: 50,
-      },
-      {
-        label: "10pm-2am",
-        numResponses: 12,
-      },
-    ];
+    const data = this.props.data;
 
     const margin = { left: 80, bottom: 20, top: 40 , right: 10},
       width = this.props.width - margin.left - margin.right,
