@@ -1,0 +1,51 @@
+.addLocation {
+    font-family: Roboto, serif;
+    background-color: white;
+    padding: 20px 0 20px 40px;
+    overflow: scroll;
+    border-radius: 12px;
+    box-shadow: 8px 4px 35px rgba(0, 0, 0, 0.35);
+}
+
+.addLocationHeader {
+    margin: 16px 0 28px 64px;
+    font-weight: bold;
+    font-size: 32px;
+}
+
+.form {
+
+}
+
+.formCols {
+    display: flex;
+    /*justify-content: space-evenly;*/
+}
+
+.formCol {
+    margin-right: 40px;
+}
+
+.formColHeader {
+    font-weight: bold;
+    margin-bottom: 12px;
+    white-space: nowrap;
+    text-decoration: underline;
+    font-size: 18px;
+}
+
+.formLabel {
+    font-size: 16px;
+}
+
+.formInput {
+    margin-bottom: 8px;
+}
+
+.formQuestions {
+    width: 250px;
+    padding: 16px 60px 16px 16px;
+    font-size: 16px;
+    border-radius: 8px;
+    box-shadow: inset 0 0 16px 0 rgba(0, 0, 0, 0.15);
+}
