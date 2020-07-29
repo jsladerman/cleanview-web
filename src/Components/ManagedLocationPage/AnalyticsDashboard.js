@@ -7,7 +7,6 @@ import styles from './css/AnalyticsDashboard.module.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
 // import Checkbox from 'react-bootstrap/Checkbox';
 
 class AnalyticsDashboard extends Component {
@@ -18,6 +17,7 @@ class AnalyticsDashboard extends Component {
             filteredData: [],
             ageExcludeFilter: ['0-17', '66+'],
             touristExcludeFilter: ['1'],
+            rerenderCharts: false,
 
             // QR filter
             // Timestamp filter- default is 0 hours = all data, else show from the past "x" hours
@@ -27,10 +27,6 @@ class AnalyticsDashboard extends Component {
     componentDidMount = () => {
         this.populateStateWithJson();
         this.filterData();
-    }
-
-    handleClick(cb) {
-       console.log("Clicked, new value = " + cb.checked);
     }
 
     render() {
@@ -69,44 +65,67 @@ class AnalyticsDashboard extends Component {
                     <Row id={styles.filterCharts} className={styles.rowDivider}>
                         <Col>
                             <p>Filter Charts</p>
+                            <button onClick = {() => this.filterSingleAgeGroup('0-17')}>0-17</button>
+                            <button onClick = {() => this.filterSingleAgeGroup('18-25')}>18-25</button>
+                            <button onClick = {() => this.filterSingleAgeGroup('26-35')}>26-35</button>
+                            <button onClick = {() => this.filterSingleAgeGroup('36-45')}>36-45</button>
+                            <button onClick = {() => this.filterSingleAgeGroup('46-55')}>46-55</button>
+                            <button onClick = {() => this.filterSingleAgeGroup('56-65')}>56-65</button>
+                            <button onClick = {() => this.filterSingleAgeGroup('66+')}>65+</button>
                         </Col>
                     </Row>
 
-                    <Row className={styles.rowDivider}>
-                        <Col>
-                            <FilteredDataToRatingBarChart
-                            filteredData={this.state.filteredData}
-                            />
-                        </Col>
+                    {this.renderFilteringCharts()}
 
-                        <Col>
-                            <FilteredDataToFrequencyChart
-                            filteredData={this.state.filteredData}
-                            />
-                        </Col>
-                    </Row>
-
-                    <Row className={styles.rowDivider}>
-                        <Col>
-                            <FilteredDataToPieChart
-                            filteredData={this.state.filteredData}
-                            keyString='employee-masks'
-                            titleText='Are your employees wearing masks?'
-                            />
-                        </Col>
-
-                        <Col>
-                            <FilteredDataToPieChart
-                            filteredData={this.state.filteredData}
-                            keyString='six-feet'
-                            titleText='Are your tables at least 6 feet apart?'
-                            />
-                        </Col>
-                    </Row>
                 </Container>
-
             </div>
         );
+    }
+
+    renderFilteringCharts = () => {
+        if(!this.state.rerenderCharts){
+            return (
+                <div>
+                    <Row className={styles.rowDivider}>
+                            <Col>
+                                <FilteredDataToRatingBarChart
+                                filteredData={this.state.filteredData}
+                                />
+                            </Col>
+    
+                            <Col>
+                                <FilteredDataToFrequencyChart
+                                filteredData={this.state.filteredData}
+                                />
+                            </Col>
+                        </Row>
+    
+                        <Row className={styles.rowDivider}>
+                            <Col>
+                                <FilteredDataToPieChart
+                                filteredData={this.state.filteredData}
+                                keyString='employee-masks'
+                                titleText='Are your employees wearing masks?'
+                                />
+                            </Col>
+    
+                            <Col>
+                                <FilteredDataToPieChart
+                                filteredData={this.state.filteredData}
+                                keyString='six-feet'
+                                titleText='Are your tables at least 6 feet apart?'
+                                />
+                            </Col>
+                        </Row>
+                </div>
+            );
+        }
+        else{
+            console.log("Rerender is true.");
+            return (
+                <div>LOADING</div>
+            )
+        }
     }
 
     populateStateWithJson = () => {
@@ -114,13 +133,6 @@ class AnalyticsDashboard extends Component {
         currState.restaurantSurveyResponses = require('./data/mock_records.json');
         currState.filteredData = currState.restaurantSurveyResponses;
         this.setState(currState);
-    }
-
-    filterData = () => {
-        let newFilteredData = this.state.restaurantSurveyResponses.filter(response =>
-            (!this.state.touristExcludeFilter.includes(response['tourist-diner']) && !this.state.ageExcludeFilter.includes(response['age']) )
-        );
-        this.setState({filteredData: newFilteredData});
     }
 
     averageRating = () => {
@@ -132,7 +144,49 @@ class AnalyticsDashboard extends Component {
         return total / this.state.restaurantSurveyResponses.length;
     }
 
-    // Create functions that use this.state.restaurantSurveyResponses and manipulate data
+    filterData = async () => {
+        this.setState({rerenderCharts: true});
+        let newFilteredData = await this.state.restaurantSurveyResponses.filter(response =>
+            (!this.state.touristExcludeFilter.includes(response['tourist-diner']) && !this.state.ageExcludeFilter.includes(response['age']) )
+        );
+        this.setState({filteredData: newFilteredData});
+        this.setState({rerenderCharts: false});
+    }
+
+
+    // ageGroup is a string corresponding to an age group bucket, such as '0-17'
+    filterSingleAgeGroup = (ageGroup) => {
+        let newAgeExclude = this.state.ageExcludeFilter;
+
+        if(newAgeExclude.includes(ageGroup)){
+            var index = newAgeExclude.indexOf(ageGroup);
+            newAgeExclude.splice(index, 1);
+        } else {
+            newAgeExclude.push(ageGroup)
+        }
+
+        this.setState({ageExcludeFilter: newAgeExclude});
+        this.filterData();
+
+        console.log(this.state.ageExcludeFilter);
+    }
+
+    // touristGroup is either '1' or '0'
+    filterSingleTouristGroup = (touristGroup) => {
+        let newTouristExclude = this.state.touristExcludeFilter;
+
+        if(newTouristExclude.includes(touristGroup)){
+            var index = newTouristExclude.indexOf(touristGroup);
+            newTouristExclude.splice(index, 1);
+        } else {
+            newTouristExclude.push(touristGroup)
+        }
+
+        this.setState({touristExcludeFilter: newTouristExclude});
+        this.filterData();
+
+        console.log(this.state.ageExcludeFilter);
+    }
 
     /*
     pullData = () => {
