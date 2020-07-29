@@ -41,12 +41,12 @@
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"manageLocationLambda",
+						"ManageLocationLambda",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"manageLocationLambda",
+									"ManageLocationLambda",
 									"-",
 									{
 										"Ref": "env"
@@ -76,8 +76,8 @@
 				"Layers": [],
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-cleanviewweb-prod-123607-deployment",
-					"S3Key": "amplify-builds/manageLocationLambda-596372675273374c6c66-build.zip"
+					"S3Bucket": "amplify-cleanviewweb-prod-214612-deployment",
+					"S3Key": "amplify-builds/ManageLocationLambda-312f676253464b4b4273-build.zip"
 				}
 			}
 		},
@@ -87,12 +87,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"cleanviewwebLambdaRoleb1a69938",
+						"cleanviewwebLambdaRole10a8f873",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"cleanviewwebLambdaRoleb1a69938",
+									"cleanviewwebLambdaRole10a8f873",
 									"-",
 									{
 										"Ref": "env"

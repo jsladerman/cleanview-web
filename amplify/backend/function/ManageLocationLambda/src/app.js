@@ -6,76 +6,74 @@ or in the "license" file accompanying this file. This file is distributed on an 
 See the License for the specific language governing permissions and limitations under the License.
 */
 
-const AWS = require("aws-sdk");
+
+
+const AWS = require('aws-sdk')
 const { uuid } = require('uuidv4')
-var awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
-var bodyParser = require("body-parser");
-var express = require("express");
+var awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
+var bodyParser = require('body-parser')
+var express = require('express')
 
 AWS.config.update({ region: process.env.TABLE_REGION });
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 let tableName = "locations";
-if (process.env.ENV && process.env.ENV !== "NONE") {
-  tableName = tableName + "-" + process.env.ENV;
+if(process.env.ENV && process.env.ENV !== "NONE") {
+  tableName = tableName + '-' + process.env.ENV;
 }
 
 // HARD CODED: url endpoints
-let environmentURLSurvey = "https://inv6tn1p09.execute-api.us-east-1.amazonaws.com/dev"
+let environmentURLSurvey = "https://ax9vrpeio1.execute-api.us-east-1.amazonaws.com/dev"
 if(process.env.ENV === 'dev') {
-  environmentURLSurvey = "https://inv6tn1p09.execute-api.us-east-1.amazonaws.com/dev"
+  environmentURLSurvey = "https://ax9vrpeio1.execute-api.us-east-1.amazonaws.com/dev"
 } else if(process.env.ENV === 'staging') {
-  environmentURLSurvey = "https://sl3sxmyae0.execute-api.us-east-1.amazonaws.com/staging"
+  environmentURLSurvey = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
 } else if(process.env.ENV === 'prod') {
-  environmentURLSurvey = "https://06o8e4vgxk.execute-api.us-east-1.amazonaws.com/prod"
+  environmentURLSurvey = "https://pk58tyr64h.execute-api.us-east-1.amazonaws.com/prod"
 }
 
-
-
-const userIdPresent = false; // TODO: update in case is required to use that definition
+const userIdPresent = false;
 const partitionKeyName = "id";
 const partitionKeyType = "S";
-const sortKeyName = "";
-const sortKeyType = "";
+const sortKeyName = "manager";
+const sortKeyType = "S";
 const hasSortKey = sortKeyName !== "";
-const path = "/manageLocation";
-const UNAUTH = "UNAUTH";
-const hashKeyPath = "/:" + partitionKeyName;
-const sortKeyPath = hasSortKey ? "/:" + sortKeyName : "";
+const path = "/location";
+const UNAUTH = 'UNAUTH';
+const hashKeyPath = '/:' + partitionKeyName;
+const sortKeyPath = hasSortKey ? '/:' + sortKeyName : '';
 // declare a new express app
-var app = express();
-app.use(bodyParser.json());
-app.use(awsServerlessExpressMiddleware.eventContext());
+var app = express()
+app.use(bodyParser.json())
+app.use(awsServerlessExpressMiddleware.eventContext())
 
 // Enable CORS for all methods
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*")
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+  next()
 });
 
 // convert url string param to expected Type
 const convertUrlType = (param, type) => {
-  switch (type) {
+  switch(type) {
     case "N":
       return Number.parseInt(param);
     default:
       return param;
   }
-};
+}
 
-/********************************
- * HTTP Get method for list objects *
- ********************************/
+/********************************************
+ * HTTP Get Method for Locations by Manager *
+ ********************************************/
+
 app.get(path, function(req, res){
   const queryParams = {
     TableName: tableName,
     KeyConditionExpression: "manager = :manager",
-    IndexName: "manager",
+    IndexName: "ManagerIndex",
     ExpressionAttributeValues: {
       ":manager": req.query.manager,
     }
@@ -91,57 +89,32 @@ app.get(path, function(req, res){
 });
 
 /*****************************************
- * HTTP Get method for get single object *
+ * HTTP Get method for get single location by ID *
  *****************************************/
 
 app.get(path + "/object", function (req, res) {
   let getItemParams = {
     TableName: tableName,
-    Key: {id: req.query.id},
-    ProjectionExpression: 'id, menu_link, sublocations',
+    Key: {"id": req.query.id},
   };
 
   dynamodb.get(getItemParams, (err, data) => {
     if (err) {
       res.statusCode = 500;
       res.json({ 
-        error: req.query.id + " Could not load items: " + err.message
+        error:" Could not load items: " + err.message,
+        id: req.query.id
        });
       
     } else {
-      res.json({ body: data.Item, environmentURL: environmentURLSurvey})
+      res.json({ body: data.Item, environmentURL: environmentURLSurvey, backendEnv: process.env.ENV})
     }
   });
 });
 
 /************************************
- * HTTP put method for insert object *
- *************************************/
-
-app.put(path, function (req, res) {
-  if (userIdPresent) {
-    req.body["userId"] =
-      req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
-  }
-
-
-  let putItemParams = {
-    TableName: tableName,
-    Item: req.body,
-  };
-  dynamodb.put(putItemParams, (err, data) => {
-    if (err) {
-      res.statusCode = 500;
-      res.json({ error: err, url: req.url, body: req.body });
-    } else {
-      res.json({ success: "put call succeed!", url: req.url, data: data });
-    }
-  });
-});
-
-/************************************
- * HTTP post method for insert object *
- *************************************/
+* HTTP post method for insert object *
+*************************************/
 
 app.post(path, function (req, res) {
   
@@ -175,59 +148,11 @@ app.post(path, function (req, res) {
   });
 });
 
-/**************************************
- * HTTP remove method to delete object *
- ***************************************/
+/************************************
+* HTTP patch to update menu_link *
+*************************************/
 
-app.delete(path + "/object" + hashKeyPath + sortKeyPath, function (req, res) {
-  var params = {};
-  if (userIdPresent && req.apiGateway) {
-    params[partitionKeyName] =
-      req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
-  } else {
-    params[partitionKeyName] = req.params[partitionKeyName];
-    try {
-      params[partitionKeyName] = convertUrlType(
-        req.params[partitionKeyName],
-        partitionKeyType
-      );
-    } catch (err) {
-      res.statusCode = 500;
-      res.json({ error: "Wrong column type " + err });
-    }
-  }
-  if (hasSortKey) {
-    try {
-      params[sortKeyName] = convertUrlType(
-        req.params[sortKeyName],
-        sortKeyType
-      );
-    } catch (err) {
-      res.statusCode = 500;
-      res.json({ error: "Wrong column type " + err });
-    }
-  }
-
-  let removeItemParams = {
-    TableName: tableName,
-    Key: params,
-  };
-  dynamodb.delete(removeItemParams, (err, data) => {
-    if (err) {
-      res.statusCode = 500;
-      res.json({ error: err, url: req.url });
-    } else {
-      res.json({ url: req.url, data: data });
-    }
-  });
-});
-app.listen(3000, function () {
-  console.log("App started");
-});
-
-// Patch Request 
-
-app.patch(path, function(req, res) {
+app.patch(path + '/menu', function(req, res) {
   if (userIdPresent) {
     req.body["userId"] =
       req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
@@ -254,7 +179,9 @@ app.patch(path, function(req, res) {
 
 });
 
-// Patch request for sublocations
+/************************************
+* HTTP patch to update sublocations *
+*************************************/
 
 app.patch(path + '/sublocations', function(req, res) {
   if (userIdPresent) {
@@ -286,4 +213,4 @@ app.patch(path + '/sublocations', function(req, res) {
 // Export the app object. When executing the application local this does nothing. However,
 // to port it to AWS Lambda we will create a wrapper around that will load the app from
 // this file
-module.exports = app;
+module.exports = app

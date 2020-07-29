@@ -35,11 +35,6 @@
                   {
                       "AttributeName": "id",
                       "AttributeType": "S"
-                  }  , 
-                  
-                  {
-                      "AttributeName": "manager",
-                      "AttributeType": "S"
                   } 
                   
                 ],
@@ -81,29 +76,6 @@
                         }
                     ]
                 }
-                
-                ,"GlobalSecondaryIndexes": [
-                  
-                    {
-                        "IndexName": "manager",
-                        "KeySchema": [
-                            
-                            {
-                                "AttributeName": "manager",
-                                "KeyType": "HASH"
-                            } 
-                            
-                        ],
-                        "Projection": {
-                            "ProjectionType": "ALL"
-                        },
-                        "ProvisionedThroughput": {
-                            "ReadCapacityUnits": "5",
-                            "WriteCapacityUnits": "5"
-                        }
-                    } 
-                  
-                ]
                 
             }
         }

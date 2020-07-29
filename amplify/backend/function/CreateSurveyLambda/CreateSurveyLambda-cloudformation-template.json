@@ -10,13 +10,13 @@
 		"env": {
 			"Type": "String"
 		},
-		"storageSurveyResponsesTableName": {
+		"storagelocationsName": {
 			"Type": "String",
-			"Default": "storageSurveyResponsesTableName"
+			"Default": "storagelocationsName"
 		},
-		"storageSurveyResponsesTableArn": {
+		"storagelocationsArn": {
 			"Type": "String",
-			"Default": "storageSurveyResponsesTableArn"
+			"Default": "storagelocationsArn"
 		}
 	},
 	"Conditions": {
@@ -41,12 +41,12 @@
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"ResponseLambda",
+						"CreateSurveyLambda",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"ResponseLambda",
+									"CreateSurveyLambda",
 									"-",
 									{
 										"Ref": "env"
@@ -63,12 +63,6 @@
 						},
 						"REGION": {
 							"Ref": "AWS::Region"
-						},
-						"STORAGE_SURVEYRESPONSESTABLE_NAME": {
-							"Ref": "storageSurveyResponsesTableName"
-						},
-						"STORAGE_SURVEYRESPONSESTABLE_ARN": {
-							"Ref": "storageSurveyResponsesTableArn"
 						}
 					}
 				},
@@ -82,8 +76,8 @@
 				"Layers": [],
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-cleanviewweb-prod-123607-deployment",
-					"S3Key": "amplify-builds/ResponseLambda-69735251595945584e6b-build.zip"
+					"S3Bucket": "amplify-cleanviewweb-prod-214612-deployment",
+					"S3Key": "amplify-builds/CreateSurveyLambda-4453494d314653646e78-build.zip"
 				}
 			}
 		},
@@ -93,12 +87,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"cleanviewwebLambdaRole98fc8781",
+						"cleanviewwebLambdaRole35b80e6f",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"cleanviewwebLambdaRole98fc8781",
+									"cleanviewwebLambdaRole35b80e6f",
 									"-",
 									{
 										"Ref": "env"
@@ -178,57 +172,14 @@
 							],
 							"Resource": [
 								{
-									"Ref": "storageSurveyResponsesTableArn"
+									"Ref": "storagelocationsArn"
 								},
 								{
 									"Fn::Join": [
 										"/",
 										[
 											{
-												"Ref": "storageSurveyResponsesTableArn"
-											},
-											"index/*"
-										]
-									]
-								}
-							]
-						}
-					]
-				}
-			}
-		},
-		"AmplifyResourcesPolicy": {
-			"DependsOn": [
-				"LambdaExecutionRole"
-			],
-			"Type": "AWS::IAM::Policy",
-			"Properties": {
-				"PolicyName": "amplify-lambda-execution-policy",
-				"Roles": [
-					{
-						"Ref": "LambdaExecutionRole"
-					}
-				],
-				"PolicyDocument": {
-					"Version": "2012-10-17",
-					"Statement": [
-						{
-							"Effect": "Allow",
-							"Action": [
-								"dynamodb:Put*",
-								"dynamodb:Create*",
-								"dynamodb:BatchWriteItem"
-							],
-							"Resource": [
-								{
-									"Ref": "storageSurveyResponsesTableArn"
-								},
-								{
-									"Fn::Join": [
-										"/",
-										[
-											{
-												"Ref": "storageSurveyResponsesTableArn"
+												"Ref": "storagelocationsArn"
 											},
 											"index/*"
 										]

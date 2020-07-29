@@ -1,8 +1,8 @@
 {
     "paths": [
         {
-            "name": "/manageLocation",
-            "lambdaFunction": "manageLocationLambda",
+            "name": "/location",
+            "lambdaFunction": "ManageLocationLambda",
             "privacy": {
                 "private": true,
                 "auth": [
@@ -14,28 +14,28 @@
             }
         }
     ],
-    "resourceName": "manageLocationApi",
-    "apiName": "manageLocationApi",
+    "resourceName": "ManageLocationApi",
+    "apiName": "ManageLocationApi",
     "functionArns": [
         {
-            "lambdaFunction": "manageLocationLambda"
+            "lambdaFunction": "ManageLocationLambda"
         }
     ],
     "privacy": {
         "auth": 1,
         "unauth": 0,
-        "authRoleName": "amplify-cleanviewweb-dev-200726-authRole",
-        "unAuthRoleName": "amplify-cleanviewweb-dev-200726-unauthRole"
+        "authRoleName": "amplify-cleanviewweb-staging-170737-authRole",
+        "unAuthRoleName": "amplify-cleanviewweb-staging-170737-unauthRole"
     },
     "dependsOn": [
         {
             "category": "function",
-            "resourceName": "manageLocationLambda",
+            "resourceName": "ManageLocationLambda",
             "attributes": [
                 "Name",
                 "Arn"
             ]
         }
     ],
-    "uuid": "66b0ac26"
+    "uuid": "4bb95626"
 }

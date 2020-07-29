@@ -13,7 +13,7 @@ class QRCodeGenerator extends Component {
     super(props);
     this.state = {
       sublocations: '',
-      environmentURL: ''
+      environmentURL: '',
     };
 
     this.addSublocation = this.addSublocation.bind(this)
@@ -33,8 +33,8 @@ class QRCodeGenerator extends Component {
       color: values.color,
     })
 
-    const apiName = 'manageLocationApi';
-    const path = '/manageLocation/sublocations';
+    const apiName = 'ManageLocationApi';
+    const path = '/location/sublocations';
     const requestData = {
       headers: {},
       response: true,
@@ -55,8 +55,8 @@ class QRCodeGenerator extends Component {
   }
 
   updateDataFromDB = async () => {
-    const apiName = 'manageLocationApi';
-    const path = '/manageLocation/object';
+    const apiName = 'ManageLocationApi';
+    const path = '/location/object';
     const requestData = {
       headers: {},
       response: true,
@@ -82,10 +82,13 @@ class QRCodeGenerator extends Component {
       return (<p>Looking for sublocations...</p>)
     }
 
+    console.log('id',this.props.id)
+    console.log()
+
     const subLocationList = this.state.sublocations.map((sublocation) => {
       const total_id = this.props.id + '99strl99strl' + sublocation.id
       return(
-        <SublocationQRCode id={total_id} name={sublocation.name} color={sublocation.color} key={sublocation.id} environmentURL={this.state.environmentURL}/>
+        <SublocationQRCode id={total_id} name={sublocation.name} color={sublocation.color} key={sublocation.id} environmentURL={this.state.environmentURL} />
       )
     })
     return (

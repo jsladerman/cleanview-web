@@ -14,15 +14,15 @@
         },
     
     
-          "functionmanageLocationLambdaName": {
+          "functionManageLocationLambdaName": {
             "Type": "String",
-            "Default": "functionmanageLocationLambdaName"
+            "Default": "functionManageLocationLambdaName"
           },
         
           
-          "functionmanageLocationLambdaArn": {
+          "functionManageLocationLambdaArn": {
             "Type": "String",
-            "Default": "functionmanageLocationLambdaArn"
+            "Default": "functionManageLocationLambdaArn"
           }
         
           
@@ -41,13 +41,13 @@
     },
     "Resources": {
         
-        "PolicyAPIGWmanageLocationApiauth": {
+        "PolicyAPIGWManageLocationApiauth": {
             "DependsOn": [
-              "manageLocationApi"
+              "ManageLocationApi"
             ],
             "Type": "AWS::IAM::Policy",
             "Properties": {
-              "PolicyName": "PolicyAPIGWmanageLocationApiauth",
+              "PolicyName": "PolicyAPIGWManageLocationApiauth",
               "Roles": [
                 {"Ref": "authRoleName"}
               ],
@@ -77,7 +77,7 @@
                             },
                             ":",
                             {
-                              "Ref": "manageLocationApi"
+                              "Ref": "ManageLocationApi"
                             },
                             "/",
                             {
@@ -90,7 +90,7 @@
                               ]
                             },
                               "/POST",
-                            "/manageLocation/*"
+                            "/location/*"
                           ]
                         ]
                       },
@@ -108,7 +108,7 @@
                             },
                             ":",
                             {
-                              "Ref": "manageLocationApi"
+                              "Ref": "ManageLocationApi"
                             },
                             "/",
                             {
@@ -121,7 +121,7 @@
                               ]
                             },
                               "/POST",
-                            "/manageLocation"
+                            "/location"
                           ]
                         ]
                       }
@@ -143,7 +143,7 @@
                             },
                             ":",
                             {
-                              "Ref": "manageLocationApi"
+                              "Ref": "ManageLocationApi"
                             },
                             "/",
                             {
@@ -156,7 +156,7 @@
                               ]
                             },
                               "/GET",
-                            "/manageLocation/*"
+                            "/location/*"
                           ]
                         ]
                       },
@@ -174,7 +174,7 @@
                             },
                             ":",
                             {
-                              "Ref": "manageLocationApi"
+                              "Ref": "ManageLocationApi"
                             },
                             "/",
                             {
@@ -187,7 +187,7 @@
                               ]
                             },
                               "/GET",
-                            "/manageLocation"
+                            "/location"
                           ]
                         ]
                       }
@@ -209,7 +209,7 @@
                             },
                             ":",
                             {
-                              "Ref": "manageLocationApi"
+                              "Ref": "ManageLocationApi"
                             },
                             "/",
                             {
@@ -222,7 +222,7 @@
                               ]
                             },
                               "/PUT",
-                            "/manageLocation/*"
+                            "/location/*"
                           ]
                         ]
                       },
@@ -240,7 +240,7 @@
                             },
                             ":",
                             {
-                              "Ref": "manageLocationApi"
+                              "Ref": "ManageLocationApi"
                             },
                             "/",
                             {
@@ -253,7 +253,7 @@
                               ]
                             },
                               "/PUT",
-                            "/manageLocation"
+                            "/location"
                           ]
                         ]
                       }
@@ -275,7 +275,7 @@
                             },
                             ":",
                             {
-                              "Ref": "manageLocationApi"
+                              "Ref": "ManageLocationApi"
                             },
                             "/",
                             {
@@ -288,7 +288,7 @@
                               ]
                             },
                               "/PATCH",
-                            "/manageLocation/*"
+                            "/location/*"
                           ]
                         ]
                       },
@@ -306,7 +306,7 @@
                             },
                             ":",
                             {
-                              "Ref": "manageLocationApi"
+                              "Ref": "ManageLocationApi"
                             },
                             "/",
                             {
@@ -319,7 +319,7 @@
                               ]
                             },
                               "/PATCH",
-                            "/manageLocation"
+                            "/location"
                           ]
                         ]
                       }
@@ -339,16 +339,16 @@
         
         
         
-      "manageLocationApi": {
+      "ManageLocationApi": {
         "Type": "AWS::ApiGateway::RestApi",
         "Properties": {
           "Description": "",
-          "Name": "manageLocationApi",
+          "Name": "ManageLocationApi",
           "Body": {
             "swagger": "2.0",
             "info": {
               "version": "2018-05-24T17:52:00Z",
-              "title": "manageLocationApi"
+              "title": "ManageLocationApi"
             },
             "host": {
                 "Fn::Join": [
@@ -384,7 +384,7 @@
             ],
             "paths": {
               
-              "/manageLocation": {
+              "/location": {
                 "options": {
                   "consumes": [
                     "application/json"
@@ -476,7 +476,7 @@
                             
                             {
                                 
-                                "Ref": "functionmanageLocationLambdaArn"
+                                "Ref": "functionManageLocationLambdaArn"
                             },
                             
                             "/invocations"
@@ -489,7 +489,7 @@
                   }
                 }
               },
-              "/manageLocation/{proxy+}": {
+              "/location/{proxy+}": {
                 "options": {
                   "consumes": [
                     "application/json"
@@ -581,7 +581,7 @@
                           
                           {
                             
-                            "Ref": "functionmanageLocationLambdaArn"
+                            "Ref": "functionManageLocationLambdaArn"
                           },
                           
                           "/invocations"
@@ -638,12 +638,12 @@
                   
         
         
-        "functionmanageLocationLambdaPermissionmanageLocationApi": {
+        "functionManageLocationLambdaPermissionManageLocationApi": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
                 "FunctionName": 
                     {
-                        "Ref":  "functionmanageLocationLambdaName"
+                        "Ref":  "functionManageLocationLambdaName"
                     },
                     
                     "Action": "lambda:InvokeFunction",
@@ -662,7 +662,7 @@
                             },
                             ":",
                             {
-                                "Ref": "manageLocationApi"
+                                "Ref": "ManageLocationApi"
                             },
                             "/*/*/*"
                         ]
@@ -673,7 +673,7 @@
         
         
         
-      "DeploymentAPIGWmanageLocationApi66b0ac26": {
+      "DeploymentAPIGWManageLocationApi4bb95626": {
         "Type": "AWS::ApiGateway::Deployment",
         "Properties": {
           "Description": "The Development stage deployment of your API.",
@@ -687,7 +687,7 @@
             ]
           },
           "RestApiId": {
-            "Ref": "manageLocationApi"
+            "Ref": "ManageLocationApi"
           }
         }
       }
@@ -695,15 +695,15 @@
     "Outputs": {
         "RootUrl": {
             "Description": "Root URL of the API gateway",
-            "Value": {"Fn::Join": ["", ["https://", {"Ref": "manageLocationApi"}, ".execute-api.", {"Ref": "AWS::Region"}, ".amazonaws.com/", {"Fn::If": ["ShouldNotCreateEnvResources","Prod", {"Ref": "env"} ]}]]}
+            "Value": {"Fn::Join": ["", ["https://", {"Ref": "ManageLocationApi"}, ".execute-api.", {"Ref": "AWS::Region"}, ".amazonaws.com/", {"Fn::If": ["ShouldNotCreateEnvResources","Prod", {"Ref": "env"} ]}]]}
         },
         "ApiName": {
           "Description": "API Friendly name",
-          "Value": "manageLocationApi"
+          "Value": "ManageLocationApi"
         },
         "ApiId": {
           "Description": "API ID (prefix of API URL)",
-          "Value": {"Ref": "manageLocationApi"}
+          "Value": {"Ref": "ManageLocationApi"}
         }
     }
   }

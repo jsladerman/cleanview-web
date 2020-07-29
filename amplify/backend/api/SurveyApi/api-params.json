@@ -1,15 +1,15 @@
 {
     "paths": [
         {
-            "name": "/responses",
-            "lambdaFunction": "ResponseLambda",
+            "name": "/survey",
+            "lambdaFunction": "CreateSurveyLambda",
             "privacy": {
                 "open": true
             }
         },
         {
-            "name": "/survey",
-            "lambdaFunction": "SurveyLambda",
+            "name": "/response",
+            "lambdaFunction": "SubmitResponseLambda",
             "privacy": {
                 "open": true
             }
@@ -19,22 +19,22 @@
     "apiName": "SurveyApi",
     "functionArns": [
         {
-            "lambdaFunction": "ResponseLambda"
+            "lambdaFunction": "CreateSurveyLambda"
         },
         {
-            "lambdaFunction": "SurveyLambda"
+            "lambdaFunction": "SubmitResponseLambda"
         }
     ],
     "privacy": {
         "auth": 0,
         "unauth": 0,
-        "authRoleName": "amplify-cleanviewweb-dev-200726-authRole",
-        "unAuthRoleName": "amplify-cleanviewweb-dev-200726-unauthRole"
+        "authRoleName": "amplify-cleanviewweb-staging-170737-authRole",
+        "unAuthRoleName": "amplify-cleanviewweb-staging-170737-unauthRole"
     },
     "dependsOn": [
         {
             "category": "function",
-            "resourceName": "ResponseLambda",
+            "resourceName": "CreateSurveyLambda",
             "attributes": [
                 "Name",
                 "Arn"
@@ -42,12 +42,11 @@
         },
         {
             "category": "function",
-            "resourceName": "SurveyLambda",
+            "resourceName": "SubmitResponseLambda",
             "attributes": [
                 "Name",
                 "Arn"
             ]
         }
-    ],
-    "uuid": "d80a0a0a"
+    ]
 }
