@@ -24,11 +24,11 @@ if(process.env.ENV && process.env.ENV !== "NONE") {
 }
 
 // HARD CODED: url endpoints
-let environmentURLSurvey = "https://odcysdg6wk.execute-api.us-east-1.amazonaws.com/staging"
+let environmentURLSurvey = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
 if(process.env.ENV === 'dev') {
-  environmentURLSurvey = "https://odcysdg6wk.execute-api.us-east-1.amazonaws.com/staging"
+  environmentURLSurvey = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
 } else if(process.env.ENV === 'staging') {
-  environmentURLSurvey = "https://odcysdg6wk.execute-api.us-east-1.amazonaws.com/staging"
+  environmentURLSurvey = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
 }
 
 const userIdPresent = false;
@@ -93,7 +93,7 @@ app.get(path, function(req, res){
 app.get(path + "/object", function (req, res) {
   let getItemParams = {
     TableName: tableName,
-    Key: {id: req.query.id},
+    Key: {"id": req.query.id},
   };
 
   dynamodb.get(getItemParams, (err, data) => {

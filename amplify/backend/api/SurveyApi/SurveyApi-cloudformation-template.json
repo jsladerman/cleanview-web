@@ -616,7 +616,7 @@
         
         
         
-      "DeploymentAPIGWSurveyApice95837b": {
+      "DeploymentAPIGWSurveyApi": {
         "Type": "AWS::ApiGateway::Deployment",
         "Properties": {
           "Description": "The Development stage deployment of your API.",

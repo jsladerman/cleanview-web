@@ -8,10 +8,6 @@
         }
     },
     "storage": {
-        "locations": {
-            "service": "DynamoDB",
-            "providerPlugin": "awscloudformation"
-        },
         "responses": {
             "service": "DynamoDB",
             "providerPlugin": "awscloudformation"
@@ -19,9 +15,32 @@
         "MenuImages": {
             "service": "S3",
             "providerPlugin": "awscloudformation"
+        },
+        "locations": {
+            "service": "DynamoDB",
+            "providerPlugin": "awscloudformation"
         }
     },
     "function": {
+        "SubmitResponseLambda": {
+            "build": true,
+            "providerPlugin": "awscloudformation",
+            "service": "Lambda",
+            "dependsOn": [
+                {
+                    "category": "storage",
+                    "resourceName": "responses",
+                    "attributes": [
+                        "Name",
+                        "Arn"
+                    ],
+                    "attributeEnvMap": {
+                        "Name": "TABLE_NAME",
+                        "Arn": "TABLE_ARN"
+                    }
+                }
+            ]
+        },
         "ManageLocationLambda": {
             "build": true,
             "providerPlugin": "awscloudformation",
@@ -49,21 +68,6 @@
                 {
                     "category": "storage",
                     "resourceName": "locations",
-                    "attributes": [
-                        "Name",
-                        "Arn"
-                    ]
-                }
-            ]
-        },
-        "SubmitResponseLambda": {
-            "build": true,
-            "providerPlugin": "awscloudformation",
-            "service": "Lambda",
-            "dependsOn": [
-                {
-                    "category": "storage",
-                    "resourceName": "responses",
                     "attributes": [
                         "Name",
                         "Arn"

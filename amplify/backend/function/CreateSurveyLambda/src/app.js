@@ -8,8 +8,8 @@ See the License for the specific language governing permissions and limitations 
 
 
 /* Amplify Params - DO NOT EDIT
-	STORAGE_LOCATIONS_ARN
-	STORAGE_LOCATIONS_NAME
+  STORAGE_LOCATIONS_ARN
+  STORAGE_LOCATIONS_NAME
 Amplify Params - DO NOT EDIT */
 
 const AWS = require("aws-sdk");
@@ -29,11 +29,11 @@ if (process.env.ENV && process.env.ENV !== "NONE") {
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 // HARD CODED: url endpoints
-let environmentURL = "https://odcysdg6wk.execute-api.us-east-1.amazonaws.com/staging"
+let environmentURL = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
 if(process.ENV === 'dev') {
-  environmentURL = "https://odcysdg6wk.execute-api.us-east-1.amazonaws.com/staging"
+  environmentURL = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
 } else if(process.env.ENV === 'staging') {
-  environmentURL = "https://odcysdg6wk.execute-api.us-east-1.amazonaws.com/staging"
+  environmentURL = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
 }
 
 // Enable CORS for all methods
@@ -424,3 +424,5 @@ app.listen(3000, function() {
 // to port it to AWS Lambda we will create a wrapper around that will load the app from
 // this file
 module.exports = app
+
+

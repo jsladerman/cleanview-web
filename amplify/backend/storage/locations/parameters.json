@@ -1,7 +1,5 @@
 {
     "tableName": "locations",
     "partitionKeyName": "id",
-    "partitionKeyType": "S",
-    "sortKeyName": "manager",
-    "sortKeyType": "S"
+    "partitionKeyType": "S"
 }
