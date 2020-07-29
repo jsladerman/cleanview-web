@@ -1,6 +1,6 @@
 {
     "auth": {
-        "cleanviewweb63661d3b": {
+        "cleanviewwebdd68a0c2": {
             "service": "Cognito",
             "providerPlugin": "awscloudformation",
             "dependsOn": [],
@@ -8,21 +8,40 @@
         }
     },
     "storage": {
-        "locations": {
-            "service": "DynamoDB",
-            "providerPlugin": "awscloudformation"
-        },
-        "SurveyResponsesTable": {
+        "responses": {
             "service": "DynamoDB",
             "providerPlugin": "awscloudformation"
         },
         "MenuImages": {
             "service": "S3",
             "providerPlugin": "awscloudformation"
+        },
+        "locations": {
+            "service": "DynamoDB",
+            "providerPlugin": "awscloudformation"
         }
     },
     "function": {
-        "manageLocationLambda": {
+        "SubmitResponseLambda": {
+            "build": true,
+            "providerPlugin": "awscloudformation",
+            "service": "Lambda",
+            "dependsOn": [
+                {
+                    "category": "storage",
+                    "resourceName": "responses",
+                    "attributes": [
+                        "Name",
+                        "Arn"
+                    ],
+                    "attributeEnvMap": {
+                        "Name": "TABLE_NAME",
+                        "Arn": "TABLE_ARN"
+                    }
+                }
+            ]
+        },
+        "ManageLocationLambda": {
             "build": true,
             "providerPlugin": "awscloudformation",
             "service": "Lambda",
@@ -41,7 +60,7 @@
                 }
             ]
         },
-        "SurveyLambda": {
+        "CreateSurveyLambda": {
             "build": true,
             "providerPlugin": "awscloudformation",
             "service": "Lambda",
@@ -52,34 +71,23 @@
                     "attributes": [
                         "Name",
                         "Arn"
-                    ]
-                }
-            ]
-        },
-        "ResponseLambda": {
-            "build": true,
-            "providerPlugin": "awscloudformation",
-            "service": "Lambda",
-            "dependsOn": [
-                {
-                    "category": "storage",
-                    "resourceName": "SurveyResponsesTable",
-                    "attributes": [
-                        "Name",
-                        "Arn"
-                    ]
+                    ],
+                    "attributeEnvMap": {
+                        "Name": "TABLE_NAME",
+                        "Arn": "TABLE_ARN"
+                    }
                 }
             ]
         }
     },
     "api": {
-        "manageLocationApi": {
+        "ManageLocationApi": {
             "service": "API Gateway",
             "providerPlugin": "awscloudformation",
             "dependsOn": [
                 {
                     "category": "function",
-                    "resourceName": "manageLocationLambda",
+                    "resourceName": "ManageLocationLambda",
                     "attributes": [
                         "Name",
                         "Arn"
@@ -93,7 +101,7 @@
             "dependsOn": [
                 {
                     "category": "function",
-                    "resourceName": "SurveyLambda",
+                    "resourceName": "CreateSurveyLambda",
                     "attributes": [
                         "Name",
                         "Arn"
@@ -101,7 +109,7 @@
                 },
                 {
                     "category": "function",
-                    "resourceName": "ResponseLambda",
+                    "resourceName": "SubmitResponseLambda",
                     "attributes": [
                         "Name",
                         "Arn"

@@ -1,47 +1,20 @@
 {
-    "dev": {
-        "awscloudformation": {
-            "AuthRoleName": "amplify-cleanviewweb-dev-200726-authRole",
-            "UnauthRoleArn": "arn:aws:iam::676044961909:role/amplify-cleanviewweb-dev-200726-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::676044961909:role/amplify-cleanviewweb-dev-200726-authRole",
-            "Region": "us-east-1",
-            "DeploymentBucketName": "amplify-cleanviewweb-dev-200726-deployment",
-            "UnauthRoleName": "amplify-cleanviewweb-dev-200726-unauthRole",
-            "StackName": "amplify-cleanviewweb-dev-200726",
-            "StackId": "arn:aws:cloudformation:us-east-1:676044961909:stack/amplify-cleanviewweb-dev-200726/829e6790-c30a-11ea-805c-0eb5b83f8639",
-            "AmplifyAppId": "df3x4k8u67hjc"
-        },
-        "categories": {
-            "auth": {
-                "cleanviewweb63661d3b": {}
-            },
-            "function": {
-                "manageLocationLambda": {},
-                "SurveyLambda": {},
-                "ResponseLambda": {}
-            }
-        }
-    },
     "staging": {
         "awscloudformation": {
-            "AuthRoleName": "amplify-cleanviewweb-staging-231426-authRole",
-            "UnauthRoleArn": "arn:aws:iam::676044961909:role/amplify-cleanviewweb-staging-231426-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::676044961909:role/amplify-cleanviewweb-staging-231426-authRole",
+            "AuthRoleName": "amplify-cleanviewweb-staging-170737-authRole",
+            "UnauthRoleArn": "arn:aws:iam::676044961909:role/amplify-cleanviewweb-staging-170737-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::676044961909:role/amplify-cleanviewweb-staging-170737-authRole",
             "Region": "us-east-1",
-            "DeploymentBucketName": "amplify-cleanviewweb-staging-231426-deployment",
-            "UnauthRoleName": "amplify-cleanviewweb-staging-231426-unauthRole",
-            "StackName": "amplify-cleanviewweb-staging-231426",
-            "StackId": "arn:aws:cloudformation:us-east-1:676044961909:stack/amplify-cleanviewweb-staging-231426/48241330-cfb7-11ea-a602-0ed24b955b13",
-            "AmplifyAppId": "df3x4k8u67hjc"
+            "DeploymentBucketName": "amplify-cleanviewweb-staging-170737-deployment",
+            "UnauthRoleName": "amplify-cleanviewweb-staging-170737-unauthRole",
+            "StackName": "amplify-cleanviewweb-staging-170737",
+            "StackId": "arn:aws:cloudformation:us-east-1:676044961909:stack/amplify-cleanviewweb-staging-170737/5ee1e650-d116-11ea-8871-12342204bca9",
+            "AmplifyAppId": "d3jrprdg7dypqc"
         },
         "categories": {
             "auth": {
-                "cleanviewweb63661d3b": {}
-            },
-            "function": {
-                "manageLocationLambda": {},
-                "SurveyLambda": {},
-                "ResponseLambda": {}
+                "cleanviewweb856f9a2c": {},
+                "cleanviewwebdd68a0c2": {}
             }
         }
     }

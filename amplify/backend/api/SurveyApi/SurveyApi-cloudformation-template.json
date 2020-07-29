@@ -14,29 +14,29 @@
         },
     
     
-          "functionSurveyLambdaName": {
+          "functionCreateSurveyLambdaName": {
             "Type": "String",
-            "Default": "functionSurveyLambdaName"
+            "Default": "functionCreateSurveyLambdaName"
           },
         
           
-          "functionSurveyLambdaArn": {
+          "functionCreateSurveyLambdaArn": {
             "Type": "String",
-            "Default": "functionSurveyLambdaArn"
+            "Default": "functionCreateSurveyLambdaArn"
           },
         
           
           
     
-          "functionResponseLambdaName": {
+          "functionSubmitResponseLambdaName": {
             "Type": "String",
-            "Default": "functionResponseLambdaName"
+            "Default": "functionSubmitResponseLambdaName"
           },
         
           
-          "functionResponseLambdaArn": {
+          "functionSubmitResponseLambdaArn": {
             "Type": "String",
-            "Default": "functionResponseLambdaArn"
+            "Default": "functionSubmitResponseLambdaArn"
           }
         
           
@@ -192,7 +192,7 @@
                             
                             {
                                 
-                                "Ref": "functionSurveyLambdaArn"
+                                "Ref": "functionCreateSurveyLambdaArn"
                             },
                             
                             "/invocations"
@@ -291,7 +291,7 @@
                           
                           {
                             
-                            "Ref": "functionSurveyLambdaArn"
+                            "Ref": "functionCreateSurveyLambdaArn"
                           },
                           
                           "/invocations"
@@ -305,7 +305,7 @@
                 }
               },   
               
-              "/responses": {
+              "/response": {
                 "options": {
                   "consumes": [
                     "application/json"
@@ -391,7 +391,7 @@
                             
                             {
                                 
-                                "Ref": "functionResponseLambdaArn"
+                                "Ref": "functionSubmitResponseLambdaArn"
                             },
                             
                             "/invocations"
@@ -404,7 +404,7 @@
                   }
                 }
               },
-              "/responses/{proxy+}": {
+              "/response/{proxy+}": {
                 "options": {
                   "consumes": [
                     "application/json"
@@ -490,7 +490,7 @@
                           
                           {
                             
-                            "Ref": "functionResponseLambdaArn"
+                            "Ref": "functionSubmitResponseLambdaArn"
                           },
                           
                           "/invocations"
@@ -547,12 +547,12 @@
                   
         
         
-        "functionSurveyLambdaPermissionSurveyApi": {
+        "functionCreateSurveyLambdaPermissionSurveyApi": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
                 "FunctionName": 
                     {
-                        "Ref":  "functionSurveyLambdaName"
+                        "Ref":  "functionCreateSurveyLambdaName"
                     },
                     
                     "Action": "lambda:InvokeFunction",
@@ -581,12 +581,12 @@
         },
         
         
-        "functionResponseLambdaPermissionSurveyApi": {
+        "functionSubmitResponseLambdaPermissionSurveyApi": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
                 "FunctionName": 
                     {
-                        "Ref":  "functionResponseLambdaName"
+                        "Ref":  "functionSubmitResponseLambdaName"
                     },
                     
                     "Action": "lambda:InvokeFunction",
@@ -616,7 +616,7 @@
         
         
         
-      "DeploymentAPIGWSurveyApi319fdcef": {
+      "DeploymentAPIGWSurveyApi": {
         "Type": "AWS::ApiGateway::Deployment",
         "Properties": {
           "Description": "The Development stage deployment of your API.",

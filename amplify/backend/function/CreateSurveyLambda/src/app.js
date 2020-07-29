@@ -6,16 +6,16 @@ or in the "license" file accompanying this file. This file is distributed on an 
 See the License for the specific language governing permissions and limitations under the License.
 */
 
+
 /* Amplify Params - DO NOT EDIT
-	
+  STORAGE_LOCATIONS_ARN
+  STORAGE_LOCATIONS_NAME
 Amplify Params - DO NOT EDIT */
 
 const AWS = require("aws-sdk");
 var express = require("express");
 var bodyParser = require("body-parser");
 var awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
-
-
 
 // declare a new express app
 var app = express();
@@ -28,24 +28,24 @@ if (process.env.ENV && process.env.ENV !== "NONE") {
 }
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
+// HARD CODED: url endpoints
+let environmentURL = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
+if(process.ENV === 'dev') {
+  environmentURL = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
+} else if(process.env.ENV === 'staging') {
+  environmentURL = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
+}
+
 // Enable CORS for all methods
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*")
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+  next()
 });
 
-/**********************
- * Example get method *
- **********************/
-
-app.get("/survey", function (req, res) {
-  // Add your code here
-  res.json({ success: "get call succeed!", url: req.url });
-});
+/**
+ * Generate Survey based on specific total_id
+ */
 
 app.get("/survey/:id", function (req, res) {
   // TODO : sanitize input
@@ -205,7 +205,7 @@ app.get("/survey/:id", function (req, res) {
         <meta charset='utf-8'>
         <script async src='https://cdn.ampproject.org/v0.js'></script>
         <title>CleanView</title>
-        <link rel='canonical' href='https://inv6tn1p09.execute-api.us-east-1.amazonaws.com/dev/survey/${tot_id}'>
+        <link rel='canonical' href='${environmentURL}/survey/${tot_id}'>
         <link href='https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;700&display=swap' rel='stylesheet'>
         <link href='https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,500;0,600;1,600&display=swap'
           rel='stylesheet'>
@@ -305,7 +305,7 @@ app.get("/survey/:id", function (req, res) {
       <body>
         <h1>Help <strong>${name}</strong> learn about their COVID-19 response:</h1>
         <form class='user-survey' method='POST'
-          action-xhr=https://inv6tn1p09.execute-api.us-east-1.amazonaws.com/dev/responses target="_top">
+          action-xhr="${environmentURL}/responses" target="_top">
           <fieldset>
             <div>
               <input type='hidden' name='total_id' value='${total_id}'> </input>
@@ -327,24 +327,24 @@ app.get("/survey/:id", function (req, res) {
             <div>
               <p>Are the employees wearing masks?</p>
               <amp-selector class='mask-selector' layout='container' name='employee-masks'>
-                <span class='selection-button' option='y'>Yes</span>
-                <span class='selection-button' option='n'>No</span>
+                <span class='selection-button' option='1'>Yes</span>
+                <span class='selection-button' option='0'>No</span>
               </amp-selector>
             </div>
       
             <div>
               <p>Is your party at least 6 feet away from other parties?</p>
               <amp-selector class='six-feet-selector' layout='container' name='six-feet'>
-                <span class='selection-button' option='y'>Yes</span>
-                <span class='selection-button' option='n'>No</span>
+                <span class='selection-button' option='1'>Yes</span>
+                <span class='selection-button' option='0'>No</span>
               </amp-selector>
             </div>
 
             <div>
               <p>Do you live within 15 miles of the restaurant?</p>
               <amp-selector class='tourist-selector' layout='container' name='tourist-diner'>
-                <span class='selection-button' option='y'>Yes</span>
-                <span class='selection-button' option='n'>No</span>
+                <span class='selection-button' option='1'>Yes</span>
+                <span class='selection-button' option='0'>No</span>
               </amp-selector>
             </div>
       
@@ -369,54 +369,60 @@ app.get("/survey/:id", function (req, res) {
   });
 });
 
-
-/****************************
- * Example post method *
- ****************************/
-
-app.post("/survey", function (req, res) {
+app.get('/survey/*', function(req, res) {
   // Add your code here
-  res.json({ success: "post call succeed!", url: req.url, body: req.body });
-});
-
-app.post("/survey/*", function (req, res) {
-  // Add your code here
-  res.json({ success: "post call succeed!", url: req.url, body: req.body });
+  res.json({success: 'get call succeed!', url: req.url});
 });
 
 /****************************
- * Example put method *
- ****************************/
+* Example post method *
+****************************/
 
-app.put("/survey", function (req, res) {
+app.post('/survey', function(req, res) {
   // Add your code here
-  res.json({ success: "put call succeed!", url: req.url, body: req.body });
+  res.json({success: 'post call succeed!', url: req.url, body: req.body})
 });
 
-app.put("/survey/*", function (req, res) {
+app.post('/survey/*', function(req, res) {
   // Add your code here
-  res.json({ success: "put call succeed!", url: req.url, body: req.body });
+  res.json({success: 'post call succeed!', url: req.url, body: req.body})
 });
 
 /****************************
- * Example delete method *
- ****************************/
+* Example put method *
+****************************/
 
-app.delete("/survey", function (req, res) {
+app.put('/survey', function(req, res) {
   // Add your code here
-  res.json({ success: "delete call succeed!", url: req.url });
+  res.json({success: 'put call succeed!', url: req.url, body: req.body})
 });
 
-app.delete("/survey/*", function (req, res) {
+app.put('/survey/*', function(req, res) {
   // Add your code here
-  res.json({ success: "delete call succeed!", url: req.url });
+  res.json({success: 'put call succeed!', url: req.url, body: req.body})
 });
 
-app.listen(3000, function () {
-  console.log("App started");
+/****************************
+* Example delete method *
+****************************/
+
+app.delete('/survey', function(req, res) {
+  // Add your code here
+  res.json({success: 'delete call succeed!', url: req.url});
+});
+
+app.delete('/survey/*', function(req, res) {
+  // Add your code here
+  res.json({success: 'delete call succeed!', url: req.url});
+});
+
+app.listen(3000, function() {
+    console.log("App started")
 });
 
 // Export the app object. When executing the application local this does nothing. However,
 // to port it to AWS Lambda we will create a wrapper around that will load the app from
 // this file
-module.exports = app;
+module.exports = app
+
+

@@ -1,9 +1,4 @@
-/* Amplify Params - DO NOT EDIT
-	ENV
-	REGION
-	STORAGE_SURVEYRESPONSESTABLE_ARN
-	STORAGE_SURVEYRESPONSESTABLE_NAME
-Amplify Params - DO NOT EDIT *//*
+/*
 Copyright 2017 - 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at
     http://aws.amazon.com/apache2.0/
@@ -24,7 +19,7 @@ AWS.config.update({ region: process.env.TABLE_REGION });
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-let tableName = "survey_responses";
+let tableName = "responses";
 if(process.env.ENV && process.env.ENV !== "NONE") {
   tableName = tableName + '-' + process.env.ENV;
 }
@@ -35,7 +30,7 @@ const partitionKeyType = "S";
 const sortKeyName = "";
 const sortKeyType = "";
 const hasSortKey = sortKeyName !== "";
-const path = "/responses";
+const path = "/response";
 const UNAUTH = 'UNAUTH';
 const hashKeyPath = '/:' + partitionKeyName;
 const sortKeyPath = hasSortKey ? '/:' + sortKeyName : '';
@@ -192,6 +187,7 @@ app.post(path, async function(req, res) {
     resolve();
   })
   formParams.id = uuid();
+  formParams.responseTime = Date.toString();
 
   let putItemParams = {
     TableName: tableName,
@@ -212,7 +208,6 @@ app.post(path, async function(req, res) {
     }
   });
 });
-
 
 /**************************************
 * HTTP remove method to delete object *

@@ -1,5 +1,5 @@
 {
-  "name": "ResponseLambda",
+  "name": "SubmitResponseLambda",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,7 +9,6 @@
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
     "formidable": "^1.2.2",
-    "parse-multipart": "^1.0.4",
     "uuidv4": "^6.2.0"
   },
   "devDependencies": {},

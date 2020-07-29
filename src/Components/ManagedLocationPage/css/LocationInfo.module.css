@@ -1,0 +1,24 @@
+.locationInfoWrapper{
+    font-family: Roboto;
+    margin: 25px 40px 25px 40px;
+}
+
+.locationInfoWrapper p{
+    margin: 0px 0px 5px 0px;
+}
+
+.locationInfoWrapper h2{
+    font-weight: 900;
+}
+
+.locationInfoFieldName{
+    font-weight: 600;
+}
+
+.locationInfoWrapper h5{
+    font-weight: 900;
+}
+
+.covidSurveyRoad{
+    margin-top: 20px;
+}

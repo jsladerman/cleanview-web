@@ -41,12 +41,12 @@
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"SurveyLambda",
+						"CreateSurveyLambda",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"SurveyLambda",
+									"CreateSurveyLambda",
 									"-",
 									{
 										"Ref": "env"
@@ -63,12 +63,6 @@
 						},
 						"REGION": {
 							"Ref": "AWS::Region"
-						},
-						"STORAGE_LOCATIONS_NAME": {
-							"Ref": "storagelocationsName"
-						},
-						"STORAGE_LOCATIONS_ARN": {
-							"Ref": "storagelocationsArn"
 						}
 					}
 				},
@@ -82,8 +76,8 @@
 				"Layers": [],
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-cleanviewweb-dev-200726-deployment",
-					"S3Key": "amplify-builds/SurveyLambda-4f534f744974346c7474-build.zip"
+					"S3Bucket": "amplify-cleanviewweb-staging-170737-deployment",
+					"S3Key": "amplify-builds/CreateSurveyLambda-56726d4f6b5241363331-build.zip"
 				}
 			}
 		},
@@ -93,12 +87,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"cleanviewwebLambdaRole816488d7",
+						"cleanviewwebLambdaRole35b80e6f",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"cleanviewwebLambdaRole816488d7",
+									"cleanviewwebLambdaRole35b80e6f",
 									"-",
 									{
 										"Ref": "env"
@@ -164,40 +158,17 @@
 									}
 								]
 							}
-						}
-					]
-				}
-			}
-		},
-		"AmplifyResourcesPolicy": {
-			"DependsOn": [
-				"LambdaExecutionRole"
-			],
-			"Type": "AWS::IAM::Policy",
-			"Properties": {
-				"PolicyName": "amplify-lambda-execution-policy",
-				"Roles": [
-					{
-						"Ref": "LambdaExecutionRole"
-					}
-				],
-				"PolicyDocument": {
-					"Version": "2012-10-17",
-					"Statement": [
+						},
 						{
 							"Effect": "Allow",
 							"Action": [
-								"dynamodb:Put*",
-								"dynamodb:Create*",
-								"dynamodb:BatchWriteItem",
-								"dynamodb:Get*",
-								"dynamodb:BatchGetItem",
-								"dynamodb:List*",
-								"dynamodb:Describe*",
-								"dynamodb:Scan",
+								"dynamodb:DescribeTable",
+								"dynamodb:GetItem",
 								"dynamodb:Query",
-								"dynamodb:Update*",
-								"dynamodb:RestoreTable*"
+								"dynamodb:Scan",
+								"dynamodb:PutItem",
+								"dynamodb:UpdateItem",
+								"dynamodb:DeleteItem"
 							],
 							"Resource": [
 								{
