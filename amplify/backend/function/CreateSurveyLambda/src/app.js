@@ -57,6 +57,7 @@ app.get("/survey/:id", function (req, res) {
   const tot_id = id
   const divIdx = tot_id.indexOf('99strl99strl')
   const loc_id = tot_id.substring(0, divIdx)
+  const sub_id = tot_id.substring(divIdx + ('99strl99strl').length)
 
   var params = {
     TableName: tableName,
@@ -88,10 +89,9 @@ app.get("/survey/:id", function (req, res) {
               <p>${loc_id}</p>
           </body>`);
     }else {
-      let itemData = data.Item
+      let itemData = data.Item;
       let name = itemData.loc_name;
-      let total_id = tot_id
-      let menu_link = itemData.menu_link
+      let menu_link = itemData.menu_link;
       res.send(`<!doctype html>
       <html ⚡>
 
@@ -310,8 +310,24 @@ app.get("/survey/:id", function (req, res) {
           action-xhr="${environmentURL}/response" target="_top">
           <fieldset>
             <div>
-              <input type='hidden' name='total_id' value='${total_id}'> </input>
-              <input type='hidden' name='menu_link' value='${menu_link}'> </input>
+              <input type='hidden' name='sublocId' value='${sub_id}'> </input>
+              <input type='hidden' name='locationId' value='${loc_id}'></input>
+              <input type='hidden' name='menuLink' value='${menu_link}'> </input>
+              <input id="timestamp" type='hidden' name='timestamp' value='${Date().toLocaleString()}'></input>
+              <div>
+                <p>Are the employees wearing masks?</p>
+                <amp-selector class='mask-selector' layout='container' name='employeeMasks'>
+                  <span class='selection-button' option='1'>Yes</span>
+                  <span class='selection-button' option='0'>No</span>
+                </amp-selector>
+              </div>
+              <div>
+                <p>Is your party at least 6 feet away from other parties?</p>
+                <amp-selector class='six-feet-selector' layout='container' name='sixFeet'>
+                  <span class='selection-button' option='1'>Yes</span>
+                  <span class='selection-button' option='0'>No</span>
+                </amp-selector>
+              </div>
               <p>How old are you?</p>
               <amp-selector name='age' class='age-selector' layout='container' on='select: AMP.setState({
                       selectedOption: event.targetOption,
@@ -326,25 +342,11 @@ app.get("/survey/:id", function (req, res) {
                     <span class='selection-button' option='66+'>66+</span>
               </amp-selector>
             </div>
-            <div>
-              <p>Are the employees wearing masks?</p>
-              <amp-selector class='mask-selector' layout='container' name='employee-masks'>
-                <span class='selection-button' option='1'>Yes</span>
-                <span class='selection-button' option='0'>No</span>
-              </amp-selector>
-            </div>
-      
-            <div>
-              <p>Is your party at least 6 feet away from other parties?</p>
-              <amp-selector class='six-feet-selector' layout='container' name='six-feet'>
-                <span class='selection-button' option='1'>Yes</span>
-                <span class='selection-button' option='0'>No</span>
-              </amp-selector>
-            </div>
+            
 
             <div>
               <p>Do you live within 15 miles of the restaurant?</p>
-              <amp-selector class='tourist-selector' layout='container' name='tourist-diner'>
+              <amp-selector class='tourist-selector' layout='container' name='touristDiner'>
                 <span class='selection-button' option='1'>Yes</span>
                 <span class='selection-button' option='0'>No</span>
               </amp-selector>
@@ -353,7 +355,7 @@ app.get("/survey/:id", function (req, res) {
             <div>
               <p>How satisfied are you with ${name}'s overall COVID-19 response?</p>
               <label>Poor</label>
-              <input type='range' id='slider' name='response-rating' min='1' max='5' step='.5'>
+              <input type='range' id='slider' name='responseRating' min='0' max='5' step='.5'>
               <label>Excellent</label>
             </div>
       
@@ -364,7 +366,9 @@ app.get("/survey/:id", function (req, res) {
           </fieldset>
         </form>
       </body>
-      
+      <script>
+        document.getElementById("timestamp").value = Date().toLocaleString();
+      </script>
       </html>
     `);
     }

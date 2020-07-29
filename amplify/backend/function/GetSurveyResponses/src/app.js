@@ -77,10 +77,10 @@ app.get(path + hashKeyPath, function(req, res) {
 
   const queryParams = {
     TableName: tableName,
-    KeyConditionExpression: "restaurantId = :restaurant_id",
-    IndexName: "restaurantId-index",
+    KeyConditionExpression: "locationId = :location_id",
+    IndexName: "locationId-index",
     ExpressionAttributeValues: {
-      ":restaurant_id": req.query.restaurant_id
+      ":location_id": req.query.location_id
     }
   }
 

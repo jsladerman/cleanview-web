@@ -150,14 +150,14 @@ class AnalyticsDashboard extends Component {
             });
     }
 
-    getRestaurantSurveyData = (restaurantID) => {
+    getRestaurantSurveyData = (locationID) => {
         const apiName = 'GetSurveyResponses';
         const path = '/survey-responses/object'
         const myParams = {
             headers: {},
             response: true,
             queryStringParameters: {
-                restaurant_id: restaurantID
+                location_id: locationID
             },
         };
 

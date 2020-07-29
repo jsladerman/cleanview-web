@@ -40,8 +40,6 @@ subloc_ids = {
     ]
 }
 
-columns = ['age', 'employee-masks', 'menu-link', 'response-rating', 'six-feet', 'total-id', 'tourist-diner']
-
 # jstr = '['
 
 # for i in range(0, 100):
@@ -64,6 +62,7 @@ for i in range(0, 100):
     restid = random.choice(location_ids)
     table.put_item(
         Item={
+            'timestamp': Date.now();
             'id': str(uuid.uuid4()),
             'age': str(random.choice(age)),
             'employeeMasks': str(random.choice(employee_masks)),
@@ -71,7 +70,7 @@ for i in range(0, 100):
             'responseRating': str(random.choice(response_rating)),
             'sixFeet': str(random.choice(six_feet)),
             'touristDiner': str(random.choice(tourist_diner)),
-            'restaurantId': restid,
+            'locationId': restid,
             'sublocId': random.choice(subloc_ids[restid])
         }
     )
