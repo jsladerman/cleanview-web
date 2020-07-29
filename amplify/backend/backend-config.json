@@ -78,25 +78,6 @@
                     }
                 }
             ]
-        },
-        "GetSurveyResponses": {
-            "build": true,
-            "providerPlugin": "awscloudformation",
-            "service": "Lambda",
-            "dependsOn": [
-                {
-                    "category": "storage",
-                    "resourceName": "responses",
-                    "attributes": [
-                        "Name",
-                        "Arn"
-                    ],
-                    "attributeEnvMap": {
-                        "Name": "TABLE_NAME",
-                        "Arn": "TABLE_ARN"
-                    }
-                }
-            ]
         }
     },
     "api": {
@@ -129,20 +110,6 @@
                 {
                     "category": "function",
                     "resourceName": "SubmitResponseLambda",
-                    "attributes": [
-                        "Name",
-                        "Arn"
-                    ]
-                }
-            ]
-        },
-        "GetSurveyResponses": {
-            "service": "API Gateway",
-            "providerPlugin": "awscloudformation",
-            "dependsOn": [
-                {
-                    "category": "function",
-                    "resourceName": "GetSurveyResponses",
                     "attributes": [
                         "Name",
                         "Arn"
