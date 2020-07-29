@@ -305,7 +305,7 @@ app.get("/survey/:id", function (req, res) {
       <body>
         <h1>Help <strong>${name}</strong> learn about their COVID-19 response:</h1>
         <form class='user-survey' method='POST'
-          action-xhr="${environmentURL}/responses" target="_top">
+          action-xhr="${environmentURL}/response" target="_top">
           <fieldset>
             <div>
               <input type='hidden' name='total_id' value='${total_id}'> </input>

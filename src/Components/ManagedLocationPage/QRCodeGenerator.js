@@ -34,7 +34,7 @@ class QRCodeGenerator extends Component {
     })
 
     const apiName = 'ManageLocationApi';
-    const path = '/manageLocation/sublocations';
+    const path = '/location/sublocations';
     const requestData = {
       headers: {},
       response: true,
@@ -81,6 +81,9 @@ class QRCodeGenerator extends Component {
     if (!this.state.sublocations) {
       return (<p>Looking for sublocations...</p>)
     }
+
+    console.log('id',this.props.id)
+    console.log()
 
     const subLocationList = this.state.sublocations.map((sublocation) => {
       const total_id = this.props.id + '99strl99strl' + sublocation.id

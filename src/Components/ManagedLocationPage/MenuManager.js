@@ -217,7 +217,7 @@ class PDFMenuUpload extends Component {
         .catch(err => console.log(err))
 
         // TODO: CHANGE ON DEV VS PROD
-        const url = "https://cleanview-menu-images200726-dev.s3.amazonaws.com/public/" + filename;
+        const url = "https://cleanviewweb1b7535894d364601be8133bce58e835a170737-staging.s3.us-east-1.amazonaws.com/public/" + filename;
         handleChangeFunc(url)
     }
 
