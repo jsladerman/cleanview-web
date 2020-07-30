@@ -54,6 +54,7 @@ class AddLocation extends Component {
         return (
             <div className={styles.addLocation}>
                 <img
+                    type='file'
                     src={require("../../images/addLocationCamera.svg")}
                     alt=''
                     height="50px"
@@ -64,32 +65,49 @@ class AddLocation extends Component {
                     Add Location
                 </div>
                 <Formik
-                    initialValues={{ email: '', password: ''}}
+                    initialValues={{}}
                     onSubmit={this.makeLocation}>
                     <Form className={styles.form}>
                             <div className={styles.formCols}>
                                 <div className={styles.formCol}>
                                     <div className={styles.formColHeader}>General Information</div>
                                     <div className={styles.formLabel}>Business Name</div>
-                                    <Field className={styles.formInput} type='input' name='name' /><br/>
+                                    <Field className={styles.formInput} type='input' name='name'/>
                                     <div className={styles.formLabel}>Business Type</div>
-                                    <Field className={styles.formInput} type='input' name='type' /><br/>
-                                    <div className={styles.formLabel}>Products Sold</div>
-                                    <Field className={styles.formInput} type='input' name='products' /><br/>
+                                    <Field className={styles.formInput} type='input' name='type'/>
+                                    <div className={styles.formLabel}>Business Style</div>
+                                    <Field className={styles.formInput} type='input' name='products'/>
+                                    <div className={styles.formLabel}>Business Email</div>
+                                    <Field className={styles.formInput} type='input' name='type'/>
+                                    <div className={styles.formLabel}>Products Phone #</div>
+                                    <Field className={styles.formInput} type='input' name='products'/>
                                 </div>
                                 <div className={styles.formCol}>
                                     <div className={styles.formColHeader}>Business Address</div>
                                     <div className={styles.formLabel}>Street</div>
-                                    <Field className={styles.formInput} type='input' name="addr.line1" /><br/>
-                                    <div className={styles.formLabel}>Street</div>
-                                    <Field className={styles.formInput} type='input' name="street" /><br/>
-                                    <div className={styles.formLabel}>Street</div>
-                                    <Field className={styles.formInput} type='input' name="street" /><br/>
+                                    <Field className={styles.formInput} type='input' name="addr.line1"/>
+                                    <div className={styles.formLabel}>Apt, Suite, etc.</div>
+                                    <Field className={styles.formInput} type='input' name="street"/>
+                                    <div className={styles.formLabel}>City</div>
+                                    <Field className={styles.formInput} type='input' name="street"/>
+                                    <div style={{width:'40%', float:'left', marginRight: '12px'}}>
+                                        <div className={styles.formLabel}>State</div>
+                                        <Field style={{width:'100%'}} type='input' name="street"/>
+                                    </div>
+                                    <div style={{width:'50%', float:'left'}}>
+                                        <div className={styles.formLabel}>Zip Code</div>
+                                        <Field style={{width:'100%'}} type='input' name="street"/>
+                                    </div>
                                 </div>
                                 <div className={styles.formCol}>
                                     <div className={styles.formColHeader}>COVID Response Survey</div>
                                     <div className={styles.formQuestions}>
-                                        Are your employees required to wear masks?
+                                        <div className={styles.formQuestion}>Are your employees required to wear masks?</div>
+                                        <Field className={styles.formInput} type='radio' id="male" name="gender"/>
+                                        <label className={styles.formRadioLabel}>Yes</label>
+                                        <Field className={styles.formInput} type='radio' id="female" name="gender" value="female"/>
+                                        <label className={styles.formRadioLabel}>No</label> <br/><br/>
+                                        <div className={styles.formQuestion}>Are your employees required to wear masks?</div>
                                     </div>
                                 </div>
                             </div>

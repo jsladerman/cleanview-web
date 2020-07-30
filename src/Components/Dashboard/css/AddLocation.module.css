@@ -2,6 +2,7 @@
     font-family: Roboto, serif;
     background-color: white;
     padding: 20px 0 20px 40px;
+    width: 760px;
     overflow: scroll;
     border-radius: 12px;
     box-shadow: 8px 4px 35px rgba(0, 0, 0, 0.35);
@@ -19,11 +20,11 @@
 
 .formCols {
     display: flex;
-    /*justify-content: space-evenly;*/
 }
 
 .formCol {
     margin-right: 40px;
+    width: 180px;
 }
 
 .formColHeader {
@@ -36,6 +37,16 @@
 
 .formLabel {
     font-size: 16px;
+}
+
+.formQuestion {
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+.formRadioLabel {
+    margin-left:8px;
+    margin-right:28px;
 }
 
 .formInput {
