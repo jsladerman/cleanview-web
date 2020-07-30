@@ -39,9 +39,12 @@ class AnalyticsDashboard extends Component {
         }
         return (
             <div className={styles.analDash} style={{ paddingLeft: "20px" }}>
-                <h2>Analytics Dashboard</h2>
-                <p><span className={styles.fieldHeader}>Average Rating: </span> {this.averageRating(this.state.restaurantSurveyResponses)} / 5</p>
-                <p><span className={styles.fieldHeader}>Total # of Reviews: </span> {this.state.restaurantSurveyResponses.length} </p>
+                <h2 id={styles.analyticsHeader}>Analytics Dashboard</h2>
+
+                <div id={styles.overallMetrics}>
+                    <p><span className={styles.fieldHeader}>Average Rating: </span> {this.averageRating(this.state.restaurantSurveyResponses)} / 5</p>
+                    <p><span className={styles.fieldHeader}>Total # of Reviews: </span> {this.state.restaurantSurveyResponses.length} </p>
+                </div>
 
                 <br />
 
@@ -162,7 +165,7 @@ class AnalyticsDashboard extends Component {
             var obj = dataSet[i];
             total += parseFloat(obj['responseRating']);
         }
-        return total / dataSet.length;
+        return (total / dataSet.length).toFixed(1);
     }
 
     filterData = async () => {

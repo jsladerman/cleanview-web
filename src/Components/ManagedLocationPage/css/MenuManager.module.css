@@ -5,6 +5,10 @@
     color: #191A25;
 }
 
+#menuManagerHeader{
+    font-weight: bold;
+}
+
 .menuManagerSubheader{
     font-weight: bold;
     color: #23A6BD;

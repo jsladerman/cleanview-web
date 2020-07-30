@@ -115,7 +115,7 @@ class MenuManager extends Component {
     render() {
         return(
             <div class="container-fluid text-wrap" className={styles.menuManagerCodeBlock}>
-            <h2>Menu Manager</h2>
+            <h2 id={styles.menuManagerHeader}>Menu Manager</h2>
 
             <h4 className={styles.menuManagerSubheader}>Current Menu</h4>
             {this.titleText(this.state.menu_link)}

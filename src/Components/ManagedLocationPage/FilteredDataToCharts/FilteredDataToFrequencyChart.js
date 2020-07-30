@@ -36,7 +36,6 @@ class FilteredDataToFrequencyChart extends Component{
           for (var i = 0; i < this.props.filteredData.length; i++) {
             var obj = this.props.filteredData[i];
             var timeHour = obj["timestamp"].slice(16, 18);  // Get the hour
-            console.log(timeHour);
 
             let index = -1;
             if(timeHour >= 2 && timeHour <= 5){             // 2 am to 5:59 am

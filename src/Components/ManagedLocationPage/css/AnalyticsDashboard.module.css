@@ -1,3 +1,7 @@
+#analyticsHeader{
+    font-weight:bold;
+}
+
 .analDash{
     width: 90%;
     margin: 25px 40px 25px 40px;
@@ -9,6 +13,11 @@
 }
 
 .analyticsDashboardSubheader{
+    border-radius: 6px;
+    padding: 6px 6px 6px 6px;
+    margin: 0px 0px 0px 0px;
+    background-color: #191A25;
+    color: white;
     font-weight: bold;
 }
 
@@ -26,4 +35,12 @@
 
 .rowDivider{
     margin-top: 20px;
+}
+
+#overallMetrics{
+    font-size: 20px;
+    /* border: 2px #23A6BD solid;
+    border-radius: 6px; */
+    padding: 6px 6px 6px 6px;
+    vertical-align: center;
 }
