@@ -32,69 +32,88 @@ class AnalyticsDashboard extends Component {
     }
 
     render() {
-        if(this.state.restaurantSurveyResponses.length === 0){
-            return(
+        // TODO- ANOTHER WAY TO CHECK IF THE STATE HAS BEEN SET
+        if (this.state.restaurantSurveyResponses.length === 0) {
+            return (
                 <div> LOADING </div>
             )
         }
         return (
-            <div className={styles.analDash} style={{ paddingLeft: "20px" }}>
+            <div className={styles.analDash}>
                 <h2 id={styles.analyticsHeader}>Analytics Dashboard</h2>
 
-                <div id={styles.overallMetrics}>
-                    <p><span className={styles.fieldHeader}>Average Rating: </span> {this.averageRating(this.state.restaurantSurveyResponses)} / 5</p>
-                    <p><span className={styles.fieldHeader}>Total # of Reviews: </span> {this.state.restaurantSurveyResponses.length} </p>
+                <h4 className={styles.analyticsDashboardSubheader}>Overview</h4>
+                <div className = {styles.overviewMetrics}>
+                    <Row>
+                        <Col></Col>
+                        <Col>Rating</Col>
+                        <Col>Responses</Col>
+                    </Row>
+                    <Row>
+                        <Col>Today</Col>
+                        <Col className={styles.cell1}>4.5</Col>
+                        <Col className={styles.cell1}>128</Col>
+                    </Row>
+                    <Row>
+                        <Col>This week</Col>
+                        <Col className={styles.cell2}>4.2</Col>
+                        <Col className={styles.cell2}>20</Col>
+                    </Row>
+                    <Row>
+                        <Col>This month</Col>
+                        <Col className={styles.cell3}>4.1</Col>
+                        <Col className={styles.cell3}>85</Col>
+                    </Row>
                 </div>
 
                 <br />
 
-                <Container fluid>
-                    <h4 className={styles.analyticsDashboardSubheader}>Customer Demographic Information</h4>
-                    {this.renderDemographicCharts()}
+                <h4 className={styles.analyticsDashboardSubheader}>Customer Demographic Information</h4>
+                <div>{this.renderDemographicCharts()}</div>
+                
+                <h4 className={styles.analyticsDashboardSubheader}>Survey Responses</h4>
+                <Row className={styles.rowDivider}>
+                    <Col id={styles.filterCharts}>
+                        <p className={styles.analyticsDashboardSubheader2}>Filter Charts</p>
+                        <p>Filter by age group</p>
+                        <button onClick={() => this.filterSingleAgeGroup('0-17')}>0-17</button>
+                        <button onClick={() => this.filterSingleAgeGroup('18-25')}>18-25</button>
+                        <button onClick={() => this.filterSingleAgeGroup('26-35')}>26-35</button>
+                        <button onClick={() => this.filterSingleAgeGroup('36-45')}>36-45</button>
+                        <button onClick={() => this.filterSingleAgeGroup('46-55')}>46-55</button>
+                        <button onClick={() => this.filterSingleAgeGroup('56-65')}>56-65</button>
+                        <button onClick={() => this.filterSingleAgeGroup('66+')}>65+</button>
 
-                    <h4 className={styles.analyticsDashboardSubheader}>Survey Responses</h4>
-                    <Row id={styles.filterCharts} className={styles.rowDivider}>
-                        <Col>
-                            <p className={styles.analyticsDashboardSubheader2}>Filter Charts</p>
-                            <p>Filter by age group</p>
-                            <button onClick = {() => this.filterSingleAgeGroup('0-17')}>0-17</button>
-                            <button onClick = {() => this.filterSingleAgeGroup('18-25')}>18-25</button>
-                            <button onClick = {() => this.filterSingleAgeGroup('26-35')}>26-35</button>
-                            <button onClick = {() => this.filterSingleAgeGroup('36-45')}>36-45</button>
-                            <button onClick = {() => this.filterSingleAgeGroup('46-55')}>46-55</button>
-                            <button onClick = {() => this.filterSingleAgeGroup('56-65')}>56-65</button>
-                            <button onClick = {() => this.filterSingleAgeGroup('66+')}>65+</button>
+                        <p>Filter by customer locale</p>
+                        <button onClick={() => this.filterSingleTouristGroup('1')}>Tourist customers</button>
+                        <button onClick={() => this.filterSingleTouristGroup('0')}>Local customers</button>
 
-                            <p>Filter by customer locale</p>
-                            <button onClick = {() => this.filterSingleTouristGroup('1')}>Tourist customers</button>
-                            <button onClick = {() => this.filterSingleTouristGroup('0')}>Local customers</button>
+                    </Col>
+                </Row>
+                <Row className={styles.rowDivider}>
+                    <Col>
+                        <p className={styles.analyticsDashboardSubheader2}>Filtered Statistics</p>
+                        <p><span className={styles.fieldHeader}>Average Rating: </span> {this.averageRating(this.state.filteredData)} / 5</p>
+                        <p><span className={styles.fieldHeader}>Total # of Reviews: </span> {this.state.filteredData.length} </p>
+                    </Col>
+                </Row>
 
-                        </Col>
-                    </Row>
-                    <Row className={styles.rowDivider}>
-                        <Col>
-                            <p className={styles.analyticsDashboardSubheader2}>Filtered Statistics</p>
-                            <p><span className={styles.fieldHeader}>Average Rating: </span> {this.averageRating(this.state.filteredData)} / 5</p>
-                            <p><span className={styles.fieldHeader}>Total # of Reviews: </span> {this.state.filteredData.length} </p>
-                        </Col>
-                    </Row>
-                    {this.renderFilteringCharts()}
+                {this.renderFilteringCharts()}
 
-                </Container>
             </div>
         );
     }
 
     renderDemographicCharts = () => {
-        if(!this.state.rerenderCharts){
-            return(
+        if (!this.state.rerenderCharts) {
+            return (
                 <Row className={styles.rowDivider}>
                     <Col>
                         <FilteredDataToAgeBarChart
                             filteredData={this.state.restaurantSurveyResponses}
                         />
                     </Col>
-                    
+
                     <Col>
                         <FilteredDataToPieChart
                             filteredData={this.state.restaurantSurveyResponses}
@@ -113,44 +132,44 @@ class AnalyticsDashboard extends Component {
     }
 
     renderFilteringCharts = () => {
-        if(!this.state.rerenderCharts){
+        if (!this.state.rerenderCharts) {
             return (
                 <div>
                     <Row className={styles.rowDivider}>
-                            <Col>
-                                <FilteredDataToRatingBarChart
+                        <Col>
+                            <FilteredDataToRatingBarChart
                                 filteredData={this.state.filteredData}
-                                />
-                            </Col>
-    
-                            <Col>
-                                <FilteredDataToFrequencyChart
+                            />
+                        </Col>
+
+                        <Col>
+                            <FilteredDataToFrequencyChart
                                 filteredData={this.state.filteredData}
-                                />
-                            </Col>
-                        </Row>
-    
-                        <Row className={styles.rowDivider}>
-                            <Col>
-                                <FilteredDataToPieChart
+                            />
+                        </Col>
+                    </Row>
+
+                    <Row className={styles.rowDivider}>
+                        <Col>
+                            <FilteredDataToPieChart
                                 filteredData={this.state.filteredData}
                                 keyString='employeeMasks'
                                 titleText='Are your employees wearing masks?'
                                 yesLabel="said yes"
                                 noLabel="said no"
-                                />
-                            </Col>
-    
-                            <Col>
-                                <FilteredDataToPieChart
+                            />
+                        </Col>
+
+                        <Col>
+                            <FilteredDataToPieChart
                                 filteredData={this.state.filteredData}
                                 keyString='sixFeet'
                                 titleText='Are your tables at least 6 feet apart?'
                                 yesLabel="said yes"
                                 noLabel="said no"
-                                />
-                            </Col>
-                        </Row>
+                            />
+                        </Col>
+                    </Row>
                 </div>
             );
         }
@@ -169,12 +188,12 @@ class AnalyticsDashboard extends Component {
     }
 
     filterData = async () => {
-        this.setState({rerenderCharts: true});
+        this.setState({ rerenderCharts: true });
         let newFilteredData = await this.state.restaurantSurveyResponses.filter(response =>
-            (!this.state.touristExcludeFilter.includes(response['touristDiner']) && !this.state.ageExcludeFilter.includes(response['age']) )
+            (!this.state.touristExcludeFilter.includes(response['touristDiner']) && !this.state.ageExcludeFilter.includes(response['age']))
         );
-        this.setState({filteredData: newFilteredData});
-        this.setState({rerenderCharts: false});
+        this.setState({ filteredData: newFilteredData });
+        this.setState({ rerenderCharts: false });
     }
 
 
@@ -182,14 +201,14 @@ class AnalyticsDashboard extends Component {
     filterSingleAgeGroup = (ageGroup) => {
         let newAgeExclude = this.state.ageExcludeFilter;
 
-        if(newAgeExclude.includes(ageGroup)){
+        if (newAgeExclude.includes(ageGroup)) {
             var index = newAgeExclude.indexOf(ageGroup);
             newAgeExclude.splice(index, 1);
         } else {
             newAgeExclude.push(ageGroup)
         }
 
-        this.setState({ageExcludeFilter: newAgeExclude});
+        this.setState({ ageExcludeFilter: newAgeExclude });
         this.filterData();
 
         console.log(this.state.ageExcludeFilter);
@@ -199,14 +218,14 @@ class AnalyticsDashboard extends Component {
     filterSingleTouristGroup = (touristGroup) => {
         let newTouristExclude = this.state.touristExcludeFilter;
 
-        if(newTouristExclude.includes(touristGroup)){
+        if (newTouristExclude.includes(touristGroup)) {
             var index = newTouristExclude.indexOf(touristGroup);
             newTouristExclude.splice(index, 1);
         } else {
             newTouristExclude.push(touristGroup)
         }
 
-        this.setState({touristExcludeFilter: newTouristExclude});
+        this.setState({ touristExcludeFilter: newTouristExclude });
         this.filterData();
 
         console.log(this.state.touristExcludeFilter);
@@ -216,7 +235,7 @@ class AnalyticsDashboard extends Component {
         Auth.currentUserInfo()
             .then(user => {
                 if (user == null)
-                    this.setState({redirect: '/login'});
+                    this.setState({ redirect: '/login' });
                 else
                     this.getRestaurantSurveyData(this.props.id);
             })
@@ -251,4 +270,5 @@ class AnalyticsDashboard extends Component {
 }
 
 export default AnalyticsDashboard;
+
 

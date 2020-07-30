@@ -8,10 +8,6 @@
     font-family: Roboto;
 }
 
-.fieldHeader{
-    font-weight: bold;
-}
-
 .analyticsDashboardSubheader{
     border-radius: 6px;
     padding: 6px 6px 6px 6px;
@@ -29,18 +25,40 @@
 
 #filterCharts{
     border: 2px #E5E5E5 solid;
+    margin-left: 15px;
     border-radius: 6px;
     padding: 6px 6px 6px 6px;
 }
 
 .rowDivider{
     margin-top: 20px;
+    padding: 0px;
 }
 
-#overallMetrics{
-    font-size: 20px;
-    /* border: 2px #23A6BD solid;
-    border-radius: 6px; */
-    padding: 6px 6px 6px 6px;
-    vertical-align: center;
+.cell1{
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #23c9ad;
+    margin: 2px;
+    text-align: center;
+}
+
+.cell2{
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #7BDECD;
+    margin: 2px;
+    text-align: center;
+}
+
+.cell3{
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #D3F4EE;
+    margin: 2px;
+    text-align: center;
+}
+
+.overviewMetrics{
+    max-width: 350px;
 }
