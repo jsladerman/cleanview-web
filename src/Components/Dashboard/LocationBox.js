@@ -21,12 +21,13 @@ class LocationBox extends Component {
         if (this.state.redirect) {
             return <Redirect push to={this.state.redirect}/>
         }
+        const imgSrc = this.props.imageUrl != null ? this.props.imageUrl : require('../../images/exampleRestaurant.png')
         return (
             <div className={styles.outerCard}>
                 <Card border='light' style={cardStyle} onClick={this.openLocation}>
                     <ClickableOverlay>
-                        <Card.Img variant="top" style={{borderRadius: '8px'}}
-                                  src={require('../../images/exampleRestaurant.png')}/>
+                        <Card.Img variant="top" style={{borderRadius: '8px', height: '160px'}}
+                                  src={imgSrc}/>
                         <div className={styles.body}>
                             <div className={styles.flexContainer}>
                                 <div className={styles.locationText}> {this.props.locationName}</div>

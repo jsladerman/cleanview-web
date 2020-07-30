@@ -20,7 +20,8 @@ class Dashboard extends Component {
         this.state = {
             redirect: null,
             managerName: null,
-            locationData: []
+            locationData: [],
+            backendEnv: 'dev',
         }
         this.path = this.props.match.path;
     }
@@ -82,7 +83,8 @@ class Dashboard extends Component {
             .then(response => {
                 console.log(response["data"])
                 this.setState({
-                    locationData: response["data"],
+                    locationData: response["data"].data,
+                    backendEnv: response["data"].backendEnv
                 });
             })
             .catch(error => {
@@ -133,6 +135,7 @@ class Dashboard extends Component {
                                 {...props}
                                 managerName={this.state.managerName}
                                 locations={this.state.locationData}
+                                backendEnv={this.state.backendEnv}
                                 getDataFunc={this.getData}/>}
                         />
                         <Route exact path={this.path + '/billing'} render={(props) =>
