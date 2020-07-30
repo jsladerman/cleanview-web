@@ -27,7 +27,7 @@ class AnalyticsDashboard extends Component {
     }
 
     componentDidMount = () => {
-        this.populateStateWithJson();
+        this.pullData();
         this.filterData();
     }
 
@@ -95,7 +95,7 @@ class AnalyticsDashboard extends Component {
                     <Col>
                         <FilteredDataToPieChart
                             filteredData={this.state.restaurantSurveyResponses}
-                            keyString='tourist-diner'
+                            keyString='touristDiner'
                             titleText='Do your diners live within 15 miles of the restaurant?'
                             yesLabel="said yes"
                             noLabel="said no"
@@ -131,7 +131,7 @@ class AnalyticsDashboard extends Component {
                             <Col>
                                 <FilteredDataToPieChart
                                 filteredData={this.state.filteredData}
-                                keyString='employee-masks'
+                                keyString='employeeMasks'
                                 titleText='Are your employees wearing masks?'
                                 yesLabel="said yes"
                                 noLabel="said no"
@@ -141,7 +141,7 @@ class AnalyticsDashboard extends Component {
                             <Col>
                                 <FilteredDataToPieChart
                                 filteredData={this.state.filteredData}
-                                keyString='six-feet'
+                                keyString='sixFeet'
                                 titleText='Are your tables at least 6 feet apart?'
                                 yesLabel="said yes"
                                 noLabel="said no"
@@ -156,18 +156,11 @@ class AnalyticsDashboard extends Component {
         )
     }
 
-    populateStateWithJson = () => {
-        let currState = this.state;
-        currState.restaurantSurveyResponses = require('./data/mock_records.json');
-        currState.filteredData = currState.restaurantSurveyResponses;
-        this.setState(currState);
-    }
-
     averageRating = (dataSet) => {
         let total = 0.0;
         for (var i = 0; i < dataSet.length; i++) {
             var obj = dataSet[i];
-            total += parseFloat(obj['response-rating']);
+            total += parseFloat(obj['responseRating']);
         }
         return total / dataSet.length;
     }
@@ -175,7 +168,7 @@ class AnalyticsDashboard extends Component {
     filterData = async () => {
         this.setState({rerenderCharts: true});
         let newFilteredData = await this.state.restaurantSurveyResponses.filter(response =>
-            (!this.state.touristExcludeFilter.includes(response['tourist-diner']) && !this.state.ageExcludeFilter.includes(response['age']) )
+            (!this.state.touristExcludeFilter.includes(response['touristDiner']) && !this.state.ageExcludeFilter.includes(response['age']) )
         );
         this.setState({filteredData: newFilteredData});
         this.setState({rerenderCharts: false});
@@ -242,7 +235,10 @@ class AnalyticsDashboard extends Component {
 
         API.get(apiName, path, myParams)
             .then(response => {
-                this.setState({restaurantSurveyResponses: response['data']});
+                let currState = this.state;
+                currState.restaurantSurveyResponses = response['data'];
+                currState.filteredData = response['data'];
+                this.setState(currState);
                 console.log(this.state.restaurantSurveyResponses);
             })
             .catch(error => {

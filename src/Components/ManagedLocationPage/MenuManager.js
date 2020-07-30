@@ -31,7 +31,7 @@ class MenuManager extends Component {
             );
         } else {
             return(
-                <p>
+                <div>
                     <div>
                         Your menu link right now is: {" "}
                         <a rel="noopener noreferrer" href={this.state.menu_link} target="_blank">{this.state.menu_link}</a>
@@ -40,7 +40,7 @@ class MenuManager extends Component {
                         If that doesn't look right, change it below.
                     </div>
                     <br />
-                </p>
+                </div>
             );
         }
     }
