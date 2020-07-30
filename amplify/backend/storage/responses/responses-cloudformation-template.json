@@ -35,6 +35,11 @@
                   {
                       "AttributeName": "id",
                       "AttributeType": "S"
+                  }  , 
+                  
+                  {
+                      "AttributeName": "location-index",
+                      "AttributeType": "S"
                   } 
                   
                 ],
@@ -76,6 +81,29 @@
                         }
                     ]
                 }
+                
+                ,"GlobalSecondaryIndexes": [
+                  
+                    {
+                        "IndexName": "location-index",
+                        "KeySchema": [
+                            
+                            {
+                                "AttributeName": "location-index",
+                                "KeyType": "HASH"
+                            } 
+                            
+                        ],
+                        "Projection": {
+                            "ProjectionType": "ALL"
+                        },
+                        "ProvisionedThroughput": {
+                            "ReadCapacityUnits": "5",
+                            "WriteCapacityUnits": "5"
+                        }
+                    } 
+                  
+                ]
                 
             }
         }

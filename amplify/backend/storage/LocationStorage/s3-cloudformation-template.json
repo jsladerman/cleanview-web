@@ -645,16 +645,16 @@
 			"Properties" : {
 			  "Bucket" : {"Ref" : "S3Bucket"},
 			  "PolicyDocument": {
-				"Statement":[{
-				  "Sid": "PublicReadGetObject",
-				  "Effect": "Allow",
-				  "Action": "s3:GetObject",
-				  "Principal": "*",
-				  "Resource": { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "S3Bucket" } , "/public/*" ]]}
-				}]
+          "Statement":[{
+            "Sid": "PublicReadGetObject",
+            "Effect": "Allow",
+            "Action": "s3:GetObject",
+            "Principal": "*",
+            "Resource": { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "S3Bucket" } , "/public/*" ]]}
+				  }]
 			  }
 			}
-		  }
+		}
 	},
 	"Outputs": {
 		"BucketName": {
