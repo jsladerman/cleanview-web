@@ -9,8 +9,9 @@ import Button from 'react-bootstrap/Button';
 class AddLocation extends Component {
     constructor(props) {
         super(props);
+        // TOOD: add placeholder location images
         this.state = {
-            imageURL: 'https://p.bigstockphoto.com/GeFvQkBbSLaMdpKXF1Zv_bigstock-Aerial-View-Of-Blue-Lakes-And--227291596.jpg',
+            imageUrl: 'https://p.bigstockphoto.com/GeFvQkBbSLaMdpKXF1Zv_bigstock-Aerial-View-Of-Blue-Lakes-And--227291596.jpg',
             id: uuid(),
             imageLoading: false
         };
@@ -35,10 +36,10 @@ class AddLocation extends Component {
                             state: '',
                             zip: ''
                         },
-                        masks: '',
-                        masks2: '',
+                        employeeMasks: '',
+                        employeeTemp: '',
                         socialDistance: '',
-                        socialDistance2: '',
+                        outsideSeating: '',
                         sanitize: '',
                         sanitize2: '',
                         id: this.state.id
@@ -95,7 +96,7 @@ class AddLocation extends Component {
                                 />
                                 <div className={styles.formColHeader}>Upload Image:</div>
                                 <div className={styles.imageLabel}>Example scaled image:</div>
-                                <img src={this.state.imageURL} alt=''
+                                <img src={this.state.imageUrl} alt=''
                                      style={{borderRadius: '8px', width: '250px', height: '160px'}}
                                 />
                             </div>
@@ -110,27 +111,27 @@ class AddLocation extends Component {
                                                 Are your employees required to wear masks?
                                             </div>
                                             <label className={styles.customRadioBtnContainer}>
-                                                <Field type='radio' name='masks' value='y'/>
+                                                <Field type='radio' name='employeeMasks' value='y'/>
                                                 <div className={styles.formRadioBtn}/>
                                             </label>
                                             <label className={styles.formRadioLabel}>Yes</label>
                                             <label className={styles.customRadioBtnContainer}>
-                                                <Field type='radio' name='masks' value='n'/>
+                                                <Field type='radio' name='employeeMasks' value='n'/>
                                                 <div className={styles.formRadioBtn}/>
                                             </label>
                                             <label className={styles.formRadioLabel}>No</label> <br/><br/>
                                         </div>
                                         <div>
                                             <div className={styles.formRadioQuestion}>
-                                                Are your employees required to wear masks?
+                                               Do you take the temperature of your employees every day?
                                             </div>
                                             <label className={styles.customRadioBtnContainer}>
-                                                <Field type='radio' name='masks2' value='y'/>
+                                                <Field type='radio' name='employeeTemp' value='y'/>
                                                 <div className={styles.formRadioBtn}/>
                                             </label>
                                             <label className={styles.formRadioLabel}>Yes</label>
                                             <label className={styles.customRadioBtnContainer}>
-                                                <Field type='radio' name='masks2' value='n'/>
+                                                <Field type='radio' name='employeeTemp' value='n'/>
                                                 <div className={styles.formRadioBtn}/>
                                             </label>
                                             <label className={styles.formRadioLabel}>No</label> <br/><br/>
@@ -152,15 +153,15 @@ class AddLocation extends Component {
                                             </label>
                                             <label className={styles.formRadioLabel}>No</label> <br/><br/>
                                             <div className={styles.formRadioQuestion}>
-                                                Do you enforce social distancing guidelines?
+                                                Do you have outside seating?
                                             </div>
                                             <label className={styles.customRadioBtnContainer}>
-                                                <Field type='radio' name='socialDistance2' value='y'/>
+                                                <Field type='radio' name='outsideSeating' value='y'/>
                                                 <div className={styles.formRadioBtn}/>
                                             </label>
                                             <label className={styles.formRadioLabel}>Yes</label>
                                             <label className={styles.customRadioBtnContainer}>
-                                                <Field type='radio' name='socialDistance2' value='n'/>
+                                                <Field type='radio' name='outsideSeating' value='n'/>
                                                 <div className={styles.formRadioBtn}/>
                                             </label>
                                             <label className={styles.formRadioLabel}>No</label> <br/><br/>
@@ -208,44 +209,57 @@ class AddLocation extends Component {
         );
     }
 
-    makeLocation = (values) => {
+    makeLocation = async (values) => {
         const apiName = 'ManageLocationApi'; // replace this with your api name.
         const path = '/location'; //replace this with the path you have configured on your API
         console.log(values);
-        // const requestData = {
-        //     body: {
-        //         id: this.state.id
-        //         loc_name: values.name,
-        //         manager: await Auth.currentAuthenticatedUser()
-        //             .then(user => user['username'])
-        //             .catch(error => console.log('Error: ' + error)),
-        //         addr_line_1: values.addr.line1,
-        //         addr_line_2: values.addr.line2,
-        //         addr_city: values.addr.city,
-        //         addr_state: values.addr.state,
-        //         loc_type: values.type,
-        //         subscription_status: 'free_trial',
-        //         cleaning_practices: {
-        //             employee_masks: 1,
-        //             social_distancing: 1,
-        //             dining_in: 0
-        //         },
-        //         is_confirmed: 0
-        //     },
-        //     headers: {} // OPTIONAL;
-        // };
-        //
-        // API.post(apiName, path, requestData)
-        //     .then(response => {
-        //         console.log('Location Add Successful: ' + response);
-        //         this.props.modalFunc();
-        //     })
-        //     .catch(error => {
-        //         console.log('Error: ' + error)
-        //     })
+        const requestData = {
+            body: {
+                id: this.state.id,
+                imageUrl: this.state.imageUrl,
+                name: values.businessName,
+                email: values.businessEmail,
+                phone: values.businessPhoneNum,
+                type: values.businessType,
+                manager: await Auth.currentAuthenticatedUser()
+                    .then(user => user['username'])
+                    .catch(error => console.log('Error: ' + error)),
+                addrLine1: values.addr.line1,
+                addrLine2: values.addr.line2,
+                addrCity: values.addr.city,
+                addrState: values.addr.state,
+                addrZip: values.addr.zip,
+                subscriptionStatus: 'free_trial',
+                covidResponseSurvey: {
+                    employeeMasks: values.employeeMasks,
+                    socialDistancing: values.socialDistance,
+                    outsideSeating: values.outsideSeating,
+                    employeeTemp: values.employeeTemp,
+                    outsideSeating: values.outsideSeating,
+                    sanitizeTables: values.sanitize,
+                    question6: values.sanitize2 // TODO: question 6
+                },
+                is_confirmed: 0,
+            },
+            headers: {}
+        };
+
+
+
+        console.log(requestData)
+        
+        API.post(apiName, path, requestData)
+            .then(response => {
+                console.log('Location Add Successful: ' + response);
+                this.props.modalFunc();
+            })
+            .catch(error => {
+                console.log('Error: ' + error)
+            })
     };
 
     uploadFile = async (e) => {
+        // TODO: show loading when waiting for image to upload
         const file = e.target.files[0];
         
         const name = e.target.files[0].name;
@@ -256,7 +270,6 @@ class AddLocation extends Component {
 
         this.setState({imageLoading: true})
 
-        // TODO: CHANGE ON DEV VS PROD
         await Storage.put( filename, file, {
             level: 'public',
             contentDisposition: 'inline; filename="' + filename + '"',
@@ -272,7 +285,7 @@ class AddLocation extends Component {
                 console.log(resultURL)
                 const idx = resultURL.indexOf(filename)
                 const url = resultURL.substring(0, idx) + '' + filename
-                this.setState({imageURL: url});
+                this.setState({imageUrl: url});
             })
 
         this.setState({imageLoading: false})

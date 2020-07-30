@@ -16,16 +16,16 @@ class LocationInfo extends Component {
     render() {
         const {dining_in_string, social_distancing_string, employee_masks_string} = this.renderCleaningPractice();
         const business_type_format = this.formatBusinessType();
-
+        const imgSrc = this.state.data.imageUrl != null ? this.state.data.imageUrl : require('../../images/exampleRestaurant.png')
         return (
             <div className={styles.locationInfoWrapper}>
-                <h2>{this.state.data.loc_name}</h2>
+                <h2>{this.state.data.name}</h2>
 
                 <Container fluid>
                     <Row>
                         <Col>
                             <Card.Img variant="top" style={{borderRadius: '8px'}}
-                                      src={require('../../images/exampleRestaurant.png')}/>
+                                      src={imgSrc}/>
                         </Col>
 
                         <Col>
@@ -40,10 +40,10 @@ class LocationInfo extends Component {
                             <p><span className={styles.locationInfoFieldName}>Phone: </span>123-456-7890</p>
                             <p><span
                                 className={styles.locationInfoFieldName}>Address:</span>
-                                {this.state.data.addr_line_1}
-                                {' ' + this.state.data.addr_line_2}
+                                {this.state.data.addrLine1}
+                                {' ' + this.state.data.addrLine2}
                             </p>
-                            <p style={{textIndent: '4.65em'}}>{this.state.data.addr_city}, {this.state.data.addr_state}</p>
+                            <p style={{textIndent: '4.65em'}}>{this.state.data.addrCity}, {this.state.data.addrState}, {this.state.data.addrZip}</p>
                         </Col>
                     </Row>
 
@@ -81,11 +81,12 @@ class LocationInfo extends Component {
     }
 
     renderCleaningPractice = () => {
-        const dining_in = this.intToYN(this.state.data.cleaning_practices.dining_in);
-        const social_distancing = this.intToYN(this.state.data.cleaning_practices.social_distancing);
-        const employee_masks = this.intToYN(this.state.data.cleaning_practices.employee_masks);
+        console.log(this.state.data)
+        const outsideSeating = this.intToYN(this.state.data.covidResponseSurvey.outsideSeating);
+        const social_distancing = this.intToYN(this.state.data.covidResponseSurvey.socialDistancing);
+        const employee_masks = this.intToYN(this.state.data.covidResponseSurvey.employeeMasks);
         return {
-            dining_in_string: dining_in,
+            dining_in_string: outsideSeating,
             social_distancing_string: social_distancing,
             employee_masks_string: employee_masks,
         }
@@ -93,10 +94,10 @@ class LocationInfo extends Component {
 
     formatBusinessType = () => {
         let business_type_format = '';
-        if (this.state.data.loc_type.length === 1) {
-            business_type_format = this.state.data.loc_type[0].toUpperCase();
-        } else if (this.state.data.loc_type) {
-            business_type_format = this.state.data.loc_type[0].toUpperCase() + this.state.data.loc_type.slice(1);
+        if (this.state.data.type.length === 1) {
+            business_type_format = this.state.data.type[0].toUpperCase();
+        } else if (this.state.data.type) {
+            business_type_format = this.state.data.type[0].toUpperCase() + this.state.data.type.slice(1);
         }
         return business_type_format;
     }
