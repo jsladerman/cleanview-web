@@ -15,8 +15,8 @@ class AnalyticsDashboard extends Component {
         this.state = {
             restaurantSurveyResponses: [],
             filteredData: [],
-            ageExcludeFilter: ['0-17', '66+'],
-            touristExcludeFilter: ['1'],
+            ageExcludeFilter: [],
+            touristExcludeFilter: [],
             rerenderCharts: false,
 
             // QR filter
@@ -38,33 +38,20 @@ class AnalyticsDashboard extends Component {
         return (
             <div className={styles.analDash} style={{ paddingLeft: "20px" }}>
                 <h2>Analytics Dashboard</h2>
-                <p><span className={styles.fieldHeader}>Average Rating: </span> {this.averageRating()} / 5</p>
+                <p><span className={styles.fieldHeader}>Average Rating: </span> {this.averageRating(this.state.restaurantSurveyResponses)} / 5</p>
                 <p><span className={styles.fieldHeader}>Total # of Reviews: </span> {this.state.restaurantSurveyResponses.length} </p>
 
                 <br />
 
                 <Container fluid>
                     <h4 className={styles.analyticsDashboardSubheader}>Customer Demographic Information</h4>
-                    <Row className={styles.rowDivider}>
-                        <Col>
-                            <FilteredDataToAgeBarChart
-                                filteredData={this.state.restaurantSurveyResponses}
-                            />
-                        </Col>
-                        
-                        <Col>
-                            <FilteredDataToPieChart
-                                filteredData={this.state.restaurantSurveyResponses}
-                                keyString='tourist-diner'
-                                titleText='Are your diners tourists?'
-                            />
-                        </Col>
-                    </Row>
+                    {this.renderDemographicCharts()}
 
                     <h4 className={styles.analyticsDashboardSubheader}>Survey Responses</h4>
                     <Row id={styles.filterCharts} className={styles.rowDivider}>
                         <Col>
-                            <p>Filter Charts</p>
+                            <p className={styles.analyticsDashboardSubheader2}>Filter Charts</p>
+                            <p>Filter by age group</p>
                             <button onClick = {() => this.filterSingleAgeGroup('0-17')}>0-17</button>
                             <button onClick = {() => this.filterSingleAgeGroup('18-25')}>18-25</button>
                             <button onClick = {() => this.filterSingleAgeGroup('26-35')}>26-35</button>
@@ -72,14 +59,50 @@ class AnalyticsDashboard extends Component {
                             <button onClick = {() => this.filterSingleAgeGroup('46-55')}>46-55</button>
                             <button onClick = {() => this.filterSingleAgeGroup('56-65')}>56-65</button>
                             <button onClick = {() => this.filterSingleAgeGroup('66+')}>65+</button>
+
+                            <p>Filter by customer locale</p>
+                            <button onClick = {() => this.filterSingleTouristGroup('1')}>Tourist customers</button>
+                            <button onClick = {() => this.filterSingleTouristGroup('0')}>Local customers</button>
+
                         </Col>
                     </Row>
-
+                    <Row className={styles.rowDivider}>
+                        <Col>
+                            <p className={styles.analyticsDashboardSubheader2}>Filtered Statistics</p>
+                            <p><span className={styles.fieldHeader}>Average Rating: </span> {this.averageRating(this.state.filteredData)} / 5</p>
+                            <p><span className={styles.fieldHeader}>Total # of Reviews: </span> {this.state.filteredData.length} </p>
+                        </Col>
+                    </Row>
                     {this.renderFilteringCharts()}
 
                 </Container>
             </div>
         );
+    }
+
+    renderDemographicCharts = () => {
+        if(!this.state.rerenderCharts){
+            return(
+                <Row className={styles.rowDivider}>
+                    <Col>
+                        <FilteredDataToAgeBarChart
+                            filteredData={this.state.restaurantSurveyResponses}
+                        />
+                    </Col>
+                    
+                    <Col>
+                        <FilteredDataToPieChart
+                            filteredData={this.state.restaurantSurveyResponses}
+                            keyString='tourist-diner'
+                            titleText='Are your diners tourists?'
+                        />
+                    </Col>
+                </Row>
+            );
+        }
+        return (
+            <div>LOADING</div>
+        )
     }
 
     renderFilteringCharts = () => {
@@ -120,12 +143,9 @@ class AnalyticsDashboard extends Component {
                 </div>
             );
         }
-        else{
-            console.log("Rerender is true.");
-            return (
-                <div>LOADING</div>
-            )
-        }
+        return (
+            <div>LOADING</div>
+        )
     }
 
     populateStateWithJson = () => {
@@ -135,13 +155,13 @@ class AnalyticsDashboard extends Component {
         this.setState(currState);
     }
 
-    averageRating = () => {
+    averageRating = (dataSet) => {
         let total = 0.0;
-        for (var i = 0; i < this.state.restaurantSurveyResponses.length; i++) {
-            var obj = this.state.restaurantSurveyResponses[i];
+        for (var i = 0; i < dataSet.length; i++) {
+            var obj = dataSet[i];
             total += parseFloat(obj['response-rating']);
         }
-        return total / this.state.restaurantSurveyResponses.length;
+        return total / dataSet.length;
     }
 
     filterData = async () => {
@@ -185,7 +205,7 @@ class AnalyticsDashboard extends Component {
         this.setState({touristExcludeFilter: newTouristExclude});
         this.filterData();
 
-        console.log(this.state.ageExcludeFilter);
+        console.log(this.state.touristExcludeFilter);
     }
 
     /*

@@ -12,6 +12,12 @@
     font-weight: bold;
 }
 
+.analyticsDashboardSubheader2{
+    font-weight: normal;
+    font-size: 20px;
+    color: #23A6BD;
+}
+
 #filterCharts{
     border: 2px #E5E5E5 solid;
     border-radius: 6px;
