@@ -10,13 +10,13 @@
 		"env": {
 			"Type": "String"
 		},
-		"storagelocationsName": {
+		"storageresponsesName": {
 			"Type": "String",
-			"Default": "storagelocationsName"
+			"Default": "storageresponsesName"
 		},
-		"storagelocationsArn": {
+		"storageresponsesArn": {
 			"Type": "String",
-			"Default": "storagelocationsArn"
+			"Default": "storageresponsesArn"
 		}
 	},
 	"Conditions": {
@@ -41,12 +41,12 @@
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"ManageLocationLambda",
+						"GetSurveyResponses",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"ManageLocationLambda",
+									"GetSurveyResponses",
 									"-",
 									{
 										"Ref": "env"
@@ -77,7 +77,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-cleanviewweb-dev-143211-deployment",
-					"S3Key": "amplify-builds/ManageLocationLambda-3161737054582f737548-build.zip"
+					"S3Key": "amplify-builds/GetSurveyResponses-37485a30526372383251-build.zip"
 				}
 			}
 		},
@@ -87,12 +87,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"cleanviewwebLambdaRole10a8f873",
+						"cleanviewwebLambdaRole5c565d29",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"cleanviewwebLambdaRole10a8f873",
+									"cleanviewwebLambdaRole5c565d29",
 									"-",
 									{
 										"Ref": "env"
@@ -172,14 +172,14 @@
 							],
 							"Resource": [
 								{
-									"Ref": "storagelocationsArn"
+									"Ref": "storageresponsesArn"
 								},
 								{
 									"Fn::Join": [
 										"/",
 										[
 											{
-												"Ref": "storagelocationsArn"
+												"Ref": "storageresponsesArn"
 											},
 											"index/*"
 										]

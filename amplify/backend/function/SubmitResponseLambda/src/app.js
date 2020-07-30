@@ -187,14 +187,13 @@ app.post(path, async function(req, res) {
     resolve();
   })
   formParams.id = uuid();
-  formParams.responseTime = Date.toString();
 
   let putItemParams = {
     TableName: tableName,
     Item: formParams
   }
 
-  let menu_link = formParams.menu_link
+  let menu_link = formParams.menuLink
   res.setHeader('AMP-Redirect-To', menu_link)
 
 

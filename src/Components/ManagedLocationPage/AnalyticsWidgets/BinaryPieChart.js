@@ -87,6 +87,7 @@ class BinaryPieChart extends Component {
 
         div.transition().duration(20).style("opacity", 0);
       });
+
   }
 
   render() {

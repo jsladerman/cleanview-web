@@ -7,7 +7,9 @@ import styles from './css/AnalyticsDashboard.module.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-// import Checkbox from 'react-bootstrap/Checkbox';
+import Auth from '@aws-amplify/auth';
+import API from '@aws-amplify/api';
+
 
 class AnalyticsDashboard extends Component {
     constructor(props) {
@@ -214,41 +216,39 @@ class AnalyticsDashboard extends Component {
         console.log(this.state.touristExcludeFilter);
     }
 
-    /*
     pullData = () => {
         Auth.currentUserInfo()
             .then(user => {
                 if (user == null)
                     this.setState({redirect: '/login'});
                 else
-                    this.getRestaurantSurveyData({this.props.id});
+                    this.getRestaurantSurveyData(this.props.id);
             })
             .catch(error => {
-                consoler.log('Error: ' + error)
+                console.log('Error: ' + error)
             });
     }
 
-    getRestaurantSurveyData(restaurantID) => {
-        const apiName = {PLACEHOLDER};
-        const path = {PLACEHOLDER};
+    getRestaurantSurveyData = (locationID) => {
+        const apiName = 'GetSurveyResponses';
+        const path = '/survey-responses/object'
         const myParams = {
             headers: {},
             response: true,
-            queryStringParameters{
-                restaurant_id: restaurantID
+            queryStringParameters: {
+                location_id: locationID
             },
         };
 
         API.get(apiName, path, myParams)
             .then(response => {
                 this.setState({restaurantSurveyResponses: response['data']});
+                console.log(this.state.restaurantSurveyResponses);
             })
             .catch(error => {
                 console.log('Error: ' + error);
             })
     }
-    */
-
 }
 
 export default AnalyticsDashboard;
