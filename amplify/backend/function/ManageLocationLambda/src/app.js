@@ -27,6 +27,8 @@ if(process.env.ENV && process.env.ENV !== "NONE") {
 let environmentURLSurvey = "https://d9uqja1id6.execute-api.us-east-1.amazonaws.com/dev"
 if(process.env.ENV === 'dev') {
   environmentURLSurvey = "https://d9uqja1id6.execute-api.us-east-1.amazonaws.com/dev"
+} else if(process.env.ENV === 'develop') {
+  environmentURLSurvey = "https://tsro629xid.execute-api.us-east-1.amazonaws.com/develop"
 } else if(process.env.ENV === 'staging') {
   environmentURLSurvey = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
 } else if(process.env.ENV === 'prod') {

@@ -32,6 +32,8 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 let environmentURL = "https://d9uqja1id6.execute-api.us-east-1.amazonaws.com/dev"
 if(process.ENV === 'dev') {
   environmentURL = "https://d9uqja1id6.execute-api.us-east-1.amazonaws.com/dev"
+} else if(process.env.ENV === 'develop') {
+  environmentURL = "https://tsro629xid.execute-api.us-east-1.amazonaws.com/develop"
 } else if(process.env.ENV === 'staging') {
   environmentURL = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
 } else if(process.env.ENV === 'prod') {
