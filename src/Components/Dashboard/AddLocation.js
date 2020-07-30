@@ -1,16 +1,208 @@
 import React, {Component} from 'react';
 import styles from './css/AddLocation.module.css'
-import {API} from 'aws-amplify';
-import Auth from "@aws-amplify/auth"
+import {API, Storage} from 'aws-amplify';
+import Auth from '@aws-amplify/auth'
 import uuid from 'react-uuid';
 import {Field, Form, Formik, ErrorMessage} from 'formik';
-import Col from 'react-bootstrap/Col'
-import Button from "react-bootstrap/Button";
+import Button from 'react-bootstrap/Button';
 
 class AddLocation extends Component {
     constructor(props) {
         super(props);
-        this.state = {value: ''};
+        this.state = {
+            sampleImageURL: 'https://p.bigstockphoto.com/GeFvQkBbSLaMdpKXF1Zv_bigstock-Aerial-View-Of-Blue-Lakes-And--227291596.jpg'
+        };
+    }
+
+    render() {
+        return (
+            <div className={styles.addLocation}>
+                <div className={styles.addLocationHeader}>
+                    Add Location
+                </div>
+                <Formik
+                    initialValues={{
+                        businessName: '',
+                        businessType: '',
+                        businessEmail: '',
+                        businessPhoneNum: '',
+                        addr: {
+                            line1: '',
+                            line2: '',
+                            city: '',
+                            state: '',
+                            zip: ''
+                        },
+                        masks: '',
+                        masks2: '',
+                        socialDistance: '',
+                        socialDistance2: '',
+                        sanitize: '',
+                        sanitize2: '',
+                    }}
+                    onSubmit={this.makeLocation}>
+                    <Form className={styles.form}>
+                        <div className={styles.formCols}>
+                            <div className={styles.formCol}>
+                                <div className={styles.formColHeader}>General Information</div>
+                                <div className={styles.formLabel}>Business Name</div>
+                                <Field className={styles.formInput} type='input' name='businessName'/>
+                                <div className={styles.formLabel}>Business Type</div>
+                                <Field as='select' style={{width: '165px', height: '26px'}} className={styles.formInput}
+                                       name='businessType'>
+                                    <option value=''/>
+                                    <option value='restaurant'>Restaurant</option>
+                                    <option value='other'>Other</option>
+                                </Field>
+                                <div className={styles.formLabel}>Business Email</div>
+                                <Field className={styles.formInput} type='input' name='businessEmail'/>
+                                <div className={styles.formLabel}>Products Phone #</div>
+                                <Field className={styles.formInput} type='input' name='businessPhoneNum'/>
+                            </div>
+                            <div className={styles.formCol}>
+                                <div className={styles.formColHeader}>Business Address</div>
+                                <div className={styles.formLabel}>Street</div>
+                                <Field className={styles.formInput} type='input' name='addr.line1'/>
+                                <div className={styles.formLabel}>Apt, Suite, etc.</div>
+                                <Field className={styles.formInput} type='input' name='addr.line2'/>
+                                <div className={styles.formLabel}>City</div>
+                                <Field className={styles.formInput} type='input' name='addr.city'/>
+                                <div style={{width: '40%', float: 'left', marginRight: '12px'}}>
+                                    <div className={styles.formLabel}>State</div>
+                                    {this.renderStateDropdown()}
+                                </div>
+                                <div style={{width: '50%', float: 'left'}}>
+                                    <div className={styles.formLabel}>Zip Code</div>
+                                    <Field style={{width: '100%'}} type='input' name='addr.zip'/>
+                                </div>
+                            </div>
+                            <div className={styles.formCol}>
+                                <input type='file' accept="image/*" style={{display: 'none'}}
+                                       ref={(ref) => this.upload = ref}
+                                       onChange={ (evt) => this.uploadFile(evt)}
+                                />
+                                <img
+                                    src={require('../../images/addLocationCamera.svg')}
+                                    alt=''
+                                    height='50px'
+                                    style={{cursor: 'pointer', float: 'right', marginTop: '-16px'}}
+                                    onClick={() => {
+                                        this.upload.click()
+                                    }}
+                                />
+                                <div className={styles.formColHeader}>Upload Image:</div>
+                                <div className={styles.imageLabel}>Example scaled image:</div>
+                                <img src={this.state.sampleImageURL} alt=''
+                                     style={{borderRadius: '8px', width: '250px', height: '160px'}}
+                                />
+                            </div>
+                        </div>
+                        <div className={styles.surveyBox}><br/>
+                            <div className={styles.formColHeader}>COVID Response Survey</div>
+                            <div className={styles.formQuestions}>
+                                <div className={styles.formQuestionsCols}>
+                                    <div className={styles.formQuestionsCol}>
+                                        <div>
+                                            <div className={styles.formRadioQuestion}>
+                                                Are your employees required to wear masks?
+                                            </div>
+                                            <label className={styles.customRadioBtnContainer}>
+                                                <Field type='radio' name='masks' value='y'/>
+                                                <div className={styles.formRadioBtn}/>
+                                            </label>
+                                            <label className={styles.formRadioLabel}>Yes</label>
+                                            <label className={styles.customRadioBtnContainer}>
+                                                <Field type='radio' name='masks' value='n'/>
+                                                <div className={styles.formRadioBtn}/>
+                                            </label>
+                                            <label className={styles.formRadioLabel}>No</label> <br/><br/>
+                                        </div>
+                                        <div>
+                                            <div className={styles.formRadioQuestion}>
+                                                Are your employees required to wear masks?
+                                            </div>
+                                            <label className={styles.customRadioBtnContainer}>
+                                                <Field type='radio' name='masks2' value='y'/>
+                                                <div className={styles.formRadioBtn}/>
+                                            </label>
+                                            <label className={styles.formRadioLabel}>Yes</label>
+                                            <label className={styles.customRadioBtnContainer}>
+                                                <Field type='radio' name='masks2' value='n'/>
+                                                <div className={styles.formRadioBtn}/>
+                                            </label>
+                                            <label className={styles.formRadioLabel}>No</label> <br/><br/>
+                                        </div>
+                                    </div>
+                                    <div className={styles.formQuestionsCol}>
+                                        <div>
+                                            <div className={styles.formRadioQuestion}>
+                                                Do you enforce social distancing guidelines?
+                                            </div>
+                                            <label className={styles.customRadioBtnContainer}>
+                                                <Field type='radio' name='socialDistance' value='y'/>
+                                                <div className={styles.formRadioBtn}/>
+                                            </label>
+                                            <label className={styles.formRadioLabel}>Yes</label>
+                                            <label className={styles.customRadioBtnContainer}>
+                                                <Field type='radio' name='socialDistance' value='n'/>
+                                                <div className={styles.formRadioBtn}/>
+                                            </label>
+                                            <label className={styles.formRadioLabel}>No</label> <br/><br/>
+                                            <div className={styles.formRadioQuestion}>
+                                                Do you enforce social distancing guidelines?
+                                            </div>
+                                            <label className={styles.customRadioBtnContainer}>
+                                                <Field type='radio' name='socialDistance2' value='y'/>
+                                                <div className={styles.formRadioBtn}/>
+                                            </label>
+                                            <label className={styles.formRadioLabel}>Yes</label>
+                                            <label className={styles.customRadioBtnContainer}>
+                                                <Field type='radio' name='socialDistance2' value='n'/>
+                                                <div className={styles.formRadioBtn}/>
+                                            </label>
+                                            <label className={styles.formRadioLabel}>No</label> <br/><br/>
+                                        </div>
+                                    </div>
+                                    <div className={styles.formQuestionsCol}>
+                                        <div>
+                                            <div className={styles.formRadioQuestion}>
+                                                Do you sanitize tables after every meal?
+                                            </div>
+                                            <label className={styles.customRadioBtnContainer}>
+                                                <Field type='radio' name='sanitize' value='y'/>
+                                                <div className={styles.formRadioBtn}/>
+                                            </label>
+                                            <label className={styles.formRadioLabel}>Yes</label>
+                                            <label className={styles.customRadioBtnContainer}>
+                                                <Field type='radio' name='sanitize' value='n'/>
+                                                <div className={styles.formRadioBtn}/>
+                                            </label>
+                                            <label className={styles.formRadioLabel}>No</label> <br/><br/>
+                                            <div className={styles.formRadioQuestion}>
+                                                Do you sanitize tables after every meal?
+                                            </div>
+                                            <label className={styles.customRadioBtnContainer}>
+                                                <Field type='radio' name='sanitize2' value='y'/>
+                                                <div className={styles.formRadioBtn}/>
+                                            </label>
+                                            <label className={styles.formRadioLabel}>Yes</label>
+                                            <label className={styles.customRadioBtnContainer}>
+                                                <Field type='radio' name='sanitize2' value='n'/>
+                                                <div className={styles.formRadioBtn}/>
+                                            </label>
+                                            <label className={styles.formRadioLabel}>No</label> <br/><br/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <Button className={styles.addButton} type='submit'>
+                            Add
+                        </Button>
+                    </Form>
+                </Formik>
+            </div>
+        );
     }
 
     makeLocation = (values) => {
@@ -22,14 +214,14 @@ class AddLocation extends Component {
         //         id: uuid(),
         //         loc_name: values.name,
         //         manager: await Auth.currentAuthenticatedUser()
-        //             .then(user => user["username"])
-        //             .catch(error => console.log("Error: " + error)),
+        //             .then(user => user['username'])
+        //             .catch(error => console.log('Error: ' + error)),
         //         addr_line_1: values.addr.line1,
         //         addr_line_2: values.addr.line2,
         //         addr_city: values.addr.city,
         //         addr_state: values.addr.state,
         //         loc_type: values.type,
-        //         subscription_status: "free_trial",
+        //         subscription_status: 'free_trial',
         //         cleaning_practices: {
         //             employee_masks: 1,
         //             social_distancing: 1,
@@ -42,96 +234,91 @@ class AddLocation extends Component {
         //
         // API.post(apiName, path, requestData)
         //     .then(response => {
-        //         console.log("Location Add Successful: " + response);
+        //         console.log('Location Add Successful: ' + response);
         //         this.props.modalFunc();
         //     })
         //     .catch(error => {
-        //         console.log("Error: " + error)
+        //         console.log('Error: ' + error)
         //     })
     };
 
-    render() {
+    uploadFile = (e) => {
+        const file = e.target.files[0];
+        // Location ID hasn't been generated, so putting image in a random url
+        const filename = Math.random().toString(36).substr(2, 9) + '.png'
+        // TODO: CHANGE ON DEV VS PROD
+        const url = "https://cleanviewweb1b7535894d364601be8133bce58e835a170737-"
+            + this.props.backendEnv + ".s3.us-east-1.amazonaws.com/public/" + filename;
+        Storage.put( filename, file, {
+            level: 'public',
+            contentDisposition: 'inline; filename="' + filename + '"',
+            contentType: 'image/*'
+        })
+            .then(result => {
+                console.log(result)
+                this.setState({sampleImageURL: url});
+            })
+            .catch(err => console.log('Upload error: ' + err))
+    }
+
+    renderStateDropdown = () => {
         return (
-            <div className={styles.addLocation}>
-                <img
-                    type='file'
-                    src={require("../../images/addLocationCamera.svg")}
-                    alt=''
-                    height="50px"
-                    style={{cursor:'pointer', float:'left'}}
-                    // onClick={()=>alert('test')}
-                />
-                <div className={styles.addLocationHeader}>
-                    Add Location
-                </div>
-                <Formik
-                    initialValues={{}}
-                    onSubmit={this.makeLocation}>
-                    <Form className={styles.form}>
-                            <div className={styles.formCols}>
-                                <div className={styles.formCol}>
-                                    <div className={styles.formColHeader}>General Information</div>
-                                    <div className={styles.formLabel}>Business Name</div>
-                                    <Field className={styles.formInput} type='input' name='name'/>
-                                    <div className={styles.formLabel}>Business Type</div>
-                                    <Field className={styles.formInput} type='input' name='type'/>
-                                    <div className={styles.formLabel}>Business Style</div>
-                                    <Field className={styles.formInput} type='input' name='products'/>
-                                    <div className={styles.formLabel}>Business Email</div>
-                                    <Field className={styles.formInput} type='input' name='type'/>
-                                    <div className={styles.formLabel}>Products Phone #</div>
-                                    <Field className={styles.formInput} type='input' name='products'/>
-                                </div>
-                                <div className={styles.formCol}>
-                                    <div className={styles.formColHeader}>Business Address</div>
-                                    <div className={styles.formLabel}>Street</div>
-                                    <Field className={styles.formInput} type='input' name="addr.line1"/>
-                                    <div className={styles.formLabel}>Apt, Suite, etc.</div>
-                                    <Field className={styles.formInput} type='input' name="street"/>
-                                    <div className={styles.formLabel}>City</div>
-                                    <Field className={styles.formInput} type='input' name="street"/>
-                                    <div style={{width:'40%', float:'left', marginRight: '12px'}}>
-                                        <div className={styles.formLabel}>State</div>
-                                        <Field style={{width:'100%'}} type='input' name="street"/>
-                                    </div>
-                                    <div style={{width:'50%', float:'left'}}>
-                                        <div className={styles.formLabel}>Zip Code</div>
-                                        <Field style={{width:'100%'}} type='input' name="street"/>
-                                    </div>
-                                </div>
-                                <div className={styles.formCol}>
-                                    <div className={styles.formColHeader}>COVID Response Survey</div>
-                                    <div className={styles.formQuestions}>
-                                        <div className={styles.formQuestion}>Are your employees required to wear masks?</div>
-                                        <Field className={styles.formInput} type='radio' id="male" name="gender"/>
-                                        <label className={styles.formRadioLabel}>Yes</label>
-                                        <Field className={styles.formInput} type='radio' id="female" name="gender" value="female"/>
-                                        <label className={styles.formRadioLabel}>No</label> <br/><br/>
-                                        <div className={styles.formQuestion}>Are your employees required to wear masks?</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <Button style={{marginTop:'20px', marginRight: '40px', float:'right'}} type="submit">
-                                Submit
-                            </Button>
-                        </Form>
-                </Formik>
-       {/*        <Form>
-            <label>Location Name <br/><Field type="input" name="name"/> </label><br/>
-            <label>Address Line 1 <br/><Field type="input" name="addr.line1"/> </label> <br/>
-            <label>Address Line 2 <br/><Field type="input" name="addr.line2"/> </label> <br/>
-            <label>City <br/><Field type="input" name="addr.city"/> </label> <br/>
-            <label>State <br/><Field type="input" name="addr.state"/> </label> <br/>
-            <label>Zip Code <br/><Field type="input" name="addr.zip"/> </label> <br/>
-            <label>Location Type <br/><Field as="select" name="type" multiple={false}>
-                <option value="restaurant">Restaurant</option>
-                <option value="gym">Gym</option>
-                <option value="other">Other</option>
-            </Field> </label> <br/>
-            <button type="submit" style={{marginTop: "8px"}}>Submit</button>
-        </Form>*/}
-            </div>
-        );
+            <Field as='select' style={{width: '100%', height: '26px'}} name='addr.state'>
+                <option value=''/>
+                <option value='AK'>AK</option>
+                <option value='AL'>AL</option>
+                <option value='AR'>AR</option>
+                <option value='AZ'>AZ</option>
+                <option value='CA'>CA</option>
+                <option value='CO'>CO</option>
+                <option value='CT'>CT</option>
+                <option value='DC'>District of Columbia</option>
+                <option value='DE'>DE</option>
+                <option value='FL'>FL</option>
+                <option value='GA'>GA</option>
+                <option value='HI'>HI</option>
+                <option value='IA'>IA</option>
+                <option value='ID'>ID</option>
+                <option value='IL'>IL</option>
+                <option value='IN'>IN</option>
+                <option value='KS'>KS</option>
+                <option value='KY'>KY</option>
+                <option value='LA'>LA</option>
+                <option value='MA'>MA</option>
+                <option value='MD'>MD</option>
+                <option value='ME'>ME</option>
+                <option value='MI'>MI</option>
+                <option value='MN'>MN</option>
+                <option value='MO'>MO</option>
+                <option value='MS'>MS</option>
+                <option value='MT'>MT</option>
+                <option value='NC'>NC</option>
+                <option value='ND'>ND</option>
+                <option value='NE'>NE</option>
+                <option value='NH'>NH</option>
+                <option value='NJ'>NJ</option>
+                <option value='NM'>NM</option>
+                <option value='NV'>NV</option>
+                <option value='NY'>NY</option>
+                <option value='OH'>OH</option>
+                <option value='OK'>OK</option>
+                <option value='OR'>OR</option>
+                <option value='PA'>PA</option>
+                <option value='PR'>PR</option>
+                <option value='RI'>RI</option>
+                <option value='SC'>SC</option>
+                <option value='SD'>SD</option>
+                <option value='TN'>TN</option>
+                <option value='TX'>TX</option>
+                <option value='UT'>UT</option>
+                <option value='VA'>VA</option>
+                <option value='VT'>VT</option>
+                <option value='WA'>WA</option>
+                <option value='WI'>WI</option>
+                <option value='WV'>WV</option>
+                <option value='WY'>WY</option>
+            </Field>
+        )
     }
 }
 

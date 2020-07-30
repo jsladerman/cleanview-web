@@ -25,7 +25,7 @@ class LocationBox extends Component {
             <div className={styles.outerCard}>
                 <Card border='light' style={cardStyle} onClick={this.openLocation}>
                     <ClickableOverlay>
-                        <Card.Img variant="top" style={{borderRadius: '8px'}}
+                        <Card.Img variant="top" style={{borderRadius: '8px', height: '160px'}}
                                   src={require('../../images/exampleRestaurant.png')}/>
                         <div className={styles.body}>
                             <div className={styles.flexContainer}>
