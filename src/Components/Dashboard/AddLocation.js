@@ -61,7 +61,7 @@ class AddLocation extends Component {
                                 </Field>
                                 <div className={styles.formLabel}>Business Email</div>
                                 <Field className={styles.formInput} type='input' name='businessEmail'/>
-                                <div className={styles.formLabel}>Products Phone #</div>
+                                <div className={styles.formLabel}>Business Phone #</div>
                                 <Field className={styles.formInput} type='input' name='businessPhoneNum'/>
                             </div>
                             <div className={styles.formCol}>
