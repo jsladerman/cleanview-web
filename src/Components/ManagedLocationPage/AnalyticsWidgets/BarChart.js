@@ -19,7 +19,7 @@ class BarChart extends Component {
   createBarChart() {
     const data = this.props.data
 
-    const margin = { left: 20, bottom: 60, top: 40 },
+    const margin = { left: 80, bottom: 60, top: 40 },
       width = this.props.width - margin.left,
       height = this.props.height - margin.bottom - margin.top;
 
@@ -60,7 +60,7 @@ class BarChart extends Component {
         div.transition().duration(20).style("opacity", 1);
 
         div
-          .html(d.frequency * 100 + "%")
+          .html((d.frequency * 100).toFixed(0) + "%")
           .style("left", d3.event.pageX + 10 + "px")
           .style("top", d3.event.pageY - 15 + "px");
       })
@@ -101,6 +101,15 @@ class BarChart extends Component {
 
     barplot
       .append("text")
+      .attr("id", "barplotleftaxisttitle")
+      .attr("x", margin.left*.3)
+      .attr("y", margin.top + height/2)
+      .attr("text-anchor", "middle")
+      .style("font-size", 12)
+      .text("Percent");
+
+    barplot
+      .append("text")
       .attr("id", "barplottitle")
       .attr("x", margin.left + width / 2)
       .attr("y", margin.top / 2)
@@ -114,6 +123,7 @@ class BarChart extends Component {
       .attr("x", margin.left + width / 2)
       .attr("y", height + margin.top + margin.bottom / 2 + 10)
       .attr("text-anchor", "middle")
+      .style("font-size", 12)
       .text(this.props.bottomAxisText);
   }
 

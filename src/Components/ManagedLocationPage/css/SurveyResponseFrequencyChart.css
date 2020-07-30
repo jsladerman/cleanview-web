@@ -1,4 +1,4 @@
-div.tooltip-barcharth {
+div.tooltip-barchart {
     position: absolute;
     text-align: center;
     padding: .5rem;
@@ -11,5 +11,5 @@ div.tooltip-barcharth {
 }
 
 #horizontalbarplotleftaxis {
-    font-size: 15px;
+    font-size: 12px;
 }

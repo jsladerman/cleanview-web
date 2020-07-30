@@ -34,6 +34,8 @@ class FilteredDataToPieChart extends Component{
                     // titleSize='12px'
                     margin={30}
                     yesPct={yesPercent}
+                    yesLabel={this.props.yesLabel}
+                    noLabel={this.props.noLabel}
                 />
             </div>
         )

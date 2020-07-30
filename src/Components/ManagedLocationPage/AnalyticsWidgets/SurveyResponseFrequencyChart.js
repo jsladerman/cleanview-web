@@ -21,7 +21,7 @@ class SurveyResponseFrequencyChart extends Component {
   createChart() {
     const data = this.props.data;
 
-    const margin = { left: 80, bottom: 20, top: 40 , right: 10},
+    const margin = { left: 80, bottom: 40, top: 40 , right: 10},
       width = this.props.width - margin.left - margin.right,
       height = this.props.height - margin.bottom - margin.top;
 
@@ -69,7 +69,7 @@ class SurveyResponseFrequencyChart extends Component {
         div.transition().duration(20).style("opacity", 1);
 
         div
-          .html(d.numResponses + " survey responses per day")
+          .html(d.numResponses.toFixed(0) + " survey responses per day")
           .style("left", d3.event.pageX + 10 + "px")
           .style("top", d3.event.pageY - 15 + "px");
       })
@@ -100,6 +100,16 @@ class SurveyResponseFrequencyChart extends Component {
       .attr("text-anchor", "middle")
       .style("font-size", this.props.titleSize)
       .text(this.props.titleText);
+
+      horizontalBarPlot
+      .append("text")
+      .attr("id", "horizontalbarplotxaxis")
+      .attr("x", margin.left + width/2)
+      .attr("y", margin.top + height + margin.bottom*.9)
+      .attr("text-anchor", "middle")
+      .style("font-size", 12)
+      .text("Number of Responses")
+
 
   }
 

@@ -94,7 +94,9 @@ class AnalyticsDashboard extends Component {
                         <FilteredDataToPieChart
                             filteredData={this.state.restaurantSurveyResponses}
                             keyString='tourist-diner'
-                            titleText='Are your diners tourists?'
+                            titleText='Do your diners live within 15 miles of the restaurant?'
+                            yesLabel="said yes"
+                            noLabel="said no"
                         />
                     </Col>
                 </Row>
@@ -129,6 +131,8 @@ class AnalyticsDashboard extends Component {
                                 filteredData={this.state.filteredData}
                                 keyString='employee-masks'
                                 titleText='Are your employees wearing masks?'
+                                yesLabel="said yes"
+                                noLabel="said no"
                                 />
                             </Col>
     
@@ -137,6 +141,8 @@ class AnalyticsDashboard extends Component {
                                 filteredData={this.state.filteredData}
                                 keyString='six-feet'
                                 titleText='Are your tables at least 6 feet apart?'
+                                yesLabel="said yes"
+                                noLabel="said no"
                                 />
                             </Col>
                         </Row>

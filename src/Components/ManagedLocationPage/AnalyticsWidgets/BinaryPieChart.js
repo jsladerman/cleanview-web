@@ -73,9 +73,9 @@ class BinaryPieChart extends Component {
 
         div
           .html(
-            d.data.value.toFixed(3) * 100 +
-              "% of people said " +
-              d.data.key.toLowerCase()
+            (d.data.value * 100).toFixed(0) +
+              "% of people " +
+              (d.data.key.toLowerCase() === "yes" ? this.props.yesLabel : this.props.noLabel)
           )
           .style("left", d3.event.pageX + 10 + "px")
           .style("top", d3.event.pageY - 15 + "px");
