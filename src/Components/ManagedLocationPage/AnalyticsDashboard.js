@@ -3,6 +3,7 @@ import FilteredDataToPieChart from './FilteredDataToCharts/FilteredDataToPieChar
 import FilteredDataToAgeBarChart from './FilteredDataToCharts/FilteredDataToAgeBarChart';
 import FilteredDataToRatingBarChart from './FilteredDataToCharts/FilteredDataToRatingBarChart';
 import FilteredDataToFrequencyChart from './FilteredDataToCharts/FilteredDataToFrequencyChart';
+import OverviewMetrics from './AnalyticsSubcomponents/OverviewMetrics';
 import styles from './css/AnalyticsDashboard.module.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -43,56 +44,21 @@ class AnalyticsDashboard extends Component {
                 <h2 id={styles.analyticsHeader}>Analytics Dashboard</h2>
 
                 <h4 className={styles.analyticsDashboardSubheader}>Overview</h4>
-                <div className = {styles.overviewMetrics}>
-                    <Row>
-                        <Col></Col>
-                        <Col>Rating</Col>
-                        <Col>Responses</Col>
-                    </Row>
-                    <Row>
-                        <Col>Today</Col>
-                        <Col className={styles.cell1}>4.5</Col>
-                        <Col className={styles.cell1}>128</Col>
-                    </Row>
-                    <Row>
-                        <Col>This week</Col>
-                        <Col className={styles.cell2}>4.2</Col>
-                        <Col className={styles.cell2}>20</Col>
-                    </Row>
-                    <Row>
-                        <Col>This month</Col>
-                        <Col className={styles.cell3}>4.1</Col>
-                        <Col className={styles.cell3}>85</Col>
-                    </Row>
-                </div>
+                <OverviewMetrics data={this.state.restaurantSurveyResponses} />
 
                 <br />
 
                 <h4 className={styles.analyticsDashboardSubheader}>Customer Demographic Information</h4>
                 <div>{this.renderDemographicCharts()}</div>
-                
+
                 <h4 className={styles.analyticsDashboardSubheader}>Survey Responses</h4>
                 <Row className={styles.rowDivider}>
                     <Col id={styles.filterCharts}>
-                        <p className={styles.analyticsDashboardSubheader2}>Filter Charts</p>
-                        <p>Filter by age group</p>
-                        <button onClick={() => this.filterSingleAgeGroup('0-17')}>0-17</button>
-                        <button onClick={() => this.filterSingleAgeGroup('18-25')}>18-25</button>
-                        <button onClick={() => this.filterSingleAgeGroup('26-35')}>26-35</button>
-                        <button onClick={() => this.filterSingleAgeGroup('36-45')}>36-45</button>
-                        <button onClick={() => this.filterSingleAgeGroup('46-55')}>46-55</button>
-                        <button onClick={() => this.filterSingleAgeGroup('56-65')}>56-65</button>
-                        <button onClick={() => this.filterSingleAgeGroup('66+')}>65+</button>
-
-                        <p>Filter by customer locale</p>
-                        <button onClick={() => this.filterSingleTouristGroup('1')}>Tourist customers</button>
-                        <button onClick={() => this.filterSingleTouristGroup('0')}>Local customers</button>
-
+                        {this.renderFilteringWidget()}
                     </Col>
                 </Row>
                 <Row className={styles.rowDivider}>
                     <Col>
-                        <p className={styles.analyticsDashboardSubheader2}>Filtered Statistics</p>
                         <p><span className={styles.fieldHeader}>Average Rating: </span> {this.averageRating(this.state.filteredData)} / 5</p>
                         <p><span className={styles.fieldHeader}>Total # of Reviews: </span> {this.state.filteredData.length} </p>
                     </Col>
@@ -102,6 +68,131 @@ class AnalyticsDashboard extends Component {
 
             </div>
         );
+    }
+
+    renderFilteringWidget = () => {
+        return (
+            <div>
+                <p className={styles.analyticsDashboardSubheader2}>Filter Data</p>
+                <p>Filter the statistics and charts below by age, customer locale, shift, day, QR code </p>
+                <Row>
+                    <Col>
+                        Select age groups to exclude.
+                    </Col>
+                </Row>
+
+                {/* Filter data by age group */}
+                <Row>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="input1" onClick={() => this.filterSingleAgeGroup('0-17')} />
+                        <label for="input1"> 0-17 </label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="input1" onClick={() => this.filterSingleAgeGroup('18-25')} />
+                        <label for="input1"> 18-25 </label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="input1" onClick={() => this.filterSingleAgeGroup('26-35')} />
+                        <label for="input1"> 26-35 </label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="input1" onClick={() => this.filterSingleAgeGroup('36-45')} />
+                        <label for="input1"> 36-45 </label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="input1" onClick={() => this.filterSingleAgeGroup('46-55')} />
+                        <label for="input1"> 46-55 </label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="input1" onClick={() => this.filterSingleAgeGroup('56-65')} />
+                        <label for="input1"> 56-65 </label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="input1" onClick={() => this.filterSingleAgeGroup('66+')} />
+                        <label for="input1"> 66+ </label>
+                    </Col>
+                </Row>
+
+                <br />
+
+                {/* Filter data by customer locale */}
+                <Row>
+                    <Col>Select customer locality to exclude.</Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="localCheckbox"/>
+                        <label for="localCheckbox">Local customers</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="touristCheckbox"/>
+                        <label for="touristCheckbox">Non-local customers</label>
+                    </Col>
+                </Row>
+            </div>
+
+
+
+
+
+            // <div>
+            //     <p className={styles.analyticsDashboardSubheader2}>Filter Charts</p>
+
+            //     <Row>
+            //         <Col>
+            //             Age Groups
+            //                 </Col>
+            //         <Col></Col>
+            //         <Col>
+            //             Customer locale
+            //                 </Col>
+            //         <Col>
+            //         </Col>
+            //     </Row>
+
+            //     <Row>
+            //         <Col> <input type="checkbox" name="input1" onClick={() => this.filterSingleAgeGroup('0-17')} />
+            //             <label for="input1"> 0-17 </label>
+            //         </Col>
+            //         <Col> <input type="checkbox" name="input2" onClick={() => this.filterSingleAgeGroup('18-25')} />
+            //             <label for="input2"> 18-25 </label>
+            //         </Col>
+            //         <Col>
+
+            //         </Col>
+            //         <Col>
+            //         </Col>
+            //     </Row>
+
+            //     <Row>
+            //         <Col> <input type="checkbox" name="input3" onClick={() => this.filterSingleAgeGroup('26-35')} />
+            //             <label for="input3"> 26-35 </label>
+            //         </Col>
+            //         <Col> <input type="checkbox" name="input4" onClick={() => this.filterSingleAgeGroup('36-45')} />
+            //             <label for="input4"> 36-45 </label>
+            //         </Col>
+            //     </Row>
+
+            //     <Row>
+            //         <Col> <input type="checkbox" name="input5" onClick={() => this.filterSingleAgeGroup('46-55')} />
+            //             <label for="input5"> 46-55 </label>
+            //         </Col>
+            //         <Col>  <input type="checkbox" name="input6" onClick={() => this.filterSingleAgeGroup('56-65')} />
+            //             <label for="input6"> 56-65 </label>
+            //         </Col>
+            //     </Row>
+
+            //     <Row>
+            //         <Col> <input type="checkbox" name="input7" onClick={() => this.filterSingleAgeGroup('66+')} />
+            //             <label for="input7"> 66+ </label>
+            //         </Col>
+            //     </Row>
+
+            //     <p>Filter by customer locale</p>
+            //     <button onClick={() => this.filterSingleTouristGroup('1')}>Tourist customers</button>
+            //     <button onClick={() => this.filterSingleTouristGroup('0')}>Local customers</button>
+            // </div>
+        )
     }
 
     renderDemographicCharts = () => {
@@ -118,7 +209,7 @@ class AnalyticsDashboard extends Component {
                         <FilteredDataToPieChart
                             filteredData={this.state.restaurantSurveyResponses}
                             keyString='touristDiner'
-                            titleText='Do your diners live within 15 miles of the restaurant?'
+                            titleText='Do your customers live within 15 miles of the restaurant?'
                             yesLabel="said yes"
                             noLabel="said no"
                         />

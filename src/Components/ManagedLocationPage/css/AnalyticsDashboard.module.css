@@ -20,11 +20,11 @@
 .analyticsDashboardSubheader2{
     font-weight: normal;
     font-size: 20px;
-    color: #23A6BD;
+    font-weight: bold;
 }
 
 #filterCharts{
-    border: 2px #E5E5E5 solid;
+    background-color: #E5E5E5;
     margin-left: 15px;
     border-radius: 6px;
     padding: 6px 6px 6px 6px;
@@ -35,30 +35,6 @@
     padding: 0px;
 }
 
-.cell1{
-    padding: 10px;
-    border-radius: 8px;
-    background-color: #23c9ad;
-    margin: 2px;
-    text-align: center;
-}
-
-.cell2{
-    padding: 10px;
-    border-radius: 8px;
-    background-color: #7BDECD;
-    margin: 2px;
-    text-align: center;
-}
-
-.cell3{
-    padding: 10px;
-    border-radius: 8px;
-    background-color: #D3F4EE;
-    margin: 2px;
-    text-align: center;
-}
-
-.overviewMetrics{
-    max-width: 350px;
+.check{
+    margin-right: 5px;
 }
