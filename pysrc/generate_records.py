@@ -58,11 +58,16 @@ subloc_ids = {
 # jstr = jstr[:-1] + ']'
 
 # print(jstr)
+
+days = list(range(23, 31))
+hours = list(range(0, 24))
+minutes = list(range(0, 60))
+
 for i in range(0, 100):
     restid = random.choice(location_ids)
+    timestamp = datetime.datetime(2020, 7, random.choice(days), random.choice(hours), random.choice(minutes), random.choice(minutes)).strftime("%a %b %d %Y %X")
     table.put_item(
         Item={
-            'timestamp': Date.now();
             'id': str(uuid.uuid4()),
             'age': str(random.choice(age)),
             'employeeMasks': str(random.choice(employee_masks)),
@@ -71,6 +76,8 @@ for i in range(0, 100):
             'sixFeet': str(random.choice(six_feet)),
             'touristDiner': str(random.choice(tourist_diner)),
             'locationId': restid,
-            'sublocId': random.choice(subloc_ids[restid])
+            'sublocId': random.choice(subloc_ids[restid]),
+            'weekday': timestamp[0:3],
+            'timestamp': timestamp[4:]
         }
     )
