@@ -19,7 +19,7 @@ class LocationInfo extends Component {
         const imgSrc = this.state.data.imageUrl != null ? this.state.data.imageUrl : require('../../images/exampleRestaurant.png')
         return (
             <div className={styles.locationInfoWrapper}>
-                <h2>{this.state.data.name}</h2>
+                <h2>{this.state.data.loc_name}</h2>
 
                 <Container fluid>
                     <Row>
@@ -94,10 +94,10 @@ class LocationInfo extends Component {
 
     formatBusinessType = () => {
         let business_type_format = '';
-        if (this.state.data.type.length === 1) {
-            business_type_format = this.state.data.type[0].toUpperCase();
-        } else if (this.state.data.type) {
-            business_type_format = this.state.data.type[0].toUpperCase() + this.state.data.type.slice(1);
+        if (this.state.data.loc_type.length === 1) {
+            business_type_format = this.state.data.loc_type[0].toUpperCase();
+        } else if (this.state.data.loc_type) {
+            business_type_format = this.state.data.loc_type[0].toUpperCase() + this.state.data.loc_type.slice(1);
         }
         return business_type_format;
     }

@@ -45,7 +45,7 @@ class LocationsTable extends Component {
     }
 
     renderLocations = () => {
-        if (this.props.locations.length > 0)
+        if (this.props.locations && this.props.locations.length > 0)
             return this.props.locations.map(loc => {
                 return (
                     <LocationBox

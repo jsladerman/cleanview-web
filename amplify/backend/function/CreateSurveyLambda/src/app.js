@@ -76,6 +76,7 @@ app.get("/survey/:id", function (req, res) {
               <h2>Please re-scan the QR code.</h2>
               <p>${tot_id}</p>
               <p>${loc_id}</p>
+              <p>${err}</p>
           </body>`);
     } else if (!data.Item || !data.Item.loc_name) {
       res.send(`<!DOCTYPE html>
@@ -87,6 +88,7 @@ app.get("/survey/:id", function (req, res) {
               <h2>Please re-scan the QR code.</h2>
               <p>${tot_id}</p>
               <p>${loc_id}</p>
+              <p>${data}</p>
           </body>`);
     }else {
       let itemData = data.Item;

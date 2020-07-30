@@ -218,10 +218,10 @@ class AddLocation extends Component {
             body: {
                 id: this.state.id,
                 imageUrl: this.state.imageUrl,
-                name: values.businessName,
+                loc_name: values.businessName,
                 email: values.businessEmail,
                 phone: values.businessPhoneNum,
-                type: values.businessType,
+                loc_type: values.businessType,
                 manager: await Auth.currentAuthenticatedUser()
                     .then(user => user['username'])
                     .catch(error => console.log('Error: ' + error)),

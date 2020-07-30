@@ -22,7 +22,6 @@ class LocationBox extends Component {
             return <Redirect push to={this.state.redirect}/>
         }
         const imgSrc = this.props.imageUrl != null ? this.props.imageUrl : require('../../images/exampleRestaurant.png')
-        console.log("imageUrl", this.state.imageUrl)
         return (
             <div className={styles.outerCard}>
                 <Card border='light' style={cardStyle} onClick={this.openLocation}>
