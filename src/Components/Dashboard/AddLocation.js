@@ -238,7 +238,8 @@ class AddLocation extends Component {
                     employeeTemp: values.employeeTemp,
                     outsideSeating: values.outsideSeating,
                     sanitizeTables: values.sanitize,
-                    question6: values.sanitize2 // TODO: question 6
+                    insideCapacity: values.sanitize2, // TODO: question 6
+                    outsideCapactiy: values.sanitize2
                 },
                 is_confirmed: 0,
             },
