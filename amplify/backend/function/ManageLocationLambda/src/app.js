@@ -83,10 +83,7 @@ app.get(path, function(req, res){
     if (err) {
       res.json({ error: "Could not load items: " + err });
     } else {
-      res.json({
-        data: data.Items,
-        backendEnv: process.env.ENV
-      });
+      res.json(data.Items);
     }
   });
 });

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@aws-amplify/pubsub": "^3.0.22",
     "@aws-amplify/ui-react": "^0.2.10",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -21,7 +22,8 @@
     "react-sidebar": "^3.0.2",
     "react-uuid": "^1.0.2",
     "uuidv4": "^6.2.0",
-    "yup": "^0.29.2"
+    "yup": "^0.29.2",
+    "serve": "^11.3.2"
   },
   "scripts": {
     "start": "react-scripts start",

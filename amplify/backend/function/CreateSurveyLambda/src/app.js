@@ -313,7 +313,8 @@ app.get("/survey/:id", function (req, res) {
               <input type='hidden' name='sublocId' value='${sub_id}'> </input>
               <input type='hidden' name='locationId' value='${loc_id}'></input>
               <input type='hidden' name='menuLink' value='${menu_link}'> </input>
-              <input id="timestamp" type='hidden' name='timestamp' value='${Date().toLocaleString()}'></input>
+              <input id="timestamp" type='hidden' name='timestamp'></input>
+              <input id="weekday" type='hidden' name='weekday'></input>
               <div>
                 <p>Are the employees wearing masks?</p>
                 <amp-selector class='mask-selector' layout='container' name='employeeMasks'>
@@ -367,7 +368,9 @@ app.get("/survey/:id", function (req, res) {
         </form>
       </body>
       <script>
-        document.getElementById("timestamp").value = Date().toLocaleString();
+        let curDate = Date().toLocaleString();
+        document.getElementById("timestamp").value = curDate.substring(4);
+        document.getElementById("weekday").value = curDate.substring(0, 3);
       </script>
       </html>
     `);
