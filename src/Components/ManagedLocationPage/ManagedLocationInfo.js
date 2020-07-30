@@ -97,7 +97,7 @@ class ManagedLocationInfo extends Component {
 
         API.get(apiName, path, myParams)
             .then(response => {
-                if (!this.findLocationFromArr(response['data']))
+                if (!this.findLocationFromArr(response['data'].data))
                     this.setState({redirect: '/home'})
             })
             .catch(error => {

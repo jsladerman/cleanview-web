@@ -21,9 +21,11 @@ class LocationsTable extends Component {
                        showCloseButton={false}
                        style={{borderRadius: '100px'}}>
                     <AddLocation modalFunc={() => {
-                        this.toggleModal();
-                        this.props.getDataFunc();
-                    }}/>
+                                this.toggleModal();
+                                this.props.getDataFunc();
+                            }}
+                        backendEnv={this.props.backendEnv}
+                    />
                 </Modal>
                 <div className={styles.dashboardHeader}>
                     <h1 className={styles.dashboardHeaderText}>{this.props.managerName + '\'s Locations'}</h1>

@@ -10,7 +10,9 @@ class AddLocation extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            sampleImageURL: 'https://p.bigstockphoto.com/GeFvQkBbSLaMdpKXF1Zv_bigstock-Aerial-View-Of-Blue-Lakes-And--227291596.jpg'
+            imageURL: 'https://p.bigstockphoto.com/GeFvQkBbSLaMdpKXF1Zv_bigstock-Aerial-View-Of-Blue-Lakes-And--227291596.jpg',
+            id: uuid(),
+            imageLoading: false
         };
     }
 
@@ -39,6 +41,7 @@ class AddLocation extends Component {
                         socialDistance2: '',
                         sanitize: '',
                         sanitize2: '',
+                        id: this.state.id
                     }}
                     onSubmit={this.makeLocation}>
                     <Form className={styles.form}>
@@ -92,7 +95,7 @@ class AddLocation extends Component {
                                 />
                                 <div className={styles.formColHeader}>Upload Image:</div>
                                 <div className={styles.imageLabel}>Example scaled image:</div>
-                                <img src={this.state.sampleImageURL} alt=''
+                                <img src={this.state.imageURL} alt=''
                                      style={{borderRadius: '8px', width: '250px', height: '160px'}}
                                 />
                             </div>
@@ -211,7 +214,7 @@ class AddLocation extends Component {
         console.log(values);
         // const requestData = {
         //     body: {
-        //         id: uuid(),
+        //         id: this.state.id
         //         loc_name: values.name,
         //         manager: await Auth.currentAuthenticatedUser()
         //             .then(user => user['username'])
@@ -242,23 +245,38 @@ class AddLocation extends Component {
         //     })
     };
 
-    uploadFile = (e) => {
+    uploadFile = async (e) => {
         const file = e.target.files[0];
-        // Location ID hasn't been generated, so putting image in a random url
-        const filename = Math.random().toString(36).substr(2, 9) + '.png'
+        
+        const name = e.target.files[0].name;
+        const lastDot = name.lastIndexOf('.');
+        const dotExt = name.substring(lastDot);
+
+        const filename = "profile_picture_" + this.state.id + dotExt
+
+        this.setState({imageLoading: true})
+
         // TODO: CHANGE ON DEV VS PROD
-        const url = "https://cleanviewweb1b7535894d364601be8133bce58e835a170737-"
-            + this.props.backendEnv + ".s3.us-east-1.amazonaws.com/public/" + filename;
-        Storage.put( filename, file, {
+        await Storage.put( filename, file, {
             level: 'public',
             contentDisposition: 'inline; filename="' + filename + '"',
-            contentType: 'image/*'
+            contentType: 'image/' + dotExt.substring(1)
         })
             .then(result => {
                 console.log(result)
-                this.setState({sampleImageURL: url});
             })
             .catch(err => console.log('Upload error: ' + err))
+
+        Storage.get(filename)
+            .then(resultURL => {
+                console.log(resultURL)
+                const idx = resultURL.indexOf(filename)
+                const url = resultURL.substring(0, idx) + '' + filename
+                this.setState({imageURL: url});
+            })
+
+        this.setState({imageLoading: false})
+
     }
 
     renderStateDropdown = () => {

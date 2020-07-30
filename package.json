@@ -20,6 +20,7 @@
     "react-scripts": "3.4.1",
     "react-sidebar": "^3.0.2",
     "react-uuid": "^1.0.2",
+    "uuidv4": "^6.2.0",
     "yup": "^0.29.2"
   },
   "scripts": {
