@@ -208,10 +208,11 @@ class URLMenuUpload extends Component {
 
 class PDFMenuUpload extends Component {
 
-    uploadFile = (e, handleChangeFunc) => {
+     uploadFile = async (e, handleChangeFunc) => {
         const file = e.target.files[0];
         const filename = this.props.loc_id + '.pdf'
-        Storage.put( filename, file, {
+        
+        await Storage.put( filename, file, {
             level: 'public',
             contentDisposition: 'inline; filename="' + filename + '"',
             contentType: 'application/pdf'
@@ -219,9 +220,14 @@ class PDFMenuUpload extends Component {
         .then(result => console.log(result))
         .catch(err => console.log(err))
 
-        // TODO: CHANGE ON DEV VS PROD
-        const url = "https://cleanviewweb1b7535894d364601be8133bce58e835a170737-" + this.props.backendEnv + ".s3.us-east-1.amazonaws.com/public/" + filename;
-        handleChangeFunc(url)
+        Storage.get(filename)
+            .then(resultURL => {
+                const idx = resultURL.indexOf(filename)
+                const url = resultURL.substring(0, idx) + '' + filename
+                console.log(url)
+                handleChangeFunc(url)
+            })
+            .catch(err => console.log(err))
     }
 
     render() {

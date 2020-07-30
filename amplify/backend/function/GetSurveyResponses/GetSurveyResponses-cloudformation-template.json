@@ -41,12 +41,12 @@
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"SubmitResponseLambda",
+						"GetSurveyResponses",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"SubmitResponseLambda",
+									"GetSurveyResponses",
 									"-",
 									{
 										"Ref": "env"
@@ -77,7 +77,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-cleanviewweb-staging-170737-deployment",
-					"S3Key": "amplify-builds/SubmitResponseLambda-396567676a6d706e6956-build.zip"
+					"S3Key": "amplify-builds/GetSurveyResponses-37485a30526372383251-build.zip"
 				}
 			}
 		},
@@ -87,12 +87,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"cleanviewwebLambdaRoled3dbc5ad",
+						"cleanviewwebLambdaRole5c565d29",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"cleanviewwebLambdaRoled3dbc5ad",
+									"cleanviewwebLambdaRole5c565d29",
 									"-",
 									{
 										"Ref": "env"

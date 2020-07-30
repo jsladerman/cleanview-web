@@ -29,9 +29,9 @@ if (process.env.ENV && process.env.ENV !== "NONE") {
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 // HARD CODED: url endpoints
-let environmentURL = "https://ax9vrpeio1.execute-api.us-east-1.amazonaws.com/dev"
+let environmentURL = "https://d9uqja1id6.execute-api.us-east-1.amazonaws.com/dev"
 if(process.ENV === 'dev') {
-  environmentURL = "https://ax9vrpeio1.execute-api.us-east-1.amazonaws.com/dev"
+  environmentURL = "https://d9uqja1id6.execute-api.us-east-1.amazonaws.com/dev"
 } else if(process.env.ENV === 'staging') {
   environmentURL = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
 } else if(process.env.ENV === 'prod') {
@@ -57,6 +57,7 @@ app.get("/survey/:id", function (req, res) {
   const tot_id = id
   const divIdx = tot_id.indexOf('99strl99strl')
   const loc_id = tot_id.substring(0, divIdx)
+  const sub_id = tot_id.substring(divIdx + ('99strl99strl').length)
 
   var params = {
     TableName: tableName,
@@ -75,6 +76,7 @@ app.get("/survey/:id", function (req, res) {
               <h2>Please re-scan the QR code.</h2>
               <p>${tot_id}</p>
               <p>${loc_id}</p>
+              <p>${err}</p>
           </body>`);
     } else if (!data.Item || !data.Item.loc_name) {
       res.send(`<!DOCTYPE html>
@@ -86,12 +88,12 @@ app.get("/survey/:id", function (req, res) {
               <h2>Please re-scan the QR code.</h2>
               <p>${tot_id}</p>
               <p>${loc_id}</p>
+              <p>${data}</p>
           </body>`);
     }else {
-      let itemData = data.Item
+      let itemData = data.Item;
       let name = itemData.loc_name;
-      let total_id = tot_id
-      let menu_link = itemData.menu_link
+      let menu_link = itemData.menu_link;
       res.send(`<!doctype html>
       <html ⚡>
 
@@ -310,8 +312,25 @@ app.get("/survey/:id", function (req, res) {
           action-xhr="${environmentURL}/response" target="_top">
           <fieldset>
             <div>
-              <input type='hidden' name='total_id' value='${total_id}'> </input>
-              <input type='hidden' name='menu_link' value='${menu_link}'> </input>
+              <input type='hidden' name='sublocId' value='${sub_id}'> </input>
+              <input type='hidden' name='locationId' value='${loc_id}'></input>
+              <input type='hidden' name='menuLink' value='${menu_link}'> </input>
+              <input id="timestamp" type='hidden' name='timestamp'></input>
+              <input id="weekday" type='hidden' name='weekday'></input>
+              <div>
+                <p>Are the employees wearing masks?</p>
+                <amp-selector class='mask-selector' layout='container' name='employeeMasks'>
+                  <span class='selection-button' option='1'>Yes</span>
+                  <span class='selection-button' option='0'>No</span>
+                </amp-selector>
+              </div>
+              <div>
+                <p>Is your party at least 6 feet away from other parties?</p>
+                <amp-selector class='six-feet-selector' layout='container' name='sixFeet'>
+                  <span class='selection-button' option='1'>Yes</span>
+                  <span class='selection-button' option='0'>No</span>
+                </amp-selector>
+              </div>
               <p>How old are you?</p>
               <amp-selector name='age' class='age-selector' layout='container' on='select: AMP.setState({
                       selectedOption: event.targetOption,
@@ -326,25 +345,11 @@ app.get("/survey/:id", function (req, res) {
                     <span class='selection-button' option='66+'>66+</span>
               </amp-selector>
             </div>
-            <div>
-              <p>Are the employees wearing masks?</p>
-              <amp-selector class='mask-selector' layout='container' name='employee-masks'>
-                <span class='selection-button' option='1'>Yes</span>
-                <span class='selection-button' option='0'>No</span>
-              </amp-selector>
-            </div>
-      
-            <div>
-              <p>Is your party at least 6 feet away from other parties?</p>
-              <amp-selector class='six-feet-selector' layout='container' name='six-feet'>
-                <span class='selection-button' option='1'>Yes</span>
-                <span class='selection-button' option='0'>No</span>
-              </amp-selector>
-            </div>
+            
 
             <div>
               <p>Do you live within 15 miles of the restaurant?</p>
-              <amp-selector class='tourist-selector' layout='container' name='tourist-diner'>
+              <amp-selector class='tourist-selector' layout='container' name='touristDiner'>
                 <span class='selection-button' option='1'>Yes</span>
                 <span class='selection-button' option='0'>No</span>
               </amp-selector>
@@ -353,7 +358,7 @@ app.get("/survey/:id", function (req, res) {
             <div>
               <p>How satisfied are you with ${name}'s overall COVID-19 response?</p>
               <label>Poor</label>
-              <input type='range' id='slider' name='response-rating' min='1' max='5' step='.5'>
+              <input type='range' id='slider' name='responseRating' min='0' max='5' step='.5'>
               <label>Excellent</label>
             </div>
       
@@ -364,7 +369,11 @@ app.get("/survey/:id", function (req, res) {
           </fieldset>
         </form>
       </body>
-      
+      <script>
+        let curDate = Date().toLocaleString();
+        document.getElementById("timestamp").value = curDate.substring(4);
+        document.getElementById("weekday").value = curDate.substring(0, 3);
+      </script>
       </html>
     `);
     }

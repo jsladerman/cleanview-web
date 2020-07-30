@@ -19,30 +19,8 @@
             "function": {
                 "SubmitResponseLambda": {},
                 "ManageLocationLambda": {},
-                "CreateSurveyLambda": {}
-            }
-        }
-    },
-    "dev": {
-        "awscloudformation": {
-            "AuthRoleName": "amplify-cleanviewweb-dev-213701-authRole",
-            "UnauthRoleArn": "arn:aws:iam::676044961909:role/amplify-cleanviewweb-dev-213701-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::676044961909:role/amplify-cleanviewweb-dev-213701-authRole",
-            "Region": "us-east-1",
-            "DeploymentBucketName": "amplify-cleanviewweb-dev-213701-deployment",
-            "UnauthRoleName": "amplify-cleanviewweb-dev-213701-unauthRole",
-            "StackName": "amplify-cleanviewweb-dev-213701",
-            "StackId": "arn:aws:cloudformation:us-east-1:676044961909:stack/amplify-cleanviewweb-dev-213701/0119c350-d13c-11ea-8e98-0e30fc137e69",
-            "AmplifyAppId": "d3jrprdg7dypqc"
-        },
-        "categories": {
-            "auth": {
-                "cleanviewwebdd68a0c2": {}
-            },
-            "function": {
-                "SubmitResponseLambda": {},
-                "ManageLocationLambda": {},
-                "CreateSurveyLambda": {}
+                "CreateSurveyLambda": {},
+                "GetSurveyResponses": {}
             }
         }
     },
@@ -66,6 +44,30 @@
                 "SubmitResponseLambda": {},
                 "ManageLocationLambda": {},
                 "CreateSurveyLambda": {}
+            }
+        }
+    },
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-cleanviewweb-dev-143211-authRole",
+            "UnauthRoleArn": "arn:aws:iam::676044961909:role/amplify-cleanviewweb-dev-143211-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::676044961909:role/amplify-cleanviewweb-dev-143211-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-cleanviewweb-dev-143211-deployment",
+            "UnauthRoleName": "amplify-cleanviewweb-dev-143211-unauthRole",
+            "StackName": "amplify-cleanviewweb-dev-143211",
+            "StackId": "arn:aws:cloudformation:us-east-1:676044961909:stack/amplify-cleanviewweb-dev-143211/d1c2aed0-d1c9-11ea-a3c1-0e403b617781",
+            "AmplifyAppId": "d3jrprdg7dypqc"
+        },
+        "categories": {
+            "auth": {
+                "cleanviewwebdd68a0c2": {}
+            },
+            "function": {
+                "SubmitResponseLambda": {},
+                "ManageLocationLambda": {},
+                "CreateSurveyLambda": {},
+                "GetSurveyResponses": {}
             }
         }
     }

@@ -21,9 +21,11 @@ class LocationsTable extends Component {
                        showCloseButton={false}
                        style={{borderRadius: '100px'}}>
                     <AddLocation modalFunc={() => {
-                        this.toggleModal();
-                        this.props.getDataFunc();
-                    }}/>
+                                this.toggleModal();
+                                this.props.getDataFunc();
+                            }}
+                        backendEnv={this.props.backendEnv}
+                    />
                 </Modal>
                 <div className={styles.dashboardHeader}>
                     <h1 className={styles.dashboardHeaderText}>{this.props.managerName + '\'s Locations'}</h1>
@@ -43,12 +45,13 @@ class LocationsTable extends Component {
     }
 
     renderLocations = () => {
-        if (this.props.locations.length > 0)
+        if (this.props.locations && this.props.locations.length > 0)
             return this.props.locations.map(loc => {
                 return (
                     <LocationBox
                         locationName={loc.loc_name}
                         key={loc.id + 'key'}
+                        imageUrl={loc.imageUrl}
                         id={loc.id}
                         rating={3.5}
                     />

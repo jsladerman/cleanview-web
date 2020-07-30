@@ -6,16 +6,61 @@ import styles from './css/AnalyticsDashboard.module.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Auth from '@aws-amplify/auth';
+import API from '@aws-amplify/api';
 
 
 class AnalyticsDashboard extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            restaurantSurveyResponses: [],
+        }
+    }
+
     // update state with data
 
     // if data (> 10 responses), then show analytics
     // 1) button to download .csv of restaurant responses
     // 2) barplot showing average consumer rating
     // 3) piechart for the rest of the questions (yes/no)
+
+    componentDidMount = () => {
+        this.pullData();
+        for (var i = 0; i < this.state.restaurantSurveyResponses.length; i++) {
+            var obj = this.state.restaurantSurveyResponses[i];
+            console.log("Age: " + obj.age + ", Rating: " + obj["response-rating"]);
+        }
+    }
+
+    binaryPieChart = (keyString, titleText) => {
+        let totalMasks = 0;
+        for (var i = 0; i < this.state.restaurantSurveyResponses.length; i++) {
+            var obj = this.state.restaurantSurveyResponses[i];
+            if (obj[keyString] === '1') {
+                totalMasks++;
+            }
+        }
+
+        let yesPercent = totalMasks / this.state.restaurantSurveyResponses.length;
+
+        return (
+            <div>
+                <p>{titleText}</p>
+                <BinaryPieChart
+                    height={250}
+                    width={250}
+                    titleText={titleText}
+                    titleSize='12px'
+                    margin={30}
+                    yesPct={yesPercent}
+                />
+            </div>
+        )
+    }
+
     render() {
+
         return (
             <div className={styles.analDash} style={{ paddingLeft: "20px" }}>
                 <h2>Analytics Dashboard</h2>
@@ -68,20 +113,62 @@ class AnalyticsDashboard extends Component {
                     <h4 className={styles.analyticsDashboardSubheader}>General Safety Response</h4>
                     <Row>
                         <Col>
-                            <BinaryPieChart
-                                height={250}
-                                width={250}
-                                titleText='Are your employees wearing masks?'
-                                titleSize='12px'
-                                margin={30}
-                                yesPct={.15}
-                            />
+                            {this.binaryPieChart('employee-masks', 'Are your employees wearing masks?')}
+                        </Col>
+                        <Col>
+                            {this.binaryPieChart('six-feet', 'Are your tables 6 feet apart?')}
+                        </Col>
+                        <Col>
+                            {this.binaryPieChart('tourist-diner', 'Are your diners tourists?')}
                         </Col>
                     </Row>
 
                 </Container>
             </div>
         );
+    }
+
+    populateStateWithJson = () => {
+        let currState = this.state;
+        // currState.restaurantSurveyResponses = require('./data/mock_records.json');
+        currState.restaurantSurveyResponses = this.pullData();
+        console.log("Current state: " + currState.restaurantSurveyResponses);
+        this.setState(currState);
+        console.log("This state: " + this.state.restaurantSurveyResponses);
+    }
+
+    pullData = () => {
+        Auth.currentUserInfo()
+            .then(user => {
+                if (user == null)
+                    this.setState({redirect: '/login'});
+                else
+                    this.getRestaurantSurveyData(this.props.id);
+            })
+            .catch(error => {
+                console.log('Error: ' + error)
+            });
+    }
+
+    getRestaurantSurveyData = (locationID) => {
+        const apiName = 'GetSurveyResponses';
+        const path = '/survey-responses/object'
+        const myParams = {
+            headers: {},
+            response: true,
+            queryStringParameters: {
+                location_id: locationID
+            },
+        };
+
+        API.get(apiName, path, myParams)
+            .then(response => {
+                this.setState({restaurantSurveyResponses: response['data']});
+                console.log(this.state.restaurantSurveyResponses);
+            })
+            .catch(error => {
+                console.log('Error: ' + error);
+            })
     }
 }
 
