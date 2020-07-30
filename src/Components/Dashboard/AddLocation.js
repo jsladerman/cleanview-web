@@ -18,6 +18,7 @@ class AddLocation extends Component {
     }
 
     render() {
+        // TODO: add inside and outside capcity
         return (
             <div className={styles.addLocation}>
                 <div className={styles.addLocationHeader}>
