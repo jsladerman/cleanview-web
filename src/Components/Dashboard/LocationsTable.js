@@ -49,7 +49,7 @@ class LocationsTable extends Component {
             return this.props.locations.map(loc => {
                 return (
                     <LocationBox
-                        locationName={loc.name}
+                        locationName={loc.loc_name}
                         key={loc.id + 'key'}
                         imageUrl={loc.imageUrl}
                         id={loc.id}

@@ -262,6 +262,7 @@ class AddLocation extends Component {
 
     uploadFile = async (e) => {
         // TODO: show loading when waiting for image to upload
+        // TODO: disable submit while it's loading
         const file = e.target.files[0];
         
         const name = e.target.files[0].name;
