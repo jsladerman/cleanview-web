@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import SurveyResponseFrequencyChart from '../AnalyticsWidgets/SurveyResponseFrequencyChart';
 
 class FilteredDataToFrequencyChart extends Component{
-    constructor(props){
-        super(props);
-    }
 
     generateTargetData = () => {
         const targetData = [
@@ -64,13 +61,12 @@ class FilteredDataToFrequencyChart extends Component{
         let targetData = this.generateTargetData();
         return(
             <div>
-              <div>Time of Survey Responses</div>
               <SurveyResponseFrequencyChart
+              titleText='Time of Survey Responses'
+              titleSize='16px'
               height={350}
               width={350}
               color='#30B3CA'
-              // titleSize='12px'
-              // titleText="Average # of Survey Responses by Time Period"
               data={targetData}
               />
             </div>

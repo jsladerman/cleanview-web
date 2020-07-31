@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import BarChart from '../AnalyticsWidgets/BarChart';
 
 class FilteredDataToAgeBarChart extends Component{
-    constructor(props){
-        super(props);
-    }
 
     generateTargetData = () => {
         const targetData = [
@@ -68,16 +65,14 @@ class FilteredDataToAgeBarChart extends Component{
         let targetData = this.generateTargetData();
         return(
             <div>
-                <p>Customer Age Distribution</p>
                 <BarChart
+                    titleText='Customer Age Distribution'
+                    titleSize='16px'
                     width={350}
                     height={350}
                     bar_width={.9}
-                    // titleText='How safe do your customers feel?'
-                    // titleSize='12px'
                     color='#30B3CA'
                     bottomAxisText='Age Group'
-                    // tickVals={[0, 1, 2, 3, 4, 5]}
                     leftAxis={true}
                     data={targetData}
                 />

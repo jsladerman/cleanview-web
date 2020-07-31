@@ -49,6 +49,15 @@ class BinaryPieChart extends Component {
     const piechart = d3.select(node);
 
     piechart
+      .append("text")
+      .attr("id", "piecharttitle")
+      .attr("x", width / 2)
+      .attr("y", margin / 2)
+      .attr("text-anchor", "middle")
+      .style("font-size", this.props.titleSize)
+      .text(this.props.titleText);
+
+    piechart
       .append("g")
       .selectAll("slices")
       .data(data_ready)

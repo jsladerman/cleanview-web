@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import BarChart from '../AnalyticsWidgets/BarChart';
 
 class FilteredDataToRatingBarChart extends Component{
-    constructor(props){
-        super(props);
-    }
 
     generateTargetData = () => {
         var targetData = [
@@ -73,15 +70,14 @@ class FilteredDataToRatingBarChart extends Component{
         let targetData = this.generateTargetData();
         return(
             <div>
-                <p>Customer Ratings</p>
                 <BarChart
+                    titleText='Customer Satisfaction'
+                    titleSize='16px'
                     width={350}
                     height={350}
                     bar_width={.9}
-                    // titleText='How safe do your customers feel?'
-                    // titleSize='12px'
                     color='#30B3CA'
-                    bottomAxisText='Customer Rating'
+                    bottomAxisText='Customer Satisfaction'
                     tickVals={[0, 1, 2, 3, 4, 5]}
                     leftAxis={true}
                     data={targetData}

@@ -9,9 +9,6 @@ import BinaryPieChart from '../AnalyticsWidgets/BinaryPieChart';
 //  BinaryPieChart with given title
 
 class FilteredDataToPieChart extends Component{
-    constructor(props){
-        super(props);
-    }
 
     render(){
         let totalYes = 0;
@@ -26,13 +23,12 @@ class FilteredDataToPieChart extends Component{
 
         return (
             <div>
-                <p>{this.props.titleText}</p>
                 <BinaryPieChart
-                    height={250}
-                    width={250}
-                    // titleText={titleText}
-                    // titleSize='12px'
-                    margin={30}
+                    titleText={this.props.titleText}
+                    titleSize='16px'
+                    height={350}
+                    width={350}
+                    margin={50}
                     yesPct={yesPercent}
                     yesLabel={this.props.yesLabel}
                     noLabel={this.props.noLabel}

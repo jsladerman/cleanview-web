@@ -5,12 +5,8 @@ import Col from 'react-bootstrap/Col';
 import styles from './css/OverviewMetrics.module.css';
 
 class OverviewMetrics extends Component {
-    constructor(props) {
-        super(props);
-
-        // Props:
-        // data- all of the survey responses
-    }
+    // Props
+    //  data - all of the survey responses
 
     render() {
         let dayAverage = this.averageRatingByDays(1);
@@ -35,8 +31,8 @@ class OverviewMetrics extends Component {
                 <div className={styles.ratingOverview}>
                     <Row>
                         <Col></Col>
-                        <Col className="text-wrap" className={styles.ratingHeader}>Average Response</Col>
-                        <Col className="text-wrap" className={styles.ratingHeader}># of Responses</Col>
+                        <Col className={styles.ratingHeader}>Average Response</Col>
+                        <Col className={styles.ratingHeader}># of Responses</Col>
                     </Row>
                     <Row>
                         <Col>Last 24 hours</Col>

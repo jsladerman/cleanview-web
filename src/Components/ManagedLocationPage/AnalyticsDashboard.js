@@ -15,15 +15,20 @@ class AnalyticsDashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            // Filtering survey response data
             restaurantSurveyResponses: [],
             filteredData: [],
-            demographicFilteredData: [],
             ageExcludeFilter: [],
             touristExcludeFilter: [],
             weekdayExcludeFilter: [],
             hourExcludeFilter: [],
-            rerenderCharts: false,
+            timeExcludeFilter: [],
 
+            // Filtering demographic charts
+            filteredDataForDemographicCharts: [],
+            timeExcludeFilterForDemographicCharts: [],
+
+            rerenderCharts: false,
             // QR filter
             // Timestamp filter- default is 0 hours = all data, else show from the past "x" hours
         }
@@ -47,37 +52,36 @@ class AnalyticsDashboard extends Component {
                 <h2 id={styles.analyticsHeader}>Analytics Dashboard</h2>
 
                 <h4 className={styles.analyticsDashboardSubheader}>Overview</h4>
-                <OverviewMetrics
-                    allData={this.state.restaurantSurveyResponses}
-                />
-
-                <br />
+                <OverviewMetrics allData={this.state.restaurantSurveyResponses}/> <br />
 
                 <h4 className={styles.analyticsDashboardSubheader}>Customer Demographic Information</h4>
-                <div>{this.renderDemographicCharts()}</div>
+                {this.renderDemographicCharts()} <br />
 
                 <h4 className={styles.analyticsDashboardSubheader}>Survey Responses</h4>
-                <Row className={styles.rowDivider}>
-                    <Col id={styles.filterCharts}>
-                        {this.renderFilteringWidget()}
-                    </Col>
-                </Row>
-                <Row className={styles.rowDivider}>
-                    <Col>
-                        <p><span className={styles.fieldHeader}>Average Rating: </span> {this.averageRating(this.state.filteredData)} / 5</p>
-                        <p><span className={styles.fieldHeader}>Total # of Reviews: </span> {this.state.filteredData.length} </p>
-                    </Col>
-                </Row>
-
+                {this.renderFilteringWidget()} <br />
+                <div className={styles.filteredOverview}>
+                    <h6 className={styles.filteredOverviewTitle}>Average Customer Satisfaction</h6>
+                    <Row>
+                        <Col className={styles.filteredOverviewSubheader}>Average Response</Col>
+                        <Col className={styles.filteredOverviewSubheader}># of Responses</Col>
+                    </Row>
+                    <Row>
+                        <Col className={styles.cell}>{this.averageRating(this.state.filteredData)} / 5</Col>
+                        <Col className={styles.cell}>{this.state.filteredData.length}</Col>
+                    </Row>
+                </div>
                 {this.renderFilteringCharts()}
 
             </div>
         );
     }
 
+    /************************************************************************************************/
+    /*                            Functions for rendering filtering widget                          */
+    /************************************************************************************************/
     renderFilteringWidget = () => {
         return (
-            <div>
+            <div id={styles.filterCharts}>
                 <p className={styles.analyticsDashboardSubheader2}>Filter Data</p>
                 <p>Filter the statistics and charts below by age, customer locale, shift, day, QR code </p>
                 
@@ -153,7 +157,7 @@ class AnalyticsDashboard extends Component {
         )
     }
 
-    // Returns a checkbox that, when toggled, adds a filter to one of the filterArrays in state
+    // Returns a checkbox wrapped in a Col that, when toggled, adds a filter to one of the filterArrays in state
     renderSingleCheckbox = (elementName, labelText, filterArray, filterValue) => {
         return(
             <Col>
@@ -187,9 +191,9 @@ class AnalyticsDashboard extends Component {
                         <FilteredDataToPieChart
                             filteredData={this.state.restaurantSurveyResponses}
                             keyString='touristDiner'
-                            titleText='Do your customers live within 15 miles of the restaurant?'
-                            yesLabel="said yes"
-                            noLabel="said no"
+                            titleText='Customer Locality'
+                            yesLabel="live within 15 miles of the restaurant"
+                            noLabel="do not live within 15 miles of the restaurant"
                         />
                     </Col>
                 </Row>
@@ -223,7 +227,7 @@ class AnalyticsDashboard extends Component {
                             <FilteredDataToPieChart
                                 filteredData={this.state.filteredData}
                                 keyString='employeeMasks'
-                                titleText='Are your employees wearing masks?'
+                                titleText='Are Employees Wearing Masks?'
                                 yesLabel="said yes"
                                 noLabel="said no"
                             />
@@ -233,7 +237,7 @@ class AnalyticsDashboard extends Component {
                             <FilteredDataToPieChart
                                 filteredData={this.state.filteredData}
                                 keyString='sixFeet'
-                                titleText='Are your tables at least 6 feet apart?'
+                                titleText='Are Parties 6 Feet Apart?'
                                 yesLabel="said yes"
                                 noLabel="said no"
                             />
