@@ -67,7 +67,14 @@
     font-size: 16px;
 }
 
-.filterHeader{
+.filteringCategories{
     font-weight: bold;
-    font-size: 16px;
+    font-size: 18px;
+    margin-bottom: 10px;
 }
+
+.filteringOptions{
+    padding: 0px;
+    margin: 0px;
+}
+
