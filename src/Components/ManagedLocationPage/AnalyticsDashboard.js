@@ -18,6 +18,7 @@ class AnalyticsDashboard extends Component {
         this.state = {
             restaurantSurveyResponses: [],
             filteredData: [],
+            demographicFilteredData: [],
             ageExcludeFilter: [],
             touristExcludeFilter: [],
             rerenderCharts: false,
@@ -29,14 +30,15 @@ class AnalyticsDashboard extends Component {
 
     componentDidMount = () => {
         this.pullData();
-        this.filterData();
+        let currState = this.state;
+        currState.filteredData = this.state.restaurantSurveyResponses;
+        this.setState(currState);
     }
 
     render() {
-        // TODO- ANOTHER WAY TO CHECK IF THE STATE HAS BEEN SET
         if (this.state.restaurantSurveyResponses.length === 0) {
             return (
-                <div> LOADING </div>
+                <h2 className = {styles.analDash} id={styles.analyticsHeader}>Not enough data to generate analytics.</h2>
             )
         }
         return (
@@ -44,7 +46,9 @@ class AnalyticsDashboard extends Component {
                 <h2 id={styles.analyticsHeader}>Analytics Dashboard</h2>
 
                 <h4 className={styles.analyticsDashboardSubheader}>Overview</h4>
-                <OverviewMetrics data={this.state.restaurantSurveyResponses} />
+                <OverviewMetrics
+                    allData={this.state.restaurantSurveyResponses}
+                />
 
                 <br />
 
@@ -130,68 +134,6 @@ class AnalyticsDashboard extends Component {
                     </Col>
                 </Row>
             </div>
-
-
-
-
-
-            // <div>
-            //     <p className={styles.analyticsDashboardSubheader2}>Filter Charts</p>
-
-            //     <Row>
-            //         <Col>
-            //             Age Groups
-            //                 </Col>
-            //         <Col></Col>
-            //         <Col>
-            //             Customer locale
-            //                 </Col>
-            //         <Col>
-            //         </Col>
-            //     </Row>
-
-            //     <Row>
-            //         <Col> <input type="checkbox" name="input1" onClick={() => this.filterSingleAgeGroup('0-17')} />
-            //             <label for="input1"> 0-17 </label>
-            //         </Col>
-            //         <Col> <input type="checkbox" name="input2" onClick={() => this.filterSingleAgeGroup('18-25')} />
-            //             <label for="input2"> 18-25 </label>
-            //         </Col>
-            //         <Col>
-
-            //         </Col>
-            //         <Col>
-            //         </Col>
-            //     </Row>
-
-            //     <Row>
-            //         <Col> <input type="checkbox" name="input3" onClick={() => this.filterSingleAgeGroup('26-35')} />
-            //             <label for="input3"> 26-35 </label>
-            //         </Col>
-            //         <Col> <input type="checkbox" name="input4" onClick={() => this.filterSingleAgeGroup('36-45')} />
-            //             <label for="input4"> 36-45 </label>
-            //         </Col>
-            //     </Row>
-
-            //     <Row>
-            //         <Col> <input type="checkbox" name="input5" onClick={() => this.filterSingleAgeGroup('46-55')} />
-            //             <label for="input5"> 46-55 </label>
-            //         </Col>
-            //         <Col>  <input type="checkbox" name="input6" onClick={() => this.filterSingleAgeGroup('56-65')} />
-            //             <label for="input6"> 56-65 </label>
-            //         </Col>
-            //     </Row>
-
-            //     <Row>
-            //         <Col> <input type="checkbox" name="input7" onClick={() => this.filterSingleAgeGroup('66+')} />
-            //             <label for="input7"> 66+ </label>
-            //         </Col>
-            //     </Row>
-
-            //     <p>Filter by customer locale</p>
-            //     <button onClick={() => this.filterSingleTouristGroup('1')}>Tourist customers</button>
-            //     <button onClick={() => this.filterSingleTouristGroup('0')}>Local customers</button>
-            // </div>
         )
     }
 
@@ -286,7 +228,6 @@ class AnalyticsDashboard extends Component {
         this.setState({ filteredData: newFilteredData });
         this.setState({ rerenderCharts: false });
     }
-
 
     // ageGroup is a string corresponding to an age group bucket, such as '0-17'
     filterSingleAgeGroup = (ageGroup) => {

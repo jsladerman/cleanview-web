@@ -7,7 +7,7 @@
 
 .ratingOverview{
     padding-left: 15px;
-    max-width: 450px;
+    max-width: 500px;
 }
 
 .ratingHeader{
@@ -46,6 +46,11 @@
 
 .emphasis{
     color: #23c9ad;
+    font-weight: bold;
+}
+
+.emphasisBad{
+    color: #ff6961;
     font-weight: bold;
 }
 
