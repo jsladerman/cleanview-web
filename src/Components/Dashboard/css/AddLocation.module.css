@@ -1,7 +1,7 @@
 .addLocation {
     font-family: Roboto, serif;
     background-color: white;
-    padding: 20px 0 20px 40px;
+    padding: 20px 30px 20px 40px;
     width: 760px;
     overflow: scroll;
     border-radius: 12px;
@@ -39,8 +39,18 @@
     font-size: 16px;
 }
 
+.formCapacityLabel {
+    font-size: 12px;
+    font-style: italic;
+    font-weight: bold;
+}
+
 .formInput {
     margin-bottom: 8px;
+}
+
+.formNum {
+    width: 50px;
 }
 
 .imageLabel {
@@ -58,7 +68,7 @@
 .formRadioQuestion {
     font-weight: bold;
     margin-left: 8px;
-    margin-right: 28px;
+    margin-right: 24px;
     margin-bottom: 4px;
 }
 
@@ -108,7 +118,7 @@
 }
 
 .surveyBox {
-    width: 90%;
+    width: 100%;
 }
 
 .formQuestions {
