@@ -213,6 +213,7 @@ app.patch(path + '/manager', function(req, res) {
     req.body["userId"] =
       req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
   }
+
   var params = {
     TableName: tableName,
     Key: {
@@ -232,7 +233,7 @@ app.patch(path + '/manager', function(req, res) {
   dynamodb.update(params, function(err, data) {
     if (err) {
       res.statusCode = 500;
-      res.json({ error: err, url: req.url, body: req.body, url: req.body.menu_link});
+      res.json({ error: err, url: req.url, body: req.body});
     } else {
       res.json({ success: "patch call succeed!", url: req.url, data: data });
     }
