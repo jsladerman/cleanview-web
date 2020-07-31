@@ -200,7 +200,7 @@ class OverviewMetrics extends Component {
                 if (average >= ageGroupData[maxIndex].average) {
                     maxIndex = i;
                 } 
-                if (ageGroupData[minIndex].average == -1 || average <= ageGroupData[minIndex].average) {
+                if (ageGroupData[minIndex].average === -1 || average <= ageGroupData[minIndex].average) {
                     minIndex = i;
                 }
             }
@@ -297,7 +297,7 @@ class OverviewMetrics extends Component {
                 if (average >= shiftAverages[maxIndex].average) {
                     maxIndex = i;
                 } 
-                if (shiftAverages[minIndex].average == -1 || average <= shiftAverages[minIndex].average) {
+                if (shiftAverages[minIndex].average === -1 || average <= shiftAverages[minIndex].average) {
                     minIndex = i;
                 }
             }
@@ -363,13 +363,13 @@ class OverviewMetrics extends Component {
                 maxRating = dayMaxRating;
                 maxShift = dayMaxShift;
             }
-            if(dayMinRating < minRating || minRating == -1){
+            if(dayMinRating < minRating || minRating === -1){
                 minRating = dayMinRating;
                 minShift = dayMinShift;
             }
         }
 
-        if(minRating == -1){
+        if(minRating === -1){
             minRating = maxRating;
             minShift = maxShift;
         }

@@ -21,6 +21,8 @@ class AnalyticsDashboard extends Component {
             demographicFilteredData: [],
             ageExcludeFilter: [],
             touristExcludeFilter: [],
+            weekdayExcludeFilter: [],
+            hourExcludeFilter: [],
             rerenderCharts: false,
 
             // QR filter
@@ -38,7 +40,7 @@ class AnalyticsDashboard extends Component {
     render() {
         if (this.state.restaurantSurveyResponses.length === 0) {
             return (
-                <h2 className = {styles.analDash} id={styles.analyticsHeader}>Not enough data to generate analytics.</h2>
+                <h2 className={styles.analDash} id={styles.analyticsHeader}>Not enough data to generate analytics.</h2>
             )
         }
         return (
@@ -81,38 +83,38 @@ class AnalyticsDashboard extends Component {
                 <p>Filter the statistics and charts below by age, customer locale, shift, day, QR code </p>
                 <Row>
                     <Col>
-                        Select age groups to exclude.
+                        Age groups
                     </Col>
                 </Row>
 
                 {/* Filter data by age group */}
                 <Row>
                     <Col>
-                        <input className={styles.check} type="checkbox" name="input1" onClick={() => this.filterSingleAgeGroup('0-17')} />
+                        <input className={styles.check} type="checkbox" name="input1" onClick={() => this.addSingleFilter(this.state.ageExcludeFilter, '0-17')} defaultChecked/>
                         <label for="input1"> 0-17 </label>
                     </Col>
                     <Col>
-                        <input className={styles.check} type="checkbox" name="input1" onClick={() => this.filterSingleAgeGroup('18-25')} />
+                        <input className={styles.check} type="checkbox" name="input1" onClick={() => this.addSingleFilter(this.state.ageExcludeFilter, '18-25')} defaultChecked/>
                         <label for="input1"> 18-25 </label>
                     </Col>
                     <Col>
-                        <input className={styles.check} type="checkbox" name="input1" onClick={() => this.filterSingleAgeGroup('26-35')} />
+                        <input className={styles.check} type="checkbox" name="input1" onClick={() => this.addSingleFilter(this.state.ageExcludeFilter, '26-35')} defaultChecked/>
                         <label for="input1"> 26-35 </label>
                     </Col>
                     <Col>
-                        <input className={styles.check} type="checkbox" name="input1" onClick={() => this.filterSingleAgeGroup('36-45')} />
+                        <input className={styles.check} type="checkbox" name="input1" onClick={() => this.addSingleFilter(this.state.ageExcludeFilter, '36-45')} defaultChecked/>
                         <label for="input1"> 36-45 </label>
                     </Col>
                     <Col>
-                        <input className={styles.check} type="checkbox" name="input1" onClick={() => this.filterSingleAgeGroup('46-55')} />
+                        <input className={styles.check} type="checkbox" name="input1" onClick={() => this.addSingleFilter(this.state.ageExcludeFilter, '46-55')} defaultChecked/>
                         <label for="input1"> 46-55 </label>
                     </Col>
                     <Col>
-                        <input className={styles.check} type="checkbox" name="input1" onClick={() => this.filterSingleAgeGroup('56-65')} />
+                        <input className={styles.check} type="checkbox" name="input1" onClick={() => this.addSingleFilter(this.state.ageExcludeFilter, '56-65')} defaultChecked/>
                         <label for="input1"> 56-65 </label>
                     </Col>
                     <Col>
-                        <input className={styles.check} type="checkbox" name="input1" onClick={() => this.filterSingleAgeGroup('66+')} />
+                        <input className={styles.check} type="checkbox" name="input1" onClick={() => this.addSingleFilter(this.state.ageExcludeFilter, '66+')} defaultChecked/>
                         <label for="input1"> 66+ </label>
                     </Col>
                 </Row>
@@ -121,18 +123,171 @@ class AnalyticsDashboard extends Component {
 
                 {/* Filter data by customer locale */}
                 <Row>
-                    <Col>Select customer locality to exclude.</Col>
+                    <Col>Customer locality</Col>
                 </Row>
                 <Row>
                     <Col>
-                        <input className={styles.check} type="checkbox" name="localCheckbox"/>
+                        <input className={styles.check} type="checkbox" name="localCheckbox" onClick={() => this.addSingleFilter(this.state.touristExcludeFilter, '0')} defaultChecked/>
                         <label for="localCheckbox">Local customers</label>
                     </Col>
                     <Col>
-                        <input className={styles.check} type="checkbox" name="touristCheckbox"/>
+                        <input className={styles.check} type="checkbox" name="touristCheckbox" onClick={() => this.addSingleFilter(this.state.touristExcludeFilter, '1')} defaultChecked/>
                         <label for="touristCheckbox">Non-local customers</label>
                     </Col>
+                    <Col></Col>
+                    <Col></Col>
+                    <Col></Col>
+                    <Col></Col>
+                    <Col></Col>
                 </Row>
+
+                <br />
+
+                {/* Filter data by weekday */}
+                <Row>
+                    <Col>Weekdays</Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="sunCheckbox" onClick={() => this.addSingleFilter(this.state.weekdayExcludeFilter, 'Sun')} defaultChecked/>
+                        <label for="sunCheckbox">Sunday</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="monCheckbox" onClick={() => this.addSingleFilter(this.state.weekdayExcludeFilter, 'Mon')} defaultChecked/>
+                        <label for="monCheckbox">Monday</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="tueCheckbox" onClick={() => this.addSingleFilter(this.state.weekdayExcludeFilter, 'Tue')} defaultChecked/>
+                        <label for="tueCheckbox">Tuesday</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="wedCheckbox" onClick={() => this.addSingleFilter(this.state.weekdayExcludeFilter, 'Wed')} defaultChecked/>
+                        <label for="wedCheckbox">Wednesday</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="thuCheckbox" onClick={() => this.addSingleFilter(this.state.weekdayExcludeFilter, 'Thu')} defaultChecked/>
+                        <label for="thuCheckbox">Thursday</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="friCheckbox" onClick={() => this.addSingleFilter(this.state.weekdayExcludeFilter, 'Fri')} defaultChecked/>
+                        <label for="friCheckbox">Friday</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="satCheckbox" onClick={() => this.addSingleFilter(this.state.weekdayExcludeFilter, 'Sat')} defaultChecked/>
+                        <label for="satCheckbox">Saturday</label>
+                    </Col>
+                </Row>
+
+                <br />
+
+                {/* Filter data by hour */}
+                <Row>
+                    <Col>Hours</Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="a0" onClick={() => this.addSingleFilter(this.state.hourExcludeFilter, 0)} defaultChecked/>
+                        <label for="a0">12 am</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="a1" onClick={() => this.addSingleFilter(this.state.hourExcludeFilter, 1)} defaultChecked/>
+                        <label for="a1">1 am</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="a2" onClick={() => this.addSingleFilter(this.state.hourExcludeFilter, 2)} defaultChecked/>
+                        <label for="a2">2 am</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="a3" onClick={() => this.addSingleFilter(this.state.hourExcludeFilter, 3)} defaultChecked/>
+                        <label for="a3">3 am</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="a4" onClick={() => this.addSingleFilter(this.state.hourExcludeFilter, 4)} defaultChecked/>
+                        <label for="a4">4 am</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="a5" onClick={() => this.addSingleFilter(this.state.hourExcludeFilter, 5)} defaultChecked/>
+                        <label for="a5">5 am</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="a6" onClick={() => this.addSingleFilter(this.state.hourExcludeFilter, 6)} defaultChecked/>
+                        <label for="a6">6 am</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="a7" onClick={() => this.addSingleFilter(this.state.hourExcludeFilter, 7)} defaultChecked/>
+                        <label for="a7">7 am</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="a8" onClick={() => this.addSingleFilter(this.state.hourExcludeFilter, 8)} defaultChecked/>
+                        <label for="a8">8 am</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="a9" onClick={() => this.addSingleFilter(this.state.hourExcludeFilter, 9)} defaultChecked/>
+                        <label for="a9">9 am</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="a10" onClick={() => this.addSingleFilter(this.state.hourExcludeFilter, 10)} defaultChecked/>
+                        <label for="a10">10 am</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="a11" onClick={() => this.addSingleFilter(this.state.hourExcludeFilter, 11)} defaultChecked/>
+                        <label for="a11">11 am</label>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="a12" onClick={() => this.addSingleFilter(this.state.hourExcludeFilter, 12)} defaultChecked/>
+                        <label for="a12">12 pm</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="a13" onClick={() => this.addSingleFilter(this.state.hourExcludeFilter, 13)} defaultChecked/>
+                        <label for="a13">1 pm</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="a14" onClick={() => this.addSingleFilter(this.state.hourExcludeFilter, 14)} defaultChecked/>
+                        <label for="a14">2 pm</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="a15" onClick={() => this.addSingleFilter(this.state.hourExcludeFilter, 15)} defaultChecked/>
+                        <label for="a15">3 pm</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="a16" onClick={() => this.addSingleFilter(this.state.hourExcludeFilter, 16)} defaultChecked/>
+                        <label for="a16">4 pm</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="a17" onClick={() => this.addSingleFilter(this.state.hourExcludeFilter, 17)} defaultChecked/>
+                        <label for="a17">5 pm</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="a18" onClick={() => this.addSingleFilter(this.state.hourExcludeFilter, 18)} defaultChecked/>
+                        <label for="a18">6 pm</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="a19" onClick={() => this.addSingleFilter(this.state.hourExcludeFilter, 19)} defaultChecked/>
+                        <label for="a19">7 pm</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="a20" onClick={() => this.addSingleFilter(this.state.hourExcludeFilter, 20)} defaultChecked/>
+                        <label for="a20">8 pm</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="a21" onClick={() => this.addSingleFilter(this.state.hourExcludeFilter, 21)} defaultChecked/>
+                        <label for="a21">9 pm</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="a22" onClick={() => this.addSingleFilter(this.state.hourExcludeFilter, 22)} defaultChecked/>
+                        <label for="a22">10 pm</label>
+                    </Col>
+                    <Col>
+                        <input className={styles.check} type="checkbox" name="a23" onClick={() => this.addSingleFilter(this.state.hourExcludeFilter, 23)} defaultChecked/>
+                        <label for="a23">11 pm</label>
+                    </Col>
+
+                </Row>
+
+
+
             </div>
         )
     }
@@ -223,44 +378,31 @@ class AnalyticsDashboard extends Component {
     filterData = async () => {
         this.setState({ rerenderCharts: true });
         let newFilteredData = await this.state.restaurantSurveyResponses.filter(response =>
-            (!this.state.touristExcludeFilter.includes(response['touristDiner']) && !this.state.ageExcludeFilter.includes(response['age']))
+            (!this.state.touristExcludeFilter.includes(response['touristDiner'])
+                && !this.state.ageExcludeFilter.includes(response['age'])
+                && !this.state.hourExcludeFilter.includes(parseFloat(response['timestamp'].slice(12, 14)))
+                && !this.state.weekdayExcludeFilter.includes(response['weekday'])
+            )
         );
         this.setState({ filteredData: newFilteredData });
         this.setState({ rerenderCharts: false });
     }
 
-    // ageGroup is a string corresponding to an age group bucket, such as '0-17'
-    filterSingleAgeGroup = (ageGroup) => {
-        let newAgeExclude = this.state.ageExcludeFilter;
+    addSingleFilter = (array, item) => {
+        console.log(array);
+        console.log(item);
 
-        if (newAgeExclude.includes(ageGroup)) {
-            var index = newAgeExclude.indexOf(ageGroup);
-            newAgeExclude.splice(index, 1);
+        let newArray = array;
+        if (newArray.includes(item)) {
+            var index = newArray.indexOf(item);
+            newArray.splice(index, 1);
         } else {
-            newAgeExclude.push(ageGroup)
+            newArray.push(item);
         }
 
-        this.setState({ ageExcludeFilter: newAgeExclude });
+        this.setState({ array: newArray });
         this.filterData();
-
-        console.log(this.state.ageExcludeFilter);
-    }
-
-    // touristGroup is either '1' or '0'
-    filterSingleTouristGroup = (touristGroup) => {
-        let newTouristExclude = this.state.touristExcludeFilter;
-
-        if (newTouristExclude.includes(touristGroup)) {
-            var index = newTouristExclude.indexOf(touristGroup);
-            newTouristExclude.splice(index, 1);
-        } else {
-            newTouristExclude.push(touristGroup)
-        }
-
-        this.setState({ touristExcludeFilter: newTouristExclude });
-        this.filterData();
-
-        console.log(this.state.touristExcludeFilter);
+        console.log(array);
     }
 
     pullData = () => {
