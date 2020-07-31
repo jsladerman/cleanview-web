@@ -18,8 +18,8 @@ class LocationsTable extends Component {
             <div>
                 <Modal show={this.state.showModal}
                        onClose={this.toggleModal}
-                       showCloseButton={false}
-                       style={{borderRadius: '100px'}}>
+                       showCloseButton={true}
+                       style={{borderRadius: '100px', margin: '20px'}}>
                     <AddLocation modalFunc={() => {
                                 this.toggleModal();
                                 this.props.getDataFunc();
