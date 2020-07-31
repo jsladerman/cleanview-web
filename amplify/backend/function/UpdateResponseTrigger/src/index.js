@@ -41,20 +41,11 @@ updateParams = (record) => {
     Key: {
       "id": record.dynamodb.NewImage.locationId.S
     },
-    ExpressionAttributeNames: {
-      '#NR': "numResponses",
-      "#SR": "sumRating",
-      "#NSFR": "numSixFeetResponses",
-      "#NMR": "numMasksResponses",
-      "#NAR": "numAgeResponses",
-      "#NRR": "numRatingResponses",
-      "#NTR": 'numTouristResponses'
-    },
     ExpressionAttributeValues: {
       ":val": 1,
       ":rating": record.dynamodb.NewImage.responseRating.S
     },
-    UpdateExpression: 'SET numResponses :val'
+    UpdateExpression: buildUpdateExpression(record)
   };
 }
 
