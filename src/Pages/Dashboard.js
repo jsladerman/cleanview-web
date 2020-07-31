@@ -13,6 +13,7 @@ import '@trendmicro/react-modal/dist/react-modal.css';
 import Sidebar from 'react-sidebar'
 import LocationsTable from "../Components/Dashboard/LocationsTable";
 import ManagedLocationInfo from "../Components/ManagedLocationPage/ManagedLocationInfo";
+import Settings from "../Components/Dashboard/Settings";
 
 class Dashboard extends Component {
     constructor(props) {
@@ -142,7 +143,8 @@ class Dashboard extends Component {
                             <h1 style={{padding: '20px'}}>Billing Page</h1>}
                         />
                         <Route path={this.path + '/settings'} render={(props) =>
-                            <h1 style={{padding: '20px'}}>Settings Page</h1>}
+                            <Settings
+                                {...props}/>}
                         />
                         <Redirect to="/home/locations"/>
                     </Switch>
