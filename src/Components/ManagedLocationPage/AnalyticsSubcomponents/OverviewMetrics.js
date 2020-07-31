@@ -192,16 +192,16 @@ class OverviewMetrics extends Component {
         let minIndex = 0;
 
         // TO-DO: test this on a data set where the age group doesn't exist
-        for (var i = 0; i < ageGroupData.length; i++) {
-            if (ageGroupData[i].numResponses > 0) {
-                let average = ageGroupData[i].totalRating / ageGroupData[i].numResponses;
-                ageGroupData[i].average = average.toFixed(1);
+        for (var j = 0; j < ageGroupData.length; j++) {
+            if (ageGroupData[j].numResponses > 0) {
+                let average = ageGroupData[j].totalRating / ageGroupData[j].numResponses;
+                ageGroupData[j].average = average.toFixed(1);
 
                 if (average >= ageGroupData[maxIndex].average) {
-                    maxIndex = i;
+                    maxIndex = j;
                 } 
                 if (ageGroupData[minIndex].average === -1 || average <= ageGroupData[minIndex].average) {
-                    minIndex = i;
+                    minIndex = j;
                 }
             }
         }
@@ -289,16 +289,16 @@ class OverviewMetrics extends Component {
         let maxIndex = 0;
         let minIndex = 0;
 
-        for (var i = 0; i < shiftAverages.length; i++) {
-            if (shiftAverages[i].numResponses > 0) {
-                let average = shiftAverages[i].totalRating / shiftAverages[i].numResponses;
-                shiftAverages[i].average = average.toFixed(1);
+        for (var j = 0; j < shiftAverages.length; j++) {
+            if (shiftAverages[j].numResponses > 0) {
+                let average = shiftAverages[j].totalRating / shiftAverages[j].numResponses;
+                shiftAverages[j].average = average.toFixed(1);
 
                 if (average >= shiftAverages[maxIndex].average) {
-                    maxIndex = i;
+                    maxIndex = j;
                 } 
                 if (shiftAverages[minIndex].average === -1 || average <= shiftAverages[minIndex].average) {
-                    minIndex = i;
+                    minIndex = j;
                 }
             }
         }
