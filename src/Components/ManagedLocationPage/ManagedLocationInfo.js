@@ -85,8 +85,8 @@ class ManagedLocationInfo extends Component {
     };
 
     getLocations = (managerName) => {
-        const apiName = 'ManageLocationApi'; // replace this with your api name.
-        const path = '/location'; //replace this with the path you have configured on your API
+        const apiName = 'ManageLocationApi';
+        const path = '/location';
         const myParams = {
             headers: {},
             response: true,
