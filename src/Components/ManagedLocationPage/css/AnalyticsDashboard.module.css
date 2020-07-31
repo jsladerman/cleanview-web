@@ -23,7 +23,7 @@
     font-weight: bold;
 }
 
-#filterCharts{
+.filterCharts{
     background-color: #E5E5E5;
     margin-top: 20px;
     border-radius: 6px;
@@ -64,5 +64,10 @@
 
 .filteredOverviewSubheader{
     text-align: center;
+    font-size: 16px;
+}
+
+.filterHeader{
+    font-weight: bold;
     font-size: 16px;
 }

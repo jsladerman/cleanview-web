@@ -7,7 +7,6 @@ class SurveyResponseFrequencyChart extends Component {
   constructor(props) {
     super(props);
     this.createChart = this.createChart.bind(this);
-    console.log("hey")
   }
 
   componentDidMount() {

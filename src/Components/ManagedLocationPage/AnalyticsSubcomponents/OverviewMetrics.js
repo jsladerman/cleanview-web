@@ -229,7 +229,6 @@ class OverviewMetrics extends Component {
             dataByDay[day].push(obj);
         }
 
-        console.log(dataByDay);
         return dataByDay;
     }
 
@@ -298,8 +297,6 @@ class OverviewMetrics extends Component {
                 }
             }
         }
-
-        console.log(shiftAverages);
 
         let result = {
             bestShift: shiftAverages[maxIndex],

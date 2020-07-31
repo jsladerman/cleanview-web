@@ -5,6 +5,7 @@ import FilteredDataToRatingBarChart from './FilteredDataToCharts/FilteredDataToR
 import FilteredDataToFrequencyChart from './FilteredDataToCharts/FilteredDataToFrequencyChart';
 import OverviewMetrics from './AnalyticsSubcomponents/OverviewMetrics';
 import styles from './css/AnalyticsDashboard.module.css';
+import { Formik, Form, Field } from 'formik';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Auth from '@aws-amplify/auth';
@@ -15,34 +16,31 @@ class AnalyticsDashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // Filtering survey response data
-            restaurantSurveyResponses: [],
+            // All survey responses
+            allResponses: [],
+
+            // Filtering data for charts in "Survey Responses" section
             filteredData: [],
             ageExcludeFilter: [],
             touristExcludeFilter: [],
             weekdayExcludeFilter: [],
             hourExcludeFilter: [],
-            timeExcludeFilter: [],
+            dayRange: -1,   // dayRange < 1 = all-time data
 
-            // Filtering demographic charts
+            // Filtering data for charts in "Customer Demographic" section
             filteredDataForDemographicCharts: [],
-            timeExcludeFilterForDemographicCharts: [],
+            dayRangeForDemographicCharts: -1, // dayRange < 1 = all-time data
 
             rerenderCharts: false,
-            // QR filter
-            // Timestamp filter- default is 0 hours = all data, else show from the past "x" hours
         }
     }
 
     componentDidMount = () => {
         this.pullData();
-        let currState = this.state;
-        currState.filteredData = this.state.restaurantSurveyResponses;
-        this.setState(currState);
     }
 
     render() {
-        if (this.state.restaurantSurveyResponses.length === 0) {
+        if (this.state.allResponses.length === 0) {
             return (
                 <h2 className={styles.analDash} id={styles.analyticsHeader}>Not enough data to generate analytics.</h2>
             )
@@ -52,9 +50,24 @@ class AnalyticsDashboard extends Component {
                 <h2 id={styles.analyticsHeader}>Analytics Dashboard</h2>
 
                 <h4 className={styles.analyticsDashboardSubheader}>Overview</h4>
-                <OverviewMetrics allData={this.state.restaurantSurveyResponses}/> <br />
+                <OverviewMetrics allData={this.state.allResponses} /> <br />
 
                 <h4 className={styles.analyticsDashboardSubheader}>Customer Demographic Information</h4>
+                <div className={styles.filterCharts}>
+                    <p className={styles.analyticsDashboardSubheader2}>Filter by Date Range</p>
+                    <Formik validate={(values) => this.filterDayRangeDemographicCharts(values.choice)}
+                        initialValues={{ choice: this.state.dayRangeForDemographicCharts }}>
+                        <Form>
+                            <Field as='select' name='choice' >
+                                <option value={-1}>All-time</option>
+                                <option value={1}>Last 24 hours</option>
+                                <option value={7}>Last week</option>
+                                <option value={30}>Last month</option>
+                            </Field>
+                        </Form>
+                    </Formik>
+                    <p>Number of responses: {this.state.filteredDataForDemographicCharts.length}</p>
+                </div>
                 {this.renderDemographicCharts()} <br />
 
                 <h4 className={styles.analyticsDashboardSubheader}>Survey Responses</h4>
@@ -81,11 +94,10 @@ class AnalyticsDashboard extends Component {
     /************************************************************************************************/
     renderFilteringWidget = () => {
         return (
-            <div id={styles.filterCharts}>
+            <div className={styles.filterCharts}>
                 <p className={styles.analyticsDashboardSubheader2}>Filter Data</p>
-                <p>Filter the statistics and charts below by age, customer locale, shift, day, QR code </p>
-                
-                <Row><Col>Age groups</Col></Row>
+
+                <Row><Col className={styles.filterHeader}>Age groups</Col></Row>
 
                 {/* Filter data by age group */}
                 <Row>
@@ -99,7 +111,7 @@ class AnalyticsDashboard extends Component {
                 </Row> <br />
 
                 {/* Filter data by customer locale */}
-                <Row><Col>Customer locality</Col></Row>
+                <Row><Col className={styles.filterHeader}>Customer locality</Col></Row>
                 <Row>
                     {this.renderSingleCheckbox("localCheck", "Local customers", this.state.touristExcludeFilter, '0')}
                     {this.renderSingleCheckbox("touristCheckbox", "Non-local customers", this.state.touristExcludeFilter, '1')}
@@ -111,7 +123,7 @@ class AnalyticsDashboard extends Component {
                 </Row> <br />
 
                 {/* Filter data by weekday */}
-                <Row><Col>Weekdays</Col></Row>
+                <Row><Col className={styles.filterHeader}>Weekdays</Col></Row>
                 <Row>
                     {this.renderSingleCheckbox("sundayCheck", "Sunday", this.state.weekdayExcludeFilter, 'Sun')}
                     {this.renderSingleCheckbox("mondayCheck", "Monday", this.state.weekdayExcludeFilter, 'Mon')}
@@ -123,7 +135,7 @@ class AnalyticsDashboard extends Component {
                 </Row> <br />
 
                 {/* Filter data by hour */}
-                <Row><Col>Hours</Col></Row>
+                <Row><Col className={styles.filterHeader}>Hours</Col></Row>
                 <Row>
                     {this.renderSingleCheckbox("a0", "12 am", this.state.hourExcludeFilter, 0)}
                     {this.renderSingleCheckbox("a1", "1 am", this.state.hourExcludeFilter, 1)}
@@ -153,19 +165,31 @@ class AnalyticsDashboard extends Component {
                     {this.renderSingleCheckbox("a23", "11 pm", this.state.hourExcludeFilter, 23)}
                 </Row>
 
+                <Row><Col className={styles.filterHeader}>Date range</Col></Row>
+                <Formik validate={(values) => this.filterDayRange(values.choice)}
+                    initialValues={{ choice: this.state.dayRange }}>
+                    <Form>
+                        <Field as='select' name='choice' >
+                            <option value={-1}>All-time</option>
+                            <option value={1}>Last 24 hours</option>
+                            <option value={7}>Last week</option>
+                            <option value={30}>Last month</option>
+                        </Field>
+                    </Form>
+                </Formik>
             </div>
         )
     }
 
     // Returns a checkbox wrapped in a Col that, when toggled, adds a filter to one of the filterArrays in state
     renderSingleCheckbox = (elementName, labelText, filterArray, filterValue) => {
-        return(
+        return (
             <Col>
-                <input 
+                <input
                     className={styles.check}
                     type="checkbox"
                     name={elementName}
-                    onClick={() => this.addSingleFilter(filterArray, filterValue)} defaultChecked/>
+                    onClick={() => this.addSingleFilter(filterArray, filterValue)} defaultChecked />
                 <label for={elementName}>
                     {labelText}
                 </label>
@@ -183,13 +207,13 @@ class AnalyticsDashboard extends Component {
                 <Row className={styles.rowDivider}>
                     <Col>
                         <FilteredDataToAgeBarChart
-                            filteredData={this.state.restaurantSurveyResponses}
+                            filteredData={this.state.filteredDataForDemographicCharts}
                         />
                     </Col>
 
                     <Col>
                         <FilteredDataToPieChart
-                            filteredData={this.state.restaurantSurveyResponses}
+                            filteredData={this.state.filteredDataForDemographicCharts}
                             keyString='touristDiner'
                             titleText='Customer Locality'
                             yesLabel="live within 15 miles of the restaurant"
@@ -265,26 +289,24 @@ class AnalyticsDashboard extends Component {
     }
 
     /************************************************************************************************/
-    /*                                    Functions for filtering                                   */
+    /*                  Functions for filtering charts in "Survey Responses" section                */
     /************************************************************************************************/
 
     filterData = async () => {
         this.setState({ rerenderCharts: true });
-        let newFilteredData = await this.state.restaurantSurveyResponses.filter(response =>
+        let newFilteredData = await this.state.allResponses.filter(response =>
             (!this.state.touristExcludeFilter.includes(response['touristDiner'])
                 && !this.state.ageExcludeFilter.includes(response['age'])
                 && !this.state.hourExcludeFilter.includes(parseFloat(response['timestamp'].slice(12, 14)))
                 && !this.state.weekdayExcludeFilter.includes(response['weekday'])
+                && (this.state.dayRange < 1 || this.daysFromToday(response['timestamp']) <= this.state.dayRange)
             )
-        );
+        )
         this.setState({ filteredData: newFilteredData });
         this.setState({ rerenderCharts: false });
     }
 
     addSingleFilter = (array, item) => {
-        console.log(array);
-        console.log(item);
-
         let newArray = array;
         if (newArray.includes(item)) {
             var index = newArray.indexOf(item);
@@ -295,7 +317,40 @@ class AnalyticsDashboard extends Component {
 
         this.setState({ array: newArray });
         this.filterData();
-        console.log(array);
+    }
+
+    filterDayRange = async (newDayRange) => {
+        await this.setState({ dayRange: newDayRange });
+        await this.filterData();
+    }
+
+    /************************************************************************************************/
+    /*                           Functions for filtering demographic charts                         */
+    /************************************************************************************************/
+    filterDemographicData = async () => {
+        this.setState({ rerenderCharts: true });
+        let newFilteredData = await this.state.allResponses.filter(response =>
+            (this.state.dayRangeForDemographicCharts < 1
+                || this.daysFromToday(response['timestamp']) <= this.state.dayRangeForDemographicCharts)
+        );
+        this.setState({ filteredDataForDemographicCharts: newFilteredData });
+        this.setState({ rerenderCharts: false });
+    }
+
+    filterDayRangeDemographicCharts = async (newDayRange) => {
+        await this.setState({ dayRangeForDemographicCharts: newDayRange });
+        await this.filterDemographicData();
+    }
+
+    /************************************************************************************************/
+    /*                             Functions for calculating time window                            */
+    /************************************************************************************************/
+    daysFromToday = (dateString) => {
+        let currDate = Date.now();
+        let dateFromString = new Date(dateString);
+        const millisecondsPerDay = 1000 * 60 * 60 * 24;
+        let millisecondsApart = Math.abs(currDate - dateFromString);
+        return millisecondsApart / millisecondsPerDay;
     }
 
     /************************************************************************************************/
@@ -329,10 +384,10 @@ class AnalyticsDashboard extends Component {
         API.get(apiName, path, myParams)
             .then(response => {
                 let currState = this.state;
-                currState.restaurantSurveyResponses = response['data'];
+                currState.allResponses = response['data'];
                 currState.filteredData = response['data'];
+                currState.filteredDataForDemographicCharts = response['data'];
                 this.setState(currState);
-                console.log(this.state.restaurantSurveyResponses);
             })
             .catch(error => {
                 console.log('Error: ' + error);
