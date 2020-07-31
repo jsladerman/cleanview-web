@@ -269,12 +269,16 @@ class AddLocation extends Component {
     uploadFile = async (e) => {
         // TODO: show loading when waiting for image to upload
         const file = e.target.files[0];
+        
+        let dotExt = '.jpg'
+        if(file) {
+          const name = e.target.files[0].name ?? '';
+          const lastDot = name.lastIndexOf('.');
+          dotExt = name.substring(lastDot);
+        }
 
-        const name = e.target.files[0].name;
-        const lastDot = name.lastIndexOf('.');
-        const dotExt = name.substring(lastDot);
-
-        const filename = "profile_picture_" + this.state.id + dotExt
+        const filename = "profile_picture_" + this.state.id + '_' + Math.floor(100000 + Math.random() * 900000) + dotExt
+        const loadingUrl = require('../../images/dashboardLoader.svg')
 
         this.setState({imageLoading: true})
 
@@ -284,25 +288,30 @@ class AddLocation extends Component {
             contentType: 'image/' + dotExt.substring(1)
         })
             .then(result => {
-                console.log(result)
-                Storage.get(filename)
-                    .then(resultURL => {
-                        console.log(resultURL)
-                        const idx = resultURL.indexOf(filename)
-                        const url = resultURL.substring(0, idx) + '' + filename
-                        this.setState({imageLoading: false, imageUrl: url});
-                    })
+                console.log('yoooo')
+                this.setState({imageUrl: loadingUrl})
             })
             .catch(err => console.log('Upload error: ' + err))
+ 
+        await Storage.get(filename)
+            .then(resultURL => {
+                console.log(resultURL)
+                const idx = resultURL.indexOf(filename)
+                const url = resultURL.substring(0, idx) + '' + filename
+                this.setState({imageUrl: url});
+            })
+
+        this.setState({imageLoading: false})
+
     }
 
     preventNonNums = (e) => {
-        const code = e.keyCode;
-        if (code === 69 ||
-            code === 187 ||
-            code === 189 ||
-            code === 190)
-            e.preventDefault();
+      const code = e.keyCode;
+      if (code === 69 ||
+          code === 187 ||
+          code === 189 ||
+          code === 190)
+          e.preventDefault();
     }
 
     renderStateDropdown = () => {
