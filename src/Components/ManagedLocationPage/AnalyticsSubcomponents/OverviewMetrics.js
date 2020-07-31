@@ -27,50 +27,61 @@ class OverviewMetrics extends Component {
 
         return (
             <div>
-                <div className={styles.subheader}>Average Customer Satisfaction</div>
-                <div className={styles.ratingOverview}>
+                <Container>
                     <Row>
-                        <Col></Col>
-                        <Col className={styles.ratingHeader}>Average Response</Col>
-                        <Col className={styles.ratingHeader}># of Responses</Col>
-                    </Row>
-                    <Row>
-                        <Col>Last 24 hours</Col>
-                        <Col className={styles.cell1}>{dayAverage.average}</Col>
-                        <Col className={styles.cell1}>{dayAverage.numResponses}</Col>
-                    </Row>
-                    <Row>
-                        <Col>Last week</Col>
-                        <Col className={styles.cell2}>{weekAverage.average}</Col>
-                        <Col className={styles.cell2}>{weekAverage.numResponses}</Col>
-                    </Row>
-                    <Row>
-                        <Col>Last month</Col>
-                        <Col className={styles.cell3}>{monthAverage.average}</Col>
-                        <Col className={styles.cell3}>{monthAverage.numResponses}</Col>
-                    </Row>
-                </div>
+                        {/* Average Customer Satisfaction */}
+                        <div className="col-md-5" style={{paddingLeft: '5px'}}>
+                            <div className={styles.subheader}>Average Customer Satisfaction</div>
+                            <div className={styles.ratingOverview}>
+                                <Container>
+                                    <Row>
+                                        <div className="col-md-3"></div>
+                                        <Col className={styles.ratingHeader}>Average <br /> Response</Col>
+                                        <Col className={styles.ratingHeader}>Number of <br /> Responses</Col>
+                                    </Row>
+                                    <Row>
+                                        <div className="col-md-3"><br />24 hours</div>
+                                        <Col className={styles.cell1} >{dayAverage.average}</Col>
+                                        <Col className={styles.cell1}>{dayAverage.numResponses}</Col>
+                                    </Row>
+                                    <Row>
+                                        <div className="col-md-3"><br />Week</div>
+                                        <Col className={styles.cell2}>{weekAverage.average}</Col>
+                                        <Col className={styles.cell2}>{weekAverage.numResponses}</Col>
+                                    </Row>
+                                    <Row>
+                                        <div className="col-md-3"><br />Month</div>
+                                        <Col className={styles.cell3}>{monthAverage.average}</Col>
+                                        <Col className={styles.cell3}>{monthAverage.numResponses}</Col>
+                                    </Row>
+                                </Container>
+                            </div>
+                        </div>
 
-                <div className={styles.subheader}>Strengths and Weaknesses</div>
-                <Container fluid>
-                    <div className={styles.subSubheader}>By Age</div>
-                    <li className="text-wrap">
-                        Age group <span className={styles.emphasis}>{bestAgeGroup}</span> has the highest average satisfaction at <span className={styles.emphasis}>{bestAgeGroupRating}</span>
-                    </li>
-                    <li className="text-wrap">
-                        Age group <span className={styles.emphasisBad}>{worstAgeGroup}</span> has the lowest average satisfaction at <span className={styles.emphasisBad}>{worstAgeGroupRating}</span>
-                    </li>
+                        {/* Strengths and Weaknesses */}
+                        <Col>
+                            <div className={styles.subheader}>Strengths and Weaknesses</div>
+                            <Container fluid>
+                                <div className={styles.subSubheader}>By Age</div>
+                                <li className="text-wrap">
+                                    Age group <span className={styles.emphasis}>{bestAgeGroup}</span> has the highest average satisfaction at <span className={styles.emphasis}>{bestAgeGroupRating}</span>
+                                </li>
+                                <li className="text-wrap">
+                                    Age group <span className={styles.emphasisBad}>{worstAgeGroup}</span> has the lowest average satisfaction at <span className={styles.emphasisBad}>{worstAgeGroupRating}</span>
+                                </li>
 
-                    <br />
-                    <div className={styles.subSubheader}>By Shift</div>
-                    <li className="text-wrap">
-                        Shift <span className={styles.emphasis}>{maxShift}</span> has the highest average satisfaction at <span className={styles.emphasis}>{maxShiftRating}</span>
-                    </li>
-                    <li className="text-wrap">
-                        Shift <span className={styles.emphasisBad}>{minShift}</span> has the lowest average satisfaction at <span className={styles.emphasisBad}>{minShiftRating}</span>
-                    </li>
+                                <br />
+                                <div className={styles.subSubheader}>By Shift</div>
+                                <li className="text-wrap">
+                                    Shift <span className={styles.emphasis}>{maxShift}</span> has the highest average satisfaction at <span className={styles.emphasis}>{maxShiftRating}</span>
+                                </li>
+                                <li className="text-wrap">
+                                    Shift <span className={styles.emphasisBad}>{minShift}</span> has the lowest average satisfaction at <span className={styles.emphasisBad}>{minShiftRating}</span>
+                                </li>
+                            </Container>
+                        </Col>
+                    </Row>
                 </Container>
-
             </div>
         )
     }
@@ -195,7 +206,7 @@ class OverviewMetrics extends Component {
 
                 if (average >= ageGroupData[maxIndex].average) {
                     maxIndex = j;
-                } 
+                }
                 if (ageGroupData[minIndex].average === -1 || average <= ageGroupData[minIndex].average) {
                     minIndex = j;
                 }
@@ -291,7 +302,7 @@ class OverviewMetrics extends Component {
 
                 if (average >= shiftAverages[maxIndex].average) {
                     maxIndex = j;
-                } 
+                }
                 if (shiftAverages[minIndex].average === -1 || average <= shiftAverages[minIndex].average) {
                     minIndex = j;
                 }
@@ -344,7 +355,7 @@ class OverviewMetrics extends Component {
 
         let keys = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
         let dataByWeekday = this.partitionDataByWeekday();
-        for(var i = 0; i < keys.length; i++){
+        for (var i = 0; i < keys.length; i++) {
             let key = keys[i];
             let dayMaxAndMin = this.getDayMaxAndMin(dataByWeekday[key]);
             let dayMaxRating = dayMaxAndMin.bestShift.average;
@@ -352,17 +363,17 @@ class OverviewMetrics extends Component {
             let dayMinRating = dayMaxAndMin.worstShift.average;
             let dayMinShift = key + ", " + dayMaxAndMin.worstShift.shift;
 
-            if(dayMaxRating > maxRating){
+            if (dayMaxRating > maxRating) {
                 maxRating = dayMaxRating;
                 maxShift = dayMaxShift;
             }
-            if(dayMinRating < minRating || minRating === -1){
+            if (dayMinRating < minRating || minRating === -1) {
                 minRating = dayMinRating;
                 minShift = dayMinShift;
             }
         }
 
-        if(minRating === -1){
+        if (minRating === -1) {
             minRating = maxRating;
             minShift = maxShift;
         }
