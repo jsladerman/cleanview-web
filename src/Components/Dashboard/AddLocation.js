@@ -269,7 +269,7 @@ class AddLocation extends Component {
     uploadFile = async (e) => {
         // TODO: show loading when waiting for image to upload
         const file = e.target.files[0];
-        
+
         let dotExt = '.jpg'
         if(file) {
           const name = e.target.files[0].name ?? '';
@@ -288,11 +288,10 @@ class AddLocation extends Component {
             contentType: 'image/' + dotExt.substring(1)
         })
             .then(result => {
-                console.log('yoooo')
                 this.setState({imageUrl: loadingUrl})
             })
             .catch(err => console.log('Upload error: ' + err))
- 
+
         await Storage.get(filename)
             .then(resultURL => {
                 console.log(resultURL)

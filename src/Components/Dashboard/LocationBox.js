@@ -69,6 +69,7 @@ const cardStyle = {
     width: '250px',
     height: 'auto',
     borderRadius: '8px',
+    borderWidth: '0',
     flexShrink: '0',
 }
 
