@@ -32,6 +32,7 @@ class AnalyticsDashboard extends Component {
             dayRangeForDemographicCharts: -1, // dayRange < 1 = all-time data
 
             rerenderCharts: false,
+            retrievedData: false,
         }
     }
 
@@ -41,8 +42,13 @@ class AnalyticsDashboard extends Component {
 
     render() {
         if (this.state.allResponses.length === 0) {
+            if(this.state.retrievedData){
+                return(
+                    <h2 className={styles.analDash} id={styles.analyticsHeader}>Not enough data to generate analytics.</h2>
+                )
+            }
             return (
-                <h2 className={styles.analDash} id={styles.analyticsHeader}>Not enough data to generate analytics.</h2>
+                <div>LOADING</div>
             )
         }
         return (
@@ -53,36 +59,12 @@ class AnalyticsDashboard extends Component {
                 <OverviewMetrics allData={this.state.allResponses} /> <br />
 
                 <h4 className={styles.analyticsDashboardSubheader}>Customer Demographic Information</h4>
-                <div className={styles.filterCharts}>
-                    <p className={styles.analyticsDashboardSubheader2}>Filter by Date Range</p>
-                    <Formik validate={(values) => this.filterDayRangeDemographicCharts(values.choice)}
-                        initialValues={{ choice: this.state.dayRangeForDemographicCharts }}>
-                        <Form>
-                            <Field as='select' name='choice' >
-                                <option value={-1}>All-time</option>
-                                <option value={1}>Last 24 hours</option>
-                                <option value={7}>Last week</option>
-                                <option value={30}>Last month</option>
-                            </Field>
-                        </Form>
-                    </Formik>
-                    <p>Number of responses: {this.state.filteredDataForDemographicCharts.length}</p>
-                </div>
+                {this.renderFilteringWidgetForDemographicCharts()}
                 {this.renderDemographicCharts()} <br />
 
                 <h4 className={styles.analyticsDashboardSubheader}>Survey Responses</h4>
                 {this.renderFilteringWidget()} <br />
-                <div className={styles.filteredOverview}>
-                    <h6 className={styles.filteredOverviewTitle}>Average Customer Satisfaction</h6>
-                    <Row>
-                        <Col className={styles.filteredOverviewSubheader}>Average Response</Col>
-                        <Col className={styles.filteredOverviewSubheader}># of Responses</Col>
-                    </Row>
-                    <Row>
-                        <Col className={styles.cell}>{this.averageRating(this.state.filteredData)} / 5</Col>
-                        <Col className={styles.cell}>{this.state.filteredData.length}</Col>
-                    </Row>
-                </div>
+                {this.renderFilteredOverview()}
                 {this.renderFilteringCharts()}
 
             </div>
@@ -195,6 +177,42 @@ class AnalyticsDashboard extends Component {
                 </label>
             </Col>
         )
+    }
+
+    renderFilteringWidgetForDemographicCharts = () => {
+        return(
+            <div className={styles.filterCharts}>
+                    <p className={styles.analyticsDashboardSubheader2}>Filter by Date Range</p>
+                    <Formik validate={(values) => this.filterDayRangeDemographicCharts(values.choice)}
+                        initialValues={{ choice: this.state.dayRangeForDemographicCharts }}>
+                        <Form>
+                            <Field as='select' name='choice' >
+                                <option value={-1}>All-time</option>
+                                <option value={1}>Last 24 hours</option>
+                                <option value={7}>Last week</option>
+                                <option value={30}>Last month</option>
+                            </Field>
+                        </Form>
+                    </Formik>
+                    <p>Number of responses: {this.state.filteredDataForDemographicCharts.length}</p>
+                </div>
+        )
+    }
+
+    renderFilteredOverview = () => {
+        return(
+        <div className={styles.filteredOverview}>
+                    <h6 className={styles.filteredOverviewTitle}>Average Customer Satisfaction</h6>
+                    <Row>
+                        <Col className={styles.filteredOverviewSubheader}>Average Response</Col>
+                        <Col className={styles.filteredOverviewSubheader}># of Responses</Col>
+                    </Row>
+                    <Row>
+                        <Col className={styles.cell}>{this.averageRating(this.state.filteredData)} / 5</Col>
+                        <Col className={styles.cell}>{this.state.filteredData.length}</Col>
+                    </Row>
+                </div>
+        );
     }
 
     /************************************************************************************************/
@@ -387,6 +405,7 @@ class AnalyticsDashboard extends Component {
                 currState.allResponses = response['data'];
                 currState.filteredData = response['data'];
                 currState.filteredDataForDemographicCharts = response['data'];
+                currState.retrievedData = true;
                 this.setState(currState);
             })
             .catch(error => {
