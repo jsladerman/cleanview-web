@@ -13,12 +13,12 @@ class AddLocation extends Component {
         this.state = {
             imageUrl: 'https://p.bigstockphoto.com/GeFvQkBbSLaMdpKXF1Zv_bigstock-Aerial-View-Of-Blue-Lakes-And--227291596.jpg',
             id: uuid(),
-            imageLoading: false
+            imageLoading: false,
+            noOutdoorSeating: true
         };
     }
 
     render() {
-        // TODO: add inside and outside capcity
         return (
             <div className={styles.addLocation}>
                 <div className={styles.addLocationHeader}>
@@ -41,8 +41,8 @@ class AddLocation extends Component {
                         employeeTemp: '',
                         socialDistance: '',
                         outsideSeating: '',
-                        sanitize: '',
-                        sanitize2: '',
+                        indoorCapacity: '',
+                        outdoorCapacity: '',
                         id: this.state.id
                     }}
                     onSubmit={this.makeLocation}>
@@ -84,7 +84,7 @@ class AddLocation extends Component {
                             <div className={styles.formCol}>
                                 <input type='file' accept="image/*" style={{display: 'none'}}
                                        ref={(ref) => this.upload = ref}
-                                       onChange={ (evt) => this.uploadFile(evt)}
+                                       onChange={(evt) => this.uploadFile(evt)}
                                 />
                                 <img
                                     src={require('../../images/addLocationCamera.svg')}
@@ -124,7 +124,7 @@ class AddLocation extends Component {
                                         </div>
                                         <div>
                                             <div className={styles.formRadioQuestion}>
-                                               Do you take the temperature of your employees every day?
+                                                Do you take the temperature of your employees every day?
                                             </div>
                                             <label className={styles.customRadioBtnContainer}>
                                                 <Field type='radio' name='employeeTemp' value='y'/>
@@ -157,12 +157,18 @@ class AddLocation extends Component {
                                                 Do you have outside seating?
                                             </div>
                                             <label className={styles.customRadioBtnContainer}>
-                                                <Field type='radio' name='outsideSeating' value='y'/>
+                                                <Field type='radio' name='outsideSeating' value='y'
+                                                       onClick={
+                                                           () => this.setState({noOutdoorSeating: false})
+                                                       }/>
                                                 <div className={styles.formRadioBtn}/>
                                             </label>
                                             <label className={styles.formRadioLabel}>Yes</label>
                                             <label className={styles.customRadioBtnContainer}>
-                                                <Field type='radio' name='outsideSeating' value='n'/>
+                                                <Field type='radio' name='outsideSeating' value='n'
+                                                       onClick={
+                                                           () => this.setState({noOutdoorSeating: true})
+                                                       }/>
                                                 <div className={styles.formRadioBtn}/>
                                             </label>
                                             <label className={styles.formRadioLabel}>No</label> <br/><br/>
@@ -184,24 +190,26 @@ class AddLocation extends Component {
                                             </label>
                                             <label className={styles.formRadioLabel}>No</label> <br/><br/>
                                             <div className={styles.formRadioQuestion}>
-                                                Do you sanitize tables after every meal?
+                                                Capacity:
                                             </div>
-                                            <label className={styles.customRadioBtnContainer}>
-                                                <Field type='radio' name='sanitize2' value='y'/>
-                                                <div className={styles.formRadioBtn}/>
-                                            </label>
-                                            <label className={styles.formRadioLabel}>Yes</label>
-                                            <label className={styles.customRadioBtnContainer}>
-                                                <Field type='radio' name='sanitize2' value='n'/>
-                                                <div className={styles.formRadioBtn}/>
-                                            </label>
-                                            <label className={styles.formRadioLabel}>No</label> <br/><br/>
+                                            <br/>
+                                            <div style={{float: 'left', marginLeft: '8px', marginRight: '16px'}}>
+                                                <Field className={styles.formNum}
+                                                       type='number' name='outdoorCapacity' min={0}
+                                                       disabled={this.state.noOutdoorSeating}
+                                                       onKeyDown={this.preventNonNums}/>
+                                                <div className={styles.formCapacityLabel}>Outdoor</div>
+                                            </div>
+                                            <Field className={styles.formNum}
+                                                   type='number' name='indoorCapacity' min={0}
+                                                   onKeyDown={this.preventNonNums}/>
+                                            <div className={styles.formCapacityLabel}>Indoor</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <Button className={styles.addButton} type='submit'>
+                        <Button className={styles.addButton} disabled={this.state.imageLoading} type='submit'>
                             Add
                         </Button>
                     </Form>
@@ -236,10 +244,9 @@ class AddLocation extends Component {
                     socialDistancing: values.socialDistance,
                     outsideSeating: values.outsideSeating,
                     employeeTemp: values.employeeTemp,
-                    outsideSeating: values.outsideSeating,
                     sanitizeTables: values.sanitize,
-                    insideCapacity: values.sanitize2, // TODO: question 6
-                    outsideCapactiy: values.sanitize2
+                    indoorCapacity: values.indoorCapacity,
+                    outdoorCapacity: this.state.noOutdoorSeating ? '' : values.outdoorCapacity
                 },
                 is_confirmed: 0,
             },
@@ -247,9 +254,8 @@ class AddLocation extends Component {
         };
 
 
-
         console.log(requestData)
-        
+
         API.post(apiName, path, requestData)
             .then(response => {
                 console.log('Location Add Successful: ' + response);
@@ -262,9 +268,8 @@ class AddLocation extends Component {
 
     uploadFile = async (e) => {
         // TODO: show loading when waiting for image to upload
-        // TODO: disable submit while it's loading
         const file = e.target.files[0];
-        
+
         const name = e.target.files[0].name;
         const lastDot = name.lastIndexOf('.');
         const dotExt = name.substring(lastDot);
@@ -273,26 +278,31 @@ class AddLocation extends Component {
 
         this.setState({imageLoading: true})
 
-        await Storage.put( filename, file, {
+        await Storage.put(filename, file, {
             level: 'public',
             contentDisposition: 'inline; filename="' + filename + '"',
             contentType: 'image/' + dotExt.substring(1)
         })
             .then(result => {
                 console.log(result)
+                Storage.get(filename)
+                    .then(resultURL => {
+                        console.log(resultURL)
+                        const idx = resultURL.indexOf(filename)
+                        const url = resultURL.substring(0, idx) + '' + filename
+                        this.setState({imageLoading: false, imageUrl: url});
+                    })
             })
             .catch(err => console.log('Upload error: ' + err))
+    }
 
-        Storage.get(filename)
-            .then(resultURL => {
-                console.log(resultURL)
-                const idx = resultURL.indexOf(filename)
-                const url = resultURL.substring(0, idx) + '' + filename
-                this.setState({imageUrl: url});
-            })
-
-        this.setState({imageLoading: false})
-
+    preventNonNums = (e) => {
+        const code = e.keyCode;
+        if (code === 69 ||
+            code === 187 ||
+            code === 189 ||
+            code === 190)
+            e.preventDefault();
     }
 
     renderStateDropdown = () => {
