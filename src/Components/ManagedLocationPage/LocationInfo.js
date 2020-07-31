@@ -1,6 +1,9 @@
 import React, { Component } from "react";
+import EditLocationInfo from "./EditLocationInfo"
 import styles from "./css/LocationInfo.module.css";
 import Container from "react-bootstrap/Container";
+import Modal from "@trendmicro/react-modal";
+import ClickableOverlay from "../Custom/ClickableOverlay";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
@@ -10,8 +13,16 @@ class LocationInfo extends Component {
     super(props);
     this.state = {
       data: this.props.data,
+      showModal: false,
     };
+    console.log(this.state.data)
   }
+
+  toggleModal = () => {
+    this.setState({
+        showModal: !this.state.showModal
+    });
+  };
 
   render() {
     const businessType = this.formatBusinessType();
@@ -55,7 +66,7 @@ class LocationInfo extends Component {
         ),
         titleStyleClass: styles.covidResponseFieldTitle,
         dataStyleClass: styles.covidResponseFieldData,
-      }
+      },
     ];
 
     const covidResponseFieldDataCol2 = [
@@ -89,16 +100,15 @@ class LocationInfo extends Component {
         field.dataStyleClass
       )
     );
-    
-    const covidResponseFieldsCol2 = covidResponseFieldDataCol2.map((field) =>
-    this.covidResponseField(
-      field.text,
-      field.value,
-      field.titleStyleClass,
-      field.dataStyleClass
-    )
-  );
 
+    const covidResponseFieldsCol2 = covidResponseFieldDataCol2.map((field) =>
+      this.covidResponseField(
+        field.text,
+        field.value,
+        field.titleStyleClass,
+        field.dataStyleClass
+      )
+    );
 
     const businessInformation = (
       <div className={styles.locationInfoFields}>
@@ -118,10 +128,10 @@ class LocationInfo extends Component {
                   Also format the text so the first letter of city is capital*/}
         <p>
           <span className={styles.locationInfoFieldName}>Address: </span>
-            {this.state.data.addrLine1}
-            {" " + this.state.data.addrLine2}
-            <br />
-            <span className={styles.addrBlock}>
+          {this.state.data.addrLine1}
+          {" " + this.state.data.addrLine2}
+          <br />
+          <span className={styles.addrBlock}>
             {this.state.data.addrCity}, {this.state.data.addrState},{" "}
             {this.state.data.addrZip}
           </span>
@@ -130,42 +140,52 @@ class LocationInfo extends Component {
     );
 
     return (
-      <div className={styles.locationInfoWrapper}>
-        <Container fluid>
-          <Row>
-            <Col>
-              <h2>{this.state.data.loc_name}</h2>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <Card.Img
-                variant="top"
-                style={{ borderRadius: "8px" }}
-                src={imgSrc}
-              />
-            </Col>
-            <Col className={styles.thirdColumn}>
-            {businessInformation}
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <h5 className={styles.covidResponseTitle}> Your self-reported COVID-19 health practices: </h5>
-            </Col>
-          </Row>
-          <Row className={styles.coividResponseRow}>
-            <Col md="auto">
-              {covidResponseFieldsCol1}
-            </Col>
-            <Col>
-              {covidResponseFieldsCol2}
-            </Col>
-            <Col>
-            {" "}
-            </Col>
-          </Row>
-        </Container>
+      <div>
+        <div
+          className={styles.editLocationButtonDiv}
+          onClick={this.toggleModal}
+        >
+            <button>edit</button>
+        </div>
+        <Modal  show={this.state.showModal}
+                onClose={this.toggleModal}
+                showCloseButton={true}
+                style={{borderRadius: '100px'}}
+        >
+          <EditLocationInfo data={this.state.data}/>
+        </Modal>
+        <div className={styles.locationInfoWrapper}>
+          <Container fluid>
+            <Row>
+              <Col>
+                <h2>{this.state.data.loc_name}</h2>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Card.Img
+                  variant="top"
+                  style={{ borderRadius: "8px" }}
+                  src={imgSrc}
+                />
+              </Col>
+              <Col className={styles.thirdColumn}>{businessInformation}</Col>
+            </Row>
+            <Row>
+              <Col>
+                <h5 className={styles.covidResponseTitle}>
+                  {" "}
+                  Your self-reported COVID-19 health practices:{" "}
+                </h5>
+              </Col>
+            </Row>
+            <Row className={styles.coividResponseRow}>
+              <Col md="auto">{covidResponseFieldsCol1}</Col>
+              <Col>{covidResponseFieldsCol2}</Col>
+              <Col> </Col>
+            </Row>
+          </Container>
+        </div>
       </div>
     );
   }
@@ -204,12 +224,12 @@ class LocationInfo extends Component {
   };
 
   formatPhone = (n) => {
-    const area = n.substring(0, 3)
-    const secondSet = n.substring(3, 6)
-    const thirdSet = n.substring(6)
-    const res = "(" + area + ") " + secondSet + "-" + thirdSet
+    const area = n.substring(0, 3);
+    const secondSet = n.substring(3, 6);
+    const thirdSet = n.substring(6);
+    const res = "(" + area + ") " + secondSet + "-" + thirdSet;
     return res;
-  }
+  };
 
   ynCharToString = (c) => {
     if (c === "y") {
