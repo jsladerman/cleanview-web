@@ -5,20 +5,16 @@
 .body {
     padding-top: 8px;
     -webkit-user-select: none;
-}
-
-.flexContainer {
-    display: flex;
-    justify-content: space-between;
+    font-family: Roboto, serif;
 }
 
 .locationText {
     font-weight: bold;
-    font-family: Tahoma, Geneva, sans-serif;
     font-size: 16px;
 }
 
 .regularText {
-    font-family: Tahoma, Geneva, sans-serif;
-    font-size: 12px;
+    display: flex;
+    margin-top: -3px;
+    font-size: 14px;
 }
