@@ -78,6 +78,7 @@ const cardStyle = {
     height: 'auto',
     borderRadius: '8px',
     flexShrink: '0',
+    borderWidth: '0px'
 }
 
 export default LocationBox;
