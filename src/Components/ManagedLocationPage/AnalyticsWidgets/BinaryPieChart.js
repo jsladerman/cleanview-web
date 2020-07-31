@@ -32,7 +32,7 @@ class BinaryPieChart extends Component {
     }
 
     function colorSelector(s) {
-      return s === "Yes" ? "#23C9AD" : "#333333";
+      return s === "Yes" ? "#30B3CA" : "#191A26";
     }
 
     const data_ready = pie(d3.entries(data));
