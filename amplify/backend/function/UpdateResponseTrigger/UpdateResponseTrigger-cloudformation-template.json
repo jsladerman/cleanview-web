@@ -45,12 +45,12 @@
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"UpdateRatingTrigger",
+						"UpdateResponseTrigger",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"UpdateRatingTrigger",
+									"UpdateResponseTrigger",
 									"-",
 									{
 										"Ref": "env"
@@ -86,8 +86,8 @@
 				"Layers": [],
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-cleanviewweb-dev-143211-deployment",
-					"S3Key": "amplify-builds/UpdateRating-336d54486c54597a4353-build.zip"
+					"S3Bucket": "amplify-cleanviewweb-develop-162445-deployment",
+					"S3Key": "amplify-builds/UpdateResponseTrigger-6c526b48645a7576342f-build.zip"
 				}
 			}
 		},
@@ -97,12 +97,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"cleanviewwebLambdaRole8f5c9566",
+						"cleanviewwebLambdaRoleacbfb998",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"cleanviewwebLambdaRole8f5c9566",
+									"cleanviewwebLambdaRoleacbfb998",
 									"-",
 									{
 										"Ref": "env"
@@ -191,6 +191,9 @@
 						{
 							"Effect": "Allow",
 							"Action": [
+								"dynamodb:Put*",
+								"dynamodb:Create*",
+								"dynamodb:BatchWriteItem",
 								"dynamodb:Get*",
 								"dynamodb:BatchGetItem",
 								"dynamodb:List*",

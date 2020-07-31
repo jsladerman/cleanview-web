@@ -137,6 +137,13 @@ app.post(path, function (req, res) {
     id: uuid(),
     color: '000000'
   }]
+  req.body["numResponses"] = 0
+  req.body["sumRating"] = 0
+  req.body["numSixFeetResponses"] = 0
+  req.body["numMasksResponses"] = 0
+  req.body["numAgeResponses"] = 0
+  req.body["numRatingResponses"] = 0
+  req.body["numTouristResponses"] = 0
 
   let putItemParams = {
     TableName: tableName,
