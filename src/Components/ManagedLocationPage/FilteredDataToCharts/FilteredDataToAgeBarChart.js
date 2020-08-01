@@ -6,7 +6,7 @@ class FilteredDataToAgeBarChart extends Component{
     generateTargetData = () => {
         const targetData = [
             {
-              value: "0-17",
+              value: "13-17",
               frequency: 0,
             },
             {
@@ -36,7 +36,7 @@ class FilteredDataToAgeBarChart extends Component{
         ];
 
         let ageIndices = {
-            "0-17": 0,
+            "13-17": 0,
             "18-25": 1,
             "26-35": 2,
             "36-45": 3,

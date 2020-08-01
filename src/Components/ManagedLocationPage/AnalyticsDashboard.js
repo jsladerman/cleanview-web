@@ -120,6 +120,7 @@ class AnalyticsDashboard extends Component {
                         <Col>
                             {/* AGE GROUP */}
                             <p className={styles.filteringCategories}>Age</p>
+                            {this.renderSingleCheckbox("input1", "13-17", this.state.ageExcludeFilter, '13-17')}
                             {this.renderSingleCheckbox("input1", "18-25", this.state.ageExcludeFilter, '18-25')}
                             {this.renderSingleCheckbox("input1", "26-35", this.state.ageExcludeFilter, '26-35')}
                             {this.renderSingleCheckbox("input1", "36-45", this.state.ageExcludeFilter, '36-45')}
