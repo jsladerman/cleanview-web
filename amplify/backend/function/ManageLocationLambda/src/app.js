@@ -133,7 +133,7 @@ app.post(path, function (req, res) {
   req.body["subscription_end_date"] = exprDate.toDateString()
   req.body["menu_link"] = ''
   req.body["sublocations"] = [{
-    name: 'Main',
+    name: 'main',
     id: uuid(),
     color: '000000'
   }]
