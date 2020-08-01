@@ -45,7 +45,7 @@ class FilteredDataToQRBarChart extends Component{
                     height={350}
                     bar_width={.9}
                     color='#30B3CA'
-                    bottomAxisText='Age Group'
+                    bottomAxisText='QR Code Name'
                     leftAxis={true}
                     data={targetData}
                 />
