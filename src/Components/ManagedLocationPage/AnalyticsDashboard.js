@@ -463,6 +463,7 @@ class AnalyticsDashboard extends Component {
                     && response['touristDiner'] != undefined
                 )
 
+                // TODO - remove all survey responses where age = '0-17' from the database
                 for(var i = 0; i < filteredResponses.length; i++){
                     if(filteredResponses[i].age === '0-17'){
                         filteredResponses[i].age = '13-17';
