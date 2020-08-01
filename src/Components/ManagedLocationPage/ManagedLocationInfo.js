@@ -38,10 +38,6 @@ class ManagedLocationInfo extends Component {
         if (this.state.data.length === 0) {
             return <h1>LOADING</h1>;
         }
-        console.log("THIS.STATE.DATA");
-        console.log(this.state.data);
-        console.log("THIS.STATE.DATA.SUBLOCATIONS");
-        console.log(this.state.data.sublocations);
         
         return (
             <div>

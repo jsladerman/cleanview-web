@@ -134,7 +134,7 @@ class OverviewMetrics extends Component {
 
         let ageGroupData = [
             {
-                ageGroup: '0-17',
+                ageGroup: '13-17',
                 totalRating: 0,
                 numResponses: 0,
                 average: -1,
@@ -178,7 +178,7 @@ class OverviewMetrics extends Component {
         ]
 
         let ageIndices = {
-            "0-17": 0,
+            "13-17": 0,
             "18-25": 1,
             "26-35": 2,
             "36-45": 3,
@@ -191,7 +191,8 @@ class OverviewMetrics extends Component {
             let obj = data[i];
             let age = obj['age'];
             let rating = parseFloat(obj['responseRating']);
-            if(age !== undefined){
+            
+            if(age !== undefined && ageIndices[age] !== undefined){
                 ageGroupData[ageIndices[age]].totalRating += rating;
                 ageGroupData[ageIndices[age]].numResponses++;
             }

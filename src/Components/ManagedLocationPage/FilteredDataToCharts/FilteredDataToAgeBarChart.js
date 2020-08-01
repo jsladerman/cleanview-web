@@ -6,7 +6,7 @@ class FilteredDataToAgeBarChart extends Component{
     generateTargetData = () => {
         const targetData = [
             {
-              value: "0-17",
+              value: "13-17",
               frequency: 0,
             },
             {
@@ -36,7 +36,7 @@ class FilteredDataToAgeBarChart extends Component{
         ];
 
         let ageIndices = {
-            "0-17": 0,
+            "13-17": 0,
             "18-25": 1,
             "26-35": 2,
             "36-45": 3,
@@ -46,16 +46,18 @@ class FilteredDataToAgeBarChart extends Component{
         }
 
         let ageCounts = [0, 0, 0, 0, 0, 0, 0];
-
+        let length = 0;
         for (var i = 0; i < this.props.filteredData.length; i++) {
             var obj = this.props.filteredData[i];
             var age = obj["age"]
-            var index = ageIndices[age];
-            ageCounts[index]++;
+            if(age !== undefined && ageIndices[age] !== undefined){
+                ageCounts[ageIndices[age]]++;
+                length++;
+            }
         }
 
         for(i = 0; i < ageCounts.length; i++){
-            targetData[i].frequency = (ageCounts[i] / this.props.filteredData.length);
+            targetData[i].frequency = (ageCounts[i] / length);
         }
 
         return targetData;
