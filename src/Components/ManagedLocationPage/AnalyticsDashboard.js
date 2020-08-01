@@ -86,16 +86,9 @@ class AnalyticsDashboard extends Component {
             <div className={styles.filterCharts}>
                 <p className={styles.analyticsDashboardSubheader2}>Filter Data</p>
                 <Container fluid className={styles.filteringOptions}>
-                    <Row className={styles.filteringCategories}>
-                        <Col>Date Range</Col>
-                        <Col>Age Group</Col>
-                        <Col>Weekdays</Col>
-                        <Col>QR Code</Col>
-                        <Col>Customer Locality</Col>
-                        <Col>Hours</Col>
-                    </Row>
                     <Row>
                         <Col>
+                            {/* DATE RANGES */}
                             <p className={styles.filteringCategories}>Date Range</p>
                             <Formik validate={(values) => this.filterDayRange(values.choice)}
                                 initialValues={{ choice: this.state.dayRange }}>
@@ -109,18 +102,8 @@ class AnalyticsDashboard extends Component {
                                 </Form>
                             </Formik>
 
-                        </Col>
-                        <Col>
-                            {/* AGE GROUP */}
-                            {this.renderSingleCheckbox("input1", "18-25", this.state.ageExcludeFilter, '18-25')}
-                            {this.renderSingleCheckbox("input1", "26-35", this.state.ageExcludeFilter, '26-35')}
-                            {this.renderSingleCheckbox("input1", "36-45", this.state.ageExcludeFilter, '36-45')}
-                            {this.renderSingleCheckbox("input1", "46-55", this.state.ageExcludeFilter, '46-55')}
-                            {this.renderSingleCheckbox("input1", "56-65", this.state.ageExcludeFilter, '56-65')}
-                            {this.renderSingleCheckbox("input1", "66+", this.state.ageExcludeFilter, '66+')}
-                        </Col>
-                        <Col>
                             {/* WEEKDAYS */}
+                            <p className={styles.filteringCategories}>Weekday</p>
                             {this.renderSingleCheckbox("sundayCheck", "Sunday", this.state.weekdayExcludeFilter, 'Sun')}
                             {this.renderSingleCheckbox("mondayCheck", "Monday", this.state.weekdayExcludeFilter, 'Mon')}
                             {this.renderSingleCheckbox("tuesdayCheck", "Tuesday", this.state.weekdayExcludeFilter, 'Tue')}
@@ -128,17 +111,29 @@ class AnalyticsDashboard extends Component {
                             {this.renderSingleCheckbox("thursdayCheck", "Thursday", this.state.weekdayExcludeFilter, 'Thu')}
                             {this.renderSingleCheckbox("fridayCheck", "Friday", this.state.weekdayExcludeFilter, 'Fri')}
                             {this.renderSingleCheckbox("saturdayCheck", "Saturday", this.state.weekdayExcludeFilter, 'Sat')}
-                        </Col>
-                        <Col>
-                            {this.renderQRCodeCheckboxes()}
-                        </Col>
-                        <Col>
+                        
                             {/* CUSTOMER LOCALITY */}
+                            <p className={styles.filteringCategories}>Customer Locality</p>
                             {this.renderSingleCheckbox("localCheck", "Local", this.state.touristExcludeFilter, '0')}
                             {this.renderSingleCheckbox("touristCheckbox", "Non-local", this.state.touristExcludeFilter, '1')}
                         </Col>
                         <Col>
+                            {/* AGE GROUP */}
+                            <p className={styles.filteringCategories}>Age</p>
+                            {this.renderSingleCheckbox("input1", "18-25", this.state.ageExcludeFilter, '18-25')}
+                            {this.renderSingleCheckbox("input1", "26-35", this.state.ageExcludeFilter, '26-35')}
+                            {this.renderSingleCheckbox("input1", "36-45", this.state.ageExcludeFilter, '36-45')}
+                            {this.renderSingleCheckbox("input1", "46-55", this.state.ageExcludeFilter, '46-55')}
+                            {this.renderSingleCheckbox("input1", "56-65", this.state.ageExcludeFilter, '56-65')}
+                            {this.renderSingleCheckbox("input1", "66+", this.state.ageExcludeFilter, '66+')}
+
+                            {/* QR CODE */}
+                            <p className={styles.filteringCategories}>QR Code</p>
+                            {this.renderQRCodeCheckboxes()}
+                        </Col>
+                        <Col>
                             {/* HOURS */}
+                            <p className={styles.filteringCategories}>Hours</p>
                             {this.renderHoursCheckboxes()}
                         </Col>
                     </Row>
@@ -301,7 +296,7 @@ class AnalyticsDashboard extends Component {
     renderFilteringCharts = () => {
         if (!this.state.rerenderCharts) {
             return (
-                <Container>
+                <div>
                     <Row><Col><h4>Charts</h4></Col></Row>
                     <Row className={styles.rowDivider}>
                         <Col>
@@ -338,7 +333,7 @@ class AnalyticsDashboard extends Component {
                             />
                         </Col>
                     </Row>
-                </Container>
+                </div>
             );
         }
         return (
