@@ -208,12 +208,52 @@ app.patch(path + '/sublocations', function(req, res) {
   dynamodb.update(params, function(err, data) {
     if (err) {
       res.statusCode = 500;
-      res.json({ error: err, url: req.url, body: req.body, url: req.body.menu_link});
+      res.json({ error: err, url: req.url, body: req.body});
     } else {
       res.json({ success: "patch call succeed!", url: req.url, data: data });
     }
   });
 });
+
+/************************************
+* HTTP patch to update location info *
+*************************************/
+
+app.patch(path + '/info', function(req, res) {
+  if (userIdPresent) {
+    req.body["userId"] =
+      req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
+  }
+
+  var params = {
+    TableName: tableName,
+    Key: { "id": req.body.id },
+    UpdateExpression: "set imageUrl = :IMG, loc_name = :LN, email = :EM, phone = :PH, loc_type = :LT, addrLine1 = :AL1, addrLine2 = :AL2, addrState = :AS, addrCity = :AC, addrZip = :AZ, covidResponseSurvey = :CRS",
+    ExpressionAttributeValues: {
+      ":IMG": req.body.imageUrl,
+      ":LN": req.body.loc_name,
+      ":EM": req.body.email,
+      ":PH": req.body.phone,
+      ":LT": req.body.loc_type,
+      ":AL1": req.body.addrLine1,
+      ":AL2": req.body.addrLine2,
+      ":AC": req.body.addrCity,
+      ":AS": req.body.addrState,
+      ":AZ": req.body.addrZip,
+      ":CRS": req.body.covidResponseSurvey
+    },
+    ReturnValues: "UPDATED_NEW"
+  }
+
+  dynamodb.update(params, function(err, data) {
+    if (err) {
+      res.statusCode = 500;
+      res.json({ error: err, url: req.url, body: req.body});
+    } else {
+      res.json({ success: "patch call succeed!", url: req.url, data: data });
+    }
+  });
+})
 
 // Export the app object. When executing the application local this does nothing. However,
 // to port it to AWS Lambda we will create a wrapper around that will load the app from
