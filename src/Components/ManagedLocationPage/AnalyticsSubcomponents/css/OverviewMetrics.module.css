@@ -1,0 +1,64 @@
+.subheader{
+    padding-top: 8px;
+    padding-bottom: 8px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.ratingOverview{
+    padding-left: 0px;
+    max-width: 300px;
+    font-size: 14px;
+}
+
+.ratingHeader{
+    text-align: center;
+}
+
+.cell1{
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #30B3CA;
+    color: white;
+    margin: 2px 10px 2px 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.cell2{
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #6ec9d9;
+    color: white;
+    margin: 2px 10px 2px 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.cell3{
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #ace0e9;
+    color: white;
+    margin: 2px 10px 2px 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.emphasis{
+    color: #23c9ad;
+    font-weight: bold;
+}
+
+.emphasisBad{
+    color: #ff6961;
+    font-weight: bold;
+}
+
+.subSubheader{
+    font-size: 16px;
+    font-weight: bold;
+}

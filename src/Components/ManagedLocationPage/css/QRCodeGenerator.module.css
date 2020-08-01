@@ -4,6 +4,10 @@
     font-family: Roboto, serif;
 }
 
+#qrHeader{
+    font-weight: bold;
+}
+
 .qrCodeSubheader{
     font-weight: 600;
     color: #23A6BD;
