@@ -298,7 +298,6 @@ class AddLocation extends Component {
   makeLocation = async (values) => {
     const apiName = "ManageLocationApi"; // replace this with your api name.
     const path = "/location"; //replace this with the path you have configured on your API
-    console.log(values);
     const requestData = {
       body: {
         id: this.state.id,
@@ -334,7 +333,6 @@ class AddLocation extends Component {
 
     API.post(apiName, path, requestData)
       .then((response) => {
-        console.log("Location Add Successful: " + response);
         this.props.modalFunc();
       })
       .catch((error) => {
@@ -346,12 +344,14 @@ class AddLocation extends Component {
     const file = e.target.files[0];
     if(!file) { return }
 
+    const loadingUrl = require("../../images/dashboardLoader.svg");
+    this.setState({ imageUrl: loadingUrl });
+
     const name = e.target.files[0].name ?? "no_name";
     const lastDot = name.lastIndexOf(".");
     const dotExt = name.substring(lastDot);
     const filename = "profile_picture_" + this.state.id + "_" + Math.floor(100000 + Math.random() * 900000) + dotExt;
 
-    const loadingUrl = require("../../images/dashboardLoader.svg");
 
     await Storage.put(filename, file, {
       level: "public",
@@ -359,19 +359,11 @@ class AddLocation extends Component {
       contentType: "image/" + dotExt.substring(1),
     })
       .then((result) => {
-        this.setState({ imageUrl: loadingUrl });
+        
       })
       .catch((err) => console.log("Upload error: " + err));
 
     await Storage.get(filename).then((resultURL) => {
-      console.log(resultURL);
-      const idx = resultURL.indexOf(filename);
-      const url = resultURL.substring(0, idx) + "" + filename;
-      this.setState({ imageUrl: url });
-    });
-
-    Storage.get(filename).then((resultURL) => {
-      console.log(resultURL);
       const idx = resultURL.indexOf(filename);
       const url = resultURL.substring(0, idx) + "" + filename;
       this.setState({ imageUrl: url });
@@ -379,7 +371,6 @@ class AddLocation extends Component {
 
     this.setState({ imageLoading: false });
   };
-
   preventNonNums = (e) => {
     const code = e.keyCode;
     if (code === 69 || code === 187 || code === 189 || code === 190)

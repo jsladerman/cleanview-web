@@ -17,8 +17,6 @@ class LocationInfo extends Component {
       data: this.props.data,
       showModal: false,
     };
-    console.log(this.state.data);
-
     this.handleUpdate = this.handleUpdate.bind(this);
     this.loadData = this.loadData.bind(this);
   }

@@ -51,8 +51,6 @@ class LocationBox extends Component {
         const arr = [];
         const starImg = require('../../images/star.svg');
         let fractionalWidth = 16 * (this.props.rating % 1);
-        console.log(fractionalWidth)
-        console.log(fractionalWidth === 0)
         // fractionalWidth = 16 * (fractionalWidth === 0 ? 1 : fractionalWidth);
         for (let i = 0; i < this.props.rating - 1; i++) {
             arr.push(<div key={i} style={{

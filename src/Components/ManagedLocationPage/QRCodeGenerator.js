@@ -82,11 +82,6 @@ class QRCodeGenerator extends Component {
       return (<p>Looking for sublocations...</p>)
     }
 
-    
-
-    console.log('id',this.props.id)
-    console.log()
-
     const subLocationList = this.state.sublocations.map((sublocation) => {
       const total_id = this.props.id + '99strl99strl' + sublocation.id
       return(

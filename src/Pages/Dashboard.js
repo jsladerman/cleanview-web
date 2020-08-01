@@ -69,7 +69,6 @@ class Dashboard extends Component {
     };
 
     getData = () => {
-        console.log("Get Data");
         const apiName = 'ManageLocationApi'; // replace this with your api name.
         const path = '/location'; //replace this with the path you have configured on your API
         const myParams = {
@@ -82,7 +81,6 @@ class Dashboard extends Component {
 
         API.get(apiName, path, myParams)
             .then(response => {
-                console.log(response["data"])
                 this.setState({
                     locationData: response["data"].data,
                     backendEnv: response["data"].backendEnv
@@ -97,7 +95,6 @@ class Dashboard extends Component {
         try {
             Auth.signOut()
                 .then(response => {
-                    console.log(response);
                     this.setState({redirect: '/login'});
                 });
         } catch (error) {
