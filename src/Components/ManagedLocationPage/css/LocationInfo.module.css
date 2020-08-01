@@ -1,5 +1,5 @@
 .locationInfoWrapper{
-    font-family: Roboto;
+    font-family: Roboto, serif;
     margin: 25px 40px 25px 40px;
 }
 
@@ -55,6 +55,8 @@
 
 .editButton{
     margin-top: 20px;
+    margin-left: 100px;
+    padding: 4px 20px;
     background-color: #30B3CA;
     border-color: #30B3CA;
 }

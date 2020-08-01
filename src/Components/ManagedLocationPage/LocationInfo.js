@@ -25,6 +25,7 @@ class LocationInfo extends Component {
 
   handleUpdate = async () => {
     this.toggleModal();
+    this.props.handleUpdate();
     this.loadData();
   };
 
@@ -209,7 +210,7 @@ class LocationInfo extends Component {
           <span className={styles.locationInfoFieldName}>Phone: </span>{" "}
           {this.formatPhone(businessPhone)}
         </p>
-        {/* TODO: Format below so it's aligned with the rest 
+        {/* TODO: Format below so it's aligned with the rest
                   Also format the text so the first letter of city is capital*/}
         <p>
           <span className={styles.locationInfoFieldName}>Address: </span>
@@ -255,7 +256,7 @@ class LocationInfo extends Component {
               <Col className={styles.thirdColumn}>{businessInformation}</Col>
               <Col>
                 <div className={styles.editLocationButtonDiv} onClick={this.toggleModal}>
-                  <Button className={styles.editButton}>Edit Data</Button>
+                  <Button className={styles.editButton}>Edit</Button>
                 </div>
               </Col>
             </Row>
