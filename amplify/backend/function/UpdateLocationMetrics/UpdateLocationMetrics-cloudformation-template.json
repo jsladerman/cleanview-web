@@ -10,10 +10,6 @@
 		"env": {
 			"Type": "String"
 		},
-		"storageresponsesStreamArn": {
-			"Type": "String",
-			"Default": "storageresponsesStreamArn"
-		},
 		"storagelocationsName": {
 			"Type": "String",
 			"Default": "storagelocationsName"
@@ -45,12 +41,12 @@
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"UpdateResponseTrigger",
+						"UpdateLocationMetrics",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"UpdateResponseTrigger",
+									"UpdateLocationMetrics",
 									"-",
 									{
 										"Ref": "env"
@@ -87,7 +83,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-cleanviewweb-develop-162445-deployment",
-					"S3Key": "amplify-builds/UpdateResponseTrigger-6c526b48645a7576342f-build.zip"
+					"S3Key": "amplify-builds/UpdateLocationMetrics-4e744137617858317a39-build.zip"
 				}
 			}
 		},
@@ -97,12 +93,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"cleanviewwebLambdaRoleacbfb998",
+						"cleanviewwebLambdaRole94978fde",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"cleanviewwebLambdaRoleacbfb998",
+									"cleanviewwebLambdaRole94978fde",
 									"-",
 									{
 										"Ref": "env"
@@ -247,9 +243,7 @@
 								"dynamodb:GetShardIterator",
 								"dynamodb:ListStreams"
 							],
-							"Resource": {
-								"Ref": "storageresponsesStreamArn"
-							}
+							"Resource": "arn:aws:dynamodb:us-east-1:676044961909:table/responses-develop/stream/2020-07-30T20:26:37.396"
 						}
 					]
 				}
@@ -259,14 +253,13 @@
 			"Type": "AWS::Lambda::EventSourceMapping",
 			"DependsOn": [
 				"LambdaTriggerPolicy",
-				"LambdaExecutionRole"
+				"LambdaExecutionRole",
+				"AmplifyResourcesPolicy"
 			],
 			"Properties": {
 				"BatchSize": 100,
 				"Enabled": true,
-				"EventSourceArn": {
-					"Ref": "storageresponsesStreamArn"
-				},
+				"EventSourceArn": "arn:aws:dynamodb:us-east-1:676044961909:table/responses-develop/stream/2020-07-30T20:26:37.396",
 				"FunctionName": {
 					"Fn::GetAtt": [
 						"LambdaFunction",

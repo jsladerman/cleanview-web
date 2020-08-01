@@ -67,7 +67,12 @@
                 "SubmitResponseLambda": {},
                 "ManageLocationLambda": {},
                 "CreateSurveyLambda": {},
-                "GetSurveyResponses": {}
+                "GetSurveyResponses": {},
+                "UpdateResponseTrigger": {},
+                "responsesTrigger66e6c535": {},
+                "responsesTriggera5c1d846": {},
+                "UpdateLocationMetrics": {},
+                "AccountSettingsLambda": {}
             }
         }
     },
@@ -91,7 +96,8 @@
                 "SubmitResponseLambda": {},
                 "ManageLocationLambda": {},
                 "CreateSurveyLambda": {},
-                "GetSurveyResponses": {}
+                "GetSurveyResponses": {},
+                "AccountSettingsLambda": {}
             }
         }
     }

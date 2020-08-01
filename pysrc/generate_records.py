@@ -69,7 +69,7 @@ days = list(range(23, 31))
 hours = list(range(0, 24))
 minutes = list(range(0, 60))
 
-for i in range(0, 5):
+for i in range(0, 1):
     restid = random.choice(location_ids)
     timestamp = datetime.datetime(2020, 7, random.choice(days), random.choice(hours), random.choice(minutes), random.choice(minutes)).strftime("%a %b %d %Y %X")
     table.put_item(

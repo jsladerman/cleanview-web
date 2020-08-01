@@ -10,13 +10,13 @@
 		"env": {
 			"Type": "String"
 		},
-		"storagelocationsName": {
+		"storageaccountsName": {
 			"Type": "String",
-			"Default": "storagelocationsName"
+			"Default": "storageaccountsName"
 		},
-		"storagelocationsArn": {
+		"storageaccountsArn": {
 			"Type": "String",
-			"Default": "storagelocationsArn"
+			"Default": "storageaccountsArn"
 		}
 	},
 	"Conditions": {
@@ -41,12 +41,12 @@
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"ManageLocationLambda",
+						"AccountSettingsLambda",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"ManageLocationLambda",
+									"AccountSettingsLambda",
 									"-",
 									{
 										"Ref": "env"
@@ -77,7 +77,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-cleanviewweb-develop-162445-deployment",
-					"S3Key": "amplify-builds/ManageLocationLambda-4c36646c4d654a413039-build.zip"
+					"S3Key": "amplify-builds/AccountSettingsLambda-4c66787172322f436537-build.zip"
 				}
 			}
 		},
@@ -87,12 +87,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"cleanviewwebLambdaRole10a8f873",
+						"cleanviewwebLambdaRole52683388",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"cleanviewwebLambdaRole10a8f873",
+									"cleanviewwebLambdaRole52683388",
 									"-",
 									{
 										"Ref": "env"
@@ -172,14 +172,14 @@
 							],
 							"Resource": [
 								{
-									"Ref": "storagelocationsArn"
+									"Ref": "storageaccountsArn"
 								},
 								{
 									"Fn::Join": [
 										"/",
 										[
 											{
-												"Ref": "storagelocationsArn"
+												"Ref": "storageaccountsArn"
 											},
 											"index/*"
 										]

@@ -1,20 +1,7 @@
-/* Amplify Params - DO NOT EDIT
-	ENV
-	REGION
-	STORAGE_LOCATIONS_ARN
-	STORAGE_LOCATIONS_NAME
-Amplify Params - DO NOT EDIT */
 const AWS = require('aws-sdk')
-
-AWS.config.update({ region: REGION });
-
+AWS.config.update({ region: process.env.REGION });
 const dynamodb = new AWS.DynamoDB.DocumentClient();
-
-let tableName = STORAGE_LOCATIONS_NAME;
-if(process.env.ENV && process.env.ENV !== "NONE") {
-  tableName = tableName + '-' + process.env.ENV;
-}
-
+let tableName = process.env.STORAGE_LOCATIONS_NAME;
 exports.handler = event => {
   //eslint-disable-line
   console.log(JSON.stringify(event, null, 2));
@@ -34,7 +21,6 @@ exports.handler = event => {
   });
   return Promise.resolve('Successfully processed DynamoDB record');
 };
-
 updateParams = (record) => {
   return {
     TableName: tableName,
@@ -48,7 +34,6 @@ updateParams = (record) => {
     UpdateExpression: buildUpdateExpression(record)
   };
 }
-
 buildUpdateExpression = (record) => {
   setExpression = 'SET ';
   if (record.dynamodb.NewImage.sixFeet.S !== 'null') {
