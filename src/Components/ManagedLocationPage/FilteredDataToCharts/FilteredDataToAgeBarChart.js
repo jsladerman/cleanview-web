@@ -51,8 +51,7 @@ class FilteredDataToAgeBarChart extends Component{
             var obj = this.props.filteredData[i];
             var age = obj["age"]
             if(age !== undefined && ageIndices[age] !== undefined){
-                let index = ageIndices[age];
-                ageCounts[index]++;
+                ageCounts[ageIndices[age]]++;
                 length++;
             }
         }
