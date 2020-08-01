@@ -3,6 +3,7 @@ import FilteredDataToPieChart from './FilteredDataToCharts/FilteredDataToPieChar
 import FilteredDataToAgeBarChart from './FilteredDataToCharts/FilteredDataToAgeBarChart';
 import FilteredDataToRatingBarChart from './FilteredDataToCharts/FilteredDataToRatingBarChart';
 import FilteredDataToFrequencyChart from './FilteredDataToCharts/FilteredDataToFrequencyChart';
+import FilteredDataToQRBarChart from './FilteredDataToCharts/FilteredDataToQRBarChart';
 import OverviewMetrics from './AnalyticsSubcomponents/OverviewMetrics';
 import styles from './css/AnalyticsDashboard.module.css';
 import { Formik, Form, Field } from 'formik';
@@ -26,6 +27,7 @@ class AnalyticsDashboard extends Component {
             touristExcludeFilter: [],
             weekdayExcludeFilter: [],
             hourExcludeFilter: [],
+            qrExcludeFilter: [],
             dayRange: -1,   // dayRange < 1 = all-time data
 
             // Filtering data for charts in "Customer Demographic" section
@@ -36,6 +38,10 @@ class AnalyticsDashboard extends Component {
             retrievedData: false,
         }
     }
+
+    // Props
+    //  this.props.id               location_id
+    //  this.props.sublocations     array of sublocations
 
     componentDidMount = () => {
         this.pullData();
@@ -84,11 +90,13 @@ class AnalyticsDashboard extends Component {
                         <Col>Date Range</Col>
                         <Col>Age Group</Col>
                         <Col>Weekdays</Col>
+                        <Col>QR Code</Col>
                         <Col>Customer Locality</Col>
                         <Col>Hours</Col>
                     </Row>
                     <Row>
                         <Col>
+                            <p className={styles.filteringCategories}>Date Range</p>
                             <Formik validate={(values) => this.filterDayRange(values.choice)}
                                 initialValues={{ choice: this.state.dayRange }}>
                                 <Form>
@@ -100,6 +108,7 @@ class AnalyticsDashboard extends Component {
                                     </Field>
                                 </Form>
                             </Formik>
+
                         </Col>
                         <Col>
                             {/* AGE GROUP */}
@@ -121,6 +130,9 @@ class AnalyticsDashboard extends Component {
                             {this.renderSingleCheckbox("saturdayCheck", "Saturday", this.state.weekdayExcludeFilter, 'Sat')}
                         </Col>
                         <Col>
+                            {this.renderQRCodeCheckboxes()}
+                        </Col>
+                        <Col>
                             {/* CUSTOMER LOCALITY */}
                             {this.renderSingleCheckbox("localCheck", "Local", this.state.touristExcludeFilter, '0')}
                             {this.renderSingleCheckbox("touristCheckbox", "Non-local", this.state.touristExcludeFilter, '1')}
@@ -134,6 +146,19 @@ class AnalyticsDashboard extends Component {
 
             </div>
         )
+    }
+
+    renderQRCodeCheckboxes = () => {
+        let qrCheckboxes = [];
+        let sublocations = this.props.sublocations;
+        for(var i = 0; i < sublocations.length; i++){
+            let name = sublocations[i].name;
+            let id = sublocations[i].id;
+            let checkbox = this.renderSingleCheckbox("qrCheckName", name, this.state.qrExcludeFilter, id);
+            qrCheckboxes.push(checkbox);
+        }
+
+        return qrCheckboxes;
     }
 
     renderHoursCheckboxes = () => {
@@ -182,9 +207,7 @@ class AnalyticsDashboard extends Component {
                     type="checkbox"
                     name={elementName}
                     onClick={() => this.addSingleFilter(filterArray, filterValue)} defaultChecked />
-                <label for={elementName}>
-                    {labelText}
-                </label>
+                <label>{labelText}</label>
             </div>
         )
     }
@@ -241,6 +264,7 @@ class AnalyticsDashboard extends Component {
     renderDemographicCharts = () => {
         if (!this.state.rerenderCharts) {
             return (
+                <Container>
                 <Row className={styles.rowDivider}>
                     <Col>
                         <FilteredDataToAgeBarChart
@@ -258,6 +282,15 @@ class AnalyticsDashboard extends Component {
                         />
                     </Col>
                 </Row>
+                <Row>
+                    <Col>
+                        <FilteredDataToQRBarChart
+                            filteredData={this.state.filteredDataForDemographicCharts}
+                            sublocations={this.props.sublocations}
+                        />
+                    </Col>
+                </Row>
+                </Container>
             );
         }
         return (
@@ -268,7 +301,7 @@ class AnalyticsDashboard extends Component {
     renderFilteringCharts = () => {
         if (!this.state.rerenderCharts) {
             return (
-                <div>
+                <Container>
                     <Row><Col><h4>Charts</h4></Col></Row>
                     <Row className={styles.rowDivider}>
                         <Col>
@@ -305,7 +338,7 @@ class AnalyticsDashboard extends Component {
                             />
                         </Col>
                     </Row>
-                </div>
+                </Container>
             );
         }
         return (
@@ -338,6 +371,7 @@ class AnalyticsDashboard extends Component {
                 && !this.state.hourExcludeFilter.includes(parseFloat(response['timestamp'].slice(12, 14)))
                 && !this.state.weekdayExcludeFilter.includes(response['weekday'])
                 && (this.state.dayRange < 1 || this.daysFromToday(response['timestamp']) <= this.state.dayRange)
+                && !this.state.qrExcludeFilter.includes(response['sublocId'])
             )
         )
         this.setState({ filteredData: newFilteredData });

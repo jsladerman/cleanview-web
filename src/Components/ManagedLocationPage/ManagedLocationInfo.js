@@ -38,6 +38,11 @@ class ManagedLocationInfo extends Component {
         if (this.state.data.length === 0) {
             return <h1>LOADING</h1>;
         }
+        console.log("THIS.STATE.DATA");
+        console.log(this.state.data);
+        console.log("THIS.STATE.DATA.SUBLOCATIONS");
+        console.log(this.state.data.sublocations);
+        
         return (
             <div>
                 <Tabs activeKey={this.state.tab} onSelect={this.setTabURL}>
@@ -52,7 +57,8 @@ class ManagedLocationInfo extends Component {
                     </Tab>
                     <Tab tabClassName={styles.tab} eventKey='analytics' title='Analytics'>
                         <AnalyticsDashboard
-                            id={this.props.id}/>
+                            id={this.props.id}
+                            sublocations={this.state.data.sublocations}/>
                     </Tab>
                     <Tab tabClassName={styles.tab} eventKey='menu-manager' title='Menu Management'>
                         <MenuManager

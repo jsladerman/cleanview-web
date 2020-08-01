@@ -41,17 +41,17 @@ class OverviewMetrics extends Component {
                                     </Row>
                                     <Row>
                                         <div className="col-md-3"><br />24 hours</div>
-                                        <Col className={styles.cell1} >{dayAverage.average}</Col>
+                                        <Col className={styles.cell1} >{dayAverage.average} / 5</Col>
                                         <Col className={styles.cell1}>{dayAverage.numResponses}</Col>
                                     </Row>
                                     <Row>
                                         <div className="col-md-3"><br />Week</div>
-                                        <Col className={styles.cell2}>{weekAverage.average}</Col>
+                                        <Col className={styles.cell2}>{weekAverage.average} / 5</Col>
                                         <Col className={styles.cell2}>{weekAverage.numResponses}</Col>
                                     </Row>
                                     <Row>
                                         <div className="col-md-3"><br />Month</div>
-                                        <Col className={styles.cell3}>{monthAverage.average}</Col>
+                                        <Col className={styles.cell3}>{monthAverage.average} / 5</Col>
                                         <Col className={styles.cell3}>{monthAverage.numResponses}</Col>
                                     </Row>
                                 </Container>
