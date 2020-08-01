@@ -7,11 +7,28 @@ class Settings extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showModal: false,
+            authLoaded: false,
+            authInfo: null,
+            settingsInfo: null
         }
     }
 
+    componentDidMount() {
+        Auth.currentUserInfo()
+            .then(user => {
+                this.setState({authLoaded: true, authInfo: user});
+            })
+    }
+
     render() {
+        console.log(this.state.authInfo);
+        if (!this.state.authLoaded)
+            return <img
+                src={require("../../images/dashboardLoader.svg")}
+                alt=''
+                height='100%'
+                width='100%'
+            />
         return (
             <div>
                 <div className={styles.body}>
@@ -34,12 +51,12 @@ class Settings extends Component {
         }
 
         API.get(apiName, path, requestParams)
-        .then(response => {
-            console.log('Account: ' + response);
-        })
-        .catch(error => {
-            console.log('Error: ' + error)
-        })
+            .then(response => {
+                console.log('Account: ' + response);
+            })
+            .catch(error => {
+                console.log('Error: ' + error)
+            })
     }
 
     createAccount = (params) => {
@@ -49,8 +66,8 @@ class Settings extends Component {
             headers: {},
             body: {
                 id: uuid(), // mandatory
-                email: params.email, 
-                username: params.username,
+                email: params.email,
+                username: '',
                 firstName: params.firstName,
                 lastName: params.lastName,
                 phone: params.phone,
@@ -60,12 +77,12 @@ class Settings extends Component {
         }
 
         API.post(apiName, path, requestParams)
-        .then(response => {
-            console.log('Account creation successful: ' + response);
-        })
-        .catch(error => {
-            console.log('Error in account creation: ' + error)
-        })
+            .then(response => {
+                console.log('Account creation successful: ' + response);
+            })
+            .catch(error => {
+                console.log('Error in account creation: ' + error)
+            })
 
     }
 
@@ -79,7 +96,7 @@ class Settings extends Component {
             body: {
                 id: params.id, // this is to identify the record
                 email: params.email, // the rest are for updating
-                username: params.username,
+                username: '',
                 firstName: params.firstName,
                 lastName: params.lastName,
                 phone: params.phone,
@@ -87,13 +104,13 @@ class Settings extends Component {
         }
 
         API.patch(apiName, path, requestData)
-        .then(response => {
-            console.log("Update successful", response);
-            // call the get request and ensure the data is there
-        })
-        .catch(error => {
-            console.log("Error: " + error)
-        })
+            .then(response => {
+                console.log("Update successful", response);
+                // call the get request and ensure the data is there
+            })
+            .catch(error => {
+                console.log("Error: " + error)
+            })
     }
 }
 

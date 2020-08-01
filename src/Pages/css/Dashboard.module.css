@@ -12,3 +12,10 @@
     height: auto;
     width: 100%;
 }
+
+.settingsModal {
+    margin: 20px;
+    padding: 30px;
+    height: 450px;
+    border-radius: 10px;
+}

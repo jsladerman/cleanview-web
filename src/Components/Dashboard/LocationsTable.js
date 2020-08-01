@@ -53,7 +53,7 @@ class LocationsTable extends Component {
                         key={loc.id + 'key'}
                         imageUrl={loc.imageUrl}
                         id={loc.id}
-                        rating={3.5}
+                        rating={0}
                     />
                 )
             });

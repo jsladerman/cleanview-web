@@ -13,14 +13,19 @@ import '@trendmicro/react-modal/dist/react-modal.css';
 import Sidebar from 'react-sidebar'
 import LocationsTable from "../Components/Dashboard/LocationsTable";
 import ManagedLocationInfo from "../Components/ManagedLocationPage/ManagedLocationInfo";
-import Settings from "../Components/Dashboard/Settings";
+import SettingsBox from "../Components/Dashboard/SettingsBox";
+import Modal from "@trendmicro/react-modal";
+import uuid from "react-uuid";
 
 class Dashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
             redirect: null,
-            managerName: null,
+            authLoaded: false,
+            authInfo: null,
+            settingsInfo: null,
+            settingsLoaded: false,
             locationData: [],
             backendEnv: 'dev',
         }
@@ -34,8 +39,10 @@ class Dashboard extends Component {
                     this.setState({redirect: '/login'});
                 } else {
                     this.setState({
-                        managerName: user.username,
+                        authLoaded: true,
+                        authInfo: user
                     });
+                    this.getSettings(user.username);
                     this.getData();
                 }
             })
@@ -68,6 +75,68 @@ class Dashboard extends Component {
         );
     };
 
+    renderSidebarChildren = () => {
+        if (!this.state.authLoaded) {
+            return <img
+                src={require("../images/dashboardLoader.svg")}
+                alt=''
+                height='100%'
+                width='100%'
+            />
+        }
+        if (!this.state.settingsLoaded) {
+            return (
+                <Modal show={true}
+                       showCloseButton={false}
+                       className={styles.settingsModal}>
+                    <div>
+                        <h1 style={{textAlign: 'center', fontWeight:'bold', fontFamily: 'Roboto, sans-serif'}}>
+                            Welcome to CleanView!
+                        </h1>
+                        <h4 style={{textAlign: 'center', fontFamily: 'Roboto, sans-serif'}}>
+                            Please complete your profile
+                        </h4>
+                        <SettingsBox
+                            authInfo={this.state.authInfo}
+                            submitFunc={(values) => this.createSettings(values)}
+                        />
+                    </div>
+                </Modal>
+            )
+        }
+        return (
+            <div className={styles.sidebarChildren}>
+                <Switch>
+                    <Redirect exact from="/home" to="/home/locations"/>
+                    <Route path={this.path + '/locations/:id/:tab'} render={(props) =>
+                        <ManagedLocationInfo
+                            {...props}
+                            id={props.match.params.id}
+                            tab={props.match.params.tab}
+                            locations={this.state.locationData}
+                        />}
+                    />
+                    <Route path={this.path + '/locations'} render={(props) =>
+                        <LocationsTable
+                            {...props}
+                            managerName={this.state.managerName}
+                            locations={this.state.locationData}
+                            backendEnv={this.state.backendEnv}
+                            getDataFunc={this.getData}/>}
+                    />
+                    <Route exact path={this.path + '/billing'} render={(props) =>
+                        <h1 style={{padding: '20px'}}>Billing Page</h1>}
+                    />
+                    <Route path={this.path + '/settings'} render={(props) =>
+                        <SettingsBox
+                            {...props}/>}
+                    />
+                    <Redirect to="/home/locations"/>
+                </Switch>
+            </div>
+        );
+    }
+
     getData = () => {
         console.log("Get Data");
         const apiName = 'ManageLocationApi'; // replace this with your api name.
@@ -76,7 +145,7 @@ class Dashboard extends Component {
             headers: {},
             response: true,
             queryStringParameters: {
-                manager: this.state.managerName
+                manager: this.state.authInfo.username
             },
         };
 
@@ -105,53 +174,59 @@ class Dashboard extends Component {
         }
     };
 
+    getSettings = (accountId) => {
+        let apiName = 'AccountSettingsApi'
+        let path = '/account/manager'
+        const requestParams = {
+            headers: {},
+            queryStringParameters: {
+                id: accountId
+            }
+        }
+
+        API.get(apiName, path, requestParams)
+            .then(response => {
+                console.log('Account: ' + response);
+                if (!(response === undefined || response.length === 0))
+                    this.setState({settingsInfo: response, settingsLoaded: true})
+            })
+            .catch(error => {
+                console.log('Error: ' + error)
+            })
+    }
+
+    createSettings = (params) => {
+        let apiName = 'AccountSettingsApi'
+        let path = '/account'
+        const requestParams = {
+            headers: {},
+            body: {
+                id: uuid(), // mandatory
+                email: this.state.authInfo.attributes.email,
+                username: this.state.authInfo.username,
+                firstName: params.firstName,
+                lastName: params.lastName,
+                phone: params.phone,
+                creationDate: new Date().toLocaleString()
+            }
+        }
+
+        API.post(apiName, path, requestParams)
+            .then(response => {
+                console.log('Settings created successfully: ' + response);
+                this.setState({settingsInfo: response, settingsLoaded: true})
+            })
+            .catch(error => {
+                console.log('Error in settings create: ' + error)
+            })
+
+    }
+
     redirect = (path) => {
         this.setState({redirect: '/home' + path},
             () => this.setState({redirect: null}));
     }
 
-    renderSidebarChildren = () => {
-        if (!this.state.managerName) {
-            return <img
-                src={require("../images/dashboardLoader.svg")}
-                alt=''
-                height='100%'
-                width='100%'
-            />
-        } else {
-            return (
-                <div className={styles.sidebarChildren}>
-                    <Switch>
-                        <Redirect exact from="/home" to="/home/locations"/>
-                        <Route path={this.path + '/locations/:id/:tab'} render={(props) =>
-                            <ManagedLocationInfo
-                                {...props}
-                                id={props.match.params.id}
-                                tab={props.match.params.tab}
-                                locations={this.state.locationData}
-                            />}
-                        />
-                        <Route path={this.path + '/locations'} render={(props) =>
-                            <LocationsTable
-                                {...props}
-                                managerName={this.state.managerName}
-                                locations={this.state.locationData}
-                                backendEnv={this.state.backendEnv}
-                                getDataFunc={this.getData}/>}
-                        />
-                        <Route exact path={this.path + '/billing'} render={(props) =>
-                            <h1 style={{padding: '20px'}}>Billing Page</h1>}
-                        />
-                        <Route path={this.path + '/settings'} render={(props) =>
-                            <Settings
-                                {...props}/>}
-                        />
-                        <Redirect to="/home/locations"/>
-                    </Switch>
-                </div>
-            );
-        }
-    }
 }
 
 const jsStyles = {
