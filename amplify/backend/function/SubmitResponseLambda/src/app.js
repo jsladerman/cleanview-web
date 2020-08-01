@@ -209,8 +209,6 @@ app.post(path, async function(req, res) {
       res.json({error: err, url: req.url, body: req.body});
       console.log("Error: " + err)
     } else{
-      console.log("success loc id: ", formParams.locationId )
-      console.log("success subloc id: ", formParams.sublocId )
       res.json({success: 'post call succeed!', url: req.url, data: data})
     }
   });
