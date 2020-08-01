@@ -55,7 +55,7 @@ class ManagedLocationInfo extends Component {
                             name={this.state.data.loc_name}
                             id={this.props.id}/>
                     </Tab>
-                    <Tab tabClassName={styles.tab} eventKey='analytics' title='Analytics'>
+                    <Tab tabClassName={styles.tab} eventKey='analytics' title='Analytics' unmountOnExit>
                         <AnalyticsDashboard
                             id={this.props.id}
                             sublocations={this.state.data.sublocations}/>

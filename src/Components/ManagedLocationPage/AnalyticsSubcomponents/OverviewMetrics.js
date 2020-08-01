@@ -40,17 +40,17 @@ class OverviewMetrics extends Component {
                                         <Col className={styles.ratingHeader}>Number of <br /> Responses</Col>
                                     </Row>
                                     <Row>
-                                        <div className="col-md-3"><br />24 hours</div>
+                                        <div className="col-md-3" style={{marginTop:'14px'}}>24 hours</div>
                                         <Col className={styles.cell1} >{dayAverage.average} / 5</Col>
                                         <Col className={styles.cell1}>{dayAverage.numResponses}</Col>
                                     </Row>
                                     <Row>
-                                        <div className="col-md-3"><br />Week</div>
+                                        <div className="col-md-3" style={{marginTop:'14px'}}>Week</div>
                                         <Col className={styles.cell2}>{weekAverage.average} / 5</Col>
                                         <Col className={styles.cell2}>{weekAverage.numResponses}</Col>
                                     </Row>
                                     <Row>
-                                        <div className="col-md-3"><br />Month</div>
+                                        <div className="col-md-3" style={{marginTop:'14px'}}>Month</div>
                                         <Col className={styles.cell3}>{monthAverage.average} / 5</Col>
                                         <Col className={styles.cell3}>{monthAverage.numResponses}</Col>
                                     </Row>

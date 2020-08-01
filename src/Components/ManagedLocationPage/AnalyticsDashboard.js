@@ -113,7 +113,7 @@ class AnalyticsDashboard extends Component {
                             {this.renderSingleCheckbox("saturdayCheck", "Saturday", this.state.weekdayExcludeFilter, 'Sat')}
                         
                             {/* CUSTOMER LOCALITY */}
-                            <p className={styles.filteringCategories}>Customer Locality</p>
+                            <p className={styles.filteringCategories}>Customer Living Distance</p>
                             {this.renderSingleCheckbox("localCheck", "Local", this.state.touristExcludeFilter, '0')}
                             {this.renderSingleCheckbox("touristCheckbox", "Non-local", this.state.touristExcludeFilter, '1')}
                         </Col>
@@ -214,9 +214,10 @@ class AnalyticsDashboard extends Component {
                     <Row>
                         <Col className={styles.analyticsDashboardSubheader2}>Filter Date Range</Col>
                         <Col>
+                            <div style={{marginTop:'4px'}}>
                             <Formik validate={(values) => this.filterDayRangeDemographicCharts(values.choice)}
                                 initialValues={{ choice: this.state.dayRangeForDemographicCharts }}>
-                                <Form>
+                                <Form className={styles.filterTimeForDemographicCharts}>
                                     <Field as='select' name='choice' >
                                         <option value={-1}>All-time</option>
                                         <option value={1}>Last 24 hours</option>
@@ -225,9 +226,10 @@ class AnalyticsDashboard extends Component {
                                     </Field>
                                 </Form>
                             </Formik>
+                            </div>
                         </Col>
                         <div className="col-lg-5"/>
-                        <Col>
+                        <Col style={{marginTop:'4px', fontWeight:'bold'}}>
                             {this.state.filteredDataForDemographicCharts.length} Responses
                         </Col>
                     </Row>
@@ -269,9 +271,10 @@ class AnalyticsDashboard extends Component {
 
                     <Col>
                         <FilteredDataToPieChart
+                            style={{margin:'auto'}}
                             filteredData={this.state.filteredDataForDemographicCharts}
                             keyString='touristDiner'
-                            titleText='Customer Locality'
+                            titleText='Customer Living Distance'
                             yesLabel="live within 15 miles of the restaurant"
                             noLabel="do not live within 15 miles of the restaurant"
                         />
@@ -313,8 +316,9 @@ class AnalyticsDashboard extends Component {
                     </Row>
 
                     <Row className={styles.rowDivider}>
-                        <Col>
+                        <Col style={{marginLeft:'50px'}}>
                             <FilteredDataToPieChart
+                                style={{margin:'auto'}}
                                 filteredData={this.state.filteredData}
                                 keyString='employeeMasks'
                                 titleText='Are Employees Wearing Masks?'
@@ -323,7 +327,7 @@ class AnalyticsDashboard extends Component {
                             />
                         </Col>
 
-                        <Col>
+                        <Col style={{marginLeft:'50px'}}>
                             <FilteredDataToPieChart
                                 filteredData={this.state.filteredData}
                                 keyString='sixFeet'
