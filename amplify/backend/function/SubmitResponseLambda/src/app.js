@@ -187,7 +187,6 @@ app.post(path, async function(req, res) {
     resolve();
   })
 
-
   formParams.id = uuid();
   formParams.requestHeader = req.headers
 
@@ -198,6 +197,7 @@ app.post(path, async function(req, res) {
 
   let menu_link = formParams.menuLink
   res.setHeader('AMP-Redirect-To', menu_link)
+  
   if(formParams.age === 'young') {
     res.json({success: 'we don\'t collect data for kids this young'})
     return
@@ -209,6 +209,8 @@ app.post(path, async function(req, res) {
       res.json({error: err, url: req.url, body: req.body});
       console.log("Error: " + err)
     } else{
+      console.log("success loc id: ", formParams.locationId )
+      console.log("success subloc id: ", formParams.sublocId )
       res.json({success: 'post call succeed!', url: req.url, data: data})
     }
   });
