@@ -455,9 +455,11 @@ class AnalyticsDashboard extends Component {
         API.get(apiName, path, myParams)
             .then(response => {
                 let currState = this.state;
-                currState.allResponses = response['data'];
-                currState.filteredData = response['data'];
-                currState.filteredDataForDemographicCharts = response['data'];
+                let responseData = response['data'];
+                // let filteredResponses = responseData.filter({})
+                currState.allResponses = responseData;
+                currState.filteredData = responseData;
+                currState.filteredDataForDemographicCharts = responseData;
                 currState.retrievedData = true;
                 this.setState(currState);
             })
