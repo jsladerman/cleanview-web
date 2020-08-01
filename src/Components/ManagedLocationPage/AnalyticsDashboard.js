@@ -120,6 +120,7 @@ class AnalyticsDashboard extends Component {
                         <Col>
                             {/* AGE GROUP */}
                             <p className={styles.filteringCategories}>Age</p>
+                            {this.renderSingleCheckbox("input1", "13-17", this.state.ageExcludeFilter, '13-17')}
                             {this.renderSingleCheckbox("input1", "18-25", this.state.ageExcludeFilter, '18-25')}
                             {this.renderSingleCheckbox("input1", "26-35", this.state.ageExcludeFilter, '26-35')}
                             {this.renderSingleCheckbox("input1", "36-45", this.state.ageExcludeFilter, '36-45')}
@@ -455,9 +456,23 @@ class AnalyticsDashboard extends Component {
         API.get(apiName, path, myParams)
             .then(response => {
                 let currState = this.state;
-                currState.allResponses = response['data'];
-                currState.filteredData = response['data'];
-                currState.filteredDataForDemographicCharts = response['data'];
+                let filteredResponses = response['data'].filter(response => 
+                    response['age'] != undefined
+                    && response['employeeMasks'] != undefined
+                    && response['sixFeet'] != undefined
+                    && response['touristDiner'] != undefined
+                )
+
+                // TODO - remove all survey responses where age = '0-17' from the database
+                for(var i = 0; i < filteredResponses.length; i++){
+                    if(filteredResponses[i].age === '0-17'){
+                        filteredResponses[i].age = '13-17';
+                    }
+                }
+
+                currState.allResponses = filteredResponses;
+                currState.filteredData = filteredResponses;
+                currState.filteredDataForDemographicCharts = filteredResponses;
                 currState.retrievedData = true;
                 this.setState(currState);
             })
