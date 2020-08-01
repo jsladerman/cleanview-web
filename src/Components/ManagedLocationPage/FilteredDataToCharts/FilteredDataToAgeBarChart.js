@@ -46,16 +46,19 @@ class FilteredDataToAgeBarChart extends Component{
         }
 
         let ageCounts = [0, 0, 0, 0, 0, 0, 0];
-
+        let length = 0;
         for (var i = 0; i < this.props.filteredData.length; i++) {
             var obj = this.props.filteredData[i];
             var age = obj["age"]
-            var index = ageIndices[age];
-            ageCounts[index]++;
+            if(age !== undefined && ageIndices[age] !== undefined){
+                let index = ageIndices[age];
+                ageCounts[index]++;
+                length++;
+            }
         }
 
         for(i = 0; i < ageCounts.length; i++){
-            targetData[i].frequency = (ageCounts[i] / this.props.filteredData.length);
+            targetData[i].frequency = (ageCounts[i] / length);
         }
 
         return targetData;
