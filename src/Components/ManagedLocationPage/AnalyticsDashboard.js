@@ -463,6 +463,12 @@ class AnalyticsDashboard extends Component {
                     && response['touristDiner'] != undefined
                 )
 
+                for(var i = 0; i < filteredResponses.length; i++){
+                    if(filteredResponses[i].age === '0-17'){
+                        filteredResponses[i].age = '13-17';
+                    }
+                }
+
                 currState.allResponses = filteredResponses;
                 currState.filteredData = filteredResponses;
                 currState.filteredDataForDemographicCharts = filteredResponses;
