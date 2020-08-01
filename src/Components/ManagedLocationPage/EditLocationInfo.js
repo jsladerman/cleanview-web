@@ -10,8 +10,8 @@ class EditLocationInfo extends Component {
     this.state = {
       data: this.props.data,
       imageUrl: this.props.data.imageUrl,
-      id: this.props.data.id,
       imageLoading: false,
+      noOutdoorSeating: this.props.data.covidResponseSurvey.outsideSeating === 'n' ? true : false
     };
     this.editLocation = this.editLocation.bind(this);
   }
@@ -80,9 +80,83 @@ class EditLocationInfo extends Component {
     );
   };
 
-  editLocation = (values) => {
-      
+  uploadFile = async (e) => {
+    const file = e.target.files[0];
+    if(!file) { return }
+
+    const loadingUrl = require("../../images/dashboardLoader.svg");
+    this.setState({ imageUrl: loadingUrl });
+
+    const name = e.target.files[0].name ?? "no_name";
+    const lastDot = name.lastIndexOf(".");
+    const dotExt = name.substring(lastDot);
+    const filename = "profile_picture_" + this.state.id + "_" + Math.floor(100000 + Math.random() * 900000) + dotExt;
+
+
+    await Storage.put(filename, file, {
+      level: "public",
+      contentDisposition: 'inline; filename="' + filename + '"',
+      contentType: "image/" + dotExt.substring(1),
+    })
+      .then((result) => {
+        
+      })
+      .catch((err) => console.log("Upload error: " + err));
+
+    await Storage.get(filename).then((resultURL) => {
+      console.log(resultURL);
+      const idx = resultURL.indexOf(filename);
+      const url = resultURL.substring(0, idx) + "" + filename;
+      this.setState({ imageUrl: url });
+    });
+
+    this.setState({ imageLoading: false });
   };
+
+  editLocation = async (values) => {
+    const apiName = "ManageLocationApi"
+    const path = "/location/info"
+    const requestData = {
+        headers: {},
+        body: {
+            id: this.state.data.id,
+            imageUrl: this.state.imageUrl,
+            loc_name: values.businessName,
+            email: values.businessEmail,
+            phone: values.businessPhoneNum,
+            loc_type: values.businessType,
+            addrLine1: values.addr.line1,
+            addrLine2: values.addr.line2,
+            addrCity: values.addr.city,
+            addrState: values.addr.state,
+            addrZip: values.addr.zip,
+            covidResponseSurvey: {
+                employeeMasks: values.employeeMasks,
+                socialDistancing: values.socialDistance,
+                outsideSeating: values.outsideSeating,
+                employeeTemp: values.employeeTemp,
+                sanitizeTables: values.sanitize,
+                indoorCapacity: values.indoorCapacity,
+                outdoorCapacity: this.state.noOutdoorSeating
+                  ? ""
+                  : values.outdoorCapacity,
+              }
+        }
+    }
+
+    API.patch(apiName, path, requestData)
+    .then(response => {
+        console.log("Update successful: " + response)
+        this.props.handleUpdate()
+    })
+    .catch((error) => {
+        console.log("Error: " + error)
+    })
+  };
+
+  
+
+
 
   render() {
     return (
@@ -92,8 +166,8 @@ class EditLocationInfo extends Component {
           initialValues={{
             businessName: this.state.data.loc_name,
             businessType: this.state.data.loc_type,
-            businessEmail: this.state.data.businessEmail,
-            businessPhoneNum: this.state.data.businessPhoneNum,
+            businessEmail: this.state.data.email,
+            businessPhoneNum: this.state.data.phone,
             addr: {
               line1: this.state.data.addrLine1,
               line2: this.state.data.addrLine2,
@@ -103,7 +177,8 @@ class EditLocationInfo extends Component {
             },
             employeeMasks: this.state.data.covidResponseSurvey.employeeMasks,
             employeeTemp: this.state.data.covidResponseSurvey.employeeTemp,
-            socialDistance: this.state.data.covidResponseSurvey.socialDistance,
+            socialDistance: this.state.data.covidResponseSurvey.socialDistancing,
+            sanitizeTables: this.state.data.covidResponseSurvey.sanitizeTables,
             outsideSeating: this.state.data.covidResponseSurvey.outsideSeating,
             indoorCapacity: this.state.data.covidResponseSurvey.indoorCapacity,
             outdoorCapacity: this.state.data.covidResponseSurvey
@@ -273,7 +348,7 @@ class EditLocationInfo extends Component {
                         Do you have outside seating?
                       </div>
                       <label className={styles.customRadioBtnContainer}>
-                        <Field
+                      <Field
                           type="radio"
                           name="outsideSeating"
                           value="y"
@@ -305,12 +380,12 @@ class EditLocationInfo extends Component {
                         Do you sanitize tables after every meal?
                       </div>
                       <label className={styles.customRadioBtnContainer}>
-                        <Field type="radio" name="sanitize" value="y" />
+                        <Field type="radio" name="sanitizeTables" value="y" />
                         <div className={styles.formRadioBtn} />
                       </label>
                       <label className={styles.formRadioLabel}>Yes</label>
                       <label className={styles.customRadioBtnContainer}>
-                        <Field type="radio" name="sanitize" value="n" />
+                        <Field type="radio" name="sanitizeTables" value="n" />
                         <div className={styles.formRadioBtn} />
                       </label>
                       <label className={styles.formRadioLabel}>No</label> <br />
@@ -349,9 +424,8 @@ class EditLocationInfo extends Component {
               <Button
                 className={styles.addButton}
                 disabled={this.state.imageLoading}
-                type="submit"
-              >
-                Add
+                type="submit" >
+                Save
               </Button>
             </div>
           </Form>
@@ -360,5 +434,7 @@ class EditLocationInfo extends Component {
     );
   }
 }
+
+
 
 export default EditLocationInfo;

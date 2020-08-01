@@ -52,3 +52,9 @@
     font-size: large;
     text-align: right;
 }
+
+.editButton{
+    margin-top: 20px;
+    background-color: #30B3CA;
+    border-color: #30B3CA;
+}

@@ -129,7 +129,7 @@ class Dashboard extends Component {
                                 id={props.match.params.id}
                                 tab={props.match.params.tab}
                                 locations={this.state.locationData}
-                            />}
+                                handleUpdate={this.getData} />}
                         />
                         <Route path={this.path + '/locations'} render={(props) =>
                             <LocationsTable

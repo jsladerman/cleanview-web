@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import EditLocationInfo from "./EditLocationInfo"
+import EditLocationInfo from "./EditLocationInfo";
 import styles from "./css/LocationInfo.module.css";
 import Container from "react-bootstrap/Container";
 import Modal from "@trendmicro/react-modal";
@@ -7,6 +7,8 @@ import ClickableOverlay from "../Custom/ClickableOverlay";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
+import API from "@aws-amplify/api";
+import Button from "react-bootstrap/Button";
 
 class LocationInfo extends Component {
   constructor(props) {
@@ -15,13 +17,93 @@ class LocationInfo extends Component {
       data: this.props.data,
       showModal: false,
     };
-    console.log(this.state.data)
+    console.log(this.state.data);
+
+    this.handleUpdate = this.handleUpdate.bind(this);
+    this.loadData = this.loadData.bind(this);
   }
+
+  handleUpdate = async () => {
+    this.toggleModal();
+    this.loadData();
+  };
+
+  loadData = () => {
+    const apiName = "ManageLocationApi";
+    const path = "/location/object";
+    const requestData = {
+      headers: {},
+      response: true,
+      queryStringParameters: {
+        id: this.props.data.id,
+      },
+    };
+
+    API.get(apiName, path, requestData)
+      .then((response) => {
+        let currState = this.state;
+        currState.data = response.data.body;
+        this.setState(currState);
+      })
+      .catch((error) => {
+        console.log("Error: " + error);
+      });
+  };
 
   toggleModal = () => {
     this.setState({
-        showModal: !this.state.showModal
+      showModal: !this.state.showModal,
     });
+  };
+
+  covidResponseField = (
+    labelText,
+    valueText,
+    titleStyleClassName,
+    dataStyleClassName
+  ) => {
+    return (
+      <p className={dataStyleClassName}>
+        <span className={titleStyleClassName}>{labelText + " "} </span>{" "}
+        {valueText}
+      </p>
+    );
+  };
+
+  intToYN = (i) => {
+    if (!i) {
+      return "No";
+    }
+    return "Yes";
+  };
+
+  formatBusinessType = () => {
+    let business_type_format = "";
+    if (this.state.data.loc_type.length === 1) {
+      business_type_format = this.state.data.loc_type[0].toUpperCase();
+    } else if (this.state.data.loc_type) {
+      business_type_format =
+        this.state.data.loc_type[0].toUpperCase() +
+        this.state.data.loc_type.slice(1);
+    }
+    return business_type_format;
+  };
+
+  formatPhone = (n) => {
+    const area = n.substring(0, 3);
+    const secondSet = n.substring(3, 6);
+    const thirdSet = n.substring(6);
+    const res = "(" + area + ") " + secondSet + "-" + thirdSet;
+    return res;
+  };
+
+  ynCharToString = (c) => {
+    if (c === "y") {
+      return "Yes";
+    } else if (c === "n") {
+      return "No";
+    }
+    return c;
   };
 
   render() {
@@ -80,13 +162,16 @@ class LocationInfo extends Component {
       },
       {
         text: "What is your indoor capacity?",
-        value: 40,
+        value: this.state.data.covidResponseSurvey.indoorCapacity,
         titleStyleClass: styles.covidResponseFieldTitle,
         dataStyleClass: styles.covidResponseFieldData,
       },
       {
         text: "What is your outdoor capacity (if applicable)?",
-        value: 25,
+        value:
+          this.state.data.covidResponseSurvey.outdoorCapacity === ""
+            ? "N/A"
+            : this.state.data.covidResponseSurvey.outdoorCapacity,
         titleStyleClass: styles.covidResponseFieldTitle,
         dataStyleClass: styles.covidResponseFieldData,
       },
@@ -141,18 +226,16 @@ class LocationInfo extends Component {
 
     return (
       <div>
-        <div
-          className={styles.editLocationButtonDiv}
-          onClick={this.toggleModal}
+        <Modal
+          show={this.state.showModal}
+          onClose={this.toggleModal}
+          showCloseButton={true}
+          style={{ borderRadius: "100px" }}
         >
-            <button>edit</button>
-        </div>
-        <Modal  show={this.state.showModal}
-                onClose={this.toggleModal}
-                showCloseButton={true}
-                style={{borderRadius: '100px'}}
-        >
-          <EditLocationInfo data={this.state.data}/>
+          <EditLocationInfo
+            data={this.state.data}
+            handleUpdate={this.handleUpdate}
+          />
         </Modal>
         <div className={styles.locationInfoWrapper}>
           <Container fluid>
@@ -170,6 +253,11 @@ class LocationInfo extends Component {
                 />
               </Col>
               <Col className={styles.thirdColumn}>{businessInformation}</Col>
+              <Col>
+                <div className={styles.editLocationButtonDiv} onClick={this.toggleModal}>
+                  <Button className={styles.editButton}>Edit Data</Button>
+                </div>
+              </Col>
             </Row>
             <Row>
               <Col>
@@ -184,61 +272,17 @@ class LocationInfo extends Component {
               <Col>{covidResponseFieldsCol2}</Col>
               <Col> </Col>
             </Row>
+            <Row>
+              <Col>
+              {" "}
+              </Col>
+
+            </Row>
           </Container>
         </div>
       </div>
     );
   }
-
-  covidResponseField = (
-    labelText,
-    valueText,
-    titleStyleClassName,
-    dataStyleClassName
-  ) => {
-    return (
-      <p className={dataStyleClassName}>
-        <span className={titleStyleClassName}>{labelText + " "} </span>{" "}
-        {valueText}
-      </p>
-    );
-  };
-
-  intToYN = (i) => {
-    if (!i) {
-      return "No";
-    }
-    return "Yes";
-  };
-
-  formatBusinessType = () => {
-    let business_type_format = "";
-    if (this.state.data.loc_type.length === 1) {
-      business_type_format = this.state.data.loc_type[0].toUpperCase();
-    } else if (this.state.data.loc_type) {
-      business_type_format =
-        this.state.data.loc_type[0].toUpperCase() +
-        this.state.data.loc_type.slice(1);
-    }
-    return business_type_format;
-  };
-
-  formatPhone = (n) => {
-    const area = n.substring(0, 3);
-    const secondSet = n.substring(3, 6);
-    const thirdSet = n.substring(6);
-    const res = "(" + area + ") " + secondSet + "-" + thirdSet;
-    return res;
-  };
-
-  ynCharToString = (c) => {
-    if (c === "y") {
-      return "Yes";
-    } else if (c === "n") {
-      return "No";
-    }
-    return c;
-  };
 }
 
 export default LocationInfo;

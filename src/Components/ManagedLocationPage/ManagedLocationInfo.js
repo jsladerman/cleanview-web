@@ -43,7 +43,8 @@ class ManagedLocationInfo extends Component {
                 <Tabs activeKey={this.state.tab} onSelect={this.setTabURL}>
                     <Tab tabClassName={styles.tab} eventKey='info' title='Info'>
                         <LocationInfo
-                            data={this.state.data}/>
+                            data={this.state.data}
+                            handleUpdate={this.props.handleUpdate}/>
                     </Tab>
                     <Tab tabClassName={styles.tab} eventKey='qr' title='QR Code'>
                         <QRCodeGenerator

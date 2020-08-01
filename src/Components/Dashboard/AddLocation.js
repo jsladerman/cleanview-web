@@ -343,21 +343,13 @@ class AddLocation extends Component {
   };
 
   uploadFile = async (e) => {
-    // TODO: show loading when waiting for image to upload
     const file = e.target.files[0];
+    if(!file) { return }
 
-    let dotExt = ".jpg";
-    if (file) {
-      const name = e.target.files[0].name ?? "";
-      const lastDot = name.lastIndexOf(".");
-      dotExt = name.substring(lastDot);
-    }
-    const filename =
-      "profile_picture_" +
-      this.state.id +
-      "_" +
-      Math.floor(100000 + Math.random() * 900000) +
-      dotExt;
+    const name = e.target.files[0].name ?? "no_name";
+    const lastDot = name.lastIndexOf(".");
+    const dotExt = name.substring(lastDot);
+    const filename = "profile_picture_" + this.state.id + "_" + Math.floor(100000 + Math.random() * 900000) + dotExt;
 
     const loadingUrl = require("../../images/dashboardLoader.svg");
 
