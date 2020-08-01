@@ -191,8 +191,10 @@ class OverviewMetrics extends Component {
             let obj = data[i];
             let age = obj['age'];
             let rating = parseFloat(obj['responseRating']);
-            ageGroupData[ageIndices[age]].totalRating += rating;
-            ageGroupData[ageIndices[age]].numResponses++;
+            if(age !== undefined){
+                ageGroupData[ageIndices[age]].totalRating += rating;
+                ageGroupData[ageIndices[age]].numResponses++;
+            }
         }
 
         let maxIndex = 0;
