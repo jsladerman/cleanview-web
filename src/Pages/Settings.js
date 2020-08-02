@@ -1,30 +1,22 @@
 import React, {Component} from 'react';
 import styles from './css/Settings.module.css';
-import uuid from 'react-uuid';
-import {API, Auth} from 'aws-amplify'
+import {API} from 'aws-amplify'
+import Alert from 'react-bootstrap/Alert'
+import SettingsBox from "../Components/Dashboard/SettingsBox";
 
 class Settings extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            authLoaded: false,
-            authInfo: null,
-            settingsInfo: null
+            updateSuccess: false,
+            phoneNumError: false
         }
     }
 
-    componentDidMount() {
-        Auth.currentUserInfo()
-            .then(user => {
-                this.setState({authLoaded: true, authInfo: user});
-            })
-    }
-
     render() {
-        console.log(this.state.authInfo);
-        if (!this.state.authLoaded)
+        if (!this.props.authLoaded)
             return <img
-                src={require("../../images/dashboardLoader.svg")}
+                src={require("../images/dashboardLoader.svg")}
                 alt=''
                 height='100%'
                 width='100%'
@@ -32,85 +24,80 @@ class Settings extends Component {
         return (
             <div>
                 <div className={styles.body}>
-                    <h1 className={styles.headerText}>Settings</h1>
+                    {this.renderSuccessAlert()}
+                    {this.renderErrorAlert()}
+                    <div className={styles.settingsBox}>
+                        <h3>Your Information</h3>
+                        <div className={styles.separator}/>
+                        <br/>
+                        <SettingsBox
+                            authInfo={this.props.authInfo}
+                            settingsInfo={this.props.settingsInfo}
+                            submitFunc={this.updateSettings}
+                            phoneNumErrorFunc={this.triggerErrorAlert}
+                        />
+                    </div>
                 </div>
             </div>
 
         );
     }
 
-
-    getbyId = (accountId) => {
-        let apiName = 'AccountSettingsApi'
-        let path = '/account/manager'
-        const requestParams = {
-            headers: {},
-            queryStringParameters: {
-                id: accountId
-            }
-        }
-
-        API.get(apiName, path, requestParams)
-            .then(response => {
-                console.log('Account: ' + response);
-            })
-            .catch(error => {
-                console.log('Error: ' + error)
-            })
-    }
-
-    createAccount = (params) => {
-        let apiName = 'AccountSettingsApi'
-        let path = '/account'
-        const requestParams = {
-            headers: {},
-            body: {
-                id: uuid(), // mandatory
-                email: params.email,
-                username: '',
-                firstName: params.firstName,
-                lastName: params.lastName,
-                phone: params.phone,
-                creationDate: params.creationDate
-                // whatever u wanna add
-            }
-        }
-
-        API.post(apiName, path, requestParams)
-            .then(response => {
-                console.log('Account creation successful: ' + response);
-            })
-            .catch(error => {
-                console.log('Error in account creation: ' + error)
-            })
-
-    }
-
-    updateAccount = (params) => {
+    updateSettings = (params) => {
         let apiName = 'AccountSettingsApi'
         let path = '/account/manager'
         const requestData = {
             headers: {},
             response: true,
-            // plz include all of below parameters, if u need more or less, lmk and we can change the patch lambda together
+            // plz include all of below parameters
+            // if u need more or less, lmk and we can change the patch lambda together
             body: {
-                id: params.id, // this is to identify the record
-                email: params.email, // the rest are for updating
-                username: '',
+                id: this.props.authInfo.username, // this is to identify the record
+                email: this.props.authInfo.attributes.email, // the rest are for updating
+                username: this.props.authInfo.username,
                 firstName: params.firstName,
                 lastName: params.lastName,
-                phone: params.phone,
+                phone: params.phone
             },
         }
 
         API.patch(apiName, path, requestData)
-            .then(response => {
-                console.log("Update successful", response);
-                // call the get request and ensure the data is there
+            .then(() => {
+                this.setState({updateSuccess: true, phoneNumError: false})
+                this.props.getSettingsFunc(this.props.authInfo.username)
             })
             .catch(error => {
                 console.log("Error: " + error)
             })
+    }
+
+    renderSuccessAlert = () => {
+        if (this.state.updateSuccess)
+            return (
+                <Alert variant="success" dismissible
+                       onClose={() => this.setState({updateSuccess: false})}
+                       style={{whiteSpace: 'normal'}}>
+                    <Alert.Heading>Information Updated Successfully</Alert.Heading>
+                </Alert>
+            )
+    }
+
+    triggerErrorAlert = () => {
+        this.setState({phoneNumError: true, updateSuccess: false});
+    }
+
+    renderErrorAlert = () => {
+        if (this.state.phoneNumError)
+            return (
+                <Alert variant="danger" dismissible
+                       onClose={() => this.setState({phoneNumError: false})}
+                       style={{whiteSpace: 'normal'}}>
+                    <Alert.Heading>Error</Alert.Heading>
+                    <div>
+                        Phone number must be in this format: 800-555-1234
+                    </div>
+                </Alert>
+            )
     }
 }
 

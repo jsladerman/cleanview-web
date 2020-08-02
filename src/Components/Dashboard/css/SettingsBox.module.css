@@ -1,7 +1,6 @@
-.body {
-    /*display: flex;*/
-    /*justify-content: center;*/
-    /*flex-wrap: nowrap;*/
+.formLabelInputGroup {
+    display: inline-block;
+    width: 48.1%;
 }
 
 .formLabel {
@@ -10,28 +9,27 @@
 }
 
 .formInputName {
-    width: 150px;
+    width: 100%;
 }
 
 .formInputPhone {
-    width: 50px;
+    position: relative;
+    margin-right: 20px;
+    width: 100%;
 }
 
 .formSubmitBtn {
+    position: absolute;
     font-family: "Roboto", sans-serif;
     font-weight: bold;
     border-width: 0;
     background-color: #30B3CA;
-    float: right;
-    margin-right: 18px;
+    padding: 5px 22px;
+    right: 30px;
 }
 
 .formSubmitBtn:hover {
     background-color: #51cbe0;
-}
-
-.formSubmitBtn:active {
-    background-color: red;
 }
 
 .formSubmitBtn:focus {

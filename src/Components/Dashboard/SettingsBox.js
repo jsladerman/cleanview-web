@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import styles from './css/SettingsBox.module.css';
 import {Field, Form, Formik} from "formik";
 import Button from "react-bootstrap/Button";
-import InputGroup from "react-bootstrap/InputGroup"
 import FormControl from "react-bootstrap/FormControl"
 
 class SettingsBox extends Component {
@@ -29,34 +28,44 @@ class SettingsBox extends Component {
         if (!this.state.settingsInfo) {
             return null;
         }
+        const phone = this.state.settingsInfo.phone;
+        let formattedPhoneNum = '';
+        if (this.state.settingsInfo.phone)
+            formattedPhoneNum = phone.substr(0, 3) + '-'
+                + phone.substr(3, 3)
+                + '-' + phone.substr(6, 4);
         return (
             <div>
-                <div className={styles.body}>
+                <div>
                     <Formik
                         initialValues={{
                             firstName: this.state.settingsInfo.firstName,
                             lastName: this.state.settingsInfo.lastName,
-                            phone: this.state.settingsInfo.phone
+                            phone: formattedPhoneNum
                         }}
                         onSubmit={this.onSubmit}>
                         <Form>
-                            <label className={styles.formLabel}
-                                   style={{marginLeft: '12px'}}>First Name</label>
-                            <label className={styles.formLabel}
-                                   style={{marginLeft: '130px'}}>Last Name</label>
-                            <InputGroup className="">
-                                <Field as={FormControl} style={{width: '16px', marginRight: '20px'}}
+                            <div className={styles.formLabelInputGroup}
+                                 style={{marginRight: '20px'}}>
+                                <label className={styles.formLabel}
+                                       style={{marginLeft: '12px'}}>First Name</label>
+                                <Field as={FormControl}
                                        className={styles.formInputName} name='firstName'
                                        placeholder='John'/>
-                                <Field as={FormControl} style={{width: '16px', marginRight: '20px'}}
+                            </div>
+                            <div className={styles.formLabelInputGroup}>
+                                <label className={styles.formLabel}
+                                       style={{marginLeft: '12px'}}>Last Name</label>
+                                <Field as={FormControl}
                                        className={styles.formInputName} name='lastName'
                                        placeholder='Smith'/>
-                            </InputGroup><br/>
+                            </div>
+                            <br/><br/>
                             <label className={styles.formLabel}
                                    style={{marginLeft: '12px'}}>Phone Number
                             </label>
-                            <Field as={FormControl} style={{width: '405px', marginRight: '20px'}}
-                                   className={styles.formInputName} name='phone'
+                            <Field as={FormControl}
+                                   className={styles.formInputPhone} name='phone'
                                    placeholder='800-555-1234'/><br/>
                             <Button type='submit' variant='info'
                                     className={styles.formSubmitBtn}>
@@ -72,7 +81,7 @@ class SettingsBox extends Component {
     onSubmit = (values) => {
         const phoneRegEx = /^\d{3}-\d{3}-\d{4}$/;
         if (!phoneRegEx.test(values.phone))
-            alert("Phone number must be in this format: 800-555-1234");
+            this.props.phoneNumErrorFunc()
         else {
             values.phone = this.parsePhoneNumber(values.phone)
             this.props.submitFunc(values);

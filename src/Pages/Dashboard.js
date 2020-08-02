@@ -13,15 +13,17 @@ import '@trendmicro/react-modal/dist/react-modal.css';
 import Sidebar from 'react-sidebar'
 import LocationsTable from "../Components/Dashboard/LocationsTable";
 import ManagedLocationInfo from "../Components/ManagedLocationPage/ManagedLocationInfo";
+import Settings from "../Pages/Settings";
 import SettingsBox from "../Components/Dashboard/SettingsBox";
 import Modal from "@trendmicro/react-modal";
-import uuid from "react-uuid";
+import Alert from "react-bootstrap/Alert";
 
 class Dashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
             redirect: null,
+            phoneNumError: false,
             authLoaded: false,
             authInfo: null,
             settingsInfo: null,
@@ -88,17 +90,24 @@ class Dashboard extends Component {
             return (
                 <Modal show={true}
                        showCloseButton={false}
-                       className={styles.settingsModal}>
-                    <div>
+                       style={{
+                           backgroundColor: 'transparent',
+                           border: '0',
+                           boxShadow: '0 0 0 0 rgba(0,0,0,0)'
+                       }}>
+                    <div className={styles.settingsModalDiv}
+                         style={{height: this.state.phoneNumError ? '473px' : '375px'}}>
                         <h1 style={{textAlign: 'center', fontWeight: 'bold', fontFamily: 'Roboto, sans-serif'}}>
                             Welcome to CleanView!
                         </h1>
                         <h4 style={{textAlign: 'center', fontFamily: 'Roboto, sans-serif'}}>
                             Please complete your profile
                         </h4><br/>
+                        {this.renderErrorAlert('Phone number must be in this format: 800-555-1234')}
                         <SettingsBox
                             authInfo={this.state.authInfo}
                             submitFunc={(values) => this.createSettings(values)}
+                            phoneNumErrorFunc={this.triggerErrorAlert}
                         />
                     </div>
                 </Modal>
@@ -128,7 +137,11 @@ class Dashboard extends Component {
                         <h1 style={{padding: '20px'}}>Billing Page</h1>}
                     />
                     <Route path={this.path + '/settings'} render={(props) =>
-                        <SettingsBox
+                        <Settings
+                            authInfo={this.state.authInfo}
+                            authLoaded={this.state.authLoaded}
+                            settingsInfo={this.state.settingsInfo}
+                            getSettingsFunc={this.getSettings}
                             {...props}/>}
                     />
                     <Redirect to="/home/locations"/>
@@ -209,13 +222,31 @@ class Dashboard extends Component {
 
         API.post(apiName, path, requestParams)
             .then(response => {
-                console.log('Settings created successfully: ' + JSON.stringify(response));
+                console.log('Settings created successfully: ' + response);
                 this.getSettings(this.state.authInfo.username)
             })
             .catch(error => {
                 console.log('Error in settings create: ' + error)
             })
 
+    }
+
+    triggerErrorAlert = () => {
+        this.setState({phoneNumError: true});
+    }
+
+    renderErrorAlert = (error) => {
+        if (this.state.phoneNumError)
+            return (
+                <Alert variant="danger" dismissible
+                       onClose={() => this.setState({phoneNumError: false})}
+                       style={{whiteSpace: 'normal'}}>
+                    <Alert.Heading>Error</Alert.Heading>
+                    <div>
+                        {error}
+                    </div>
+                </Alert>
+            )
     }
 
     redirect = (path) => {
