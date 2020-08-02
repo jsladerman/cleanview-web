@@ -30,6 +30,12 @@ class LocationInfo extends Component {
     this.loadData();
   };
 
+  handleDelete = async () => {
+    this.toggleModal();
+    this.props.handleUpdate();
+    this.setState({ redirect: '/home/locations' });
+  }
+
   loadData = () => {
     const apiName = "ManageLocationApi";
     const path = "/location/object";
@@ -57,38 +63,6 @@ class LocationInfo extends Component {
       showModal: !this.state.showModal,
     });
   };
-
-  deleteFunc = () => {
-    const theyAreSure = window.confirm("Are you sure you want to delete this?")
-    if (!theyAreSure)
-      return
-    const theyAreReallySure = window.confirm("This cannot be undone. Are you 100% sure?")
-    if (!theyAreReallySure)
-      return
-
-    const apiName = 'ManageLocationApi';
-    const path = '/location/active';
-    const requestData = {
-      headers: {},
-      response: true,
-      body: {
-        id: this.props.data.id
-      },
-    }
-
-    API.patch(apiName, path, requestData)
-      .then(response => {
-        window.alert("Delete successful.")
-        this.props.handleUpdate()
-        this.setState({ redirect: '/home/locations' })
-      })
-      .catch(error => {
-        console.log("Error: ", error)
-        window.alert("Delete unsuccessful.")
-      })
-
-  }
-
 
   covidResponseField = (
     labelText,
@@ -272,6 +246,7 @@ class LocationInfo extends Component {
           <EditLocationInfo
             data={this.state.data}
             handleUpdate={this.handleUpdate}
+            handleDelete={this.handleDelete}
           />
         </Modal>
         <div className={styles.locationInfoWrapper}>
@@ -311,13 +286,6 @@ class LocationInfo extends Component {
             <Row>
               <Col>
                 {" "}
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <div className={styles.deleteLocationButtonDiv} onClick={this.deleteFunc}>
-                  <Button variant="danger"> Delete Location </Button>
-                </div>
               </Col>
             </Row>
           </Container>
