@@ -18,11 +18,19 @@
     font-weight: bold;
 }
 
-.analyticsDashboardSubheader2{
+.filteringWidgetHeader{
+    margin-top: 3px;
     float: left;
     font-size: 20px;
     font-weight: bold;
-    margin-top: 3px;
+    margin-right: 38px;
+
+}
+
+.filteringDemographicChartsWidgetHeader{
+    float: left;
+    font-size: 20px;
+    font-weight: bold;
     margin-right: 38px;
 }
 

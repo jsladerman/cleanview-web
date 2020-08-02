@@ -27,7 +27,7 @@ class OverviewMetrics extends Component {
 
         return (
             <div>
-                <Container>
+                <div className={styles.overviewMetrics}>
                     <Row>
                         {/* Average Customer Satisfaction */}
                         <div className="col-md-5" style={{paddingLeft: '5px'}}>
@@ -81,7 +81,7 @@ class OverviewMetrics extends Component {
                             </Container>
                         </Col>
                     </Row>
-                </Container>
+                </div>
             </div>
         )
     }
