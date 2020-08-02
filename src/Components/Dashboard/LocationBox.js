@@ -29,13 +29,10 @@ class LocationBox extends Component {
                         <Card.Img variant="top" style={{borderRadius: '8px', height: '160px'}}
                                   src={imgSrc}/>
                         <div className={styles.body}>
-                            <div className={styles.flexContainer}>
-                                <div className={styles.locationText}> {this.props.locationName}</div>
-                                <div className={styles.regularText}> Last Updated:</div>
-                            </div>
-                            <div className={styles.flexContainer}>
-                                <div className={styles.regularText}> Rating: {this.state.stars}</div>
-                                <div className={styles.regularText}> date placeholder{this.props.lastUpdated}</div>
+                            <div className={styles.locationText}> {this.props.locationName}</div>
+                            <div className={styles.regularText}>
+                                {/* <div style={{marginRight:'3px'}}>Current Rating:</div> */}
+                                {this.state.stars}
                             </div>
                         </div>
                     </ClickableOverlay>
@@ -46,20 +43,30 @@ class LocationBox extends Component {
 
     openLocation = () => {
         this.setState({
-            redirect:  '/home/locations/' + this.props.id + '/info'
+            redirect: '/home/locations/' + this.props.id + '/info'
         })
     }
 
     renderRating = () => {
         const arr = [];
-        for (let i = 0; i < this.props.rating; i++) {
-            arr.push(<img
-                src={require("../../images/star.png")}
-                height="16px"
-                alt=''
-                key={i}
-            />);
+        const starImg = require('../../images/star.svg');
+        const ratingFraction = this.props.rating % 1;
+        let fractionalWidth = 16 * (ratingFraction === 0 ? 1 : ratingFraction);
+        fractionalWidth = (this.props.rating !== 0 ? fractionalWidth : 0);
+        for (let i = 0; i < this.props.rating - 1; i++) {
+            arr.push(<div key={i} style={{
+                backgroundImage: 'url(' + starImg + ')',
+                height: '16px',
+                width: '16px',
+                marginTop: '3px'
+            }}/>);
         }
+        arr.push(<div key={this.props.rating} style={{
+            backgroundImage: 'url(' + starImg + ')',
+            height: '16px',
+            width: fractionalWidth,
+            marginTop: '3px',
+        }}/>);
         this.setState({stars: arr});
     }
 
@@ -69,6 +76,7 @@ const cardStyle = {
     width: '250px',
     height: 'auto',
     borderRadius: '8px',
+    borderWidth: '0',
     flexShrink: '0',
 }
 

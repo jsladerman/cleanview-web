@@ -18,8 +18,8 @@ class LocationsTable extends Component {
             <div>
                 <Modal show={this.state.showModal}
                        onClose={this.toggleModal}
-                       showCloseButton={false}
-                       style={{borderRadius: '100px'}}>
+                       showCloseButton={true}
+                       style={{borderRadius: '100px', margin: '20px'}}>
                     <AddLocation modalFunc={() => {
                                 this.toggleModal();
                                 this.props.getDataFunc();
@@ -47,13 +47,14 @@ class LocationsTable extends Component {
     renderLocations = () => {
         if (this.props.locations && this.props.locations.length > 0)
             return this.props.locations.map(loc => {
-                return (
+                if (loc.active)
+                return ( 
                     <LocationBox
                         locationName={loc.loc_name}
                         key={loc.id + 'key'}
                         imageUrl={loc.imageUrl}
                         id={loc.id}
-                        rating={3.5}
+                        rating={0}
                     />
                 )
             });
@@ -66,7 +67,6 @@ class LocationsTable extends Component {
             showModal: !this.state.showModal
         });
     };
-
 }
 
 export default LocationsTable;

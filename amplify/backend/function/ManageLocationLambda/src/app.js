@@ -27,6 +27,8 @@ if(process.env.ENV && process.env.ENV !== "NONE") {
 let environmentURLSurvey = "https://d9uqja1id6.execute-api.us-east-1.amazonaws.com/dev"
 if(process.env.ENV === 'dev') {
   environmentURLSurvey = "https://d9uqja1id6.execute-api.us-east-1.amazonaws.com/dev"
+} else if(process.env.ENV === 'develop') {
+  environmentURLSurvey = "https://tsro629xid.execute-api.us-east-1.amazonaws.com/develop"
 } else if(process.env.ENV === 'staging') {
   environmentURLSurvey = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
 } else if(process.env.ENV === 'prod') {
@@ -72,11 +74,11 @@ const convertUrlType = (param, type) => {
 app.get(path, function(req, res){
   const queryParams = {
     TableName: tableName,
-    KeyConditionExpression: "manager = :manager",
     IndexName: "ManagerIndex",
+    KeyConditionExpression: "manager = :manager",
     ExpressionAttributeValues: {
       ":manager": req.query.manager,
-    }
+    },
   };
 
   dynamodb.query(queryParams, (err, data) => {
@@ -130,10 +132,12 @@ app.post(path, function (req, res) {
   var exprDate = new Date(d.setMonth(d.getMonth()+1))
   req.body["subscription_end_date"] = exprDate.toDateString()
   req.body["menu_link"] = ''
+  req.body['active'] = 1
   req.body["sublocations"] = [{
-    name: 'Main',
+    name: 'main',
     id: uuid(),
-    color: '000000'
+    color: '000000',
+    active: 1
   }]
 
   let putItemParams = {
@@ -206,7 +210,78 @@ app.patch(path + '/sublocations', function(req, res) {
   dynamodb.update(params, function(err, data) {
     if (err) {
       res.statusCode = 500;
-      res.json({ error: err, url: req.url, body: req.body, url: req.body.menu_link});
+      res.json({ error: err, url: req.url, body: req.body});
+    } else {
+      res.json({ success: "patch call succeed!", url: req.url, data: data });
+    }
+  });
+});
+
+/************************************
+* HTTP patch to update location info *
+*************************************/
+
+app.patch(path + '/info', function(req, res) {
+  if (userIdPresent) {
+    req.body["userId"] =
+      req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
+  }
+
+  var params = {
+    TableName: tableName,
+    Key: { "id": req.body.id },
+    UpdateExpression: "set imageUrl = :IMG, loc_name = :LN, email = :EM, phone = :PH, loc_type = :LT, addrLine1 = :AL1, addrLine2 = :AL2, addrState = :AS, addrCity = :AC, addrZip = :AZ, covidResponseSurvey = :CRS",
+    ExpressionAttributeValues: {
+      ":IMG": req.body.imageUrl,
+      ":LN": req.body.loc_name,
+      ":EM": req.body.email,
+      ":PH": req.body.phone,
+      ":LT": req.body.loc_type,
+      ":AL1": req.body.addrLine1,
+      ":AL2": req.body.addrLine2,
+      ":AC": req.body.addrCity,
+      ":AS": req.body.addrState,
+      ":AZ": req.body.addrZip,
+      ":CRS": req.body.covidResponseSurvey
+    },
+    ReturnValues: "UPDATED_NEW"
+  }
+
+  dynamodb.update(params, function(err, data) {
+    if (err) {
+      res.statusCode = 500;
+      res.json({ error: err, url: req.url, body: req.body});
+    } else {
+      res.json({ success: "patch call succeed!", url: req.url, data: data });
+    }
+  });
+})
+
+/************************************
+* HTTP patch to update active *
+*************************************/
+
+app.patch(path + '/active', function(req, res) {
+  if (userIdPresent) {
+    req.body["userId"] =
+      req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
+  }
+  var params = {
+    TableName: tableName,
+    Key: {
+      "id": req.body.id
+    },
+    UpdateExpression: "set active = :ac",
+    ExpressionAttributeValues: {
+      ":ac": 0
+    },
+    ReturnValues:"UPDATED_NEW"
+  }
+
+  dynamodb.update(params, function(err, data) {
+    if (err) {
+      res.statusCode = 500;
+      res.json({ error: err, url: req.url, body: req.body});
     } else {
       res.json({ success: "patch call succeed!", url: req.url, data: data });
     }

@@ -32,6 +32,8 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 let environmentURL = "https://d9uqja1id6.execute-api.us-east-1.amazonaws.com/dev"
 if(process.ENV === 'dev') {
   environmentURL = "https://d9uqja1id6.execute-api.us-east-1.amazonaws.com/dev"
+} else if(process.env.ENV === 'develop') {
+  environmentURL = "https://tsro629xid.execute-api.us-east-1.amazonaws.com/develop"
 } else if(process.env.ENV === 'staging') {
   environmentURL = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
 } else if(process.env.ENV === 'prod') {
@@ -132,14 +134,20 @@ app.get("/survey/:id", function (req, res) {
             font-size: 16px;
             margin: 15px 0px 5px 0px;
           }
+
+          .age-selector{
+            justify-items: center;
+            align-items: center;
+          }
       
           .selection-button {
             /* Button design */
             background-color: #ffffff;
             border-radius: 10px;
+            position: relative;
             display: inline-block;
             cursor: pointer;
-            width: 55px;
+            width: 58px;
       
             /* Text properties */
             color: #666666;
@@ -155,6 +163,38 @@ app.get("/survey/:id", function (req, res) {
             background: linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
             background-color: #f6f6f6;
           }
+
+          #under-12 {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+
+            /* Button design */
+            border: none;
+            background-color: #ffffff;
+            border-radius: 10px;
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            width: 79px;
+      
+            /* Text properties */
+            color: #666666;
+            font-size: 12px;
+            font-weight: 150px;
+            padding: 9px 5px;
+            text-align: center;
+      
+            /* Buttons which wrap to the next line will have spacing between top line */
+            margin: 0px 0px 10px 0px;
+          }
+
+          #under-12:hover {
+            background: linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
+            background-color: #f6f6f6;
+          }
+
+
       
           amp-selector [option][selected] {
             outline: 0px;
@@ -164,7 +204,7 @@ app.get("/survey/:id", function (req, res) {
             position: relative;
           }
       
-          input[type="submit"] {
+          #submission {
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
@@ -187,11 +227,11 @@ app.get("/survey/:id", function (req, res) {
             margin: 0px 0px 10px 0px;
           }
       
-          input[type="submit"]:hover {
+          #submission:hover {
             background-color: #119c84;
           }
       
-          input[type="submit"]:active {
+          #submission:active {
             outline: 0px;
             background: #119c84;
             font-weight: normal;
@@ -336,7 +376,8 @@ app.get("/survey/:id", function (req, res) {
                       selectedOption: event.targetOption,
                       allSelectedOptions: event.selectedOptions
                     })'>
-                    <span class='selection-button' option='0-17'>0 to 17</span>
+                    <span option='young'><input id='under-12' type='submit' value='Under 13'></input></span>
+                    <span class='selection-button' option='13-17'>13 to 17</span>
                     <span class='selection-button' option='18-25'>18 to 25</span>
                     <span class='selection-button' option='26-35'>26 to 35</span>
                     <span class='selection-button' option='36-45'>36 to 45</span>
@@ -358,12 +399,13 @@ app.get("/survey/:id", function (req, res) {
             <div>
               <p>How satisfied are you with ${name}'s overall COVID-19 response?</p>
               <label>Poor</label>
-              <input type='range' id='slider' name='responseRating' min='0' max='5' step='.5'>
+              <input type='hidden' id='ratingValid' name='ratingValid' value='0' ></input>
+              <input type='range' id='slider' name='responseRating' min='0' max='5' oninput='document.getElementById(\"ratingValid\").value = 1' step='.5'></input>
               <label>Excellent</label>
             </div>
       
             <div id='submit-button-div'>
-              <input type='submit' value='Go to Menu'></input>
+              <input id='submission' type='submit' value='Go to Menu'></input>
             </div>
       
           </fieldset>

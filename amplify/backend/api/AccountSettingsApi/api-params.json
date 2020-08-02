@@ -1,0 +1,40 @@
+{
+    "paths": [
+        {
+            "name": "/account",
+            "lambdaFunction": "AccountSettingsLambda",
+            "privacy": {
+                "private": true,
+                "auth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH"
+                ]
+            }
+        }
+    ],
+    "resourceName": "AccountSettingsApi",
+    "apiName": "AccountSettingsApi",
+    "functionArns": [
+        {
+            "lambdaFunction": "AccountSettingsLambda"
+        }
+    ],
+    "privacy": {
+        "auth": 1,
+        "unauth": 0,
+        "authRoleName": "amplify-cleanviewweb-dev-143211-authRole",
+        "unAuthRoleName": "amplify-cleanviewweb-dev-143211-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "AccountSettingsLambda",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}

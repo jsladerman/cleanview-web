@@ -70,5 +70,30 @@
                 "GetSurveyResponses": {}
             }
         }
+    },
+    "develop": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-cleanviewweb-develop-162445-authRole",
+            "UnauthRoleArn": "arn:aws:iam::676044961909:role/amplify-cleanviewweb-develop-162445-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::676044961909:role/amplify-cleanviewweb-develop-162445-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-cleanviewweb-develop-162445-deployment",
+            "UnauthRoleName": "amplify-cleanviewweb-develop-162445-unauthRole",
+            "StackName": "amplify-cleanviewweb-develop-162445",
+            "StackId": "arn:aws:cloudformation:us-east-1:676044961909:stack/amplify-cleanviewweb-develop-162445/b6f0f100-d2a2-11ea-a5ee-123f12969ebd",
+            "AmplifyAppId": "d3jrprdg7dypqc"
+        },
+        "categories": {
+            "auth": {
+                "cleanviewwebdd68a0c2": {}
+            },
+            "function": {
+                "SubmitResponseLambda": {},
+                "ManageLocationLambda": {},
+                "CreateSurveyLambda": {},
+                "GetSurveyResponses": {},
+                "AccountSettingsLambda": {}
+            }
+        }
     }
 }

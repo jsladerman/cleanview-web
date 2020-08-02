@@ -9,3 +9,7 @@ div.tooltip-piechart {
     pointer-events: none;
     font-size: 14px;
 }
+
+#piecharttitle{
+    font-weight: bold;
+}

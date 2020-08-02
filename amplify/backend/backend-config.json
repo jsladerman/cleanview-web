@@ -19,6 +19,10 @@
 		"LocationStorage": {
 			"service": "S3",
 			"providerPlugin": "awscloudformation"
+		},
+		"accounts": {
+			"service": "DynamoDB",
+			"providerPlugin": "awscloudformation"
 		}
 	},
 	"function": {
@@ -97,6 +101,25 @@
 					}
 				}
 			]
+		},
+		"AccountSettingsLambda": {
+			"build": true,
+			"providerPlugin": "awscloudformation",
+			"service": "Lambda",
+			"dependsOn": [
+				{
+					"category": "storage",
+					"resourceName": "accounts",
+					"attributes": [
+						"Name",
+						"Arn"
+					],
+					"attributeEnvMap": {
+						"Name": "TABLE_NAME",
+						"Arn": "TABLE_ARN"
+					}
+				}
+			]
 		}
 	},
 	"api": {
@@ -143,6 +166,20 @@
 				{
 					"category": "function",
 					"resourceName": "GetSurveyResponses",
+					"attributes": [
+						"Name",
+						"Arn"
+					]
+				}
+			]
+		},
+		"AccountSettingsApi": {
+			"service": "API Gateway",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [
+				{
+					"category": "function",
+					"resourceName": "AccountSettingsLambda",
 					"attributes": [
 						"Name",
 						"Arn"

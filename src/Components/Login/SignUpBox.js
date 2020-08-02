@@ -52,12 +52,12 @@ class SignUpBox extends Component {
                         <div className={styles.checkBoxLabel}>
                             I agree to CleanView's {' '}
                             <div className={styles.linkText}
-                                 onClick={() => console.log('Terms')}>
+                                 onClick={() => console.log('Terms')}> {/* TODO */}
                                 Terms of Use {' '}
                             </div>
                             and {' '}
                             <div className={styles.linkText}
-                                 onClick={() => console.log('Privacy Policy')}>
+                                 onClick={() => console.log('Privacy Policy')}> {/* TODO */}
                                 Privacy Policy
                             </div>
                         </div>

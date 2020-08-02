@@ -32,7 +32,7 @@ class BinaryPieChart extends Component {
     }
 
     function colorSelector(s) {
-      return s === "Yes" ? "#23C9AD" : "#333333";
+      return s === "Yes" ? "#30B3CA" : "#191A26";
     }
 
     const data_ready = pie(d3.entries(data));
@@ -47,6 +47,15 @@ class BinaryPieChart extends Component {
     // Pie Chart Creation
     const node = this.node;
     const piechart = d3.select(node);
+
+    piechart
+      .append("text")
+      .attr("id", "piecharttitle")
+      .attr("x", width / 2)
+      .attr("y", margin / 2)
+      .attr("text-anchor", "middle")
+      .style("font-size", this.props.titleSize)
+      .text(this.props.titleText);
 
     piechart
       .append("g")
@@ -73,9 +82,9 @@ class BinaryPieChart extends Component {
 
         div
           .html(
-            d.data.value.toFixed(3) * 100 +
-              "% of people said " +
-              d.data.key.toLowerCase()
+            (d.data.value * 100).toFixed(0) +
+              "% of people " +
+              (d.data.key.toLowerCase() === "yes" ? this.props.yesLabel : this.props.noLabel)
           )
           .style("left", d3.event.pageX + 10 + "px")
           .style("top", d3.event.pageY - 15 + "px");

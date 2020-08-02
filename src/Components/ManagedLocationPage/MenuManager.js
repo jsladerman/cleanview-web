@@ -31,7 +31,7 @@ class MenuManager extends Component {
             );
         } else {
             return(
-                <p>
+                <div>
                     <div>
                         Your menu link right now is: {" "}
                         <a rel="noopener noreferrer" href={this.state.menu_link} target="_blank">{this.state.menu_link}</a>
@@ -40,7 +40,7 @@ class MenuManager extends Component {
                         If that doesn't look right, change it below.
                     </div>
                     <br />
-                </p>
+                </div>
             );
         }
     }
@@ -88,7 +88,6 @@ class MenuManager extends Component {
 
         API.patch(apiName, path, requestData)
             .then(response => {
-                console.log("Update successful");
                 this.updateDataFromDB()
             })
             .catch(error => {
@@ -115,7 +114,7 @@ class MenuManager extends Component {
     render() {
         return(
             <div class="container-fluid text-wrap" className={styles.menuManagerCodeBlock}>
-            <h2>Menu Manager</h2>
+            <h2 id={styles.menuManagerHeader}>Menu Manager</h2>
 
             <h4 className={styles.menuManagerSubheader}>Current Menu</h4>
             {this.titleText(this.state.menu_link)}
@@ -217,14 +216,12 @@ class PDFMenuUpload extends Component {
             contentDisposition: 'inline; filename="' + filename + '"',
             contentType: 'application/pdf'
         })
-        .then(result => console.log(result))
         .catch(err => console.log(err))
 
         Storage.get(filename)
             .then(resultURL => {
                 const idx = resultURL.indexOf(filename)
                 const url = resultURL.substring(0, idx) + '' + filename
-                console.log(url)
                 handleChangeFunc(url)
             })
             .catch(err => console.log(err))
