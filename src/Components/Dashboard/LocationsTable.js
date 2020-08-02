@@ -67,7 +67,6 @@ class LocationsTable extends Component {
             showModal: !this.state.showModal
         });
     };
-
 }
 
 export default LocationsTable;
