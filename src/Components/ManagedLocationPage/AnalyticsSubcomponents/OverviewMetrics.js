@@ -9,9 +9,27 @@ class OverviewMetrics extends Component {
     //  data - all of the survey responses
 
     render() {
-        let dayAverage = this.averageRatingByDays(1);
-        let weekAverage = this.averageRatingByDays(7);
-        let monthAverage = this.averageRatingByDays(30);
+        let dayAverageData = this.averageRatingByDays(1);
+        let weekAverageData = this.averageRatingByDays(7);
+        let monthAverageData = this.averageRatingByDays(30);
+
+        let dayAverageString = dayAverageData.average + " / 5";
+        let weekAverageString = weekAverageData.average + " / 5";
+        let monthAverageString = monthAverageData.average + " / 5";
+
+        let dayAverageResponses = dayAverageData.numResponses;
+        let weekAverageResponses = weekAverageData.numResponses;
+        let monthAverageResponses = monthAverageData.numResponses;
+
+        if(dayAverageResponses === 0){
+            dayAverageString = "No data";
+        }
+        if(weekAverageResponses === 0){
+            weekAverageString = "No data";
+        }
+        if(monthAverageResponses === 0){
+            monthAverageString = "No data";
+        } 
 
         let ageGroupStats = this.ageGroupAverage();
         let bestAgeGroup = ageGroupStats.bestAgeGroup.ageGroup;
@@ -41,18 +59,18 @@ class OverviewMetrics extends Component {
                                     </Row>
                                     <Row>
                                         <div className="col-md-3" style={{marginTop:'14px'}}>24 hours</div>
-                                        <Col className={styles.cell1} >{dayAverage.average} / 5</Col>
-                                        <Col className={styles.cell1}>{dayAverage.numResponses}</Col>
+                                        <Col className={styles.cell1}>{dayAverageString}</Col>
+                                        <Col className={styles.cell1}>{dayAverageResponses}</Col>
                                     </Row>
                                     <Row>
                                         <div className="col-md-3" style={{marginTop:'14px'}}>Week</div>
-                                        <Col className={styles.cell2}>{weekAverage.average} / 5</Col>
-                                        <Col className={styles.cell2}>{weekAverage.numResponses}</Col>
+                                        <Col className={styles.cell2}>{weekAverageString}</Col>
+                                        <Col className={styles.cell2}>{weekAverageResponses}</Col>
                                     </Row>
                                     <Row>
                                         <div className="col-md-3" style={{marginTop:'14px'}}>Month</div>
-                                        <Col className={styles.cell3}>{monthAverage.average} / 5</Col>
-                                        <Col className={styles.cell3}>{monthAverage.numResponses}</Col>
+                                        <Col className={styles.cell3}>{monthAverageString}</Col>
+                                        <Col className={styles.cell3}>{monthAverageResponses}</Col>
                                     </Row>
                                 </Container>
                             </div>
