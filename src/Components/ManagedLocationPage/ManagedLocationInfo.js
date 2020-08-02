@@ -36,9 +36,14 @@ class ManagedLocationInfo extends Component {
             return <Redirect to={this.state.redirect}/>
         }
         if (this.state.data.length === 0) {
-            return <h1>LOADING</h1>;
+            return <img
+                src={require("../../images/dashboardLoader.svg")}
+                alt=''
+                height='100%'
+                width='100%'
+            />;
         }
-        
+
         return (
             <div>
                 <Tabs activeKey={this.state.tab} onSelect={this.setTabURL}>
