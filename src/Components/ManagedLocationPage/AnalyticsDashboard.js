@@ -229,10 +229,10 @@ class AnalyticsDashboard extends Component {
                             </Formik>
                             </div>
                         </Col>
-                        <div className="col-lg-5"/>
-                        <Col style={{marginTop:'4px', fontWeight:'bold'}}>
-                            {this.state.filteredDataForDemographicCharts.length} Responses
-                        </Col>
+                        <div className="col-md-4"/>
+                        <div className="col-md-3" style={{marginTop:'4px', fontWeight:'bold'}}>
+                            Number of responses: {this.state.filteredDataForDemographicCharts.length}
+                        </div>
                     </Row>
                 </Container>
             </div>
@@ -240,6 +240,9 @@ class AnalyticsDashboard extends Component {
     }
 
     renderFilteredOverview = () => {
+        if(this.state.filteredData.length == 0){
+            return(<h5>No data meets the filtering criteria.</h5>)
+        }
         return (
             <div className={styles.filteredOverview}>
                 <h4>Statistics</h4>
@@ -260,7 +263,10 @@ class AnalyticsDashboard extends Component {
     /************************************************************************************************/
 
     renderDemographicCharts = () => {
-        if (!this.state.rerenderCharts) {
+        if(this.state.filteredDataForDemographicCharts.length == 0){
+            return(<div>No data meets the filtering criteria.</div>)
+        }
+        else if (!this.state.rerenderCharts) {
             return (
                 <Container>
                 <Row className={styles.rowDivider}>
@@ -298,7 +304,11 @@ class AnalyticsDashboard extends Component {
     }
 
     renderFilteringCharts = () => {
-        if (!this.state.rerenderCharts) {
+        if(this.state.filteredData.length == 0){
+            // A message with "No data meets the filtering criteria." is displayed in renderFilteredOverview()
+            return(<div></div>);
+        }
+        else if (!this.state.rerenderCharts) {
             return (
                 <div>
                     <Row><Col><h4>Charts</h4></Col></Row>
