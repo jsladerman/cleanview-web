@@ -1,5 +1,58 @@
 {
-  "key1": "value1",
-  "key2": "value2",
-  "key3": "value3"
+  "Records": [
+      {
+          "eventID": "a330e969d423b602ea802680421bd4f8",
+          "eventName": "INSERT",
+          "eventVersion": "1.1",
+          "eventSource": "aws:dynamodb",
+          "awsRegion": "us-east-1",
+          "dynamodb": {
+              "ApproximateCreationDateTime": 1596377660,
+              "Keys": {
+                  "id": {
+                      "S": "a91aaa55-fe48-4ce1-ad61-2aca559b67b6"
+                  }
+              },
+              "NewImage": {
+                  "sixFeet": {
+                      "S": "1"
+                  },
+                  "locationId": {
+                      "S": "dc30344-fc00-5b0d-a43-e12e8fe1bbd"
+                  },
+                  "menuLink": {
+                      "S": "https://www.google.com"
+                  },
+                  "touristDiner": {
+                      "S": "1"
+                  },
+                  "weekday": {
+                      "S": "Thu"
+                  },
+                  "responseRating": {
+                      "S": "0.0"
+                  },
+                  "sublocId": {
+                      "S": "3616791f-603d-43d6-ae12-ff7d1da4de51"
+                  },
+                  "employeeMasks": {
+                      "S": "0"
+                  },
+                  "id": {
+                      "S": "a91aaa55-fe48-4ce1-ad61-2aca559b67b6"
+                  },
+                  "age": {
+                      "S": "56-65"
+                  },
+                  "timestamp": {
+                      "S": "Jul 23 2020 23:29:16"
+                  }
+              },
+              "SequenceNumber": "12687200000000029085324428",
+              "SizeBytes": 292,
+              "StreamViewType": "NEW_IMAGE"
+          },
+          "eventSourceARN": "arn:aws:dynamodb:us-east-1:676044961909:table/responses-develop/stream/2020-07-30T20:26:37.396"
+      }
+  ]
 }

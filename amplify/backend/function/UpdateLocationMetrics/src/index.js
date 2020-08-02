@@ -1,10 +1,13 @@
 const AWS = require('aws-sdk')
-AWS.config.update({ region: process.env.REGION });
+AWS.config.update({ region: process.env.TABLE_REGION });
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 let tableName = process.env.STORAGE_LOCATIONS_NAME;
 exports.handler = event => {
   //eslint-disable-line
   console.log(JSON.stringify(event, null, 2));
+  event.Records.forEach(record => {
+
+  });
   event.Records.forEach(record => {
     console.log(record.eventID);
     console.log(record.eventName);

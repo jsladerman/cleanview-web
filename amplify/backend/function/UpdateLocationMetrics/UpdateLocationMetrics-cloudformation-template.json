@@ -83,7 +83,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-cleanviewweb-develop-162445-deployment",
-					"S3Key": "amplify-builds/UpdateLocationMetrics-4e744137617858317a39-build.zip"
+					"S3Key": "amplify-builds/UpdateLocationMetrics-6b41504b474c674a6b71-build.zip"
 				}
 			}
 		},
@@ -164,6 +164,34 @@
 									}
 								]
 							}
+						},
+						{
+							"Effect": "Allow",
+							"Action": [
+								"dynamodb:DescribeTable",
+								"dynamodb:GetItem",
+								"dynamodb:Query",
+								"dynamodb:Scan",
+								"dynamodb:PutItem",
+								"dynamodb:UpdateItem",
+								"dynamodb:DeleteItem"
+							],
+							"Resource": [
+								{
+									"Ref": "storagelocationsArn"
+								},
+								{
+									"Fn::Join": [
+										"/",
+										[
+											{
+												"Ref": "storagelocationsArn"
+											},
+											"index/*"
+										]
+									]
+								}
+							]
 						}
 					]
 				}
