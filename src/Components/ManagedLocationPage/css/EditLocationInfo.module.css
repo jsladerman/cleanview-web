@@ -150,6 +150,7 @@
 .deleteButton{
     float: right;
     font-weight: bold;
+    border: transparent;
     margin-top: 20px;
     margin-right: 40px;
     padding: 5px 34px;
