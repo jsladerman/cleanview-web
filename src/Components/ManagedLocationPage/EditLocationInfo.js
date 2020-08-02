@@ -3,6 +3,8 @@ import { API, Storage } from "aws-amplify";
 import { Field, Form, Formik, ErrorMessage } from "formik";
 import styles from "./css/EditLocationInfo.module.css";
 import Button from "react-bootstrap/Button";
+import Alert from 'react-bootstrap/Alert';
+
 
 class EditLocationInfo extends Component {
   constructor(props) {
@@ -11,7 +13,8 @@ class EditLocationInfo extends Component {
       data: this.props.data,
       imageUrl: this.props.data.imageUrl,
       imageLoading: false,
-      noOutdoorSeating: this.props.data.covidResponseSurvey.outsideSeating === 'n' ? true : false
+      noOutdoorSeating: this.props.data.covidResponseSurvey.outsideSeating === 'n' ? true : false,
+      phoneNumError: false,
     };
     this.editLocation = this.editLocation.bind(this);
   }
@@ -112,7 +115,74 @@ class EditLocationInfo extends Component {
     this.setState({ imageLoading: false });
   };
 
+  validateFieldsFilled = (values) => {
+    if(!values) {
+      return false
+    }
+    if(!values.businessName) {
+      return false
+    }
+    if(!values.businessType) {
+      return false
+    }
+    if(!values.businessEmail) {
+      return false
+    }
+    if(!values.businessPhoneNum) {
+      return false
+    }
+    if(!values.addr) {
+      return false
+    }
+    if(!values.addr.line1) {
+      return false
+    }
+    if(!values.addr.city) {
+      return false
+    }
+    if(!values.addr.state) {
+      return false
+    }
+    if(!values.addr.zip) {
+      return false
+    }
+    if(!values.employeeMasks) {
+      return false
+    }
+    if(!values.employeeTemp) {
+      return false
+    }
+    if(!values.socialDistance) {
+      return false
+    }
+    if(!values.sanitizeTables) {
+      return false
+    }
+    if(!values.outsideSeating) {
+      return false
+    }
+    if(!values.indoorCapacity) {
+      return false
+    }
+    return true
+}
+
   editLocation = async (values) => {
+    const allValuesFilled = this.validateFieldsFilled(values)
+    if (!allValuesFilled) {
+      this.setState({valueEmptyError: true})
+      return
+    }
+
+    const phoneRegEx = /^\d{3}-\d{3}-\d{4}$/;
+    if (!phoneRegEx.test(values.businessPhoneNum)) {
+      this.setState({phoneNumError: true})
+      return
+    }
+
+    this.setState({valueEmptyError: false})
+    this.setState({phoneNumError: false})
+
     const apiName = "ManageLocationApi"
     const path = "/location/info"
     const requestData = {
@@ -122,7 +192,7 @@ class EditLocationInfo extends Component {
             imageUrl: this.state.imageUrl,
             loc_name: values.businessName,
             email: values.businessEmail,
-            phone: values.businessPhoneNum,
+            phone: this.parsePhoneNumber(values.businessPhoneNum),
             loc_type: values.businessType,
             addrLine1: values.addr.line1,
             addrLine2: values.addr.line2,
@@ -152,20 +222,53 @@ class EditLocationInfo extends Component {
     })
   };
 
-  
+  renderAlert = () => {
+    if(this.state.valueEmptyError) {
+      return(
+        <Alert variant="danger" dismissible
+                onClose={() => this.setState({valueEmptyError: false})}
+                style={{whiteSpace: 'normal'}}>
+            <Alert.Heading>Error</Alert.Heading>
+            <div>
+                All values must be filled in.
+            </div>
+          </Alert>
+      )
+    }
+    if (this.state.phoneNumError)
+        return (
+            <Alert variant="danger" dismissible
+                   onClose={() => this.setState({phoneNumError: false})}
+                   style={{whiteSpace: 'normal'}}>
+                <Alert.Heading>Error</Alert.Heading>
+                <div>
+                    Phone number must be in this format: 800-555-1234
+                </div>
+            </Alert>
+        )
+  }
+
+  parsePhoneNumber = (phoneNumber) => {
+    return phoneNumber.split('-').join('');
+  }
+
+  formatPhoneNumber = (phoneNumber) => {
+    return phoneNumber.substr(0, 3) + '-' + phoneNumber.substr(3, 3) + '-' + phoneNumber.substr(6, 4);
+  }
 
 
 
   render() {
     return (
       <div className={styles.editLocation}>
+        {this.renderAlert()}
         <div className={styles.editLocationHeader}>Edit Location</div>
         <Formik
           initialValues={{
             businessName: this.state.data.loc_name,
             businessType: this.state.data.loc_type,
             businessEmail: this.state.data.email,
-            businessPhoneNum: this.state.data.phone,
+            businessPhoneNum: this.formatPhoneNumber(this.state.data.phone),
             addr: {
               line1: this.state.data.addrLine1,
               line2: this.state.data.addrLine2,
