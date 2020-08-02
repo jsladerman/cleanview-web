@@ -1,0 +1,11 @@
+.body {
+    padding-top: 16px;
+    padding-left: 36px;
+    padding-right: 20px;
+}
+
+.headerText {
+    font-weight: bold;
+    font-family: Roboto, sans-serif;
+    padding-top: 8px;
+} 
