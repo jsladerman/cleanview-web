@@ -134,7 +134,7 @@ app.post(path, function (req, res) {
   req.body["menu_link"] = ''
   req.body['active'] = 1
   req.body["sublocations"] = [{
-    name: 'Main',
+    name: 'main',
     id: uuid(),
     color: '000000',
     active: 1

@@ -1,14 +1,83 @@
+#analyticsHeader{
+    font-weight:bold;
+}
+
 .analDash{
     width: 90%;
     margin: 25px 40px 25px 40px;
     font-family: Roboto;
 }
 
-.fieldHeader{
+.analyticsDashboardSubheader{
+    border-radius: 6px;
+    padding: 6px 6px 6px 6px;
+    margin: 25px 0px 0px 0px;
+    background-color: #191A25;
+    color: white;
     font-weight: bold;
 }
 
-.analyticsDashboardSubheader{
-    font-weight: bold;
+.analyticsDashboardSubheader2{
+    font-weight: normal;
     font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 0px;
+}
+
+.filterCharts{
+    background-color: #E5E5E5;
+    margin-top: 20px;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+.filterDemographicCharts{
+    background-color: #E5E5E5;
+    margin-top: 20px;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+.rowDivider{
+    margin-top: 20px;
+    padding: 0px;
+}
+
+.check{
+    margin-right: 2px;
+    margin-left: 0px;
+}
+
+.filteredOverview{
+    /* max-width: 650px; */
+    max-width: 400px;
+    margin-bottom: 25px;
+}
+
+.cell{
+    padding: 4px;
+    border-radius: 8px;
+    background-color: #23c9ad;
+    margin: 2px 10px 2px 15px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    color: white;
+}
+
+.filteredOverviewSubheader{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.filteringCategories{
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.filteringOptions{
+    padding: 0px;
+    margin: 0px;
 }

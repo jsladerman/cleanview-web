@@ -38,21 +38,24 @@ class ManagedLocationInfo extends Component {
         if (this.state.data.length === 0) {
             return <h1>LOADING</h1>;
         }
+        
         return (
             <div>
                 <Tabs activeKey={this.state.tab} onSelect={this.setTabURL}>
                     <Tab tabClassName={styles.tab} eventKey='info' title='Info'>
                         <LocationInfo
-                            data={this.state.data}/>
+                            data={this.state.data}
+                            handleUpdate={this.props.handleUpdate}/>
                     </Tab>
                     <Tab tabClassName={styles.tab} eventKey='qr' title='QR Code'>
                         <QRCodeGenerator
                             name={this.state.data.loc_name}
                             id={this.props.id}/>
                     </Tab>
-                    <Tab tabClassName={styles.tab} eventKey='analytics' title='Analytics'>
+                    <Tab tabClassName={styles.tab} eventKey='analytics' title='Analytics' unmountOnExit>
                         <AnalyticsDashboard
-                            id={this.props.id}/>
+                            id={this.props.id}
+                            sublocations={this.state.data.sublocations}/>
                     </Tab>
                     <Tab tabClassName={styles.tab} eventKey='menu-manager' title='Menu Management'>
                         <MenuManager
@@ -85,8 +88,8 @@ class ManagedLocationInfo extends Component {
     };
 
     getLocations = (managerName) => {
-        const apiName = 'ManageLocationApi'; // replace this with your api name.
-        const path = '/location'; //replace this with the path you have configured on your API
+        const apiName = 'ManageLocationApi';
+        const path = '/location';
         const myParams = {
             headers: {},
             response: true,

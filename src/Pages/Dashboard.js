@@ -177,7 +177,6 @@ class Dashboard extends Component {
         try {
             Auth.signOut()
                 .then(response => {
-                    console.log(response);
                     this.setState({redirect: '/login'});
                 });
         } catch (error) {
@@ -253,7 +252,7 @@ class Dashboard extends Component {
         this.setState({redirect: '/home' + path},
             () => this.setState({redirect: null}));
     }
-
+    
 }
 
 const jsStyles = {

@@ -1,34 +1,55 @@
-.qrCodeBlock{
+.qrManagementBlock{
     width: 90%;
     margin: 25px 40px 25px 40px;
     font-family: Roboto, serif;
+    font-size: 16px;
+}
+
+#listHeader{
+    margin-bottom: 10px;
+}
+
+#qrHeader{
+    font-weight: bold;
 }
 
 .qrCodeSubheader{
+    margin-top: 20px;
     font-weight: 600;
     color: #23A6BD;
 }
 
-.label{
+.qrField{
     font-family: Roboto;
-    font-weight: bold;
-    color: white;
+    color: black
 }
 
 .qrHeader{
     font-size: 16px;
 }
 
-.col{
-    border: 5px black;
-}
 
 .qrCodeFormColumn{
     display: flex;
 }
 
+ul {
+    list-style-type: none;
+  }
+  
+  ul li:before {
+    content: '\2014';
+    position: absolute;
+    margin-left: -20px;
+  }
+
+.qrNameCol{
+    font-size: 20px;
+    font-weight: bold;
+}
+
 .qrCodeGeneratorWrapper{
-    background-color: #191A25;
+    background-color: #f3f3f3;
     max-width: 600px;
     border-radius: 6px;
     padding: 8px;
@@ -41,4 +62,9 @@
     align-self: flex-end;
     width: 100%;
     background-color: #23A6BD;
+}
+
+.qrTable{
+    border: border-dark;
+    border-width: 2px;
 }

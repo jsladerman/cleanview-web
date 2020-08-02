@@ -24,7 +24,6 @@ class Login extends Component {
         Auth.currentAuthenticatedUser({
             bypassCache: true
         }).then(user => {
-            console.log(user);
             this.setState({signedIn: true, redirect: '/home/locations'})
         })
             .catch(err => console.log("Error: " + err))
