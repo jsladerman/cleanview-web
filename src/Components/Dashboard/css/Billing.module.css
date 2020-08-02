@@ -1,0 +1,27 @@
+.body {
+    padding-top: 16px;
+    padding-left: 36px;
+    padding-right: 20px;
+}
+
+.headerText {
+    font-weight: bold;
+    font-family: Roboto, sans-serif;
+    padding-top: 8px;
+}
+
+.firstMonthBox{
+    background: rgb(48,179,202);
+    background: linear-gradient(90deg, rgba(48,179,202,0.5) 0%, rgba(35,201,173,0.5) 100%);
+    border-radius: 8px;
+    height: 150px;
+    border: 1px solid white;
+
+}
+
+.firstMonth{
+    font-weight: bold;
+    text-align: center;
+    margin-top: 50px;
+    color: white;
+}

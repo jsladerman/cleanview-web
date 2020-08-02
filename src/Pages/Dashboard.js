@@ -14,6 +14,7 @@ import Sidebar from 'react-sidebar'
 import LocationsTable from "../Components/Dashboard/LocationsTable";
 import ManagedLocationInfo from "../Components/ManagedLocationPage/ManagedLocationInfo";
 import Settings from "../Components/Dashboard/Settings";
+import Billing from '../Components/Dashboard/Billing';
 
 class Dashboard extends Component {
     constructor(props) {
@@ -140,7 +141,8 @@ class Dashboard extends Component {
                                 getDataFunc={this.getData}/>}
                         />
                         <Route exact path={this.path + '/billing'} render={(props) =>
-                            <h1 style={{padding: '20px'}}>Billing Page</h1>}
+                            <Billing
+                                {...props}/>}
                         />
                         <Route path={this.path + '/settings'} render={(props) =>
                             <Settings
