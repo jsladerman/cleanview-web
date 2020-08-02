@@ -91,7 +91,7 @@ class AnalyticsDashboard extends Component {
     renderFilteringWidget = () => {
         return (
             <div className={styles.filterCharts}>
-                <p className={styles.analyticsDashboardSubheader2}>Filter Data</p>
+                <p className={styles.filteringWidgetHeader}>Filter Data</p>
                 <Row><Col>
                     <Accordion>
                         <Accordion.Toggle as={Button}
@@ -236,30 +236,20 @@ class AnalyticsDashboard extends Component {
     renderFilteringWidgetForDemographicCharts = () => {
         return (
             <div className={styles.filterDemographicCharts}>
-                <Container>
-                    <Row>
-                        <Col className={styles.analyticsDashboardSubheader2}>Filter Date Range</Col>
-                        <Col>
-                            <div style={{marginTop: '4px'}}>
-                                <Formik validate={(values) => this.filterDayRangeDemographicCharts(values.choice)}
-                                        initialValues={{choice: this.state.dayRangeForDemographicCharts}}>
-                                    <Form className={styles.filterTimeForDemographicCharts}>
-                                        <Field as='select' name='choice'>
-                                            <option value={-1}>All-time</option>
-                                            <option value={1}>Last 24 hours</option>
-                                            <option value={7}>Last week</option>
-                                            <option value={30}>Last month</option>
-                                        </Field>
-                                    </Form>
-                                </Formik>
-                            </div>
-                        </Col>
-                        <div className="col-md-4"/>
-                        <div className="col-md-3" style={{marginTop: '4px', fontWeight: 'bold'}}>
-                            Number of responses: {this.state.filteredDataForDemographicCharts.length}
-                        </div>
-                    </Row>
-                </Container>
+                <div className={styles.filteringDemographicChartsWidgetHeader}>Filter Date Range</div>
+                <div style={{ marginTop: '2px' }}>
+                    <Formik validate={(values) => this.filterDayRangeDemographicCharts(values.choice)}
+                        initialValues={{ choice: this.state.dayRangeForDemographicCharts }}>
+                        <Form className={styles.filterTimeForDemographicCharts}>
+                            <Field as='select' name='choice'>
+                                <option value={-1}>All-time</option>
+                                <option value={1}>Last 24 hours</option>
+                                <option value={7}>Last week</option>
+                                <option value={30}>Last month</option>
+                            </Field>
+                        </Form>
+                    </Formik>
+                </div>
             </div>
         )
     }
@@ -292,7 +282,9 @@ class AnalyticsDashboard extends Component {
             return (<div>No data meets the filtering criteria.</div>)
         } else if (!this.state.rerenderCharts) {
             return (
-                <Container>
+                <div>
+                <p style={{fontWeight:'bold', marginLeft:'10px', marginTop: '10px'}}>Number of responses: {this.state.filteredDataForDemographicCharts.length}</p>
+                <div>
                     <Row className={styles.rowDivider}>
                         <Col>
                             <FilteredDataToAgeBarChart
@@ -319,7 +311,8 @@ class AnalyticsDashboard extends Component {
                             />
                         </Col>
                     </Row>
-                </Container>
+                </div>
+                </div>
             );
         }
         return (
