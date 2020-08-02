@@ -265,7 +265,7 @@ class AnalyticsDashboard extends Component {
     }
 
     renderFilteredOverview = () => {
-        if (this.state.filteredData.length == 0) {
+        if (this.state.filteredData.length === 0) {
             return (<h5>No data meets the filtering criteria.</h5>)
         }
         return (
@@ -288,7 +288,7 @@ class AnalyticsDashboard extends Component {
     /************************************************************************************************/
 
     renderDemographicCharts = () => {
-        if (this.state.filteredDataForDemographicCharts.length == 0) {
+        if (this.state.filteredDataForDemographicCharts.length === 0) {
             return (<div>No data meets the filtering criteria.</div>)
         } else if (!this.state.rerenderCharts) {
             return (
@@ -333,7 +333,7 @@ class AnalyticsDashboard extends Component {
     }
 
     renderFilteringCharts = () => {
-        if (this.state.filteredData.length == 0) {
+        if (this.state.filteredData.length === 0) {
             // A message with "No data meets the filtering criteria." is displayed in renderFilteredOverview()
             return (<div></div>);
         } else if (!this.state.rerenderCharts) {
@@ -475,8 +475,8 @@ class AnalyticsDashboard extends Component {
     pullData = () => {
         Auth.currentUserInfo()
             .then(user => {
-                if (user == null)
-                    this.setState({redirect: '/login'});
+                if (user === null)
+                    this.setState({ redirect: '/login' });
                 else
                     this.getRestaurantSurveyData(this.props.id);
             })
@@ -500,10 +500,10 @@ class AnalyticsDashboard extends Component {
             .then(response => {
                 let currState = this.state;
                 let filteredResponses = response['data'].filter(response =>
-                    response['age'] != undefined
-                    && response['employeeMasks'] != undefined
-                    && response['sixFeet'] != undefined
-                    && response['touristDiner'] != undefined
+                    response['age'] !== undefined
+                    && response['employeeMasks'] !== undefined
+                    && response['sixFeet'] !== undefined
+                    && response['touristDiner'] !== undefined
                 )
 
                 // TODO - remove all survey responses where age = '0-17' from the database
