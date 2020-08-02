@@ -9,11 +9,13 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import API from "@aws-amplify/api";
 import Button from "react-bootstrap/Button";
+import { Redirect } from "react-router-dom";
 
 class LocationInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      redirect: null,
       data: this.props.data,
       showModal: false,
     };
@@ -54,6 +56,38 @@ class LocationInfo extends Component {
       showModal: !this.state.showModal,
     });
   };
+
+  deleteFunc = () => {
+    const theyAreSure = window.confirm("Are you sure you want to delete this?")
+    if(!theyAreSure)
+      return
+    const theyAreReallySure = window.confirm("This cannot be undone. Are you 100% sure?")
+    if(!theyAreReallySure)
+      return
+    
+    const apiName = 'ManageLocationApi';
+    const path = '/location/active';
+      const requestData = {
+        headers: {},
+        response: true,
+        body: {
+          id: this.props.data.id
+        },
+      }
+  
+      API.patch(apiName, path, requestData)
+        .then(response => {
+          window.alert("Delete successful.")
+          this.props.handleUpdate()
+          this.setState({redirect: '/home/locations'})
+        })
+        .catch(error => {
+          console.log("Error: ", error)
+          window.alert("Delete unsuccessful.")
+        })
+
+  }
+
 
   covidResponseField = (
     labelText,
@@ -106,6 +140,9 @@ class LocationInfo extends Component {
   };
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect push to={this.state.redirect}/>
+  }
     const businessType = this.formatBusinessType();
     const businessEmail = this.state.data.email;
     const businessPhone = this.state.data.phone;
@@ -253,10 +290,7 @@ class LocationInfo extends Component {
               </Col>
               <Col className={styles.thirdColumn}>{businessInformation}</Col>
               <Col>
-                <div className={styles.editLocationButtonDiv} onClick={this.toggleModal}>
-                  <Button className={styles.editButton}>Edit</Button>
-                </div>
-              </Col>
+            </Col>
             </Row>
             <Row>
               <Col>
@@ -275,7 +309,19 @@ class LocationInfo extends Component {
               <Col>
               {" "}
               </Col>
+            </Row>
+            <Row>
+            <Col>
+              <div className={styles.editLocationButtonDiv} onClick={this.toggleModal}>
+                    <Button className={styles.editButton}>Edit Location Info</Button>
+                  </div>
+            </Col>
+              <Col>
 
+                <div className={styles.deleteLocationButtonDiv} onClick={this.deleteFunc}>
+                  <Button variant="danger"> Delete Location </Button>
+                </div>
+              </Col>
             </Row>
           </Container>
         </div>

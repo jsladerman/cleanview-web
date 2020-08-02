@@ -74,11 +74,11 @@ const convertUrlType = (param, type) => {
 app.get(path, function(req, res){
   const queryParams = {
     TableName: tableName,
-    KeyConditionExpression: "manager = :manager",
     IndexName: "ManagerIndex",
+    KeyConditionExpression: "manager = :manager",
     ExpressionAttributeValues: {
       ":manager": req.query.manager,
-    }
+    },
   };
 
   dynamodb.query(queryParams, (err, data) => {
@@ -132,10 +132,12 @@ app.post(path, function (req, res) {
   var exprDate = new Date(d.setMonth(d.getMonth()+1))
   req.body["subscription_end_date"] = exprDate.toDateString()
   req.body["menu_link"] = ''
+  req.body['active'] = 1
   req.body["sublocations"] = [{
     name: 'main',
     id: uuid(),
-    color: '000000'
+    color: '000000',
+    active: 1
   }]
 
   let putItemParams = {
@@ -254,6 +256,37 @@ app.patch(path + '/info', function(req, res) {
     }
   });
 })
+
+/************************************
+* HTTP patch to update active *
+*************************************/
+
+app.patch(path + '/active', function(req, res) {
+  if (userIdPresent) {
+    req.body["userId"] =
+      req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
+  }
+  var params = {
+    TableName: tableName,
+    Key: {
+      "id": req.body.id
+    },
+    UpdateExpression: "set active = :ac",
+    ExpressionAttributeValues: {
+      ":ac": 0
+    },
+    ReturnValues:"UPDATED_NEW"
+  }
+
+  dynamodb.update(params, function(err, data) {
+    if (err) {
+      res.statusCode = 500;
+      res.json({ error: err, url: req.url, body: req.body});
+    } else {
+      res.json({ success: "patch call succeed!", url: req.url, data: data });
+    }
+  });
+});
 
 // Export the app object. When executing the application local this does nothing. However,
 // to port it to AWS Lambda we will create a wrapper around that will load the app from

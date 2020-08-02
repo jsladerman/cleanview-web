@@ -93,7 +93,7 @@ class QRCodeGenerator extends Component {
 
   render() {
     if (!this.state.sublocations) {
-      return (<p>Looking for sublocations...</p>)
+      return (<p>Looking for QR codes...</p>)
     }
 
     const sublocationRow = (name, color, sublocId) => {
