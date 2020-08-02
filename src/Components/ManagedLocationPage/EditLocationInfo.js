@@ -455,7 +455,7 @@ class EditLocationInfo extends Component {
                 type="submit" >
                 Save
               </Button>
-              <Button className={styles.deleteButton} variant="danger" onClick={this.deleteFunc}> Delete Location </Button>
+              <Button className={styles.deleteButton} variant="danger" onClick={this.deleteFunc}>Delete</Button>
             </div>
           </Form>
         </Formik>
