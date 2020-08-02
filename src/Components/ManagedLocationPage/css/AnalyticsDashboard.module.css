@@ -4,8 +4,9 @@
 
 .analDash{
     width: 90%;
+    min-width: 700px;
     margin: 25px 40px 25px 40px;
-    font-family: Roboto;
+    font-family: Roboto, serif;
 }
 
 .analyticsDashboardSubheader{
@@ -19,7 +20,6 @@
 
 .analyticsDashboardSubheader2{
     float: left;
-    font-weight: normal;
     font-size: 20px;
     font-weight: bold;
     margin-top: 3px;

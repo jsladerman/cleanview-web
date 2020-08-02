@@ -92,7 +92,9 @@ class AnalyticsDashboard extends Component {
                                       eventKey="0"
                                       style={{
                                           backgroundColor: '#23C9AD',
-                                          borderWidth: '0'
+                                          borderWidth: '0',
+                                          fontFamily: 'Roboto, serif',
+                                          fontWeight: 'bold'
                                       }}>
                         Options
                     </Accordion.Toggle>
