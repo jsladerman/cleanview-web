@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import FilteredDataToPieChart from './FilteredDataToCharts/FilteredDataToPieChart';
 import FilteredDataToAgeBarChart from './FilteredDataToCharts/FilteredDataToAgeBarChart';
 import FilteredDataToRatingBarChart from './FilteredDataToCharts/FilteredDataToRatingBarChart';
@@ -6,7 +6,7 @@ import FilteredDataToFrequencyChart from './FilteredDataToCharts/FilteredDataToF
 import FilteredDataToQRBarChart from './FilteredDataToCharts/FilteredDataToQRBarChart';
 import OverviewMetrics from './AnalyticsSubcomponents/OverviewMetrics';
 import styles from './css/AnalyticsDashboard.module.css';
-import {Formik, Form, Field} from 'formik';
+import { Formik, Form, Field } from 'formik';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -65,14 +65,14 @@ class AnalyticsDashboard extends Component {
                 <h2 id={styles.analyticsHeader}>Analytics Dashboard</h2>
 
                 <h4 className={styles.analyticsDashboardSubheader}>Overview</h4>
-                <OverviewMetrics allData={this.state.allResponses}/> <br/>
+                <OverviewMetrics allData={this.state.allResponses} /> <br />
 
                 <h4 className={styles.analyticsDashboardSubheader}>Customer Demographic Information</h4>
                 {this.renderFilteringWidgetForDemographicCharts()}
-                {this.renderDemographicCharts()} <br/>
+                {this.renderDemographicCharts()} <br />
 
                 <h4 className={styles.analyticsDashboardSubheader}>Survey Responses</h4>
-                {this.renderFilteringWidget()} <br/>
+                {this.renderFilteringWidget()} <br />
                 {this.renderFilteredOverview()}
                 {this.renderFilteringCharts()}
 
@@ -87,75 +87,78 @@ class AnalyticsDashboard extends Component {
         return (
             <div className={styles.filterCharts}>
                 <p className={styles.analyticsDashboardSubheader2}>Filter Data</p>
-                <Accordion>
-                    <Accordion.Toggle as={Button}
-                                      eventKey="0"
-                                      style={{
-                                          backgroundColor: '#23C9AD',
-                                          borderWidth: '0',
-                                          fontFamily: 'Roboto, serif',
-                                          fontWeight: 'bold'
-                                      }}>
-                        Options
+                <Row><Col>
+                    <Accordion>
+                        <Accordion.Toggle as={Button}
+                            eventKey="0"
+                            style={{
+                                backgroundColor: '#23C9AD',
+                                borderWidth: '0',
+                                fontFamily: 'Roboto, serif',
+                                fontWeight: 'bold',
+                                marginLeft: '0px'
+                            }}>
+                            Options
                     </Accordion.Toggle>
-                    <Accordion.Collapse eventKey="0">
-                        <Container fluid className={styles.filteringOptions}>
-                            <Row>
-                                <Col>
-                                    {/* DATE RANGES */}
-                                    <p className={styles.filteringCategories}>Date Range</p>
-                                    <Formik validate={(values) => this.filterDayRange(values.choice)}
-                                            initialValues={{choice: this.state.dayRange}}>
-                                        <Form>
-                                            <Field as='select' name='choice'>
-                                                <option value={-1}>All-time</option>
-                                                <option value={1}>Last 24 hours</option>
-                                                <option value={7}>Last week</option>
-                                                <option value={30}>Last month</option>
-                                            </Field>
-                                        </Form>
-                                    </Formik>
+                        <Accordion.Collapse eventKey="0">
+                            <Container fluid className={styles.filteringOptions}>
+                                <Row><Col className={styles.filteringCategories}>Uncheck a box to exclude that group from the analysis below.<br /></Col></Row>
+                                <Row>
+                                    <Col>
+                                        {/* DATE RANGES */}
+                                        <p className={styles.filteringCategories}>Date Range</p>
+                                        <Formik validate={(values) => this.filterDayRange(values.choice)}
+                                            initialValues={{ choice: this.state.dayRange }}>
+                                            <Form>
+                                                <Field as='select' name='choice'>
+                                                    <option value={-1}>All-time</option>
+                                                    <option value={1}>Last 24 hours</option>
+                                                    <option value={7}>Last week</option>
+                                                    <option value={30}>Last month</option>
+                                                </Field>
+                                            </Form>
+                                        </Formik>
 
-                                    {/* WEEKDAYS */}
-                                    <p className={styles.filteringCategories}>Weekday</p>
-                                    {this.renderSingleCheckbox("sundayCheck", "Sunday", this.state.weekdayExcludeFilter, 'Sun')}
-                                    {this.renderSingleCheckbox("mondayCheck", "Monday", this.state.weekdayExcludeFilter, 'Mon')}
-                                    {this.renderSingleCheckbox("tuesdayCheck", "Tuesday", this.state.weekdayExcludeFilter, 'Tue')}
-                                    {this.renderSingleCheckbox("wednesdayCheck", "Wednesday", this.state.weekdayExcludeFilter, 'Wed')}
-                                    {this.renderSingleCheckbox("thursdayCheck", "Thursday", this.state.weekdayExcludeFilter, 'Thu')}
-                                    {this.renderSingleCheckbox("fridayCheck", "Friday", this.state.weekdayExcludeFilter, 'Fri')}
-                                    {this.renderSingleCheckbox("saturdayCheck", "Saturday", this.state.weekdayExcludeFilter, 'Sat')}
+                                        {/* WEEKDAYS */}
+                                        <p className={styles.filteringCategories}>Weekday</p>
+                                        {this.renderSingleCheckbox("sundayCheck", "Sunday", this.state.weekdayExcludeFilter, 'Sun')}
+                                        {this.renderSingleCheckbox("mondayCheck", "Monday", this.state.weekdayExcludeFilter, 'Mon')}
+                                        {this.renderSingleCheckbox("tuesdayCheck", "Tuesday", this.state.weekdayExcludeFilter, 'Tue')}
+                                        {this.renderSingleCheckbox("wednesdayCheck", "Wednesday", this.state.weekdayExcludeFilter, 'Wed')}
+                                        {this.renderSingleCheckbox("thursdayCheck", "Thursday", this.state.weekdayExcludeFilter, 'Thu')}
+                                        {this.renderSingleCheckbox("fridayCheck", "Friday", this.state.weekdayExcludeFilter, 'Fri')}
+                                        {this.renderSingleCheckbox("saturdayCheck", "Saturday", this.state.weekdayExcludeFilter, 'Sat')}
 
-                                    {/* CUSTOMER LOCALITY */}
-                                    <p className={styles.filteringCategories}>Customer Living Distance</p>
-                                    {this.renderSingleCheckbox("localCheck", "Local", this.state.touristExcludeFilter, '0')}
-                                    {this.renderSingleCheckbox("touristCheckbox", "Non-local", this.state.touristExcludeFilter, '1')}
-                                </Col>
-                                <Col>
-                                    {/* AGE GROUP */}
-                                    <p className={styles.filteringCategories}>Age</p>
-                                    {this.renderSingleCheckbox("input1", "13-17", this.state.ageExcludeFilter, '13-17')}
-                                    {this.renderSingleCheckbox("input1", "18-25", this.state.ageExcludeFilter, '18-25')}
-                                    {this.renderSingleCheckbox("input1", "26-35", this.state.ageExcludeFilter, '26-35')}
-                                    {this.renderSingleCheckbox("input1", "36-45", this.state.ageExcludeFilter, '36-45')}
-                                    {this.renderSingleCheckbox("input1", "46-55", this.state.ageExcludeFilter, '46-55')}
-                                    {this.renderSingleCheckbox("input1", "56-65", this.state.ageExcludeFilter, '56-65')}
-                                    {this.renderSingleCheckbox("input1", "66+", this.state.ageExcludeFilter, '66+')}
+                                        {/* CUSTOMER LOCALITY */}
+                                        <p className={styles.filteringCategories}>Customer Living Distance</p>
+                                        {this.renderSingleCheckbox("localCheck", "Local", this.state.touristExcludeFilter, '0')}
+                                        {this.renderSingleCheckbox("touristCheckbox", "Non-local", this.state.touristExcludeFilter, '1')}
+                                    </Col>
+                                    <Col>
+                                        {/* AGE GROUP */}
+                                        <p className={styles.filteringCategories}>Age</p>
+                                        {this.renderSingleCheckbox("input1", "13-17", this.state.ageExcludeFilter, '13-17')}
+                                        {this.renderSingleCheckbox("input1", "18-25", this.state.ageExcludeFilter, '18-25')}
+                                        {this.renderSingleCheckbox("input1", "26-35", this.state.ageExcludeFilter, '26-35')}
+                                        {this.renderSingleCheckbox("input1", "36-45", this.state.ageExcludeFilter, '36-45')}
+                                        {this.renderSingleCheckbox("input1", "46-55", this.state.ageExcludeFilter, '46-55')}
+                                        {this.renderSingleCheckbox("input1", "56-65", this.state.ageExcludeFilter, '56-65')}
+                                        {this.renderSingleCheckbox("input1", "66+", this.state.ageExcludeFilter, '66+')}
 
-                                    {/* QR CODE */}
-                                    <p className={styles.filteringCategories}>QR Code</p>
-                                    {this.renderQRCodeCheckboxes()}
-                                </Col>
-                                <Col>
-                                    {/* HOURS */}
-                                    <p className={styles.filteringCategories}>Hours</p>
-                                    {this.renderHoursCheckboxes()}
-                                </Col>
-                            </Row>
-                        </Container>
-                    </Accordion.Collapse>
-                </Accordion>
-
+                                        {/* QR CODE */}
+                                        <p className={styles.filteringCategories}>QR Code</p>
+                                        {this.renderQRCodeCheckboxes()}
+                                    </Col>
+                                    <Col>
+                                        {/* HOURS */}
+                                        <p className={styles.filteringCategories}>Hours</p>
+                                        {this.renderHoursCheckboxes()}
+                                    </Col>
+                                </Row>
+                            </Container>
+                        </Accordion.Collapse>
+                    </Accordion>
+                </Col></Row>
             </div>
         )
     }
@@ -218,7 +221,7 @@ class AnalyticsDashboard extends Component {
                     className={styles.check}
                     type="checkbox"
                     name={elementName}
-                    onClick={() => this.addSingleFilter(filterArray, filterValue)} defaultChecked/>
+                    onClick={() => this.addSingleFilter(filterArray, filterValue)} defaultChecked />
                 <label>{labelText}</label>
             </div>
         )
@@ -231,9 +234,9 @@ class AnalyticsDashboard extends Component {
                     <Row>
                         <Col className={styles.analyticsDashboardSubheader2}>Filter Date Range</Col>
                         <Col>
-                            <div style={{marginTop: '4px'}}>
+                            <div style={{ marginTop: '4px' }}>
                                 <Formik validate={(values) => this.filterDayRangeDemographicCharts(values.choice)}
-                                        initialValues={{choice: this.state.dayRangeForDemographicCharts}}>
+                                    initialValues={{ choice: this.state.dayRangeForDemographicCharts }}>
                                     <Form className={styles.filterTimeForDemographicCharts}>
                                         <Field as='select' name='choice'>
                                             <option value={-1}>All-time</option>
@@ -245,8 +248,8 @@ class AnalyticsDashboard extends Component {
                                 </Formik>
                             </div>
                         </Col>
-                        <div className="col-md-4"/>
-                        <div className="col-md-3" style={{marginTop: '4px', fontWeight: 'bold'}}>
+                        <div className="col-md-4" />
+                        <div className="col-md-3" style={{ marginTop: '4px', fontWeight: 'bold' }}>
                             Number of responses: {this.state.filteredDataForDemographicCharts.length}
                         </div>
                     </Row>
@@ -293,7 +296,7 @@ class AnalyticsDashboard extends Component {
 
                         <Col>
                             <FilteredDataToPieChart
-                                style={{margin: 'auto'}}
+                                style={{ margin: 'auto' }}
                                 filteredData={this.state.filteredDataForDemographicCharts}
                                 keyString='touristDiner'
                                 titleText='Customer Living Distance'
@@ -341,9 +344,9 @@ class AnalyticsDashboard extends Component {
                     </Row>
 
                     <Row className={styles.rowDivider}>
-                        <Col style={{marginLeft: '50px'}}>
+                        <Col style={{ marginLeft: '50px' }}>
                             <FilteredDataToPieChart
-                                style={{margin: 'auto'}}
+                                style={{ margin: 'auto' }}
                                 filteredData={this.state.filteredData}
                                 keyString='employeeMasks'
                                 titleText='Are Employees Wearing Masks?'
@@ -352,7 +355,7 @@ class AnalyticsDashboard extends Component {
                             />
                         </Col>
 
-                        <Col style={{marginLeft: '50px'}}>
+                        <Col style={{ marginLeft: '50px' }}>
                             <FilteredDataToPieChart
                                 filteredData={this.state.filteredData}
                                 keyString='sixFeet'
@@ -388,7 +391,7 @@ class AnalyticsDashboard extends Component {
     /************************************************************************************************/
 
     filterData = async () => {
-        this.setState({rerenderCharts: true});
+        this.setState({ rerenderCharts: true });
         let newFilteredData = await this.state.allResponses.filter(response =>
             (!this.state.touristExcludeFilter.includes(response['touristDiner'])
                 && !this.state.ageExcludeFilter.includes(response['age'])
@@ -398,8 +401,8 @@ class AnalyticsDashboard extends Component {
                 && !this.state.qrExcludeFilter.includes(response['sublocId'])
             )
         )
-        this.setState({filteredData: newFilteredData});
-        this.setState({rerenderCharts: false});
+        this.setState({ filteredData: newFilteredData });
+        this.setState({ rerenderCharts: false });
     }
 
     addSingleFilter = (array, item) => {
@@ -411,12 +414,12 @@ class AnalyticsDashboard extends Component {
             newArray.push(item);
         }
 
-        this.setState({array: newArray});
+        this.setState({ array: newArray });
         this.filterData();
     }
 
     filterDayRange = async (newDayRange) => {
-        await this.setState({dayRange: newDayRange});
+        await this.setState({ dayRange: newDayRange });
         await this.filterData();
     }
 
@@ -424,17 +427,17 @@ class AnalyticsDashboard extends Component {
     /*                           Functions for filtering demographic charts                         */
     /************************************************************************************************/
     filterDemographicData = async () => {
-        this.setState({rerenderCharts: true});
+        this.setState({ rerenderCharts: true });
         let newFilteredData = await this.state.allResponses.filter(response =>
             (this.state.dayRangeForDemographicCharts < 1
                 || this.daysFromToday(response['timestamp']) <= this.state.dayRangeForDemographicCharts)
         );
-        this.setState({filteredDataForDemographicCharts: newFilteredData});
-        this.setState({rerenderCharts: false});
+        this.setState({ filteredDataForDemographicCharts: newFilteredData });
+        this.setState({ rerenderCharts: false });
     }
 
     filterDayRangeDemographicCharts = async (newDayRange) => {
-        await this.setState({dayRangeForDemographicCharts: newDayRange});
+        await this.setState({ dayRangeForDemographicCharts: newDayRange });
         await this.filterDemographicData();
     }
 
@@ -457,7 +460,7 @@ class AnalyticsDashboard extends Component {
         Auth.currentUserInfo()
             .then(user => {
                 if (user == null)
-                    this.setState({redirect: '/login'});
+                    this.setState({ redirect: '/login' });
                 else
                     this.getRestaurantSurveyData(this.props.id);
             })
