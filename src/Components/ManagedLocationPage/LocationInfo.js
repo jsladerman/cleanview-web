@@ -10,6 +10,7 @@ import Card from "react-bootstrap/Card";
 import API from "@aws-amplify/api";
 import Button from "react-bootstrap/Button";
 import { Redirect } from "react-router-dom";
+import {BsPencil} from "react-icons/bs";
 
 class LocationInfo extends Component {
   constructor(props) {
@@ -59,32 +60,32 @@ class LocationInfo extends Component {
 
   deleteFunc = () => {
     const theyAreSure = window.confirm("Are you sure you want to delete this?")
-    if(!theyAreSure)
+    if (!theyAreSure)
       return
     const theyAreReallySure = window.confirm("This cannot be undone. Are you 100% sure?")
-    if(!theyAreReallySure)
+    if (!theyAreReallySure)
       return
-    
+
     const apiName = 'ManageLocationApi';
     const path = '/location/active';
-      const requestData = {
-        headers: {},
-        response: true,
-        body: {
-          id: this.props.data.id
-        },
-      }
-  
-      API.patch(apiName, path, requestData)
-        .then(response => {
-          window.alert("Delete successful.")
-          this.props.handleUpdate()
-          this.setState({redirect: '/home/locations'})
-        })
-        .catch(error => {
-          console.log("Error: ", error)
-          window.alert("Delete unsuccessful.")
-        })
+    const requestData = {
+      headers: {},
+      response: true,
+      body: {
+        id: this.props.data.id
+      },
+    }
+
+    API.patch(apiName, path, requestData)
+      .then(response => {
+        window.alert("Delete successful.")
+        this.props.handleUpdate()
+        this.setState({ redirect: '/home/locations' })
+      })
+      .catch(error => {
+        console.log("Error: ", error)
+        window.alert("Delete unsuccessful.")
+      })
 
   }
 
@@ -141,8 +142,8 @@ class LocationInfo extends Component {
 
   render() {
     if (this.state.redirect) {
-      return <Redirect push to={this.state.redirect}/>
-  }
+      return <Redirect push to={this.state.redirect} />
+    }
     const businessType = this.formatBusinessType();
     const businessEmail = this.state.data.email;
     const businessPhone = this.state.data.phone;
@@ -277,7 +278,9 @@ class LocationInfo extends Component {
           <Container fluid>
             <Row>
               <Col>
-                <h2>{this.state.data.loc_name}</h2>
+                <h2>{this.state.data.loc_name} 
+                <span onClick={this.toggleModal}><BsPencil className={styles.editButton}/></span>
+                </h2>
               </Col>
             </Row>
             <Row>
@@ -290,7 +293,7 @@ class LocationInfo extends Component {
               </Col>
               <Col className={styles.thirdColumn}>{businessInformation}</Col>
               <Col>
-            </Col>
+              </Col>
             </Row>
             <Row>
               <Col>
@@ -307,17 +310,11 @@ class LocationInfo extends Component {
             </Row>
             <Row>
               <Col>
-              {" "}
+                {" "}
               </Col>
             </Row>
             <Row>
-            <Col>
-              <div className={styles.editLocationButtonDiv} onClick={this.toggleModal}>
-                    <Button className={styles.editButton}>Edit Location Info</Button>
-                  </div>
-            </Col>
               <Col>
-
                 <div className={styles.deleteLocationButtonDiv} onClick={this.deleteFunc}>
                   <Button variant="danger"> Delete Location </Button>
                 </div>
