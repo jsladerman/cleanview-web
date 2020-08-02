@@ -95,7 +95,7 @@ class Dashboard extends Component {
                         </h1>
                         <h4 style={{textAlign: 'center', fontFamily: 'Roboto, sans-serif'}}>
                             Please complete your profile
-                        </h4>
+                        </h4><br/>
                         <SettingsBox
                             authInfo={this.state.authInfo}
                             submitFunc={(values) => this.createSettings(values)}
@@ -119,7 +119,7 @@ class Dashboard extends Component {
                     <Route path={this.path + '/locations'} render={(props) =>
                         <LocationsTable
                             {...props}
-                            managerName={this.state.managerName}
+                            managerName={this.state.settingsInfo.firstName}
                             locations={this.state.locationData}
                             backendEnv={this.state.backendEnv}
                             getDataFunc={this.getData}/>}
@@ -175,6 +175,7 @@ class Dashboard extends Component {
     };
 
     getSettings = (accountId) => {
+        console.log('here: ' + accountId)
         let apiName = 'AccountSettingsApi'
         let path = '/account/manager'
         const requestParams = {
@@ -186,7 +187,7 @@ class Dashboard extends Component {
 
         API.get(apiName, path, requestParams)
             .then(response => {
-                console.log('Account: ' + response);
+                console.log(response);
                 if (!(response === undefined || response.length === 0))
                     this.setState({settingsInfo: response, settingsLoaded: true})
             })
@@ -201,7 +202,7 @@ class Dashboard extends Component {
         const requestParams = {
             headers: {},
             body: {
-                id: uuid(), // mandatory
+                id: this.state.authInfo.username, // mandatory
                 email: this.state.authInfo.attributes.email,
                 username: this.state.authInfo.username,
                 firstName: params.firstName,

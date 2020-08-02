@@ -1,0 +1,39 @@
+.body {
+    /*display: flex;*/
+    /*justify-content: center;*/
+    /*flex-wrap: nowrap;*/
+}
+
+.formLabel {
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+}
+
+.formInputName {
+    width: 150px;
+}
+
+.formInputPhone {
+    width: 50px;
+}
+
+.formSubmitBtn {
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    border-width: 0;
+    background-color: #30B3CA;
+    float: right;
+    margin-right: 18px;
+}
+
+.formSubmitBtn:hover {
+    background-color: #51cbe0;
+}
+
+.formSubmitBtn:active {
+    background-color: red;
+}
+
+.formSubmitBtn:focus {
+    background-color: #30B3CA;
+}
