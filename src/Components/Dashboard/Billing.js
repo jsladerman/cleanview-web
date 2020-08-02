@@ -6,10 +6,8 @@ class Billing extends Component {
         return (
             <div>
                 <div className={styles.body}>
-                    <h1 className={styles.headerText}>Billing</h1>
-                    <div className={styles.firstMonthBox}>
-                        <h2 className={styles.firstMonth}>Enjoy your first month, on us!</h2>
-                    </div>
+                    <h1 className={styles.headerText}>Billing Dashboard</h1>
+                    <h4 className={styles.firstMonth}>Enjoy your first month, on us! 😊</h4>
                 </div>
             </div>
 
