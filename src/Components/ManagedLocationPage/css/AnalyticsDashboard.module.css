@@ -18,10 +18,12 @@
 }
 
 .analyticsDashboardSubheader2{
+    float: left;
     font-weight: normal;
     font-size: 20px;
     font-weight: bold;
-    margin-bottom: 0px;
+    margin-top: 3px;
+    margin-right: 38px;
 }
 
 .filterCharts{
