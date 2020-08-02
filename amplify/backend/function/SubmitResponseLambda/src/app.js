@@ -186,7 +186,9 @@ app.post(path, async function(req, res) {
     })   
     resolve();
   })
+
   formParams.id = uuid();
+  formParams.requestHeader = req.headers
 
   let putItemParams = {
     TableName: tableName,
@@ -195,7 +197,11 @@ app.post(path, async function(req, res) {
 
   let menu_link = formParams.menuLink
   res.setHeader('AMP-Redirect-To', menu_link)
-
+  
+  if(formParams.age === 'young') {
+    res.json({success: 'we don\'t collect data for kids this young'})
+    return
+  }
 
   dynamodb.put(putItemParams, (err, data) => {
     if(err) {
