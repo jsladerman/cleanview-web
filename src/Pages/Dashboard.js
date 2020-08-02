@@ -17,6 +17,7 @@ import Settings from "../Pages/Settings";
 import SettingsBox from "../Components/Dashboard/SettingsBox";
 import Modal from "@trendmicro/react-modal";
 import Alert from "react-bootstrap/Alert";
+import Billing from "../Pages/Billing";
 
 class Dashboard extends Component {
     constructor(props) {
@@ -135,7 +136,8 @@ class Dashboard extends Component {
                             getDataFunc={this.getData}/>}
                     />
                     <Route exact path={this.path + '/billing'} render={(props) =>
-                        <h1 style={{padding: '20px'}}>Billing Page</h1>}
+                        <Billing {...props}/>
+                    }
                     />
                     <Route path={this.path + '/settings'} render={(props) =>
                         <Settings
