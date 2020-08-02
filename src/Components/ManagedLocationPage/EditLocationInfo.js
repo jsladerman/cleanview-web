@@ -235,7 +235,7 @@ class EditLocationInfo extends Component {
                 socialDistancing: values.socialDistance,
                 outsideSeating: values.outsideSeating,
                 employeeTemp: values.employeeTemp,
-                sanitizeTables: values.sanitize,
+                sanitizeTables: values.sanitizeTables,
                 indoorCapacity: values.indoorCapacity,
                 outdoorCapacity: this.state.noOutdoorSeating
                   ? ""
