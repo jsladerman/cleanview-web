@@ -104,7 +104,6 @@ class EditLocationInfo extends Component {
       .catch((err) => console.log("Upload error: " + err));
 
     await Storage.get(filename).then((resultURL) => {
-      console.log(resultURL);
       const idx = resultURL.indexOf(filename);
       const url = resultURL.substring(0, idx) + "" + filename;
       this.setState({ imageUrl: url });
@@ -146,7 +145,6 @@ class EditLocationInfo extends Component {
 
     API.patch(apiName, path, requestData)
     .then(response => {
-        console.log("Update successful: " + response)
         this.props.handleUpdate()
     })
     .catch((error) => {

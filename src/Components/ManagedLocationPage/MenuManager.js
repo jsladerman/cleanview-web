@@ -88,7 +88,6 @@ class MenuManager extends Component {
 
         API.patch(apiName, path, requestData)
             .then(response => {
-                console.log("Update successful");
                 this.updateDataFromDB()
             })
             .catch(error => {
@@ -217,14 +216,12 @@ class PDFMenuUpload extends Component {
             contentDisposition: 'inline; filename="' + filename + '"',
             contentType: 'application/pdf'
         })
-        .then(result => console.log(result))
         .catch(err => console.log(err))
 
         Storage.get(filename)
             .then(resultURL => {
                 const idx = resultURL.indexOf(filename)
                 const url = resultURL.substring(0, idx) + '' + filename
-                console.log(url)
                 handleChangeFunc(url)
             })
             .catch(err => console.log(err))
