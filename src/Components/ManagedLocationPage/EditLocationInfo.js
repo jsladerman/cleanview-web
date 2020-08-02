@@ -204,13 +204,14 @@ class EditLocationInfo extends Component {
       return
     }
 
+    this.setState({valueEmptyError: false})
+
     const phoneRegEx = /^\d{3}-\d{3}-\d{4}$/;
     if (!phoneRegEx.test(values.businessPhoneNum)) {
       this.setState({phoneNumError: true})
       return
     }
-
-    this.setState({valueEmptyError: false})
+    
     this.setState({phoneNumError: false})
 
     const apiName = "ManageLocationApi"
