@@ -31,7 +31,7 @@ class LocationBox extends Component {
                         <div className={styles.body}>
                             <div className={styles.locationText}> {this.props.locationName}</div>
                             <div className={styles.regularText}>
-                                <div style={{marginRight:'3px'}}>Current Rating:</div>
+                                {/* <div style={{marginRight:'3px'}}>Current Rating:</div> */}
                                 {this.state.stars}
                             </div>
                         </div>
