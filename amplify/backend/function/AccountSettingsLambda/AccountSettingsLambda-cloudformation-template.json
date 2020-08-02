@@ -77,7 +77,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-cleanviewweb-dev-143211-deployment",
-					"S3Key": "amplify-builds/AccountSettingsLambda-4c66787172322f436537-build.zip"
+					"S3Key": "amplify-builds/AccountSettingsLambda-4e6f34627a48316b3471-build.zip"
 				}
 			}
 		},

@@ -1,0 +1,20 @@
+.body {
+    padding: 30px;
+    font-family: "Roboto", sans-serif;
+}
+
+.settingsBox {
+    position: relative;
+    border-radius: 8px;
+    padding: 20px;
+    height: 325px;
+    min-width: 255px;
+    box-shadow: 0 0 22px 0 rgba(0,0,0,0.75);
+}
+
+.separator {
+    border-bottom-style: solid;
+    border-bottom-color: #E5E5E5;
+    border-bottom-width: 1px;
+    width: 100%;
+}

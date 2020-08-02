@@ -12,3 +12,21 @@
     height: auto;
     width: 100%;
 }
+
+.settingsModalDiv {
+    position: relative;
+    background-color: white;
+    margin: 20px;
+    padding: 30px;
+    width: 612px;
+    border-radius: 10px;
+    box-shadow: 0 0 22px 0 rgba(0,0,0,0.75);
+}
+
+.settingsBox {
+    position: relative;
+    border-radius: 8px;
+    padding: 20px;
+    height: 325px;
+    box-shadow: 0 0 22px 0 rgba(0,0,0,0.75);
+}
