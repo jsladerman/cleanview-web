@@ -399,8 +399,8 @@ app.get("/survey/:id", function (req, res) {
             <div>
               <p>How satisfied are you with ${name}'s overall COVID-19 response?</p>
               <label>Poor</label>
-              <input type='range' id='slider' name='responseRating' min='0' max='5' step='.5'></input>
-              <input type='hidden' id='ratingValid' name='ratingValid' value='0' oninput='document.getElementById(\"ratingValid\").value=\'1\''></input>
+              <input type='range' id='slider' name='responseRating' min='0' max='5' oninput='document.getElementById(\"ratingValid\").value=\'1\'' step='.5'></input>
+              <input type='hidden' id='ratingValid' name='ratingValid' value='0' ></input>
               <label>Excellent</label>
             </div>
       
