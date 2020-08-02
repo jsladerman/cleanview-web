@@ -76,7 +76,7 @@ class Dashboard extends Component {
     };
 
     renderSidebarChildren = () => {
-        if (!this.state.authLoaded) {
+        if (!this.state.authLoaded || !this.state.settingsLoaded) {
             return <img
                 src={require("../images/dashboardLoader.svg")}
                 alt=''
@@ -84,13 +84,13 @@ class Dashboard extends Component {
                 width='100%'
             />
         }
-        if (!this.state.settingsLoaded) {
+        if (JSON.stringify(this.state.settingsInfo) === '{}') {
             return (
                 <Modal show={true}
                        showCloseButton={false}
                        className={styles.settingsModal}>
                     <div>
-                        <h1 style={{textAlign: 'center', fontWeight:'bold', fontFamily: 'Roboto, sans-serif'}}>
+                        <h1 style={{textAlign: 'center', fontWeight: 'bold', fontFamily: 'Roboto, sans-serif'}}>
                             Welcome to CleanView!
                         </h1>
                         <h4 style={{textAlign: 'center', fontFamily: 'Roboto, sans-serif'}}>
@@ -138,7 +138,6 @@ class Dashboard extends Component {
     }
 
     getData = () => {
-        console.log("Get Data");
         const apiName = 'ManageLocationApi'; // replace this with your api name.
         const path = '/location'; //replace this with the path you have configured on your API
         const myParams = {
@@ -151,7 +150,6 @@ class Dashboard extends Component {
 
         API.get(apiName, path, myParams)
             .then(response => {
-                console.log(response["data"])
                 this.setState({
                     locationData: response["data"].data,
                     backendEnv: response["data"].backendEnv
@@ -175,7 +173,6 @@ class Dashboard extends Component {
     };
 
     getSettings = (accountId) => {
-        console.log('here: ' + accountId)
         let apiName = 'AccountSettingsApi'
         let path = '/account/manager'
         const requestParams = {
@@ -187,9 +184,7 @@ class Dashboard extends Component {
 
         API.get(apiName, path, requestParams)
             .then(response => {
-                console.log(response);
-                if (!(response === undefined || response.length === 0))
-                    this.setState({settingsInfo: response, settingsLoaded: true})
+                this.setState({settingsInfo: response, settingsLoaded: true})
             })
             .catch(error => {
                 console.log('Error: ' + error)
@@ -214,8 +209,8 @@ class Dashboard extends Component {
 
         API.post(apiName, path, requestParams)
             .then(response => {
-                console.log('Settings created successfully: ' + response);
-                this.setState({settingsInfo: response, settingsLoaded: true})
+                console.log('Settings created successfully: ' + JSON.stringify(response));
+                this.getSettings(this.state.authInfo.username)
             })
             .catch(error => {
                 console.log('Error in settings create: ' + error)

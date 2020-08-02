@@ -27,7 +27,7 @@ class DashboardSidebarContent extends Component {
                 <SidebarButton
                     active={activeTab==='settings'}
                     imgName='settings.svg'
-                    text='SettingsBox'
+                    text='Settings'
                     urlPath='/settings'/>
             </div>
         );
