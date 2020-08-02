@@ -165,7 +165,37 @@ class EditLocationInfo extends Component {
       return false
     }
     return true
-}
+  }
+  
+  deleteFunc = () => {
+    const theyAreSure = window.confirm("Are you sure you want to delete this?")
+    if (!theyAreSure)
+      return
+    const theyAreReallySure = window.confirm("This cannot be undone. Are you 100% sure?")
+    if (!theyAreReallySure)
+      return
+
+    const apiName = 'ManageLocationApi';
+    const path = '/location/active';
+    const requestData = {
+      headers: {},
+      response: true,
+      body: {
+        id: this.props.data.id
+      },
+    }
+
+    API.patch(apiName, path, requestData)
+      .then(response => {
+        window.alert("Delete successful.");
+        this.props.handleDelete();
+      })
+      .catch(error => {
+        console.log("Error: ", error);
+        window.alert("Delete unsuccessful.");
+      })
+      
+  }
 
   editLocation = async (values) => {
     const allValuesFilled = this.validateFieldsFilled(values)
@@ -528,6 +558,7 @@ class EditLocationInfo extends Component {
                 type="submit" >
                 Save
               </Button>
+              <Button className={styles.deleteButton} variant="danger" onClick={this.deleteFunc}> Delete Location </Button>
             </div>
           </Form>
         </Formik>

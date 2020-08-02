@@ -54,13 +54,26 @@
 }
 
 .editButton{
-    margin-top: 20px;
-    padding: 4px 20px;
-    background-color: #30B3CA;
-    border-color: #30B3CA;
+    font-size: 24px;
+    margin-bottom: 8px;
+    margin-left: 10px;
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    color: black;
 }
 
-.editLocationButtonDiv{
+.editButton:hover, .editButton:focus, .editButton:active{
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    color: #30B3CA;
 }
 
 .deleteLocationButtonDiv{
