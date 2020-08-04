@@ -1,0 +1,8 @@
+{
+    "learn": " learn about their COVID-19 response:",
+    "masks": {
+        "ques": "Are the employees wearing masks?",
+        "opt1": "Yes",
+        "opt2": "No"
+    }
+}

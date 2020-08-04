@@ -17,6 +17,11 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
 
+var esText = require('./enText.json')
+var enText = {} 
+
+var chosenText
+
 // declare a new express app
 var app = express();
 app.use(bodyParser.json());
@@ -347,7 +352,7 @@ app.get("/survey/:id", function (req, res) {
       </head>
       
       <body>
-        <h1>Help <strong>${name}</strong> learn about their COVID-19 response:</h1>
+        <h1>Help <strong>${name}</strong>${chosenText.learn}</h1>
         <form class='user-survey' method='POST'
           action-xhr="${environmentURL}/response" target="_top">
           <fieldset>
@@ -358,14 +363,14 @@ app.get("/survey/:id", function (req, res) {
               <input id="timestamp" type='hidden' name='timestamp'></input>
               <input id="weekday" type='hidden' name='weekday'></input>
               <div>
-                <p>Are the employees wearing masks?</p>
+                <p>${chosenText.masks}</p>
                 <amp-selector class='mask-selector' layout='container' name='employeeMasks'>
-                  <span class='selection-button' option='1'>Yes</span>
-                  <span class='selection-button' option='0'>No</span>
+                  <span class='selection-button' option='1'>${chosenText.y}</span>
+                  <span class='selection-button' option='0'>${chosenText.n}</span>
                 </amp-selector>
               </div>
               <div>
-                <p>Is your party at least 6 feet away from other parties?</p>
+                <p>${chosenText.socialDistancing}</p>
                 <amp-selector class='six-feet-selector' layout='container' name='sixFeet'>
                   <span class='selection-button' option='1'>Yes</span>
                   <span class='selection-button' option='0'>No</span>
