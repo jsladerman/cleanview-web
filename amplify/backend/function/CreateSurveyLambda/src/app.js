@@ -109,7 +109,7 @@ app.get("/survey/:id", function (req, res) {
       }
       res.send(`<!doctype html>
       <html ⚡>
-
+      
       <head>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
       
@@ -123,49 +123,37 @@ app.get("/survey/:id", function (req, res) {
           .header {
             background-color: #191A26;
             margin: 0px 0px 0px 0px;
+            padding: 20px 0px 0px 20px;
             font-size: 24px;
             color: white;
             font-weight: normal;
-            float: left;
-            width: 100%;
-            display: inline;
-            padding-bottom: 24px;
-            padding-left: 5px;
+          }
+      
+          .language-button {
+            color: white;
+            font-size: 12px;
+            padding: 10px 0px 10px 0px;
+          }
+      
+          fieldset {
+            border-style: none;
+            padding-left: 20px;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
           }
       
           label {
             font-size: 16px;
           }
       
-          fieldset {
-            border-style: none;
-            padding-top: 5px;
-            padding-left: 20px;
-            margin-inline-start: 0px;
-            margin-inline-end: 0px;
-          }
-      
           p {
             font-size: 16px;
-            margin: 15px 0px 5px 0px;
+            margin: 5px 0px 5px 0px;
           }
-
-          .age-selector{
+      
+          .age-selector {
             justify-items: center;
             align-items: center;
-          }
-
-          .header .language-button {
-            /* Text properties */
-            color: white;
-            font-size: 12px;
-            padding-rigth: 5px;
-            text-align: center;
-
-            float: left;
-      
-            /* Buttons which wrap to the next line will have spacing between top line */
-            margin: 0px 0px 0px 0px;
           }
       
           .selection-button {
@@ -191,12 +179,12 @@ app.get("/survey/:id", function (req, res) {
             background: linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
             background-color: #f6f6f6;
           }
-
+      
           #under-12 {
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
-
+      
             /* Button design */
             border: none;
             background-color: #ffffff;
@@ -216,13 +204,11 @@ app.get("/survey/:id", function (req, res) {
             /* Buttons which wrap to the next line will have spacing between top line */
             margin: 0px 0px 10px 0px;
           }
-
+      
           #under-12:hover {
             background: linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
             background-color: #f6f6f6;
           }
-
-
       
           amp-selector [option][selected] {
             outline: 0px;
@@ -236,7 +222,7 @@ app.get("/survey/:id", function (req, res) {
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
-
+      
             /* Button design */
             border: none;
             background-color: #23C9AD;
@@ -273,7 +259,7 @@ app.get("/survey/:id", function (req, res) {
             text-align: center;
           }
         </style>
-
+      
         <meta charset='utf-8'>
         <script async src='https://cdn.ampproject.org/v0.js'></script>
         <title>CleanView</title>
@@ -283,16 +269,16 @@ app.get("/survey/:id", function (req, res) {
           rel='stylesheet'>
         <meta name='viewport' content='width=device-width,minimum-scale=1,initial-scale=1'>
         <script type='application/ld+json'>
-            {
-              '@context': 'http://schema.org',
-              '@type': 'NewsArticle',
-              'headline': 'Open-source framework for publishing content',
-              'datePublished': '2015-10-07T12:02:41Z',
-              'image': [
-                'logo.jpg'
-              ]
-            }
-          </script>
+                  {
+                    '@context': 'http://schema.org',
+                    '@type': 'NewsArticle',
+                    'headline': 'Open-source framework for publishing content',
+                    'datePublished': '2015-10-07T12:02:41Z',
+                    'image': [
+                      'logo.jpg'
+                    ]
+                  }
+                </script>
         <script async custom-element='amp-form' src='https://cdn.ampproject.org/v0/amp-form-0.1.js'></script>
         <script async custom-template='amp-mustache' src='https://cdn.ampproject.org/v0/amp-mustache-0.2.js'></script>
         <style amp-boilerplate>
@@ -376,14 +362,13 @@ app.get("/survey/:id", function (req, res) {
       
       <body onload="popLang('${defaultLang}');">
         <div class="header">
-          <span class="header" id="learn"></span>
-          <span class='language-button' id="langChange" onclick='popLangOther()'></span>
+          <div id="learn"></div>
+          <div class='language-button' id="langChange" onclick='popLangOther()'></div>
         </div>
-        <form class='user-survey' method='POST'
-          action-xhr="${environmentURL}/response" target="_top">
+        <form class='user-survey' method='POST' action-xhr="${environmentURL}/response" target="_top">
           <fieldset>
             <div>
-              
+      
               <input type='hidden' name='sublocId' value='${sub_id}'> </input>
               <input type='hidden' name='locationId' value='${loc_id}'></input>
               <input type='hidden' name='menuLink' value='${menu_link}'> </input>
@@ -405,21 +390,21 @@ app.get("/survey/:id", function (req, res) {
               </div>
               <p id="age"></p>
               <amp-selector name='age' class='age-selector' layout='container' on='select: AMP.setState({
-                      selectedOption: event.targetOption,
-                      allSelectedOptions: event.selectedOptions
-                    })'>
-                    <span option='young'><input id='under-12' type='submit'></input></span>
-                    <span class='selection-button' option='13-17'>13-17</span>
-                    <span class='selection-button' option='18-25'>18-25</span>
-                    <span class='selection-button' option='26-35'>26-35</span>
-                    <span class='selection-button' option='36-45'>36-45</span>
-                    <span class='selection-button' option='46-55'>46-55</span>
-                    <span class='selection-button' option='56-65'>56-65</span>
-                    <span class='selection-button' option='66+'>66+</span>
+                            selectedOption: event.targetOption,
+                            allSelectedOptions: event.selectedOptions
+                          })'>
+                <span option='young'><input id='under-12' type='submit'></input></span>
+                <span class='selection-button' option='13-17'>13-17</span>
+                <span class='selection-button' option='18-25'>18-25</span>
+                <span class='selection-button' option='26-35'>26-35</span>
+                <span class='selection-button' option='36-45'>36-45</span>
+                <span class='selection-button' option='46-55'>46-55</span>
+                <span class='selection-button' option='56-65'>56-65</span>
+                <span class='selection-button' option='66+'>66+</span>
               </amp-selector>
             </div>
-            
-
+      
+      
             <div>
               <p id="local"></p>
               <amp-selector class='tourist-selector' layout='container' name='touristDiner'>
@@ -431,8 +416,9 @@ app.get("/survey/:id", function (req, res) {
             <div>
               <p id="overallRating"></p>
               <label id="poor"></label>
-              <input type='hidden' id='ratingValid' name='ratingValid' value='0' ></input>
-              <input type='range' id='slider' name='responseRating' min='0' max='5' oninput='document.getElementById(\"ratingValid\").value = 1' step='.5'></input>
+              <input type='hidden' id='ratingValid' name='ratingValid' value='0'></input>
+              <input type='range' id='slider' name='responseRating' min='0' max='5'
+                oninput='document.getElementById(\"ratingValid\").value = 1' step='.5'></input>
               <label id="excellent"></label>
             </div>
       
@@ -445,9 +431,9 @@ app.get("/survey/:id", function (req, res) {
         let curDate = Date().toLocaleString();
         document.getElementById("timestamp").value = curDate.substring(4);
         document.getElementById("weekday").value = curDate.substring(0, 3);
-        
+      
         const enText = {
-          langChange: "<strong>english</strong> | español",
+          langChange: "<strong><u>english</u></strong> | español",
           underThirteen: "Under 13",
           learn: "Help <strong>${name}</strong> learn about their COVID-19 response:",
           y: "Yes",
@@ -461,9 +447,9 @@ app.get("/survey/:id", function (req, res) {
           excellent: "Excellent",
           goToMenu: "Go to menu"
         }
-
+      
         const esText = {
-          langChange: "english | <strong>español</strong>",
+          langChange: "english | <strong><u>español</u></strong>",
           underThirteen: "Menos de 13",
           learn: "Ayuda a <strong>${name}</strong> aprende sobre su respuesta de COVID-19: ",
           y: "Sí",
@@ -477,9 +463,9 @@ app.get("/survey/:id", function (req, res) {
           excellent: "Excelente",
           goToMenu: "Iré al menú"
         }
-
+      
         var curLang;
-
+      
         function popLangOther() {
           if (curLang == 'en') {
             popLang('es')
@@ -487,7 +473,7 @@ app.get("/survey/:id", function (req, res) {
             popLang('en')
           }
         }
-
+      
         function popLang(langId) {
           curLang = langId;
           var chosenText = langId === 'en' ? enText : esText
@@ -509,8 +495,9 @@ app.get("/survey/:id", function (req, res) {
           document.getElementById("excellent").innerHTML = chosenText.excellent
           document.getElementById("submission").value = chosenText.goToMenu
         }
-        
+      
       </script>
+      
       </html>
     `);
     }
