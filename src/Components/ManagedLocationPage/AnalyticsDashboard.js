@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import FilteredDataToPieChart from './FilteredDataToCharts/FilteredDataToPieChart';
 import FilteredDataToAgeBarChart from './FilteredDataToCharts/FilteredDataToAgeBarChart';
 import FilteredDataToRatingBarChart from './FilteredDataToCharts/FilteredDataToRatingBarChart';
@@ -6,13 +6,14 @@ import FilteredDataToFrequencyChart from './FilteredDataToCharts/FilteredDataToF
 import FilteredDataToQRBarChart from './FilteredDataToCharts/FilteredDataToQRBarChart';
 import OverviewMetrics from './AnalyticsSubcomponents/OverviewMetrics';
 import styles from './css/AnalyticsDashboard.module.css';
-import { Formik, Form, Field } from 'formik';
+import {Formik, Form, Field} from 'formik';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Auth from '@aws-amplify/auth';
 import API from '@aws-amplify/api';
-
+import Button from "react-bootstrap/Button";
+import Accordion from "react-bootstrap/Accordion";
 
 class AnalyticsDashboard extends Component {
     constructor(props) {
@@ -51,11 +52,17 @@ class AnalyticsDashboard extends Component {
         if (this.state.allResponses.length === 0) {
             if (this.state.retrievedData) {
                 return (
-                    <h2 className={styles.analDash} id={styles.analyticsHeader}>Not enough data to generate analytics.</h2>
+                    <h2 className={styles.analDash} id={styles.analyticsHeader}>Not enough data to generate
+                        analytics.</h2>
                 )
             }
             return (
-                <div>LOADING</div>
+                <img
+                    src={require("../../images/dashboardLoader.svg")}
+                    alt=''
+                    height='100%'
+                    width='100%'
+                />
             )
         }
         return (
@@ -63,14 +70,14 @@ class AnalyticsDashboard extends Component {
                 <h2 id={styles.analyticsHeader}>Analytics Dashboard</h2>
 
                 <h4 className={styles.analyticsDashboardSubheader}>Overview</h4>
-                <OverviewMetrics allData={this.state.allResponses} /> <br />
+                <OverviewMetrics allData={this.state.allResponses}/> <br/>
 
                 <h4 className={styles.analyticsDashboardSubheader}>Customer Demographic Information</h4>
                 {this.renderFilteringWidgetForDemographicCharts()}
-                {this.renderDemographicCharts()} <br />
+                {this.renderDemographicCharts()} <br/>
 
                 <h4 className={styles.analyticsDashboardSubheader}>Survey Responses</h4>
-                {this.renderFilteringWidget()} <br />
+                {this.renderFilteringWidget()} <br/>
                 {this.renderFilteredOverview()}
                 {this.renderFilteringCharts()}
 
@@ -84,62 +91,80 @@ class AnalyticsDashboard extends Component {
     renderFilteringWidget = () => {
         return (
             <div className={styles.filterCharts}>
-                <p className={styles.analyticsDashboardSubheader2}>Filter Data</p>
-                <Container fluid className={styles.filteringOptions}>
-                    <Row>
-                        <Col>
-                            {/* DATE RANGES */}
-                            <p className={styles.filteringCategories}>Date Range</p>
-                            <Formik validate={(values) => this.filterDayRange(values.choice)}
-                                initialValues={{ choice: this.state.dayRange }}>
-                                <Form>
-                                    <Field as='select' name='choice' >
-                                        <option value={-1}>All-time</option>
-                                        <option value={1}>Last 24 hours</option>
-                                        <option value={7}>Last week</option>
-                                        <option value={30}>Last month</option>
-                                    </Field>
-                                </Form>
-                            </Formik>
+                <p className={styles.filteringWidgetHeader}>Filter Data</p>
+                <Row><Col>
+                    <Accordion>
+                        <Accordion.Toggle as={Button}
+                                          eventKey="0"
+                                          style={{
+                                              backgroundColor: '#23C9AD',
+                                              borderWidth: '0',
+                                              fontFamily: 'Roboto, serif',
+                                              fontWeight: 'bold',
+                                              marginLeft: '0px'
+                                          }}>
+                            Options
+                        </Accordion.Toggle>
+                        <Accordion.Collapse eventKey="0">
+                            <Container fluid className={styles.filteringOptions}>
+                                <Row><Col className={styles.filteringCategories}>Uncheck a box to exclude that group
+                                    from the analysis below.<br/></Col></Row>
+                                <Row>
+                                    <Col>
+                                        {/* DATE RANGES */}
+                                        <p className={styles.filteringCategories}>Date Range</p>
+                                        <Formik validate={(values) => this.filterDayRange(values.choice)}
+                                                initialValues={{choice: this.state.dayRange}}>
+                                            <Form>
+                                                <Field as='select' name='choice'>
+                                                    <option value={-1}>All-time</option>
+                                                    <option value={1}>Last 24 hours</option>
+                                                    <option value={7}>Last week</option>
+                                                    <option value={30}>Last month</option>
+                                                </Field>
+                                            </Form>
+                                        </Formik>
 
-                            {/* WEEKDAYS */}
-                            <p className={styles.filteringCategories}>Weekday</p>
-                            {this.renderSingleCheckbox("sundayCheck", "Sunday", this.state.weekdayExcludeFilter, 'Sun')}
-                            {this.renderSingleCheckbox("mondayCheck", "Monday", this.state.weekdayExcludeFilter, 'Mon')}
-                            {this.renderSingleCheckbox("tuesdayCheck", "Tuesday", this.state.weekdayExcludeFilter, 'Tue')}
-                            {this.renderSingleCheckbox("wednesdayCheck", "Wednesday", this.state.weekdayExcludeFilter, 'Wed')}
-                            {this.renderSingleCheckbox("thursdayCheck", "Thursday", this.state.weekdayExcludeFilter, 'Thu')}
-                            {this.renderSingleCheckbox("fridayCheck", "Friday", this.state.weekdayExcludeFilter, 'Fri')}
-                            {this.renderSingleCheckbox("saturdayCheck", "Saturday", this.state.weekdayExcludeFilter, 'Sat')}
-                        
-                            {/* CUSTOMER LOCALITY */}
-                            <p className={styles.filteringCategories}>Customer Living Distance</p>
-                            {this.renderSingleCheckbox("localCheck", "Local", this.state.touristExcludeFilter, '0')}
-                            {this.renderSingleCheckbox("touristCheckbox", "Non-local", this.state.touristExcludeFilter, '1')}
-                        </Col>
-                        <Col>
-                            {/* AGE GROUP */}
-                            <p className={styles.filteringCategories}>Age</p>
-                            {this.renderSingleCheckbox("input1", "13-17", this.state.ageExcludeFilter, '13-17')}
-                            {this.renderSingleCheckbox("input1", "18-25", this.state.ageExcludeFilter, '18-25')}
-                            {this.renderSingleCheckbox("input1", "26-35", this.state.ageExcludeFilter, '26-35')}
-                            {this.renderSingleCheckbox("input1", "36-45", this.state.ageExcludeFilter, '36-45')}
-                            {this.renderSingleCheckbox("input1", "46-55", this.state.ageExcludeFilter, '46-55')}
-                            {this.renderSingleCheckbox("input1", "56-65", this.state.ageExcludeFilter, '56-65')}
-                            {this.renderSingleCheckbox("input1", "66+", this.state.ageExcludeFilter, '66+')}
+                                        {/* WEEKDAYS */}
+                                        <p className={styles.filteringCategories}>Weekday</p>
+                                        {this.renderSingleCheckbox("sundayCheck", "Sunday", this.state.weekdayExcludeFilter, 'Sun')}
+                                        {this.renderSingleCheckbox("mondayCheck", "Monday", this.state.weekdayExcludeFilter, 'Mon')}
+                                        {this.renderSingleCheckbox("tuesdayCheck", "Tuesday", this.state.weekdayExcludeFilter, 'Tue')}
+                                        {this.renderSingleCheckbox("wednesdayCheck", "Wednesday", this.state.weekdayExcludeFilter, 'Wed')}
+                                        {this.renderSingleCheckbox("thursdayCheck", "Thursday", this.state.weekdayExcludeFilter, 'Thu')}
+                                        {this.renderSingleCheckbox("fridayCheck", "Friday", this.state.weekdayExcludeFilter, 'Fri')}
+                                        {this.renderSingleCheckbox("saturdayCheck", "Saturday", this.state.weekdayExcludeFilter, 'Sat')}
 
-                            {/* QR CODE */}
-                            <p className={styles.filteringCategories}>QR Code</p>
-                            {this.renderQRCodeCheckboxes()}
-                        </Col>
-                        <Col>
-                            {/* HOURS */}
-                            <p className={styles.filteringCategories}>Hours</p>
-                            {this.renderHoursCheckboxes()}
-                        </Col>
-                    </Row>
-                </Container>
+                                        {/* CUSTOMER LOCALITY */}
+                                        <p className={styles.filteringCategories}>Customer Living Distance</p>
+                                        {this.renderSingleCheckbox("localCheck", "Local", this.state.touristExcludeFilter, '0')}
+                                        {this.renderSingleCheckbox("touristCheckbox", "Non-local", this.state.touristExcludeFilter, '1')}
+                                    </Col>
+                                    <Col>
+                                        {/* AGE GROUP */}
+                                        <p className={styles.filteringCategories}>Age</p>
+                                        {this.renderSingleCheckbox("input1", "13-17", this.state.ageExcludeFilter, '13-17')}
+                                        {this.renderSingleCheckbox("input1", "18-25", this.state.ageExcludeFilter, '18-25')}
+                                        {this.renderSingleCheckbox("input1", "26-35", this.state.ageExcludeFilter, '26-35')}
+                                        {this.renderSingleCheckbox("input1", "36-45", this.state.ageExcludeFilter, '36-45')}
+                                        {this.renderSingleCheckbox("input1", "46-55", this.state.ageExcludeFilter, '46-55')}
+                                        {this.renderSingleCheckbox("input1", "56-65", this.state.ageExcludeFilter, '56-65')}
+                                        {this.renderSingleCheckbox("input1", "66+", this.state.ageExcludeFilter, '66+')}
 
+                                        {/* QR CODE */}
+                                        <p className={styles.filteringCategories}>QR Code</p>
+                                        {this.renderQRCodeCheckboxes()}
+                                    </Col>
+                                    <Col>
+                                        {/* HOURS */}
+                                        <p className={styles.filteringCategories}>Hours</p>
+                                        {this.renderHoursCheckboxes()}
+                                    </Col>
+                                </Row>
+                            </Container>
+                        </Accordion.Collapse>
+                    </Accordion>
+                </Col></Row>
             </div>
         )
     }
@@ -147,7 +172,7 @@ class AnalyticsDashboard extends Component {
     renderQRCodeCheckboxes = () => {
         let qrCheckboxes = [];
         let sublocations = this.props.sublocations;
-        for(var i = 0; i < sublocations.length; i++){
+        for (var i = 0; i < sublocations.length; i++) {
             let name = sublocations[i].name;
             let id = sublocations[i].id;
             let checkbox = this.renderSingleCheckbox("qrCheckName", name, this.state.qrExcludeFilter, id);
@@ -202,7 +227,7 @@ class AnalyticsDashboard extends Component {
                     className={styles.check}
                     type="checkbox"
                     name={elementName}
-                    onClick={() => this.addSingleFilter(filterArray, filterValue)} defaultChecked />
+                    onClick={() => this.addSingleFilter(filterArray, filterValue)} defaultChecked/>
                 <label>{labelText}</label>
             </div>
         )
@@ -211,48 +236,38 @@ class AnalyticsDashboard extends Component {
     renderFilteringWidgetForDemographicCharts = () => {
         return (
             <div className={styles.filterDemographicCharts}>
-                <Container>
-                    <Row>
-                        <Col className={styles.analyticsDashboardSubheader2}>Filter Date Range</Col>
-                        <Col>
-                            <div style={{marginTop:'4px'}}>
-                            <Formik validate={(values) => this.filterDayRangeDemographicCharts(values.choice)}
-                                initialValues={{ choice: this.state.dayRangeForDemographicCharts }}>
-                                <Form className={styles.filterTimeForDemographicCharts}>
-                                    <Field as='select' name='choice' >
-                                        <option value={-1}>All-time</option>
-                                        <option value={1}>Last 24 hours</option>
-                                        <option value={7}>Last week</option>
-                                        <option value={30}>Last month</option>
-                                    </Field>
-                                </Form>
-                            </Formik>
-                            </div>
-                        </Col>
-                        <div className="col-md-4"/>
-                        <div className="col-md-3" style={{marginTop:'4px', fontWeight:'bold'}}>
-                            Number of responses: {this.state.filteredDataForDemographicCharts.length}
-                        </div>
-                    </Row>
-                </Container>
+                <div className={styles.filteringDemographicChartsWidgetHeader}>Filter Date Range</div>
+                <div style={{ marginTop: '2px' }}>
+                    <Formik validate={(values) => this.filterDayRangeDemographicCharts(values.choice)}
+                        initialValues={{ choice: this.state.dayRangeForDemographicCharts }}>
+                        <Form className={styles.filterTimeForDemographicCharts}>
+                            <Field as='select' name='choice'>
+                                <option value={-1}>All-time</option>
+                                <option value={1}>Last 24 hours</option>
+                                <option value={7}>Last week</option>
+                                <option value={30}>Last month</option>
+                            </Field>
+                        </Form>
+                    </Formik>
+                </div>
             </div>
         )
     }
 
     renderFilteredOverview = () => {
-        if(this.state.filteredData.length == 0){
-            return(<h5>No data meets the filtering criteria.</h5>)
+        if (this.state.filteredData.length === 0) {
+            return (<h5>No data meets the filtering criteria.</h5>)
         }
         return (
             <div className={styles.filteredOverview}>
                 <h4>Statistics</h4>
                 <Row>
-                <Col className={styles.filteredOverviewSubheader}>Average Response</Col>
-                <Col className={styles.cell}>{this.averageRating(this.state.filteredData)} / 5</Col>
+                    <Col className={styles.filteredOverviewSubheader}>Average Response</Col>
+                    <Col className={styles.cell}>{this.averageRating(this.state.filteredData)} / 5</Col>
                 </Row>
                 <Row>
-                <Col className={styles.filteredOverviewSubheader}>Number of responses</Col>
-                <Col className={styles.cell}>{this.state.filteredData.length}</Col>
+                    <Col className={styles.filteredOverviewSubheader}>Number of responses</Col>
+                    <Col className={styles.cell}>{this.state.filteredData.length}</Col>
                 </Row>
             </div>
         );
@@ -263,52 +278,58 @@ class AnalyticsDashboard extends Component {
     /************************************************************************************************/
 
     renderDemographicCharts = () => {
-        if(this.state.filteredDataForDemographicCharts.length == 0){
-            return(<div>No data meets the filtering criteria.</div>)
-        }
-        else if (!this.state.rerenderCharts) {
+        if (this.state.filteredDataForDemographicCharts.length === 0) {
+            return (<div>No data meets the filtering criteria.</div>)
+        } else if (!this.state.rerenderCharts) {
             return (
-                <Container>
-                <Row className={styles.rowDivider}>
-                    <Col>
-                        <FilteredDataToAgeBarChart
-                            filteredData={this.state.filteredDataForDemographicCharts}
-                        />
-                    </Col>
+                <div>
+                <p style={{fontWeight:'bold', marginLeft:'10px', marginTop: '10px'}}>Number of responses: {this.state.filteredDataForDemographicCharts.length}</p>
+                <div>
+                    <Row className={styles.rowDivider}>
+                        <Col>
+                            <FilteredDataToAgeBarChart
+                                filteredData={this.state.filteredDataForDemographicCharts}
+                            />
+                        </Col>
 
-                    <Col>
-                        <FilteredDataToPieChart
-                            style={{margin:'auto'}}
-                            filteredData={this.state.filteredDataForDemographicCharts}
-                            keyString='touristDiner'
-                            titleText='Customer Living Distance'
-                            yesLabel="live within 15 miles of the restaurant"
-                            noLabel="do not live within 15 miles of the restaurant"
-                        />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <FilteredDataToQRBarChart
-                            filteredData={this.state.filteredDataForDemographicCharts}
-                            sublocations={this.props.sublocations}
-                        />
-                    </Col>
-                </Row>
-                </Container>
+                        <Col>
+                            <FilteredDataToPieChart
+                                style={{margin: 'auto'}}
+                                filteredData={this.state.filteredDataForDemographicCharts}
+                                keyString='touristDiner'
+                                titleText='Customer Living Distance'
+                                yesLabel="live within 15 miles of the restaurant"
+                                noLabel="do not live within 15 miles of the restaurant"
+                            />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <FilteredDataToQRBarChart
+                                filteredData={this.state.filteredDataForDemographicCharts}
+                                sublocations={this.props.sublocations}
+                            />
+                        </Col>
+                    </Row>
+                </div>
+                </div>
             );
         }
         return (
-            <div>LOADING</div>
+            <img
+                src={require("../../images/dashboardLoader.svg")}
+                alt=''
+                height='100%'
+                width='100%'
+            />
         )
     }
 
     renderFilteringCharts = () => {
-        if(this.state.filteredData.length == 0){
+        if (this.state.filteredData.length === 0) {
             // A message with "No data meets the filtering criteria." is displayed in renderFilteredOverview()
-            return(<div></div>);
-        }
-        else if (!this.state.rerenderCharts) {
+            return (<div></div>);
+        } else if (!this.state.rerenderCharts) {
             return (
                 <div>
                     <Row><Col><h4>Charts</h4></Col></Row>
@@ -327,9 +348,9 @@ class AnalyticsDashboard extends Component {
                     </Row>
 
                     <Row className={styles.rowDivider}>
-                        <Col style={{marginLeft:'50px'}}>
+                        <Col style={{marginLeft: '50px'}}>
                             <FilteredDataToPieChart
-                                style={{margin:'auto'}}
+                                style={{margin: 'auto'}}
                                 filteredData={this.state.filteredData}
                                 keyString='employeeMasks'
                                 titleText='Are Employees Wearing Masks?'
@@ -338,7 +359,7 @@ class AnalyticsDashboard extends Component {
                             />
                         </Col>
 
-                        <Col style={{marginLeft:'50px'}}>
+                        <Col style={{marginLeft: '50px'}}>
                             <FilteredDataToPieChart
                                 filteredData={this.state.filteredData}
                                 keyString='sixFeet'
@@ -352,7 +373,12 @@ class AnalyticsDashboard extends Component {
             );
         }
         return (
-            <div>LOADING</div>
+            <img
+                src={require("../../images/dashboardLoader.svg")}
+                alt=''
+                height='100%'
+                width='100%'
+            />
         )
     }
 
@@ -374,7 +400,7 @@ class AnalyticsDashboard extends Component {
     /************************************************************************************************/
 
     filterData = async () => {
-        this.setState({ rerenderCharts: true });
+        this.setState({rerenderCharts: true});
         let newFilteredData = await this.state.allResponses.filter(response =>
             (!this.state.touristExcludeFilter.includes(response['touristDiner'])
                 && !this.state.ageExcludeFilter.includes(response['age'])
@@ -384,8 +410,8 @@ class AnalyticsDashboard extends Component {
                 && !this.state.qrExcludeFilter.includes(response['sublocId'])
             )
         )
-        this.setState({ filteredData: newFilteredData });
-        this.setState({ rerenderCharts: false });
+        this.setState({filteredData: newFilteredData});
+        this.setState({rerenderCharts: false});
     }
 
     addSingleFilter = (array, item) => {
@@ -397,12 +423,12 @@ class AnalyticsDashboard extends Component {
             newArray.push(item);
         }
 
-        this.setState({ array: newArray });
+        this.setState({array: newArray});
         this.filterData();
     }
 
     filterDayRange = async (newDayRange) => {
-        await this.setState({ dayRange: newDayRange });
+        await this.setState({dayRange: newDayRange});
         await this.filterData();
     }
 
@@ -410,17 +436,17 @@ class AnalyticsDashboard extends Component {
     /*                           Functions for filtering demographic charts                         */
     /************************************************************************************************/
     filterDemographicData = async () => {
-        this.setState({ rerenderCharts: true });
+        this.setState({rerenderCharts: true});
         let newFilteredData = await this.state.allResponses.filter(response =>
             (this.state.dayRangeForDemographicCharts < 1
                 || this.daysFromToday(response['timestamp']) <= this.state.dayRangeForDemographicCharts)
         );
-        this.setState({ filteredDataForDemographicCharts: newFilteredData });
-        this.setState({ rerenderCharts: false });
+        this.setState({filteredDataForDemographicCharts: newFilteredData});
+        this.setState({rerenderCharts: false});
     }
 
     filterDayRangeDemographicCharts = async (newDayRange) => {
-        await this.setState({ dayRangeForDemographicCharts: newDayRange });
+        await this.setState({dayRangeForDemographicCharts: newDayRange});
         await this.filterDemographicData();
     }
 
@@ -442,7 +468,7 @@ class AnalyticsDashboard extends Component {
     pullData = () => {
         Auth.currentUserInfo()
             .then(user => {
-                if (user == null)
+                if (user === null)
                     this.setState({ redirect: '/login' });
                 else
                     this.getRestaurantSurveyData(this.props.id);
@@ -466,16 +492,16 @@ class AnalyticsDashboard extends Component {
         API.get(apiName, path, myParams)
             .then(response => {
                 let currState = this.state;
-                let filteredResponses = response['data'].filter(response => 
-                    response['age'] != undefined
-                    && response['employeeMasks'] != undefined
-                    && response['sixFeet'] != undefined
-                    && response['touristDiner'] != undefined
+                let filteredResponses = response['data'].filter(response =>
+                    response['age'] !== undefined
+                    && response['employeeMasks'] !== undefined
+                    && response['sixFeet'] !== undefined
+                    && response['touristDiner'] !== undefined
                 )
 
                 // TODO - remove all survey responses where age = '0-17' from the database
-                for(var i = 0; i < filteredResponses.length; i++){
-                    if(filteredResponses[i].age === '0-17'){
+                for (var i = 0; i < filteredResponses.length; i++) {
+                    if (filteredResponses[i].age === '0-17') {
                         filteredResponses[i].age = '13-17';
                     }
                 }

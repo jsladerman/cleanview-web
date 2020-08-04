@@ -5,23 +5,34 @@ import Auth from "@aws-amplify/auth";
 import uuid from "react-uuid";
 import { Field, Form, Formik, ErrorMessage } from "formik";
 import Button from "react-bootstrap/Button";
+import Alert from 'react-bootstrap/Alert'
+
 
 class AddLocation extends Component {
   constructor(props) {
     super(props);
-    // TOOD: add placeholder location images
+
+    const placeholderMap = {
+      0: require('../../images/locationPlaceholders/dark_blue.jpg'),
+      1: require('../../images/locationPlaceholders/teal.jpg'),
+      2: require('../../images/locationPlaceholders/light_blue.jpg'),
+    }
+    const placeholderUrl = placeholderMap[(Math.floor(Math.random() * Math.floor(3)))]
+
     this.state = {
-      imageUrl:
-        "https://p.bigstockphoto.com/GeFvQkBbSLaMdpKXF1Zv_bigstock-Aerial-View-Of-Blue-Lakes-And--227291596.jpg",
+      imageUrl: placeholderUrl,
       id: uuid(),
       imageLoading: false,
       noOutdoorSeating: true,
+      phoneNumError: false,
+      valueEmptyError: false,
     };
   }
 
   render() {
     return (
       <div className={styles.addLocation}>
+        {this.renderAlert()}
         <div className={styles.addLocationHeader}>Add Location</div>
         <Formik
           initialValues={{
@@ -240,12 +251,12 @@ class AddLocation extends Component {
                         Do you sanitize tables after every meal?
                       </div>
                       <label className={styles.customRadioBtnContainer}>
-                        <Field type="radio" name="sanitize" value="y" />
+                        <Field type="radio" name="sanitizeTables" value="y" />
                         <div className={styles.formRadioBtn} />
                       </label>
                       <label className={styles.formRadioLabel}>Yes</label>
                       <label className={styles.customRadioBtnContainer}>
-                        <Field type="radio" name="sanitize" value="n" />
+                        <Field type="radio" name="sanitizeTables" value="n" />
                         <div className={styles.formRadioBtn} />
                       </label>
                       <label className={styles.formRadioLabel}>No</label> <br />
@@ -295,7 +306,75 @@ class AddLocation extends Component {
     );
   }
 
+  validateFieldsFilled = (values) => {
+      if(!values) {
+        return false
+      }
+      if(!values.businessName) {
+        return false
+      }
+      if(!values.businessType) {
+        return false
+      }
+      if(!values.businessEmail) {
+        return false
+      }
+      if(!values.businessPhoneNum) {
+        return false
+      }
+      if(!values.addr) {
+        return false
+      }
+      if(!values.addr.line1) {
+        return false
+      }
+      if(!values.addr.city) {
+        return false
+      }
+      if(!values.addr.state) {
+        return false
+      }
+      if(!values.addr.zip) {
+        return false
+      }
+      if(!values.employeeMasks) {
+        return false
+      }
+      if(!values.employeeTemp) {
+        return false
+      }
+      if(!values.socialDistance) {
+        return false
+      }
+      if(!values.sanitizeTables) {
+        return false
+      }
+      if(!values.outsideSeating) {
+        return false
+      }
+      if(!values.indoorCapacity) {
+        return false
+      }
+      return true
+  }
+
   makeLocation = async (values) => {
+    const allValuesFilled = this.validateFieldsFilled(values)
+    if (!allValuesFilled) {
+      this.setState({valueEmptyError: true})
+      return
+    }
+
+    this.setState({valueEmptyError: false})
+
+    const phoneRegEx = /^\d{3}-\d{3}-\d{4}$/;
+    if (!phoneRegEx.test(values.businessPhoneNum)) {
+      this.setState({phoneNumError: true})
+      return
+    }
+
+    this.setState({phoneNumError: false})
+
     const apiName = "ManageLocationApi"; // replace this with your api name.
     const path = "/location"; //replace this with the path you have configured on your API
     const requestData = {
@@ -304,7 +383,7 @@ class AddLocation extends Component {
         imageUrl: this.state.imageUrl,
         loc_name: values.businessName,
         email: values.businessEmail,
-        phone: values.businessPhoneNum,
+        phone: this.parsePhoneNumber(values.businessPhoneNum),
         loc_type: values.businessType,
         manager: await Auth.currentAuthenticatedUser()
           .then((user) => user["username"])
@@ -320,7 +399,7 @@ class AddLocation extends Component {
           socialDistancing: values.socialDistance,
           outsideSeating: values.outsideSeating,
           employeeTemp: values.employeeTemp,
-          sanitizeTables: values.sanitize,
+          sanitizeTables: values.sanitizeTables,
           indoorCapacity: values.indoorCapacity,
           outdoorCapacity: this.state.noOutdoorSeating
             ? ""
@@ -440,6 +519,36 @@ class AddLocation extends Component {
       </Field>
     );
   };
+
+  renderAlert = () => {
+    if(this.state.valueEmptyError) {
+      return(
+        <Alert variant="danger" dismissible
+                onClose={() => this.setState({valueEmptyError: false})}
+                style={{whiteSpace: 'normal'}}>
+            <Alert.Heading>Error</Alert.Heading>
+            <div>
+                All values must be filled in.
+            </div>
+          </Alert>
+      )
+    }
+    if (this.state.phoneNumError)
+        return (
+            <Alert variant="danger" dismissible
+                   onClose={() => this.setState({phoneNumError: false})}
+                   style={{whiteSpace: 'normal'}}>
+                <Alert.Heading>Error</Alert.Heading>
+                <div>
+                    Phone number must be in this format: 800-555-1234
+                </div>
+            </Alert>
+        )
+  }
+
+  parsePhoneNumber = (phoneNumber) => {
+    return phoneNumber.split('-').join('');
+  }
 }
 
 export default AddLocation;
