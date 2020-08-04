@@ -45,12 +45,16 @@ class LocationsTable extends Component {
     }
 
     renderLocations = () => {
+        console.log("loc");
         if (this.props.locations && this.props.locations.length > 0)
             return this.props.locations.map(loc => {
+                console.log(loc);
                 if (loc.active)
                 return ( 
                     <LocationBox
                         locationName={loc.loc_name}
+                        city={loc.addrCity}
+                        street={loc.addrLine1}
                         key={loc.id + 'key'}
                         imageUrl={loc.imageUrl}
                         id={loc.id}
