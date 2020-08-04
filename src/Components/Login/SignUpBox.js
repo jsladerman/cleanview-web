@@ -51,15 +51,12 @@ class SignUpBox extends Component {
                     <Form.Group>
                         <div className={styles.checkBoxLabel}>
                             I agree to CleanView's {' '}
-                            <div className={styles.linkText}
-                                 onClick={() => console.log('Terms')}> {/* TODO */}
+                            <a 
+                            target="_blank"
+                            href="https://cleanview-location214612-prod.s3.us-east-1.amazonaws.com/public/CleanView_Terms_Of_Use.pdf"
+                            className={styles.linkText}>
                                 Terms of Use {' '}
-                            </div>
-                            and {' '}
-                            <div className={styles.linkText}
-                                 onClick={() => console.log('Privacy Policy')}> {/* TODO */}
-                                Privacy Policy
-                            </div>
+                            </a>
                         </div>
                         <Form.Control
                             className={styles.formCheckBox}
