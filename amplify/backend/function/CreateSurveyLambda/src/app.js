@@ -442,7 +442,7 @@ app.get("/survey/:id", function (req, res) {
           socialDistancing: "Is your party at least 6 feet away from other parties?",
           age: "What is your age group?",
           local: "Do you live within 15 miles of the restaurant?",
-          overall: "How satisfied are you with ${name}'s overall COVID-19 response",
+          overall: "How satisfied are you with ${name}'s overall COVID-19 response?",
           poor: "Poor",
           excellent: "Excellent",
           goToMenu: "Go to menu"
