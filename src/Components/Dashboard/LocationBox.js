@@ -13,6 +13,15 @@ class LocationBox extends Component {
         }
     }
 
+    // Example props
+    // locationName={loc.loc_name}
+    // city={loc.addrCity}
+    // street={loc.addrLine1}
+    // key={loc.id + 'key'}
+    // imageUrl={loc.imageUrl}
+    // id={loc.id}
+    // rating={0}
+
     componentDidMount() {
         this.renderRating();
     }
@@ -29,7 +38,8 @@ class LocationBox extends Component {
                         <Card.Img variant="top" style={{borderRadius: '8px', height: '160px'}}
                                   src={imgSrc}/>
                         <div className={styles.body}>
-                            <div className={styles.locationText}> {this.props.locationName}</div>
+                            <div className={styles.locationText}>{this.props.locationName} - {this.props.city}</div>
+                            <div className={styles.regularText}>{this.props.street}</div>
                             <div className={styles.regularText}>
                                 {/* <div style={{marginRight:'3px'}}>Current Rating:</div> */}
                                 {this.state.stars}
