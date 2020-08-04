@@ -236,7 +236,7 @@ class AddNewSublocation extends Component {
                     if(this.props.sublocations[i].active)
                       errors.name = "This QR code name exists already"
                     else
-                      errors.name = 'You can recover this QR code at the bottom of the page.'
+                      errors.name = 'You can recover this QR code in the Recover section.'
             
             return errors;
           }}
@@ -346,7 +346,7 @@ class RecoverSublocation extends Component {
           return errors
         }}
         >
-          <Form className={styles.qrCodeDeleteWrapper}>
+          <Form className={styles.qrCodeRecoverWrapper}>
             <Row>
               <Col className={styles.qrCodeFormColumn}>
                   <div className='form-group' class="column-contents">
