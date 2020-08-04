@@ -357,8 +357,15 @@ app.get("/survey/:id", function (req, res) {
           action-xhr="${environmentURL}/response" target="_top">
           <fieldset>
             <div>
-              <input type='hidden' name='sublocId' id='lang'> </input>
-              <amp-selector name='lang' class='age-selector' id='lang-selector' layout='container' on='select: document.getElementById("lang").value = '>
+              <input type='hidden' name='sublocId' id='lang' value='en'></input>
+              <p id="langChange"></p>
+              <amp-selector
+                name='lang' 
+                class='age-selector' 
+                id='lang-selector' 
+                layout='container' 
+                on='change: document.getElementById("lang").value = event.targetOption; console.log(document.getElementById("lang").value)'
+              >
                 <span selected class='selection-button' option='en'>en</span>
                 <span class='selection-button' option='es'>es</span>
               </amp-selector>
@@ -427,6 +434,7 @@ app.get("/survey/:id", function (req, res) {
         document.getElementById("weekday").value = curDate.substring(0, 3);
         
         const enText = {
+          langChange: "Cambia el idioma"
           learn: " learn about their COVID-19 response:",
           y: "Yes",
           n: "No",
@@ -442,6 +450,7 @@ app.get("/survey/:id", function (req, res) {
         }
 
         const esText = {
+          langChange: "Change the language"
           learn: " learn about their COVID-19 response:",
           y: "Yes",
           n: "No",
@@ -456,7 +465,8 @@ app.get("/survey/:id", function (req, res) {
         }
 
         var chosenText = document.getElementById("lang").value === 'en' ? enText : esText
-
+        
+        document.getElementById("langChange").value = chosenText.langChange
         document.getElementById("learn").value = chosenText.learn
         document.getElementById("n").value = chosenText.n
         document.getElementById("y").value = chosenText.y
