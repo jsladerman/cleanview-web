@@ -17,11 +17,6 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
 
-var enText = require('./enText.json')
-var esText = {} 
-
-var chosenText = enText
-
 // declare a new express app
 var app = express();
 app.use(bodyParser.json());
