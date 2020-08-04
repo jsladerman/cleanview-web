@@ -99,29 +99,25 @@ class QRCodeGenerator extends Component {
       });
   };
 
-  // selectSublocations = () => {
-  //   return(
-  //     <div>
-  //         <FormCheck
-  //         custom
-  //         type={"switch"}
-  //         label={"Does this work"}
-  //         />
-  //         {this.state.sublocations.map( (sublocation) => {
-  //           console.log(sublocation)
-  //           return(
-  //             <FormCheck
-  //             custom
-  //             type={"switch"}
-  //             // className={'sublocationEditCheckbox'}
-  //             label={sublocation.name}
-  //             // defaultChecked={sublocation.active}
-  //             />
-  //           )
-  //         })}
-  //     </div>
-  //   )
-  // } 
+  deleteSublocation = (name) => {
+    let currentSublocations = this.state.sublocations
+    for(let i=0; i<currentSublocations.length; ++i) {
+      if(currentSublocations[i].name === name) {
+        currentSublocations[i].active = 0
+      }
+    }
+    this.updateSublocations(currentSublocations)
+  }
+
+  recoverSublocation = (name) => {
+    let currentSublocations = this.state.sublocations
+    for(let i=0; i<currentSublocations.length; ++i) {
+      if(currentSublocations[i].name === name) {
+        currentSublocations[i].active = 1
+      }
+    }
+    this.updateSublocations(currentSublocations)
+  }
 
   render() {
     if (!this.state.sublocations) {
@@ -200,16 +196,24 @@ class QRCodeGenerator extends Component {
               <li>Use distinct QR codes for indoor and outdoor tables</li>
               <li>Use distinct QR codes for each individual table</li>
             </ul>
-            <AddNewSublocation handleSubmit={this.addSublocation}/>
-            {/* {this.selectSublocations()} */}
+            <Row>
+              <Col>
+                <AddNewSublocation sublocations={this.state.sublocations}handleSubmit={this.addSublocation} />
+              </Col>
+              <Col>
+                <DeleteSublocation sublocations={this.state.sublocations} handleSubmit={this.deleteSublocation}/>
+              </Col>
+              <Col>
+                <RecoverSublocation sublocations={this.state.sublocations} handleSubmit={this.recoverSublocation} />
+              </Col>
+            </Row>
             {sublocationtable()}
+            
           </div>
         </div>
     );
   }
 }
-
-
 
 class AddNewSublocation extends Component {
   render() {
@@ -226,6 +230,14 @@ class AddNewSublocation extends Component {
             let errors = {}
             if(!values.name)
               errors.name = "You must name your QR code."
+            else
+              for(let i=0; i<this.props.sublocations.length; ++i) 
+                  if(values.name.toLowerCase() === this.props.sublocations[i].name.toLowerCase())
+                    if(this.props.sublocations[i].active)
+                      errors.name = "This QR code name exists already"
+                    else
+                      errors.name = 'You can recover this QR code in the Recover section.'
+            
             return errors;
           }}
         >
@@ -238,7 +250,7 @@ class AddNewSublocation extends Component {
                 </div>
               </Col>
               <Col className={styles.qrCodeFormColumn}>
-                <div class="form-group" class="column-contents">
+                <div className="form-group" class="column-contents">
                   <label className={styles.qrField}>Color </label>
                   <Field as="select" name="color" class="form-control">
                     <option value="000000">Black</option>
@@ -263,5 +275,111 @@ class AddNewSublocation extends Component {
     );
   }
 }
+
+class DeleteSublocation extends Component {
+  render() {
+    return(
+      <div>
+        <h4 className={styles.qrCodeSubheader}>Delete QR Code</h4>
+        <Formik
+        initialValues={{
+          code: 'none'
+        }}
+        onSubmit={(values) => this.props.handleSubmit(values.code)}
+        validate={(values) => {
+          let errors = {}
+          if(values.code === 'none')
+            errors.code = 'Please select a valid QR code.'
+
+          return errors
+        }}
+        >
+          <Form className={styles.qrCodeDeleteWrapper}>
+            <Row>
+              <Col className={styles.qrCodeFormColumn}>
+                  <div className='form-group' class="column-contents">
+                    <label className={styles.qrField}>Name</label>
+                    <Field as="select" name="code" class="form-control">
+                      <option value={'none'}>Select a QR code</option>
+                      {this.props.sublocations.map((sublocation) => {
+                        if(sublocation.active) {
+                          return(
+                            <option value={sublocation.name}>{sublocation.name}</option>
+                          );
+                        }
+                        return(<div></div>);
+                      })}
+                    </Field>
+                  </div>
+              </Col>
+              <Col className={styles.qrCodeFormColumn}>
+                  <Button variant="danger" className={styles.deleteQrCodeSubmit} type="submit">Delete</Button>
+              </Col>
+            </Row>
+            <Row>
+              <Col className={styles.qrCodeFormColumn}>
+                <ErrorMessage type="div" name="code" style={{'color': 'red'}}/>
+              </Col>
+            </Row>
+          </Form>
+        </Formik>
+      </div>
+    );
+  }
+}
+
+class RecoverSublocation extends Component {
+  render() {
+    return(
+      <div>
+        <h4 className={styles.qrCodeSubheader}>Recover QR Code</h4>
+        <Formik
+        initialValues={{
+          code: 'none'
+        }}
+        onSubmit={(values) => this.props.handleSubmit(values.code)}
+        validate={(values) => {
+          let errors = {}
+          if(values.code === 'none')
+            errors.code = 'Please select a valid QR code.'
+
+          return errors
+        }}
+        >
+          <Form className={styles.qrCodeRecoverWrapper}>
+            <Row>
+              <Col className={styles.qrCodeFormColumn}>
+                  <div className='form-group' class="column-contents">
+                    <label className={styles.qrField}>Name</label>
+                    <Field as="select" name="code" class="form-control">
+                      <option value={'none'}>Select a QR code</option>
+                      {this.props.sublocations.map((sublocation) => {
+                        if(!sublocation.active) {
+                          return(
+                            <option value={sublocation.name}>{sublocation.name}</option>
+                          );
+                        }
+                        return(<div></div>);
+                      })}
+                    </Field>
+                  </div>
+              </Col>
+              <Col className={styles.qrCodeFormColumn}>
+                  <Button className={styles.generateQrCodeSubmit} type="submit">Recover</Button>
+              </Col>
+            </Row>
+            <Row>
+              <Col className={styles.qrCodeFormColumn}>
+                <ErrorMessage type="div" name="code" style={{'color': 'red'}}/>
+              </Col>
+            </Row>
+          </Form>
+        </Formik>
+      </div>
+    );
+  }
+}
+
+
 
 export default QRCodeGenerator;
