@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styles from './css/QRCodeGenerator.module.css'
 import uuid from 'react-uuid';
 import { API } from 'aws-amplify';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import Button from "react-bootstrap/Button";
 import Table from 'react-bootstrap/Table'
 import Row from 'react-bootstrap/Row';
@@ -15,6 +15,7 @@ class QRCodeGenerator extends Component {
     this.state = {
       sublocations: '',
       environmentURL: '',
+      menuLink: '',
     };
 
     this.addSublocation = this.addSublocation.bind(this)
@@ -32,15 +33,21 @@ class QRCodeGenerator extends Component {
       name: values.name,
       id: uuid(),
       color: values.color,
+      active: 1,
+      menuLink: this.state.menuLink
     })
 
+    this.updateSublocations(currentSublocations)
+  }
+
+  updateSublocations = (sublocations) => {
     const apiName = 'ManageLocationApi';
     const path = '/location/sublocations';
     const requestData = {
       headers: {},
       response: true,
       body: {
-        sublocations: currentSublocations,
+        sublocations: sublocations,
         loc_id: this.props.id
       },
     }
@@ -71,6 +78,7 @@ class QRCodeGenerator extends Component {
         let currState = this.state
         currState.sublocations = response.data.body.sublocations
         currState.environmentURL = response.data.environmentURL
+        currState.menuLink = response.data.body.menu_link
         this.setState(currState)
       })
       .catch(error => {
@@ -91,12 +99,36 @@ class QRCodeGenerator extends Component {
       });
   };
 
+  // selectSublocations = () => {
+  //   return(
+  //     <div>
+  //         <FormCheck
+  //         custom
+  //         type={"switch"}
+  //         label={"Does this work"}
+  //         />
+  //         {this.state.sublocations.map( (sublocation) => {
+  //           console.log(sublocation)
+  //           return(
+  //             <FormCheck
+  //             custom
+  //             type={"switch"}
+  //             // className={'sublocationEditCheckbox'}
+  //             label={sublocation.name}
+  //             // defaultChecked={sublocation.active}
+  //             />
+  //           )
+  //         })}
+  //     </div>
+  //   )
+  // } 
+
   render() {
     if (!this.state.sublocations) {
       return (<p>Looking for QR codes...</p>)
     }
 
-    const sublocationRow = (name, color, sublocId) => {
+    const sublocationRow = (name, color, sublocId, menuLink) => {
       const totalId = this.props.id + '99strl99strl' + sublocId
       const apiEndpoint = "https://api.qrserver.com/v1/create-qr-code/?data=" + this.state.environmentURL + "/survey/"
       const colorParam = "&color=" + color
@@ -117,6 +149,9 @@ class QRCodeGenerator extends Component {
               <img src={inBrowserURL} alt="" title="" onClick={() => this.downloadQRCode(name, downloadURL)} />
              </a>
           </td>
+          <td>
+            <a href={menuLink ?? this.state.menuLink} target="_blank">See menu</a>
+          </td>
         </tr>
       );
     }
@@ -127,16 +162,22 @@ class QRCodeGenerator extends Component {
           <h4 className={styles.qrCodeSubheader}>Your QR Codes</h4>
           <Table striped bordered hover className={styles.qrTable}>
           <thead className={styles.qrTableHeaderRow}>
-            <th>
-            Name
-            </th>
-            <th>
-            QR Code Image (click to download)
-            </th>
+            <tr>
+              <th>
+              Name
+              </th>
+              <th>
+              QR Code Image (click to download)
+              </th>
+              <th>
+                Menu Link
+              </th>
+            </tr>
           </thead>
           <tbody>
           {this.state.sublocations.map((sublocation) => {
-            return sublocationRow(sublocation.name, sublocation.color, sublocation.id)
+            if(sublocation.active)
+              return sublocationRow(sublocation.name, sublocation.color, sublocation.id, sublocation.menuLink)
           })}
           </tbody>
         </Table>
@@ -146,13 +187,7 @@ class QRCodeGenerator extends Component {
       )
     }
 
-
-    // const subLocationList = this.state.sublocations.map((sublocation) => {
-    //   const total_id = this.props.id + '99strl99strl' + sublocation.id
-    //   return(
-    //     <SublocationQRCode id={total_id} name={sublocation.name} color={sublocation.color} key={sublocation.id} environmentURL={this.state.environmentURL} />
-    //   )
-    // })
+    
 
     return (
         <div className={styles.qrManagementBlock}>
@@ -166,13 +201,8 @@ class QRCodeGenerator extends Component {
               <li>Use distinct QR codes for each individual table</li>
             </ul>
             <AddNewSublocation handleSubmit={this.addSublocation}/>
+            {/* {this.selectSublocations()} */}
             {sublocationtable()}
-            {/* <AddNewSublocation handleSubmit={this.addSublocation}/>
-            <br/>
-
-            <p>Each QR code links to the survey and then to your menu. You can manage your menu on the Menu Manager
-              tab.</p>
-            {subLocationList} */}
           </div>
         </div>
     );
@@ -191,6 +221,12 @@ class AddNewSublocation extends Component {
           initialValues={{
             name: '',
             color: '000000',
+          }}
+          validate={(values) => {
+            let errors = {}
+            if(!values.name)
+              errors.name = "You must name your QR code."
+            return errors;
           }}
         >
           <Form className={styles.qrCodeGeneratorWrapper}>
@@ -214,6 +250,11 @@ class AddNewSublocation extends Component {
               </Col>
               <Col className={styles.qrCodeFormColumn}>
                 <Button className={styles.generateQrCodeSubmit} type="submit">Generate</Button>
+              </Col>
+            </Row>
+            <Row>
+              <Col className={styles.qrCodeFormColumn}>
+                <ErrorMessage type="div" name="name" style={{'color': 'red'}}/>
               </Col>
             </Row>
           </Form>
