@@ -17,10 +17,10 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
 
-var esText = require('./enText.json')
-var enText = {} 
+var enText = require('./enText.json')
+var esText = {} 
 
-var chosenText
+var chosenText = enText
 
 // declare a new express app
 var app = express();
@@ -352,36 +352,41 @@ app.get("/survey/:id", function (req, res) {
       </head>
       
       <body>
-        <h1>Help <strong>${name}</strong>${chosenText.learn}</h1>
+        <h1 id="learn"></h1>
         <form class='user-survey' method='POST'
           action-xhr="${environmentURL}/response" target="_top">
           <fieldset>
             <div>
+              <input type='hidden' name='sublocId' id='lang'> </input>
+              <amp-selector name='lang' class='age-selector' id='lang-selector' layout='container' on='select: document.getElementById("lang").value = '>
+                <span selected class='selection-button' option='en'>en</span>
+                <span class='selection-button' option='es'>es</span>
+              </amp-selector>
               <input type='hidden' name='sublocId' value='${sub_id}'> </input>
               <input type='hidden' name='locationId' value='${loc_id}'></input>
               <input type='hidden' name='menuLink' value='${menu_link}'> </input>
               <input id="timestamp" type='hidden' name='timestamp'></input>
               <input id="weekday" type='hidden' name='weekday'></input>
               <div>
-                <p>${chosenText.masks}</p>
+                <p id="masks"></p>
                 <amp-selector class='mask-selector' layout='container' name='employeeMasks'>
-                  <span class='selection-button' option='1'>${chosenText.y}</span>
-                  <span class='selection-button' option='0'>${chosenText.n}</span>
+                  <span class='selection-button' option='1' id="masksYes"></span>
+                  <span class='selection-button' option='0' id="masksNo></span>
                 </amp-selector>
               </div>
               <div>
-                <p>${chosenText.socialDistancing}</p>
+                <p id="distanced"></p>
                 <amp-selector class='six-feet-selector' layout='container' name='sixFeet'>
-                  <span class='selection-button' option='1'>Yes</span>
-                  <span class='selection-button' option='0'>No</span>
+                  <span class='selection-button' option='1' id="distancedYes"></span>
+                  <span class='selection-button' option='0' id="distancedNo"></span>
                 </amp-selector>
               </div>
-              <p>How old are you?</p>
+              <p id="age"></p>
               <amp-selector name='age' class='age-selector' layout='container' on='select: AMP.setState({
                       selectedOption: event.targetOption,
                       allSelectedOptions: event.selectedOptions
                     })'>
-                    <span option='young'><input id='under-12' type='submit' value='Under 13'></input></span>
+                    <span option='young'><input id='under-12' type='submit'></input></span>
                     <span class='selection-button' option='13-17'>13 to 17</span>
                     <span class='selection-button' option='18-25'>18 to 25</span>
                     <span class='selection-button' option='26-35'>26 to 35</span>
@@ -394,19 +399,19 @@ app.get("/survey/:id", function (req, res) {
             
 
             <div>
-              <p>Do you live within 15 miles of the restaurant?</p>
+              <p>${chosenText.local}</p>
               <amp-selector class='tourist-selector' layout='container' name='touristDiner'>
-                <span class='selection-button' option='1'>Yes</span>
-                <span class='selection-button' option='0'>No</span>
+                <span class='selection-button' option='1'>${chosenText.y}</span>
+                <span class='selection-button' option='0'>${chosenText.n}</span>
               </amp-selector>
             </div>
       
             <div>
-              <p>How satisfied are you with ${name}'s overall COVID-19 response?</p>
-              <label>Poor</label>
+              <p id="overallRating">${chosenText.overall1}${name}${chosenText.overall2}</p>
+              <label>${chosenText.poor}</label>
               <input type='hidden' id='ratingValid' name='ratingValid' value='0' ></input>
               <input type='range' id='slider' name='responseRating' min='0' max='5' oninput='document.getElementById(\"ratingValid\").value = 1' step='.5'></input>
-              <label>Excellent</label>
+              <label>${chosenText.excellent}</label>
             </div>
       
             <div id='submit-button-div'>
@@ -420,6 +425,50 @@ app.get("/survey/:id", function (req, res) {
         let curDate = Date().toLocaleString();
         document.getElementById("timestamp").value = curDate.substring(4);
         document.getElementById("weekday").value = curDate.substring(0, 3);
+        
+        const enText = {
+          learn: " learn about their COVID-19 response:",
+          y: "Yes",
+          n: "No",
+          masks: "Are the employees wearing masks?",
+          socialDistancing: "Is your party at least 6 feet away from other parties?",
+          age: "How old are you?",
+          local: "Do you live within 15 miles of the restaurant?",
+          overall1: "How satisfied are you with ",
+          overall2: "'s overall COVID-19 response?",
+          poor: "Poor",
+          excellent: "Excellent",
+          goToMenu: "Go to Menu"
+        }
+
+        const esText = {
+          learn: " learn about their COVID-19 response:",
+          y: "Yes",
+          n: "No",
+          masks: "Are the employees wearing masks?",
+          socialDistancing: "Is your party at least 6 feet away from other parties?",
+          age: "How old are you?",
+          local: "Do you live within 15 miles of the restaurant?",
+          overall: "How satisfied are you with ${name}'s overally COVID-19 response",
+          poor: "Poor",
+          excellent: "Excellent",
+          goToMenu: "Go to Menu"
+        }
+
+        var chosenText = document.getElementById("lang").value === 'en' ? enText : esText
+
+        document.getElementById("learn").value = chosenText.learn
+        document.getElementById("n").value = chosenText.n
+        document.getElementById("y").value = chosenText.y
+        document.getElementById("masks").value = chosenText.masks
+        document.getElementById("socialDistancing").value = chosenText.socialDistancing
+        document.getElementById("age").value = chosenText.age
+        document.getElementById("local").value = chosenText.local
+        document.getElementById("overallRating").value = chosenText.overall1 + ${name} + chosenText.overall2
+        document.getElementById("poor").value = chosenText.poor
+        document.getElementById("excellent").value = chosenText.excellent
+        document.getElementById("goToMenu").value = chosenText.goToMenu)
+
       </script>
       </html>
     `);
