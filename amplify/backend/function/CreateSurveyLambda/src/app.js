@@ -95,13 +95,9 @@ app.get("/survey/:id", function (req, res) {
     }else {
       let itemData = data.Item;
       let name = itemData.loc_name;
-      let menu_link = itemData.menu_link;
-      var defaultLang;
-      if (itemData.defaultLang) {
-        defaultLang = itemData.defaultLang;
-      } else {
-        defaultLang = 'en';
-      }
+      let menu_link = Boolean(itemData.menu_link) ? itemData.menu_link : 'https://www.cleanview.io';
+      let defaultLang = Boolean(itemData.defaultLang) ? itemData.defaultLang : 'en';
+      let hasMenuLink = Boolean(itemData.menu_link);
       res.send(`<!doctype html>
       <html ⚡>
       
@@ -440,7 +436,7 @@ app.get("/survey/:id", function (req, res) {
           overall: "How satisfied are you with ${name}'s overall COVID-19 response?",
           poor: "Poor",
           excellent: "Excellent",
-          goToMenu: "Go to menu"
+          goToMenu: Boolean(${hasMenuLink}) ? "Go to menu" : "Submit"
         }
       
         const esText = {
@@ -456,7 +452,7 @@ app.get("/survey/:id", function (req, res) {
           overall: "¿Qué tan satisfecho está con la respuesta que ha tenido ${name} con COVID-19?",
           poor: "Malo",
           excellent: "Excelente",
-          goToMenu: "Iré al menú"
+          goToMenu: Boolean(${hasMenuLink}) ? "Ir al menú" : "Enviar"
         }
       
         var curLang;
