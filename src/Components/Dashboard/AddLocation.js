@@ -11,10 +11,16 @@ import Alert from 'react-bootstrap/Alert'
 class AddLocation extends Component {
   constructor(props) {
     super(props);
-    // TOOD: add placeholder location images
+
+    const placeholderMap = {
+      0: require('../../images/locationPlaceholders/dark_blue.jpg'),
+      1: require('../../images/locationPlaceholders/teal.jpg'),
+      2: require('../../images/locationPlaceholders/light_blue.jpg'),
+    }
+    const placeholderUrl = placeholderMap[(Math.floor(Math.random() * Math.floor(3)))]
+
     this.state = {
-      imageUrl:
-        "https://p.bigstockphoto.com/GeFvQkBbSLaMdpKXF1Zv_bigstock-Aerial-View-Of-Blue-Lakes-And--227291596.jpg",
+      imageUrl: placeholderUrl,
       id: uuid(),
       imageLoading: false,
       noOutdoorSeating: true,
