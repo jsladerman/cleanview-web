@@ -150,7 +150,7 @@ class QRCodeGenerator extends Component {
              </a>
           </td>
           <td>
-            <a href={menuLink ?? this.state.menuLink}>See menu</a>
+            <a href={menuLink ?? this.state.menuLink} target="_blank">See menu</a>
           </td>
         </tr>
       );
