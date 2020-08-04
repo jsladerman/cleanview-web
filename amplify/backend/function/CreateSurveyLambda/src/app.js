@@ -101,6 +101,12 @@ app.get("/survey/:id", function (req, res) {
       let itemData = data.Item;
       let name = itemData.loc_name;
       let menu_link = itemData.menu_link;
+      var defaultLang;
+      if (itemData.defaultLang) {
+        defaultLang = itemData.defaultLang;
+      } else {
+        defaultLang = 'en';
+      }
       res.send(`<!doctype html>
       <html ⚡>
 
@@ -114,13 +120,17 @@ app.get("/survey/:id", function (req, res) {
             height: 100%;
           }
       
-          h1 {
-            font-size: 24px;
+          .header {
             background-color: #191A26;
             margin: 0px 0px 0px 0px;
-            padding: 20px 20px 20px 20px;
+            font-size: 24px;
             color: white;
             font-weight: normal;
+            float: left;
+            width: 100%;
+            display: inline;
+            padding-bottom: 24px;
+            padding-left: 5px;
           }
       
           label {
@@ -143,6 +153,19 @@ app.get("/survey/:id", function (req, res) {
           .age-selector{
             justify-items: center;
             align-items: center;
+          }
+
+          .header .language-button {
+            /* Text properties */
+            color: white;
+            font-size: 12px;
+            padding-rigth: 5px;
+            text-align: center;
+
+            float: left;
+      
+            /* Buttons which wrap to the next line will have spacing between top line */
+            margin: 0px 0px 0px 0px;
           }
       
           .selection-button {
@@ -351,24 +374,16 @@ app.get("/survey/:id", function (req, res) {
         </style>
       </head>
       
-      <body>
-        <h1 id="learn"></h1>
+      <body onload="popLang('${defaultLang}');">
+        <div class="header">
+          <span class="header" id="learn"></span>
+          <span class='language-button' id="langChange" onclick='popLangOther()'></span>
+        </div>
         <form class='user-survey' method='POST'
           action-xhr="${environmentURL}/response" target="_top">
           <fieldset>
             <div>
-              <input type='hidden' name='sublocId' id='lang' value='en'></input>
-              <p id="langChange"></p>
-              <amp-selector
-                name='lang' 
-                class='age-selector' 
-                id='lang-selector' 
-                layout='container' 
-                on='change: document.getElementById("lang").value = event.targetOption; console.log(document.getElementById("lang").value)'
-              >
-                <span selected class='selection-button' option='en'>en</span>
-                <span class='selection-button' option='es'>es</span>
-              </amp-selector>
+              
               <input type='hidden' name='sublocId' value='${sub_id}'> </input>
               <input type='hidden' name='locationId' value='${loc_id}'></input>
               <input type='hidden' name='menuLink' value='${menu_link}'> </input>
@@ -378,7 +393,7 @@ app.get("/survey/:id", function (req, res) {
                 <p id="masks"></p>
                 <amp-selector class='mask-selector' layout='container' name='employeeMasks'>
                   <span class='selection-button' option='1' id="masksYes"></span>
-                  <span class='selection-button' option='0' id="masksNo></span>
+                  <span class='selection-button' option='0' id="masksNo"></span>
                 </amp-selector>
               </div>
               <div>
@@ -394,36 +409,34 @@ app.get("/survey/:id", function (req, res) {
                       allSelectedOptions: event.selectedOptions
                     })'>
                     <span option='young'><input id='under-12' type='submit'></input></span>
-                    <span class='selection-button' option='13-17'>13 to 17</span>
-                    <span class='selection-button' option='18-25'>18 to 25</span>
-                    <span class='selection-button' option='26-35'>26 to 35</span>
-                    <span class='selection-button' option='36-45'>36 to 45</span>
-                    <span class='selection-button' option='46-55'>46 to 55</span>
-                    <span class='selection-button' option='56-65'>56 to 65</span>
+                    <span class='selection-button' option='13-17'>13-17</span>
+                    <span class='selection-button' option='18-25'>18-25</span>
+                    <span class='selection-button' option='26-35'>26-35</span>
+                    <span class='selection-button' option='36-45'>36-45</span>
+                    <span class='selection-button' option='46-55'>46-55</span>
+                    <span class='selection-button' option='56-65'>56-65</span>
                     <span class='selection-button' option='66+'>66+</span>
               </amp-selector>
             </div>
             
 
             <div>
-              <p>${chosenText.local}</p>
+              <p id="local"></p>
               <amp-selector class='tourist-selector' layout='container' name='touristDiner'>
-                <span class='selection-button' option='1'>${chosenText.y}</span>
-                <span class='selection-button' option='0'>${chosenText.n}</span>
+                <span class='selection-button' option='1' id="localYes"></span>
+                <span class='selection-button' option='0' id="localNo"></span>
               </amp-selector>
             </div>
       
             <div>
-              <p id="overallRating">${chosenText.overall1}${name}${chosenText.overall2}</p>
-              <label>${chosenText.poor}</label>
+              <p id="overallRating"></p>
+              <label id="poor"></label>
               <input type='hidden' id='ratingValid' name='ratingValid' value='0' ></input>
               <input type='range' id='slider' name='responseRating' min='0' max='5' oninput='document.getElementById(\"ratingValid\").value = 1' step='.5'></input>
-              <label>${chosenText.excellent}</label>
+              <label id="excellent"></label>
             </div>
       
-            <div id='submit-button-div'>
-              <input id='submission' type='submit' value='Go to Menu'></input>
-            </div>
+            <div id='submit-button-div'><input id='submission' type='submit'></input></div>
       
           </fieldset>
         </form>
@@ -434,51 +447,69 @@ app.get("/survey/:id", function (req, res) {
         document.getElementById("weekday").value = curDate.substring(0, 3);
         
         const enText = {
-          langChange: "Cambia el idioma"
-          learn: " learn about their COVID-19 response:",
+          langChange: "<strong>english</strong> | español",
+          underThirteen: "Under 13",
+          learn: "Help <strong>${name}</strong> learn about their COVID-19 response:",
           y: "Yes",
           n: "No",
           masks: "Are the employees wearing masks?",
           socialDistancing: "Is your party at least 6 feet away from other parties?",
-          age: "How old are you?",
+          age: "What is your age group?",
           local: "Do you live within 15 miles of the restaurant?",
-          overall1: "How satisfied are you with ",
-          overall2: "'s overall COVID-19 response?",
+          overall: "How satisfied are you with ${name}'s overall COVID-19 response",
           poor: "Poor",
           excellent: "Excellent",
-          goToMenu: "Go to Menu"
+          goToMenu: "Go to menu"
         }
 
         const esText = {
-          langChange: "Change the language"
-          learn: " learn about their COVID-19 response:",
-          y: "Yes",
+          langChange: "english | <strong>español</strong>",
+          underThirteen: "Menos de 13",
+          learn: "Ayuda a <strong>${name}</strong> aprende sobre su respuesta de COVID-19: ",
+          y: "Sí",
           n: "No",
-          masks: "Are the employees wearing masks?",
-          socialDistancing: "Is your party at least 6 feet away from other parties?",
-          age: "How old are you?",
-          local: "Do you live within 15 miles of the restaurant?",
-          overall: "How satisfied are you with ${name}'s overally COVID-19 response",
-          poor: "Poor",
-          excellent: "Excellent",
-          goToMenu: "Go to Menu"
+          masks: "¿Los empleados están usanda máscaras?",
+          socialDistancing: "¿Su grupo está por lo menos a 6 pies de distancia?",
+          age: "¿Cuál es su grupo de edad?",
+          local: "¿Vive a 15 millas o menos del restaurante?",
+          overall: "¿Qué tan satisfecho está con la respuesta que ha tenido ${name} con COVID-19?",
+          poor: "Malo",
+          excellent: "Excelente",
+          goToMenu: "Iré al menú"
         }
 
-        var chosenText = document.getElementById("lang").value === 'en' ? enText : esText
-        
-        document.getElementById("langChange").value = chosenText.langChange
-        document.getElementById("learn").value = chosenText.learn
-        document.getElementById("n").value = chosenText.n
-        document.getElementById("y").value = chosenText.y
-        document.getElementById("masks").value = chosenText.masks
-        document.getElementById("socialDistancing").value = chosenText.socialDistancing
-        document.getElementById("age").value = chosenText.age
-        document.getElementById("local").value = chosenText.local
-        document.getElementById("overallRating").value = chosenText.overall1 + ${name} + chosenText.overall2
-        document.getElementById("poor").value = chosenText.poor
-        document.getElementById("excellent").value = chosenText.excellent
-        document.getElementById("goToMenu").value = chosenText.goToMenu)
+        var curLang;
 
+        function popLangOther() {
+          if (curLang == 'en') {
+            popLang('es')
+          } else {
+            popLang('en')
+          }
+        }
+
+        function popLang(langId) {
+          curLang = langId;
+          var chosenText = langId === 'en' ? enText : esText
+          document.getElementById("under-12").value = chosenText.underThirteen
+          document.getElementById("langChange").innerHTML = chosenText.langChange
+          document.getElementById("learn").innerHTML = chosenText.learn
+          document.getElementById("masks").innerHTML = chosenText.masks
+          document.getElementById("masksYes").innerHTML = chosenText.y
+          document.getElementById("masksNo").innerHTML = chosenText.n
+          document.getElementById("distanced").innerHTML = chosenText.socialDistancing
+          document.getElementById("distancedYes").innerHTML = chosenText.y
+          document.getElementById("distancedNo").innerHTML = chosenText.n
+          document.getElementById("age").innerHTML = chosenText.age
+          document.getElementById("local").innerHTML = chosenText.local
+          document.getElementById("localYes").innerHTML = chosenText.y
+          document.getElementById("localNo").innerHTML = chosenText.n
+          document.getElementById("overallRating").innerHTML = chosenText.overall
+          document.getElementById("poor").innerHTML = chosenText.poor
+          document.getElementById("excellent").innerHTML = chosenText.excellent
+          document.getElementById("submission").value = chosenText.goToMenu
+        }
+        
       </script>
       </html>
     `);
