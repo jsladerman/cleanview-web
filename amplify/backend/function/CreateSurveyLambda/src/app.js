@@ -95,10 +95,12 @@ app.get("/survey/:id", function (req, res) {
     }else {
       let itemData = data.Item;
       let name = itemData.loc_name;
-      let menu_link = itemData.menu_link;
+      let menu_link = Boolean(itemData.menu_link) ? itemData.menu_link : 'https://www.cleanview.io';
+      let defaultLang = Boolean(itemData.defaultLang) ? itemData.defaultLang : 'en';
+      let hasMenuLink = Boolean(itemData.menu_link);
       res.send(`<!doctype html>
       <html ⚡>
-
+      
       <head>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
       
@@ -109,33 +111,38 @@ app.get("/survey/:id", function (req, res) {
             height: 100%;
           }
       
-          h1 {
-            font-size: 24px;
+          .header {
             background-color: #191A26;
             margin: 0px 0px 0px 0px;
-            padding: 20px 20px 20px 20px;
+            padding: 20px 0px 0px 20px;
+            font-size: 24px;
             color: white;
             font-weight: normal;
+          }
+      
+          .language-button {
+            color: white;
+            font-size: 12px;
+            padding: 10px 0px 10px 0px;
+          }
+      
+          fieldset {
+            border-style: none;
+            padding-left: 20px;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
           }
       
           label {
             font-size: 16px;
           }
       
-          fieldset {
-            border-style: none;
-            padding-top: 5px;
-            padding-left: 20px;
-            margin-inline-start: 0px;
-            margin-inline-end: 0px;
-          }
-      
           p {
             font-size: 16px;
-            margin: 15px 0px 5px 0px;
+            margin: 5px 0px 5px 0px;
           }
-
-          .age-selector{
+      
+          .age-selector {
             justify-items: center;
             align-items: center;
           }
@@ -163,12 +170,12 @@ app.get("/survey/:id", function (req, res) {
             background: linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
             background-color: #f6f6f6;
           }
-
+      
           #under-12 {
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
-
+      
             /* Button design */
             border: none;
             background-color: #ffffff;
@@ -188,13 +195,11 @@ app.get("/survey/:id", function (req, res) {
             /* Buttons which wrap to the next line will have spacing between top line */
             margin: 0px 0px 10px 0px;
           }
-
+      
           #under-12:hover {
             background: linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
             background-color: #f6f6f6;
           }
-
-
       
           amp-selector [option][selected] {
             outline: 0px;
@@ -208,7 +213,7 @@ app.get("/survey/:id", function (req, res) {
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
-
+      
             /* Button design */
             border: none;
             background-color: #23C9AD;
@@ -245,7 +250,7 @@ app.get("/survey/:id", function (req, res) {
             text-align: center;
           }
         </style>
-
+      
         <meta charset='utf-8'>
         <script async src='https://cdn.ampproject.org/v0.js'></script>
         <title>CleanView</title>
@@ -255,16 +260,16 @@ app.get("/survey/:id", function (req, res) {
           rel='stylesheet'>
         <meta name='viewport' content='width=device-width,minimum-scale=1,initial-scale=1'>
         <script type='application/ld+json'>
-            {
-              '@context': 'http://schema.org',
-              '@type': 'NewsArticle',
-              'headline': 'Open-source framework for publishing content',
-              'datePublished': '2015-10-07T12:02:41Z',
-              'image': [
-                'logo.jpg'
-              ]
-            }
-          </script>
+                  {
+                    '@context': 'http://schema.org',
+                    '@type': 'NewsArticle',
+                    'headline': 'Open-source framework for publishing content',
+                    'datePublished': '2015-10-07T12:02:41Z',
+                    'image': [
+                      'logo.jpg'
+                    ]
+                  }
+                </script>
         <script async custom-element='amp-form' src='https://cdn.ampproject.org/v0/amp-form-0.1.js'></script>
         <script async custom-template='amp-mustache' src='https://cdn.ampproject.org/v0/amp-mustache-0.2.js'></script>
         <style amp-boilerplate>
@@ -346,67 +351,69 @@ app.get("/survey/:id", function (req, res) {
         </style>
       </head>
       
-      <body>
-        <h1>Help <strong>${name}</strong> learn about their COVID-19 response:</h1>
-        <form class='user-survey' method='POST'
-          action-xhr="${environmentURL}/response" target="_top">
+      <body onload="popLang('${defaultLang}');">
+        <div class="header">
+          <div id="learn"></div>
+          <div class='language-button' id="langChange" onclick='popLangOther()'></div>
+        </div>
+        <form class='user-survey' method='POST' action-xhr="${environmentURL}/response" target="_top">
           <fieldset>
             <div>
+      
               <input type='hidden' name='sublocId' value='${sub_id}'> </input>
               <input type='hidden' name='locationId' value='${loc_id}'></input>
               <input type='hidden' name='menuLink' value='${menu_link}'> </input>
               <input id="timestamp" type='hidden' name='timestamp'></input>
               <input id="weekday" type='hidden' name='weekday'></input>
               <div>
-                <p>Are the employees wearing masks?</p>
+                <p id="masks"></p>
                 <amp-selector class='mask-selector' layout='container' name='employeeMasks'>
-                  <span class='selection-button' option='1'>Yes</span>
-                  <span class='selection-button' option='0'>No</span>
+                  <span class='selection-button' option='1' id="masksYes"></span>
+                  <span class='selection-button' option='0' id="masksNo"></span>
                 </amp-selector>
               </div>
               <div>
-                <p>Is your party at least 6 feet away from other parties?</p>
+                <p id="distanced"></p>
                 <amp-selector class='six-feet-selector' layout='container' name='sixFeet'>
-                  <span class='selection-button' option='1'>Yes</span>
-                  <span class='selection-button' option='0'>No</span>
+                  <span class='selection-button' option='1' id="distancedYes"></span>
+                  <span class='selection-button' option='0' id="distancedNo"></span>
                 </amp-selector>
               </div>
-              <p>How old are you?</p>
+              <p id="age"></p>
               <amp-selector name='age' class='age-selector' layout='container' on='select: AMP.setState({
-                      selectedOption: event.targetOption,
-                      allSelectedOptions: event.selectedOptions
-                    })'>
-                    <span option='young'><input id='under-12' type='submit' value='Under 13'></input></span>
-                    <span class='selection-button' option='13-17'>13 to 17</span>
-                    <span class='selection-button' option='18-25'>18 to 25</span>
-                    <span class='selection-button' option='26-35'>26 to 35</span>
-                    <span class='selection-button' option='36-45'>36 to 45</span>
-                    <span class='selection-button' option='46-55'>46 to 55</span>
-                    <span class='selection-button' option='56-65'>56 to 65</span>
-                    <span class='selection-button' option='66+'>66+</span>
+                            selectedOption: event.targetOption,
+                            allSelectedOptions: event.selectedOptions
+                          })'>
+                <span option='young'><input id='under-12' type='submit'></input></span>
+                <span class='selection-button' option='13-17'>13-17</span>
+                <span class='selection-button' option='18-25'>18-25</span>
+                <span class='selection-button' option='26-35'>26-35</span>
+                <span class='selection-button' option='36-45'>36-45</span>
+                <span class='selection-button' option='46-55'>46-55</span>
+                <span class='selection-button' option='56-65'>56-65</span>
+                <span class='selection-button' option='66+'>66+</span>
               </amp-selector>
             </div>
-            
-
+      
+      
             <div>
-              <p>Do you live within 15 miles of the restaurant?</p>
+              <p id="local"></p>
               <amp-selector class='tourist-selector' layout='container' name='touristDiner'>
-                <span class='selection-button' option='1'>Yes</span>
-                <span class='selection-button' option='0'>No</span>
+                <span class='selection-button' option='1' id="localYes"></span>
+                <span class='selection-button' option='0' id="localNo"></span>
               </amp-selector>
             </div>
       
             <div>
-              <p>How satisfied are you with ${name}'s overall COVID-19 response?</p>
-              <label>Poor</label>
-              <input type='hidden' id='ratingValid' name='ratingValid' value='0' ></input>
-              <input type='range' id='slider' name='responseRating' min='0' max='5' oninput='document.getElementById(\"ratingValid\").value = 1' step='.5'></input>
-              <label>Excellent</label>
+              <p id="overallRating"></p>
+              <label id="poor"></label>
+              <input type='hidden' id='ratingValid' name='ratingValid' value='0'></input>
+              <input type='range' id='slider' name='responseRating' min='0' max='5'
+                oninput='document.getElementById(\"ratingValid\").value = 1' step='.5'></input>
+              <label id="excellent"></label>
             </div>
       
-            <div id='submit-button-div'>
-              <input id='submission' type='submit' value='Go to Menu'></input>
-            </div>
+            <div id='submit-button-div'><input id='submission' type='submit'></input></div>
       
           </fieldset>
         </form>
@@ -415,7 +422,73 @@ app.get("/survey/:id", function (req, res) {
         let curDate = Date().toLocaleString();
         document.getElementById("timestamp").value = curDate.substring(4);
         document.getElementById("weekday").value = curDate.substring(0, 3);
+      
+        const enText = {
+          langChange: "<strong><u>english</u></strong> | español",
+          underThirteen: "Under 13",
+          learn: "Help <strong>${name}</strong> learn about their COVID-19 response:",
+          y: "Yes",
+          n: "No",
+          masks: "Are the employees wearing masks?",
+          socialDistancing: "Is your party at least 6 feet away from other parties?",
+          age: "What is your age group?",
+          local: "Do you live within 15 miles of the restaurant?",
+          overall: "How satisfied are you with ${name}'s overall COVID-19 response?",
+          poor: "Poor",
+          excellent: "Excellent",
+          goToMenu: Boolean(${hasMenuLink}) ? "Go to menu" : "Submit"
+        }
+      
+        const esText = {
+          langChange: "english | <strong><u>español</u></strong>",
+          underThirteen: "Menos de 13",
+          learn: "Ayuda a <strong>${name}</strong> aprende sobre su respuesta de COVID-19: ",
+          y: "Sí",
+          n: "No",
+          masks: "¿Los empleados están usanda máscaras?",
+          socialDistancing: "¿Su grupo está por lo menos a 6 pies de distancia?",
+          age: "¿Cuál es su grupo de edad?",
+          local: "¿Vive a 15 millas o menos del restaurante?",
+          overall: "¿Qué tan satisfecho está con la respuesta que ha tenido ${name} con COVID-19?",
+          poor: "Malo",
+          excellent: "Excelente",
+          goToMenu: Boolean(${hasMenuLink}) ? "Ir al menú" : "Enviar"
+        }
+      
+        var curLang;
+      
+        function popLangOther() {
+          if (curLang == 'en') {
+            popLang('es')
+          } else {
+            popLang('en')
+          }
+        }
+      
+        function popLang(langId) {
+          curLang = langId;
+          var chosenText = langId === 'en' ? enText : esText
+          document.getElementById("under-12").value = chosenText.underThirteen
+          document.getElementById("langChange").innerHTML = chosenText.langChange
+          document.getElementById("learn").innerHTML = chosenText.learn
+          document.getElementById("masks").innerHTML = chosenText.masks
+          document.getElementById("masksYes").innerHTML = chosenText.y
+          document.getElementById("masksNo").innerHTML = chosenText.n
+          document.getElementById("distanced").innerHTML = chosenText.socialDistancing
+          document.getElementById("distancedYes").innerHTML = chosenText.y
+          document.getElementById("distancedNo").innerHTML = chosenText.n
+          document.getElementById("age").innerHTML = chosenText.age
+          document.getElementById("local").innerHTML = chosenText.local
+          document.getElementById("localYes").innerHTML = chosenText.y
+          document.getElementById("localNo").innerHTML = chosenText.n
+          document.getElementById("overallRating").innerHTML = chosenText.overall
+          document.getElementById("poor").innerHTML = chosenText.poor
+          document.getElementById("excellent").innerHTML = chosenText.excellent
+          document.getElementById("submission").value = chosenText.goToMenu
+        }
+      
       </script>
+      
       </html>
     `);
     }
