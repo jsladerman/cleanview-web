@@ -3,11 +3,17 @@ import styles from './css/Billing.module.css';
 
 class Billing extends Component {
     render() {
+        const imgSrc = require('./../images/FirstMonth.png')
         return (
             <div>
                 <div className={styles.body}>
                     <h1 className={styles.headerText}>Billing Dashboard</h1>
-                    <h4 className={styles.firstMonth}>Enjoy your first month, on us! 😊</h4>
+                    <br />
+                    <img 
+                    src={imgSrc} 
+                    alt={"Enjoy your first month, on us! 😊"} 
+                    height={600}
+                    ></img>
                 </div>
             </div>
 
