@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import styles from './css/SettingsBox.module.css';
+import styles from '../Settings/css/SettingsBoxes.module.css';
 import {Field, Form, Formik} from "formik";
 import Button from "react-bootstrap/Button";
 import FormControl from "react-bootstrap/FormControl"

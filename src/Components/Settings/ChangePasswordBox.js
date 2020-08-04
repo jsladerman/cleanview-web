@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import styles from './css/ChangePasswordBox.module.css';
+import styles from './css/SettingsBoxes.module.css';
 import {Field, Form, Formik} from "formik";
 import Button from "react-bootstrap/Button";
 import FormControl from "react-bootstrap/FormControl"

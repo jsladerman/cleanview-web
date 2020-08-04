@@ -4,6 +4,7 @@ import {Auth, API} from 'aws-amplify'
 import Alert from 'react-bootstrap/Alert'
 import SettingsBox from "../Components/Dashboard/SettingsBox";
 import ChangePasswordBox from "../Components/Settings/ChangePasswordBox";
+import ChangeEmailBox from "../Components/Settings/ChangeEmailBox";
 
 class Settings extends Component {
     constructor(props) {
@@ -13,7 +14,11 @@ class Settings extends Component {
             updatePasswordSuccess: false,
             settingsError: false,
             passwordError: false,
-            passwordErrorMsg: ''
+            passwordErrorMsg: '',
+            updateEmailSuccess: false,
+            emailError: false,
+            emailErrorMsg: '',
+            emailVerified: true
         }
     }
 
@@ -41,6 +46,19 @@ class Settings extends Component {
                             settingsInfo={this.props.settingsInfo}
                             submitFunc={this.updateSettings}
                             errorFunc={this.triggerPhoneNumErrorAlert}
+                        />
+                    </div>
+                    {this.state.updateEmailSuccess ?
+                        this.renderSuccessAlert('Email Address Updated Successfully') : null}
+                    {this.state.emailError ?
+                        this.renderErrorAlert(this.state.passwordErrorMsg) : null}
+                    <div className={styles.emailBox}>
+                        <h3>Change Email Address</h3>
+                        <div className={styles.separator}/>
+                        <br/>
+                        <ChangeEmailBox
+                            authInfo={this.props.authInfo}
+                            errorFunc={this.triggerEmailErrorAlert}
                         />
                     </div>
                     {this.state.updatePasswordSuccess ?
@@ -114,6 +132,10 @@ class Settings extends Component {
 
     triggerPhoneNumErrorAlert = () => {
         this.setState({settingsError: true, updateSettingsSuccess: false});
+    }
+
+    triggerEmailErrorAlert = (msg) => {
+        this.setState({emailErrorMsg: msg, emailError: true, updateEmailSuccess: false});
     }
 
     triggerPasswordErrorAlert = (msg) => {
