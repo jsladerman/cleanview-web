@@ -122,28 +122,28 @@ class MenuManager extends Component {
 
                 <h4 className={styles.menuManagerSubheader}>Edit Menu</h4>
                 <p className={styles.textLine}>After the customer takes the survey, they will be brought to the menu that you provide here.</p>
-                
+
                 <div id={styles.editMenuBox}>
-                <Formik validate={(values) => this.updateSwitchVal(values)}
-                    initialValues={{
-                        choice: this.state.switchVal
-                    }}
-                >
-                    <Form>
-                        <span className={styles.textLine} style={{marginRight:'10px'}}>How would you like to attach your menu? </span>
-                        <Field as='select' name='choice'>
-                            <option value="none">Remove link after survey</option>
-                            <option value="pdf">Link to uploaded pdf</option>
-                            <option value="url">Link to existing menu</option>
-                        </Field>
-                    </Form>
-                </Formik>
-                <InputSwitch value={this.state.switchVal}
-                    loc_id={this.props.id}
-                    handleChange={this.updateMenuURL}
-                    menu_link={this.props.menu_link}
-                    backendEnv={this.state.backendEnv}
-                />
+                    <Formik validate={(values) => this.updateSwitchVal(values)}
+                        initialValues={{
+                            choice: this.state.switchVal
+                        }}
+                    >
+                        <Form>
+                            <span className={styles.textLine} style={{ marginRight: '10px' }}>How would you like to attach your menu? </span>
+                            <Field as='select' name='choice'>
+                                <option value="none">Remove link after survey</option>
+                                <option value="pdf">Link to uploaded pdf</option>
+                                <option value="url">Link to existing menu</option>
+                            </Field>
+                        </Form>
+                    </Formik>
+                    <InputSwitch value={this.state.switchVal}
+                        loc_id={this.props.id}
+                        handleChange={this.updateMenuURL}
+                        menu_link={this.props.menu_link}
+                        backendEnv={this.state.backendEnv}
+                    />
                 </div>
             </div>
         )
@@ -230,7 +230,7 @@ class PDFMenuUpload extends Component {
     render() {
         return (
             <div className={styles.textLine}>
-                Upload a PDF: <input type="file" accept='.pdf' onChange={(evt) => this.uploadFile(evt, this.props.handleChange)} style={{marginLeft:'10px', fontSize:'14px'}}/>
+                Upload a PDF: <input type="file" accept='.pdf' onChange={(evt) => this.uploadFile(evt, this.props.handleChange)} style={{ marginLeft: '10px', fontSize: '14px' }} />
             </div>
         );
     }
