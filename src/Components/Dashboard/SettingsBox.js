@@ -81,7 +81,7 @@ class SettingsBox extends Component {
     onSubmit = (values) => {
         const phoneRegEx = /^\d{3}-\d{3}-\d{4}$/;
         if (!phoneRegEx.test(values.phone))
-            this.props.phoneNumErrorFunc()
+            this.props.errorFunc()
         else {
             values.phone = this.parsePhoneNumber(values.phone)
             this.props.submitFunc(values);

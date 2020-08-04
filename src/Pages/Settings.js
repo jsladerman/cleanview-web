@@ -1,15 +1,19 @@
 import React, {Component} from 'react';
 import styles from './css/Settings.module.css';
-import {API} from 'aws-amplify'
+import {Auth, API} from 'aws-amplify'
 import Alert from 'react-bootstrap/Alert'
 import SettingsBox from "../Components/Dashboard/SettingsBox";
+import ChangePasswordBox from "../Components/Settings/ChangePasswordBox";
 
 class Settings extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            updateSuccess: false,
-            phoneNumError: false
+            updateSettingsSuccess: false,
+            updatePasswordSuccess: false,
+            settingsError: false,
+            passwordError: false,
+            passwordErrorMsg: ''
         }
     }
 
@@ -24,8 +28,10 @@ class Settings extends Component {
         return (
             <div>
                 <div className={styles.body}>
-                    {this.renderSuccessAlert()}
-                    {this.renderErrorAlert()}
+                    {this.state.updateSettingsSuccess ?
+                        this.renderSuccessAlert('Information Updated Successfully') : null}
+                    {this.state.settingsError ?
+                        this.renderErrorAlert('Phone number must be in this format: 800-555-1234') : null}
                     <div className={styles.settingsBox}>
                         <h3>Your Information</h3>
                         <div className={styles.separator}/>
@@ -34,7 +40,20 @@ class Settings extends Component {
                             authInfo={this.props.authInfo}
                             settingsInfo={this.props.settingsInfo}
                             submitFunc={this.updateSettings}
-                            phoneNumErrorFunc={this.triggerErrorAlert}
+                            errorFunc={this.triggerPhoneNumErrorAlert}
+                        />
+                    </div>
+                    {this.state.updatePasswordSuccess ?
+                        this.renderSuccessAlert('Password Updated Successfully') : null}
+                    {this.state.passwordError ?
+                        this.renderErrorAlert(this.state.passwordErrorMsg) : null}
+                    <div className={styles.passwordBox}>
+                        <h3>Change Password</h3>
+                        <div className={styles.separator}/>
+                        <br/>
+                        <ChangePasswordBox
+                            submitFunc={this.updatePassword}
+                            errorFunc={this.triggerPasswordErrorAlert}
                         />
                     </div>
                 </div>
@@ -44,6 +63,7 @@ class Settings extends Component {
     }
 
     updateSettings = (params) => {
+        this.setState({updateSettingsSuccess: false, settingsError: false})
         let apiName = 'AccountSettingsApi'
         let path = '/account/manager'
         const requestData = {
@@ -63,7 +83,7 @@ class Settings extends Component {
 
         API.patch(apiName, path, requestData)
             .then(() => {
-                this.setState({updateSuccess: true, phoneNumError: false})
+                this.setState({updateSettingsSuccess: true, settingsError: false})
                 this.props.getSettingsFunc(this.props.authInfo.username)
             })
             .catch(error => {
@@ -71,30 +91,44 @@ class Settings extends Component {
             })
     }
 
-    renderSuccessAlert = () => {
-        if (this.state.updateSuccess)
-            return (
-                <Alert variant="success" dismissible
-                       onClose={() => this.setState({updateSuccess: false})}
-                       style={{whiteSpace: 'normal'}}>
-                    <Alert.Heading>Information Updated Successfully</Alert.Heading>
-                </Alert>
-            )
+    updatePassword = (params) => {
+        this.setState({updatePasswordSuccess: false, passwordError: false});
+        Auth.currentAuthenticatedUser()
+            .then(user => {
+                Auth.changePassword(user, params.oldPassword, params.newPassword)
+                    .then(() => this.setState({updatePasswordSuccess: true, passwordError: false}))
+                    .catch(() => this.triggerPasswordErrorAlert('Old Password is Incorrect'))
+            })
+            .catch(() => this.triggerPasswordErrorAlert('Old Password is Incorrect'))
     }
 
-    triggerErrorAlert = () => {
-        this.setState({phoneNumError: true, updateSuccess: false});
+    renderSuccessAlert = (msg) => {
+        return (
+            <Alert variant="success" dismissible
+                   onClose={() => this.setState({updateSettingsSuccess: false, updatePasswordSuccess: false})}
+                   style={{whiteSpace: 'normal'}}>
+                <Alert.Heading>{msg}</Alert.Heading>
+            </Alert>
+        )
     }
 
-    renderErrorAlert = () => {
-        if (this.state.phoneNumError)
+    triggerPhoneNumErrorAlert = () => {
+        this.setState({settingsError: true, updateSettingsSuccess: false});
+    }
+
+    triggerPasswordErrorAlert = (msg) => {
+        this.setState({passwordErrorMsg: msg, passwordError: true, updatePasswordSuccess: false});
+    }
+
+    renderErrorAlert = (msg) => {
+        if (this.state.settingsError || this.state.passwordError)
             return (
                 <Alert variant="danger" dismissible
-                       onClose={() => this.setState({phoneNumError: false})}
+                       onClose={() => this.setState({settingsError: false, passwordError: false})}
                        style={{whiteSpace: 'normal'}}>
                     <Alert.Heading>Error</Alert.Heading>
                     <div>
-                        Phone number must be in this format: 800-555-1234
+                        {msg}
                     </div>
                 </Alert>
             )
