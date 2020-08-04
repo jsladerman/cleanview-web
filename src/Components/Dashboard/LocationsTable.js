@@ -45,10 +45,8 @@ class LocationsTable extends Component {
     }
 
     renderLocations = () => {
-        console.log("loc");
         if (this.props.locations && this.props.locations.length > 0)
             return this.props.locations.map(loc => {
-                console.log(loc);
                 if (loc.active)
                 return ( 
                     <LocationBox

@@ -24,7 +24,6 @@ class LocationBox extends Component {
 
     componentDidMount() {
         this.renderRating();
-        console.log(this.props);
     }
 
     render() {
