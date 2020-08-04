@@ -5,6 +5,10 @@
     font-size: 16px;
 }
 
+#qrManagementContainer{
+    padding: 0px;
+}
+
 #listHeader{
     margin-bottom: 10px;
 }

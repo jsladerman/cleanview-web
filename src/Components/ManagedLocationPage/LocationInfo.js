@@ -250,7 +250,7 @@ class LocationInfo extends Component {
           />
         </Modal>
         <div className={styles.locationInfoWrapper}>
-          <Container fluid>
+          <Container fluid className={styles.locationInfoContainer}>
             <Row>
               <Col>
                 <h2>{this.state.data.loc_name} 
