@@ -187,7 +187,7 @@ class QRCodeGenerator extends Component {
 
     return (
         <div className={styles.qrManagementBlock}>
-          <div className="container-fluid text-wrap">
+          <div className="container-fluid text-wrap" id={styles.qrManagementContainer}>
             <h2 id={styles.qrHeader}>QR Code Management</h2>
             <p>You can use a single QR code for the whole restaurant, or you can create multiple QR codes to gain more
               targeted insight.</p>
