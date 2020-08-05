@@ -160,7 +160,7 @@ class Settings extends Component {
         if (this.state.settingsError || this.state.emailError || this.state.passwordError)
             return (
                 <Alert variant="danger" dismissible
-                       onClose={() => this.setState({settingsError: false, passwordError: false})}
+                       onClose={() => this.setState({settingsError: false, emailError:false, passwordError: false})}
                        style={{whiteSpace: 'normal'}}>
                     <Alert.Heading>Error</Alert.Heading>
                     <div>

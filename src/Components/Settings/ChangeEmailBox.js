@@ -26,6 +26,7 @@ class ChangeEmailBox extends Component {
                         authLoadFunc={this.props.authLoadFunc}
                         modalFunc={() => {
                             this.setState({showVerify: false});
+                            this.props.authLoadFunc();
                         }}
                     />
                 </Modal>
