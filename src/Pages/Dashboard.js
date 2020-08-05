@@ -242,7 +242,7 @@ class Dashboard extends Component {
             () => this.setState({redirect: null}));
     }
 
-    loadAuthInfo() {
+    loadAuthInfo = () => {
         Auth.currentUserInfo()
             .then(user => {
                 if (user == null) {
