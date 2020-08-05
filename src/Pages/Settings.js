@@ -53,7 +53,7 @@ class Settings extends Component {
                             'Email Address Updated Successfully',
                             'Please check inbox for confirmation code.') : null}
                     {this.state.emailError ?
-                        this.renderErrorAlert(this.state.passwordErrorMsg) : null}
+                        this.renderErrorAlert(this.state.emailErrorMsg) : null}
                     <div className={styles.emailBox}>
                         <h3>Change Email Address</h3>
                         <div className={styles.separator}/>
@@ -148,6 +148,7 @@ class Settings extends Component {
     }
 
     triggerEmailErrorAlert = (msg) => {
+        console.log(msg)
         this.setState({emailErrorMsg: msg, emailError: true, updateEmailSuccess: false});
     }
 
@@ -156,7 +157,7 @@ class Settings extends Component {
     }
 
     renderErrorAlert = (msg) => {
-        if (this.state.settingsError || this.state.passwordError)
+        if (this.state.settingsError || this.state.emailError || this.state.passwordError)
             return (
                 <Alert variant="danger" dismissible
                        onClose={() => this.setState({settingsError: false, passwordError: false})}
