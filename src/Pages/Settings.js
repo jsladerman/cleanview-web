@@ -137,7 +137,7 @@ class Settings extends Component {
                    style={{whiteSpace: 'normal'}}>
                 <Alert.Heading>{msg}</Alert.Heading>
                 <div>
-                    {subMsg ? {subMsg} : null}
+                    {subMsg ? subMsg : null}
                 </div>
             </Alert>
         )
