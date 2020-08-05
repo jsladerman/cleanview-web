@@ -248,13 +248,18 @@ class LocationInfo extends Component {
           />
         </Modal>
         <div className={styles.locationInfoWrapper}>
-          <Container fluid>
+          <Container fluid className={styles.locationInfoContainer}>
             <Row>
               <Col>
                 <h2>{this.state.data.loc_name}
                 <span onClick={this.toggleModal}><BsPencil className={styles.editButton}/></span>
                 </h2>
               </Col>
+            </Row>
+            <Row>
+              <h6 className={styles.subtitle}>
+                This page is how your location will be displayed on our coming-soon consumer information platform.
+              </h6>
             </Row>
             <Row>
               <Col>
@@ -276,7 +281,7 @@ class LocationInfo extends Component {
                 </h5>
               </Col>
             </Row>
-            <Row className={styles.coividResponseRow}>
+            <Row className={styles.covidResponseRow}>
               <Col md="auto">{covidResponseFieldsCol1}</Col>
               <Col>{covidResponseFieldsCol2}</Col>
               <Col> </Col>

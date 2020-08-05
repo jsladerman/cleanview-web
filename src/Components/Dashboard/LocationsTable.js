@@ -51,6 +51,8 @@ class LocationsTable extends Component {
                 return ( 
                     <LocationBox
                         locationName={loc.loc_name}
+                        city={loc.addrCity}
+                        street={loc.addrLine1}
                         key={loc.id + 'key'}
                         imageUrl={loc.imageUrl}
                         id={loc.id}

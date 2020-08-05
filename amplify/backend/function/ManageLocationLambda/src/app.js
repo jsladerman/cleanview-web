@@ -133,12 +133,7 @@ app.post(path, function (req, res) {
   req.body["subscription_end_date"] = exprDate.toDateString()
   req.body["menu_link"] = ''
   req.body['active'] = 1
-  req.body["sublocations"] = [{
-    name: 'main',
-    id: uuid(),
-    color: '000000',
-    active: 1
-  }]
+  req.body["sublocations"] = []
 
   let putItemParams = {
     TableName: tableName,
