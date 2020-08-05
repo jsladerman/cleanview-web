@@ -111,7 +111,7 @@ class Settings extends Component {
                 this.props.getSettingsFunc(this.props.authInfo.username)
             })
             .catch(error => {
-                console.log("Error: " + error)
+                this.triggerEmailErrorAlert(error.message);
             })
     }
 
