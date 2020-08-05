@@ -250,13 +250,18 @@ class LocationInfo extends Component {
           />
         </Modal>
         <div className={styles.locationInfoWrapper}>
-          <Container fluid>
+          <Container fluid className={styles.locationInfoContainer}>
             <Row>
               <Col>
                 <h2>{this.state.data.loc_name} 
                 <span onClick={this.toggleModal}><BsPencil className={styles.editButton}/></span>
                 </h2>
               </Col>
+            </Row>
+            <Row>
+              <h6 className={styles.subtitle}>
+                This page is how your location will be displayed on our coming-soon advertising platform.
+              </h6>
             </Row>
             <Row>
               <Col>
