@@ -283,7 +283,7 @@ class LocationInfo extends Component {
                 </h5>
               </Col>
             </Row>
-            <Row className={styles.coividResponseRow}>
+            <Row className={styles.covidResponseRow}>
               <Col md="auto">{covidResponseFieldsCol1}</Col>
               <Col>{covidResponseFieldsCol2}</Col>
               <Col> </Col>
