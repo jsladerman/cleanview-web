@@ -60,6 +60,7 @@ class VerifyNewEmailBox extends Component {
                     msgVariant: 'danger'
                 });
             })
+        this.props.authLoadFunc();
     }
 
     resendEmail = () => {
