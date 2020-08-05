@@ -10,6 +10,7 @@ class Settings extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            authInfo: this.props.authInfo,
             updateSettingsSuccess: false,
             updatePasswordSuccess: false,
             settingsError: false,
@@ -42,7 +43,7 @@ class Settings extends Component {
                         <div className={styles.separator}/>
                         <br/>
                         <SettingsBox
-                            authInfo={this.props.authInfo}
+                            authInfo={this.state.authInfo}
                             settingsInfo={this.props.settingsInfo}
                             submitFunc={this.updateSettings}
                             errorFunc={this.triggerPhoneNumErrorAlert}
@@ -59,8 +60,7 @@ class Settings extends Component {
                         <div className={styles.separator}/>
                         <br/>
                         <ChangeEmailBox
-                            authInfo={this.props.authInfo}
-                            authLoadFunc={this.props.authLoadFunc}
+                            authInfo={this.state.authInfo}
                             successFunc={() => {
                                 this.setState({updateEmailSuccess: true})
                             }}
@@ -96,9 +96,9 @@ class Settings extends Component {
             // plz include all of below parameters
             // if u need more or less, lmk and we can change the patch lambda together
             body: {
-                id: this.props.authInfo.username, // this is to identify the record
-                email: this.props.authInfo.attributes.email, // the rest are for updating
-                username: this.props.authInfo.username,
+                id: this.state.authInfo.username, // this is to identify the record
+                email: this.state.authInfo.attributes.email, // the rest are for updating
+                username: this.state.authInfo.username,
                 firstName: params.firstName,
                 lastName: params.lastName,
                 phone: params.phone
@@ -108,7 +108,7 @@ class Settings extends Component {
         API.patch(apiName, path, requestData)
             .then(() => {
                 this.setState({updateSettingsSuccess: true, settingsError: false})
-                this.props.getSettingsFunc(this.props.authInfo.username)
+                this.props.getSettingsFunc(this.state.authInfo.username)
             })
             .catch(error => {
                 this.triggerEmailErrorAlert(error.message);

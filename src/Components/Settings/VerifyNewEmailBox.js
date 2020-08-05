@@ -3,7 +3,6 @@ import styles from './css/SettingsBoxes.module.css';
 import {Field, Form, Formik} from "formik";
 import Button from "react-bootstrap/Button";
 import FormControl from "react-bootstrap/FormControl"
-import Modal from "@trendmicro/react-modal";
 import {Auth} from "aws-amplify";
 import Alert from "react-bootstrap/Alert";
 
@@ -52,7 +51,10 @@ class VerifyNewEmailBox extends Component {
     onSubmit = (params) => {
         this.setState({displayMsg: true})
         Auth.verifyCurrentUserAttributeSubmit('email', params.confirmationCode)
-            .then(() => this.props.modalFunc())
+            .then(() => {
+                this.props.modalFunc()
+                this.props.authLoadFunc()
+            })
             .catch(error => {
                 this.setState({
                     displayMsg: true,

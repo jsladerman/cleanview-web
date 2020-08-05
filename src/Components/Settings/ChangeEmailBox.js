@@ -11,7 +11,8 @@ class ChangeEmailBox extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showVerify: false
+            showVerify: false,
+            authInfo: this.props.authInfo
         }
     }
 
@@ -23,22 +24,20 @@ class ChangeEmailBox extends Component {
                        showCloseButton={true}
                        style={{borderRadius: '100px', border: 'none'}}>
                     <VerifyNewEmailBox
-                        authLoadFunc={this.props.authLoadFunc}
+                        authLoadFunc={this.reloadAuthInfo}
                         modalFunc={() => {
                             this.setState({showVerify: false});
-                            this.props.authLoadFunc();
                         }}
                     />
                 </Modal>
             )
         }
-        console.log(this.props.authInfo)
         return (
             <div>
                 <div>
                     <Formik
                         initialValues={{
-                            email: this.props.authInfo.attributes.email
+                            email: this.state.authInfo.attributes.email
                         }}
                         onSubmit={this.onSubmit}>
                         <Form>
@@ -71,14 +70,30 @@ class ChangeEmailBox extends Component {
         Auth.currentAuthenticatedUser()
             .then(user => {
                 Auth.updateUserAttributes(user, reqParams)
-                    .then(() => this.props.successFunc())
+                    .then(() => {
+                        this.props.successFunc()
+                        this.reloadAuthInfo()
+                    } )
                     .catch((error) => this.props.errorFunc(error.message))
             })
             .catch((error) => this.props.errorFunc(error.message))
     }
 
+    reloadAuthInfo = () => {
+        console.log('here')
+        Auth.currentUserInfo()
+            .then(user => {
+                this.setState({
+                    authInfo: user
+                });
+            })
+            .catch(error => {
+                console.log("Error: " + error)
+            });
+    }
+
     renderVerifyButton = () => {
-        if (!this.props.authInfo.attributes.email_verified)
+        if (!this.state.authInfo.attributes.email_verified)
             return (
                 <Button variant='danger'
                         onClick={() => this.setState({showVerify: true})}
@@ -90,7 +105,7 @@ class ChangeEmailBox extends Component {
     }
 
     unverifiedLabel = () => {
-        if (!this.props.authInfo.attributes.email_verified)
+        if (!this.state.authInfo.attributes.email_verified)
             return (
                 <label
                     style={{color: 'red'}}>
