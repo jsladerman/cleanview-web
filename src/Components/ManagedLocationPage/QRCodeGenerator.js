@@ -190,7 +190,7 @@ class QRCodeGenerator extends Component {
           <div className="container-fluid text-wrap" id={styles.qrManagementContainer}>
             <h2 id={styles.qrHeader}>QR Code Management</h2>
             <p>You can use a single QR code for the whole restaurant, or you can create multiple QR codes to gain more
-              targeted insight.</p>
+              targeted insights. Please link your menu to your QR codes in the Menu Management tab above.</p>
             <lh id={styles.listHeader}>Examples</lh>
             <ul>
               <li>Use distinct QR codes for indoor and outdoor tables</li>
@@ -300,7 +300,7 @@ class DeleteSublocation extends Component {
                   <div className='form-group' class="column-contents">
                     <label className={styles.qrField}>Name</label>
                     <Field as="select" name="code" class="form-control">
-                      <option value={'none'}>Select a QR code</option>
+                      <option value={'none'}>Select</option>
                       {this.props.sublocations.map((sublocation) => {
                         if(sublocation.active) {
                           return(
@@ -352,7 +352,7 @@ class RecoverSublocation extends Component {
                   <div className='form-group' class="column-contents">
                     <label className={styles.qrField}>Name</label>
                     <Field as="select" name="code" class="form-control">
-                      <option value={'none'}>Select a QR code</option>
+                      <option value={'none'}>Select</option>
                       {this.props.sublocations.map((sublocation) => {
                         if(!sublocation.active) {
                           return(
