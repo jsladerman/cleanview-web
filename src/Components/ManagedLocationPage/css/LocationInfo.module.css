@@ -19,8 +19,6 @@
 
 .locationInfoFieldName{
     font-weight: 600;
-    font-size: large;
-    vertical-align: middle;
 }
 
 .locationInfoWrapper h5{
@@ -35,8 +33,9 @@
     margin-left: 77px;
 }
 
-.coividResponseRow{
-        padding: 16px 0 16px 16px;
+.covidResponseRow{
+        margin-left: 0px;
+        padding: 15px 15px 15px 15px;
         font-size: large;
         border-radius: 8px;
         box-shadow: inset 0 0 16px 0 rgba(0, 0, 0, 0.15);
