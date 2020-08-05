@@ -3,40 +3,34 @@ import styles from './css/SettingsBoxes.module.css';
 import {Field, Form, Formik} from "formik";
 import Button from "react-bootstrap/Button";
 import FormControl from "react-bootstrap/FormControl"
-import SettingsBox from "../Dashboard/SettingsBox";
 import Modal from "@trendmicro/react-modal";
-import VerifyAccountBox from "../Login/VerifyAccountBox";
 import {Auth} from "aws-amplify";
+import VerifyNewEmailBox from "./VerifyNewEmailBox";
 
 class ChangeEmailBox extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            showVerify: false
+        }
     }
 
     render() {
-        //TODO: if not verified don't force it-
-        //      just have a red marker and a button that says verify here
-
-        // if (!this.props.authInfo.attributes.email_verified) {
-        //     return (
-        //         <Modal show={true}
-        //                showCloseButton={false}
-        //                style={{
-        //                    backgroundColor: 'transparent',
-        //                    border: '0',
-        //                    boxShadow: '0 0 0 0 rgba(0,0,0,0)'
-        //                }}>
-        //             <div className={styles.verifyModalDiv}
-        //                  style={{height: this.state.phoneNumError ? '473px' : '375px'}}>
-        //                 <h4 style={{textAlign: 'center', fontFamily: 'Roboto, sans-serif'}}>
-        //                     Please confirm the verification code sent to your new email address
-        //                 </h4><br/>
-        //                 <VerifyAccountBox/>
-        //             </div>
-        //         </Modal>
-        //     )
-        // }
+        if (this.state.showVerify) {
+            return (
+                <Modal show={this.state.showVerify}
+                       onClose={() => this.setState({showVerify: false})}
+                       showCloseButton={true}
+                       style={{borderRadius: '100px', border: 'none'}}>
+                    <VerifyNewEmailBox
+                        authLoadFunc={this.props.authLoadFunc}
+                        modalFunc={() => {
+                            this.setState({showVerify: false});
+                        }}
+                    />
+                </Modal>
+            )
+        }
         console.log(this.props.authInfo)
         return (
             <div>
@@ -48,7 +42,8 @@ class ChangeEmailBox extends Component {
                         onSubmit={this.onSubmit}>
                         <Form>
                             <label className={styles.formLabel}
-                                   style={{marginLeft: '12px'}}>Email Address
+                                   style={{marginLeft: '12px'}}>
+                                Email Address {this.unverifiedLabel()}
                             </label>
                             <Field as={FormControl}
                                    className={styles.formInput} name='email'
@@ -58,24 +53,13 @@ class ChangeEmailBox extends Component {
                                     className={styles.formSubmitBtn}>
                                 Update
                             </Button>
+                            {this.renderVerifyButton()}
                         </Form>
                     </Formik>
                 </div>
             </div>
         );
     }
-
-    // onSubmit = (values) => {
-    //     const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,128}$/;
-    //
-    //     if (values.newPassword !== values.confirmPassword) {
-    //         this.props.errorFunc('Password fields must be the same')
-    //     } else if (!passwordRegex.test(values.newPassword)) {
-    //         this.props.errorFunc('Minimum password length is 8, including uppercase, lowercase, and numbers')
-    //     } else {
-    //         this.props.submitFunc(values);
-    //     }
-    // }
 
     onSubmit = (params) => {
         this.setState({updateEmailSuccess: false, emailError: false});
@@ -85,14 +69,34 @@ class ChangeEmailBox extends Component {
 
         Auth.currentAuthenticatedUser()
             .then(user => {
-                console.log('here')
                 Auth.updateUserAttributes(user, reqParams)
-                    .then((res) => console.log(res))
-                    // .catch((error) => this.triggerEmailErrorAlert(error.message))
-                    .catch((error) => console.log('inner' + error.message))
+                    .then(() => this.props.successFunc())
+                    .catch((error) => this.props.errorFunc(error.message))
             })
-            // .catch((error) => this.triggerEmailErrorAlert(error.message))
-            .catch((error) => console.log('inner' + error.message))
+            .catch((error) => this.props.errorFunc(error.message))
+    }
+
+    renderVerifyButton = () => {
+        if (!this.props.authInfo.attributes.email_verified)
+            return (
+                <Button variant='danger'
+                        onClick={() => this.setState({showVerify: true})}
+                        className={styles.verifyEmailBtn}>
+                    Verify
+                </Button>
+            )
+        return null;
+    }
+
+    unverifiedLabel = () => {
+        if (!this.props.authInfo.attributes.email_verified)
+            return (
+                <label
+                    style={{color: 'red'}}>
+                    (unverified)
+                </label>
+            )
+        return null;
     }
 }
 

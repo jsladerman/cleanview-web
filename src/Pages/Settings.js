@@ -49,7 +49,9 @@ class Settings extends Component {
                         />
                     </div>
                     {this.state.updateEmailSuccess ?
-                        this.renderSuccessAlert('Email Address Updated Successfully') : null}
+                        this.renderSuccessAlert(
+                            'Email Address Updated Successfully',
+                            'Please check inbox for confirmation code.') : null}
                     {this.state.emailError ?
                         this.renderErrorAlert(this.state.passwordErrorMsg) : null}
                     <div className={styles.emailBox}>
@@ -58,6 +60,10 @@ class Settings extends Component {
                         <br/>
                         <ChangeEmailBox
                             authInfo={this.props.authInfo}
+                            authLoadFunc={this.props.authLoadFunc}
+                            successFunc={() => {
+                                this.setState({updateEmailSuccess: true})
+                            }}
                             errorFunc={this.triggerEmailErrorAlert}
                         />
                     </div>
@@ -120,12 +126,19 @@ class Settings extends Component {
             .catch(() => this.triggerPasswordErrorAlert('Old Password is Incorrect'))
     }
 
-    renderSuccessAlert = (msg) => {
+    renderSuccessAlert = (msg, subMsg) => {
         return (
             <Alert variant="success" dismissible
-                   onClose={() => this.setState({updateSettingsSuccess: false, updatePasswordSuccess: false})}
+                   onClose={() => this.setState({
+                       updateSettingsSuccess: false,
+                       updateEmailSuccess: false,
+                       updatePasswordSuccess: false
+                   })}
                    style={{whiteSpace: 'normal'}}>
                 <Alert.Heading>{msg}</Alert.Heading>
+                <div>
+                    {subMsg ? {subMsg} : null}
+                </div>
             </Alert>
         )
     }
