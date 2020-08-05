@@ -35,7 +35,7 @@ class LocationBox extends Component {
             <div className={styles.outerCard}>
                 <Card border='light' style={cardStyle} onClick={this.openLocation}>
                     <ClickableOverlay>
-                        <Card.Img variant="top" style={{borderRadius: '8px', height: '160px'}}
+                        <Card.Img variant="top" style={{borderRadius: '8px', height: '192px'}}
                                   src={imgSrc}/>
                         <div className={styles.body}>
                             <div className={styles.locationText}>{this.props.locationName} - {this.props.city}</div>
@@ -83,7 +83,7 @@ class LocationBox extends Component {
 }
 
 const cardStyle = {
-    width: '250px',
+    width: '300px',
     height: 'auto',
     borderRadius: '8px',
     borderWidth: '0',
