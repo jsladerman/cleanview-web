@@ -260,7 +260,7 @@ class LocationInfo extends Component {
             </Row>
             <Row>
               <h6 className={styles.subtitle}>
-                This page is how your location will be displayed on our coming-soon advertising platform.
+                This page is how your location will be displayed on our coming-soon consumer information platform.
               </h6>
             </Row>
             <Row>
