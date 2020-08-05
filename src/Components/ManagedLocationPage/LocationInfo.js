@@ -259,6 +259,11 @@ class LocationInfo extends Component {
               </Col>
             </Row>
             <Row>
+              <h6 className={styles.subtitle}>
+                This page is how your location will be displayed on our coming-soon advertising platform.
+              </h6>
+            </Row>
+            <Row>
               <Col>
                 <Card.Img
                   variant="top"
