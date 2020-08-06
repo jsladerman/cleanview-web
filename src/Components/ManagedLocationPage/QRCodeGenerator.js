@@ -15,7 +15,7 @@ class QRCodeGenerator extends Component {
     this.state = {
       sublocations: '',
       environmentURL: '',
-      menuLink: '',
+      menus: '',
     };
 
     this.addSublocation = this.addSublocation.bind(this)
@@ -34,7 +34,7 @@ class QRCodeGenerator extends Component {
       id: uuid(),
       color: values.color,
       active: 1,
-      menuLink: this.state.menuLink
+      menu: this.values.menu
     })
 
     this.updateSublocations(currentSublocations)
@@ -78,7 +78,7 @@ class QRCodeGenerator extends Component {
         let currState = this.state
         currState.sublocations = response.data.body.sublocations
         currState.environmentURL = response.data.environmentURL
-        currState.menuLink = response.data.body.menu_link
+        currState.menus = response.data.body.menus
         this.setState(currState)
       })
       .catch(error => {
@@ -124,8 +124,11 @@ class QRCodeGenerator extends Component {
       return (<p>Looking for QR codes...</p>)
     }
 
-    const sublocationRow = (name, color, sublocId, menuLink) => {
-      const totalId = this.props.id + '99strl99strl' + sublocId
+    const sublocationRow = (name, color, sublocId, menu) => { // TODO
+      if(!menu)
+        return
+        
+      const totalId = this.props.id + '99strl99strl' + sublocId + '99menu99' + menu.name
       const apiEndpoint = "https://api.qrserver.com/v1/create-qr-code/?data=" + this.state.environmentURL + "/survey/"
       const colorParam = "&color=" + color
 
@@ -135,6 +138,9 @@ class QRCodeGenerator extends Component {
 
       const downloadSizeParam = "&size=500x500"
       const downloadURL = apiEndpoint + totalId + colorParam + downloadSizeParam
+      if(!menu)
+        return
+      
       return(
         <tr className={styles.qrRow}>
           <td className={styles.qrNameCol}>
@@ -146,7 +152,7 @@ class QRCodeGenerator extends Component {
              </a>
           </td>
           <td>
-            <a href={menuLink ?? this.state.menuLink} target="_blank">See menu</a>
+            <a href={menu.url} target="_blank" rel="noopener noreferrer">{menu.name}</a>
           </td>
         </tr>
       );
@@ -173,7 +179,7 @@ class QRCodeGenerator extends Component {
           <tbody>
           {this.state.sublocations.map((sublocation) => {
             if(sublocation.active)
-              return sublocationRow(sublocation.name, sublocation.color, sublocation.id, sublocation.menuLink)
+              return sublocationRow(sublocation.name, sublocation.color, sublocation.id, sublocation.menu) // TODO
           })}
           </tbody>
         </Table>
@@ -198,16 +204,18 @@ class QRCodeGenerator extends Component {
             </ul>
             <Row>
               <Col>
-                <AddNewSublocation sublocations={this.state.sublocations}handleSubmit={this.addSublocation} />
+                <AddNewSublocation sublocations={this.state.sublocations} handleSubmit={this.addSublocation} menus={this.state.menus} />
               </Col>
-              <Col>
+            </Row>
+            {sublocationtable()}
+            <Row>
+            <Col>
                 <DeleteSublocation sublocations={this.state.sublocations} handleSubmit={this.deleteSublocation}/>
               </Col>
               <Col>
                 <RecoverSublocation sublocations={this.state.sublocations} handleSubmit={this.recoverSublocation} />
               </Col>
             </Row>
-            {sublocationtable()}
             
           </div>
         </div>
@@ -225,6 +233,7 @@ class AddNewSublocation extends Component {
           initialValues={{
             name: '',
             color: '000000',
+            menu: this.props.menus && this.props.menus.length ? 'select' : 'none'
           }}
           validate={(values) => {
             let errors = {}
@@ -257,6 +266,16 @@ class AddNewSublocation extends Component {
                     <option value="900C3F">Red</option>
                     <option value="1189D7">Blue</option>
                     <option value="12A501">Green</option>
+                  </Field>
+                </div>
+              </Col>
+              <Col>
+              <div className="form-group" class="column-contents">
+                  <label className={styles.qrField}>Menu </label>
+                  <Field as="select" name="menu" class="form-control">
+                    <option value="select">Select</option>
+                    {this.props.menus.map((menu) => <option value={menu} key={menu.name}>{menu.name}</option>)}
+                    <option value="none">No Menu</option>
                   </Field>
                 </div>
               </Col>
