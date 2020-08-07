@@ -3,13 +3,14 @@
         "filename": "./qrTemplates/Crisp.png",
         "size": {
             "x": 903,
-            "y": 123
+            "y": 1923
         },
         "qrSize": 765,
         "loc": {
             "x": 56,
             "y": 211
-        }
+        },
+        "scale": 0.5
     },
     "simple": {
         "filename": "./qrTemplates/Simple.png",
@@ -21,7 +22,8 @@
         "loc": {
             "x": 63,
             "y": 233
-        }
+        },
+        "scale": 0.5
     },
     "bold": {
         "filename": "./qrTemplates/Bold.png",
@@ -31,9 +33,10 @@
         },
         "qrSize": 3050,
         "loc": {
-            "x": 63,
+            "x": 1210,
             "y": 233
-        }
+        },
+        "scale": 0.15
     },
     "quadrant": {
         "filename": "./qrTemplates/Quadrant.png",
@@ -45,6 +48,7 @@
         "loc": {
             "x": 1860,
             "y": 75
-        }
+        },
+        "scale": 0.15
     }
 }

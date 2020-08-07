@@ -9,6 +9,10 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Modal from "@trendmicro/react-modal";
 import qrTemplates from './qrTemplates/dimensions.json';
+import bold from './qrTemplates/Bold.png';
+import crisp from './qrTemplates/Crisp.png';
+import quadrant from './qrTemplates/Quadrant.png';
+import simple from './qrTemplates/Simple.png';
 
 
 class QRCodeGenerator extends Component {
@@ -25,7 +29,8 @@ class QRCodeGenerator extends Component {
       selectedName: '',
       tempImg: null,
       qrImg: null,
-      selectedDims: null
+      selectedDims: null,
+      compositeUrl: ''
     };
 
     this.addSublocation = this.addSublocation.bind(this)
@@ -111,21 +116,55 @@ class QRCodeGenerator extends Component {
       });
   };
 
-  downloadQRTemplate = (template, link, name) => {
+  displayQRTemplate = (template, link, name) => {
+    const styleMap = {
+      'bold': bold,
+      'crisp': crisp,
+      'quadrant': quadrant,
+      'simple': simple
+    }
     fetch(link)
       .then((response) => {
         response.blob().then((blob) => {
-          let url = window.URL.createObjectURL(blob);
+          let qrUrl = window.URL.createObjectURL(blob);
           let currState = this.state;
           currState.selectedName = name;
-          currState.selectedTemplate = template;
-          currState.selectedQRLink = url;
+          currState.selectedTemplate = styleMap[template];
+          currState.selectedQRLink = qrUrl;
           currState.selectedDims = qrTemplates[template];
-
+          currState.selectedTemplateName = template;
+          console.log(currState);
           this.setState(currState);
-          this.toggleModal();
+          this.buildQRTemplate();
+          setTimeout(() => {
+            this.toggleModal();
+          }, 200);
         });
       });
+  }
+
+  buildQRTemplate = () => {
+    var qrImg = new Image(); qrImg.crossOrigin = "Anonymous"; qrImg.src = this.state.selectedQRLink;
+    var tempImg = new Image(); tempImg.crossOrigin = "Anonymous"; tempImg.src = this.state.selectedTemplate;
+    var canvas = document.createElement('canvas')
+    canvas.setAttribute('width', this.state.selectedDims.size.x);
+    canvas.setAttribute('height', this.state.selectedDims.size.y);
+    console.log(typeof(canvas));
+    var ctx = canvas.getContext('2d');
+    tempImg.onload = () => {console.log('loaded'); ctx.drawImage(tempImg, 0, 0);}
+    qrImg.onload = () => {ctx.drawImage(qrImg, this.state.selectedDims.loc.x, this.state.selectedDims.loc.y, this.state.selectedDims.qrSize, this.state.selectedDims.qrSize);}
+    setTimeout(() => {
+      var currState = this.state;
+      currState.compositeUrl = canvas.toDataURL();
+      this.setState(currState);
+    }, 100);
+  }
+
+  downloadSelectedTemplate = () => {
+    let a = document.createElement("a");
+    a.href = this.state.compositeUrl;
+    a.download = this.state.selectedName + '_' + this.state.selectedTemplateName + ".png";
+    a.click();
   }
 
   deleteSublocation = (name) => {
@@ -177,33 +216,37 @@ class QRCodeGenerator extends Component {
             onClose={this.toggleModal}
             showCloseButton={true}
             style={{borderRadius: '10px', margin: '20px'}}>
-            <QRTemplateGenerator 
-              name={this.state.selectedName}
-              tempImg={this.state.selectedTemplate}
-              qrImg={this.state.selectedQRLink}
-              imgDims={this.state.selectedDims}
-            />
-          </Modal>
-          <tr className={styles.qrRow}>
-            <td className={styles.qrNameCol}>
-              {name}
-            </td>
-            <td className={styles.qrCodeCol}>
+              <h2>Like it? Click to download!</h2>
               <a href="#">
-                <img src={inBrowserURL} alt="" title="" onClick={() => this.downloadQRCode(name, downloadURL)} />
+                <img 
+                  src={this.state.compositeUrl}
+                  width={this.state.selectedDims?.size.x * this.state.selectedDims?.scale} 
+                  height={this.state.selectedDims?.size.y * this.state.selectedDims?.scale}
+                  onClick={() => this.downloadSelectedTemplate()}
+                />
               </a>
-            </td>
-            <td>
-
-              <img class={styles.tempThumbnail} onClick={() => this.downloadQRTemplate('bold', downloadURL, name)} ></img>
-              <img class={styles.tempThumbnail} onClick={() => this.downloadQRTemplate('crisp', downloadURL, name)} ></img>
-              <img class={styles.tempThumbnail} onClick={() => this.downloadQRTemplate('simple', downloadURL, name)} ></img>
-              <img class={styles.tempThumbnail} onClick={() => this.downloadQRTemplate('quadrant', downloadURL, name)} ></img>
-            </td>
-            <td>
-              <a href={menuLink ?? this.state.menuLink} target="_blank">See menu</a>
-            </td>
-          </tr>
+          </Modal>
+          <div>
+            <tr className={styles.qrRow}>
+              <td className={styles.qrNameCol}>
+                {name}
+              </td>
+              <td className={styles.qrCodeCol}>
+                <a href="#">
+                  <img src={inBrowserURL} alt="" title="" onClick={() => this.downloadQRCode(name, downloadURL)} />
+                </a>
+              </td>
+              <td>
+                <button class={styles.generateQrTemplate} onClick={() => this.displayQRTemplate('bold', downloadURL, name)} >Bold</button>
+                <button class={styles.generateQrTemplate} onClick={() => this.displayQRTemplate('crisp', downloadURL, name)} >Crisp</button>
+                <button class={styles.generateQrTemplate} onClick={() => this.displayQRTemplate('simple', downloadURL, name)} >Simple</button>
+                <button class={styles.generateQrTemplate} onClick={() => this.displayQRTemplate('quadrant', downloadURL, name)} >Quadrant</button>
+              </td>
+              <td>
+                <a href={menuLink ?? this.state.menuLink} target="_blank">See menu</a>
+              </td>
+            </tr>
+          </div>
         </div>
       );
     }
@@ -332,62 +375,6 @@ class AddNewSublocation extends Component {
         </Formik>
       </div>
     );
-  }
-}
-
-class QRTemplateGenerator extends Component {
-
-  componentDidMount() {
-    this.loadQrImage();
-    this.loadTempImage();
-    this.updateCanvas();
-  }
-
-  updateCanvas() {
-    this.state.resultUrl = this.state.canvas.toDataURL('image/jpeg');
-    console.log(this.state.resultUrl);
-  }
-
-  loadQrImage() {
-    return new Promise(resolve => {
-      this.state.qrImg.onload = () => {
-        this.state.ctx.drawImage(this.state.qrImg, this.props.imgDims.loc.x, this.props.imgDims.loc.y, this.props.imgDims.qrSize, this.props.imgDims.qrSize)
-        resolve();
-      }
-      this.state.qrImg.src = this.props.qrImg;
-    });
-  }
-
-  loadTempImage() {
-    return new Promise(resolve => {
-      this.state.tempImg.onload = () => {
-        this.state.ctx.drawImage(this.state.tempImg, 0, 0)
-        resolve();
-      }
-      this.state.tempImg.src = this.props.tempImg;
-    })
-  }
-
-  render() {
-    return (
-      <div>
-        <img src={this.state.resultUrl} width={this.props.imgDims.size.x * 0.2} height={this.props.imgDims.size.y * 0.2} />
-      </div>
-    );
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      qrImg: new Image(),
-      tempImg: new Image(),
-      canvas: document.createElement('canvas'),
-      ctx: null,
-      resultUrl: ''
-    }
-    this.state.canvas.width = this.props.imgDims.size.x
-    this.state.canvas.height = this.props.imgDims.size.y
-    this.state.ctx = this.state.canvas.getContext('2d');
   }
 }
 
