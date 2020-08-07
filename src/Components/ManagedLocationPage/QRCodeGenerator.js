@@ -138,7 +138,7 @@ class QRCodeGenerator extends Component {
           this.buildQRTemplate();
           setTimeout(() => {
             this.toggleModal();
-          }, 200);
+          }, 20);
         });
       });
   }
@@ -157,7 +157,7 @@ class QRCodeGenerator extends Component {
       var currState = this.state;
       currState.compositeUrl = canvas.toDataURL();
       this.setState(currState);
-    }, 100);
+    }, 15);
   }
 
   downloadSelectedTemplate = () => {
