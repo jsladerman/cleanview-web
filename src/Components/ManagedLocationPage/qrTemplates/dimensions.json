@@ -1,0 +1,50 @@
+{
+    "crisp": {
+        "filename": "./qrTemplates/Crisp.png",
+        "size": {
+            "x": 903,
+            "y": 123
+        },
+        "qrSize": 765,
+        "loc": {
+            "x": 56,
+            "y": 211
+        }
+    },
+    "simple": {
+        "filename": "./qrTemplates/Simple.png",
+        "size": {
+            "x": 903,
+            "y": 1731
+        },
+        "qrSize": 765,
+        "loc": {
+            "x": 63,
+            "y": 233
+        }
+    },
+    "bold": {
+        "filename": "./qrTemplates/Bold.png",
+        "size": {
+            "x": 4501,
+            "y": 6026
+        },
+        "qrSize": 3050,
+        "loc": {
+            "x": 63,
+            "y": 233
+        }
+    },
+    "quadrant": {
+        "filename": "./qrTemplates/Quadrant.png",
+        "size": {
+            "x": 3639,
+            "y": 3627
+        },
+        "qrSize": 1700,
+        "loc": {
+            "x": 1860,
+            "y": 75
+        }
+    }
+}

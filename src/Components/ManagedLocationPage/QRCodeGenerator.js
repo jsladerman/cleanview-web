@@ -7,6 +7,9 @@ import Button from "react-bootstrap/Button";
 import Table from 'react-bootstrap/Table'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Modal from "@trendmicro/react-modal";
+import qrTemplates from './qrTemplates/dimensions.json';
+
 
 class QRCodeGenerator extends Component {
   // TODO: GET URL FROM DB, NOT PASSED IN AS PROP
@@ -16,6 +19,13 @@ class QRCodeGenerator extends Component {
       sublocations: '',
       environmentURL: '',
       menuLink: '',
+      showModal: false,
+      selectedQRLink: '',
+      selectedTemplate: '',
+      selectedName: '',
+      tempImg: null,
+      qrImg: null,
+      selectedDims: null
     };
 
     this.addSublocation = this.addSublocation.bind(this)
@@ -92,12 +102,31 @@ class QRCodeGenerator extends Component {
         response.blob().then((blob) => {
           let url = window.URL.createObjectURL(blob);
           let a = document.createElement("a");
+          // window.open(url, '_blank')
           a.href = url;
+          a.target = '_blank';
           a.download = "qr_code_" + name + ".jpg";
           a.click();
         });
       });
   };
+
+  downloadQRTemplate = (template, link, name) => {
+    fetch(link)
+      .then((response) => {
+        response.blob().then((blob) => {
+          let url = window.URL.createObjectURL(blob);
+          let currState = this.state;
+          currState.selectedName = name;
+          currState.selectedTemplate = template;
+          currState.selectedQRLink = url;
+          currState.selectedDims = qrTemplates[template];
+
+          this.setState(currState);
+          this.toggleModal();
+        });
+      });
+  }
 
   deleteSublocation = (name) => {
     let currentSublocations = this.state.sublocations
@@ -119,6 +148,12 @@ class QRCodeGenerator extends Component {
     this.updateSublocations(currentSublocations)
   }
 
+  toggleModal = () => {
+    this.setState({
+      showModal: !this.state.showModal,
+    });
+  }
+
   render() {
     if (!this.state.sublocations) {
       return (<p>Looking for QR codes...</p>)
@@ -136,19 +171,40 @@ class QRCodeGenerator extends Component {
       const downloadSizeParam = "&size=500x500"
       const downloadURL = apiEndpoint + totalId + colorParam + downloadSizeParam
       return(
-        <tr className={styles.qrRow}>
-          <td className={styles.qrNameCol}>
-            {name}
-          </td>
-          <td className={styles.qrCodeCol}>
-            <a href="#">
-              <img src={inBrowserURL} alt="" title="" onClick={() => this.downloadQRCode(name, downloadURL)} />
-             </a>
-          </td>
-          <td>
-            <a href={menuLink ?? this.state.menuLink} target="_blank">See menu</a>
-          </td>
-        </tr>
+        <div>
+          <Modal
+            show={this.state.showModal}
+            onClose={this.toggleModal}
+            showCloseButton={true}
+            style={{borderRadius: '10px', margin: '20px'}}>
+            <QRTemplateGenerator 
+              name={this.state.selectedName}
+              tempImg={this.state.selectedTemplate}
+              qrImg={this.state.selectedQRLink}
+              imgDims={this.state.selectedDims}
+            />
+          </Modal>
+          <tr className={styles.qrRow}>
+            <td className={styles.qrNameCol}>
+              {name}
+            </td>
+            <td className={styles.qrCodeCol}>
+              <a href="#">
+                <img src={inBrowserURL} alt="" title="" onClick={() => this.downloadQRCode(name, downloadURL)} />
+              </a>
+            </td>
+            <td>
+
+              <img class={styles.tempThumbnail} onClick={() => this.downloadQRTemplate('bold', downloadURL, name)} ></img>
+              <img class={styles.tempThumbnail} onClick={() => this.downloadQRTemplate('crisp', downloadURL, name)} ></img>
+              <img class={styles.tempThumbnail} onClick={() => this.downloadQRTemplate('simple', downloadURL, name)} ></img>
+              <img class={styles.tempThumbnail} onClick={() => this.downloadQRTemplate('quadrant', downloadURL, name)} ></img>
+            </td>
+            <td>
+              <a href={menuLink ?? this.state.menuLink} target="_blank">See menu</a>
+            </td>
+          </tr>
+        </div>
       );
     }
 
@@ -160,10 +216,13 @@ class QRCodeGenerator extends Component {
           <thead className={styles.qrTableHeaderRow}>
             <tr>
               <th>
-              Name
+                Name
               </th>
               <th>
-              QR Code Image (click to download)
+                QR Code Image (click to download)
+              </th>
+              <th>
+                QR Templates (click to download)
               </th>
               <th>
                 Menu Link
@@ -198,7 +257,7 @@ class QRCodeGenerator extends Component {
             </ul>
             <Row>
               <Col>
-                <AddNewSublocation sublocations={this.state.sublocations}handleSubmit={this.addSublocation} />
+                <AddNewSublocation sublocations={this.state.sublocations} handleSubmit={this.addSublocation}/>
               </Col>
               <Col>
                 <DeleteSublocation sublocations={this.state.sublocations} handleSubmit={this.deleteSublocation}/>
@@ -273,6 +332,62 @@ class AddNewSublocation extends Component {
         </Formik>
       </div>
     );
+  }
+}
+
+class QRTemplateGenerator extends Component {
+
+  componentDidMount() {
+    this.loadQrImage();
+    this.loadTempImage();
+    this.updateCanvas();
+  }
+
+  updateCanvas() {
+    this.state.resultUrl = this.state.canvas.toDataURL('image/jpeg');
+    console.log(this.state.resultUrl);
+  }
+
+  loadQrImage() {
+    return new Promise(resolve => {
+      this.state.qrImg.onload = () => {
+        this.state.ctx.drawImage(this.state.qrImg, this.props.imgDims.loc.x, this.props.imgDims.loc.y, this.props.imgDims.qrSize, this.props.imgDims.qrSize)
+        resolve();
+      }
+      this.state.qrImg.src = this.props.qrImg;
+    });
+  }
+
+  loadTempImage() {
+    return new Promise(resolve => {
+      this.state.tempImg.onload = () => {
+        this.state.ctx.drawImage(this.state.tempImg, 0, 0)
+        resolve();
+      }
+      this.state.tempImg.src = this.props.tempImg;
+    })
+  }
+
+  render() {
+    return (
+      <div>
+        <img src={this.state.resultUrl} width={this.props.imgDims.size.x * 0.2} height={this.props.imgDims.size.y * 0.2} />
+      </div>
+    );
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      qrImg: new Image(),
+      tempImg: new Image(),
+      canvas: document.createElement('canvas'),
+      ctx: null,
+      resultUrl: ''
+    }
+    this.state.canvas.width = this.props.imgDims.size.x
+    this.state.canvas.height = this.props.imgDims.size.y
+    this.state.ctx = this.state.canvas.getContext('2d');
   }
 }
 

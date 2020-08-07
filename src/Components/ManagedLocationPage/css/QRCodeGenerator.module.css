@@ -79,6 +79,16 @@ ul {
     background-color: #23A6BD;
 }
 
+.generateQrTemplate {
+    color: white;
+    border: none;
+    font-weight: bold;
+    align-self: flex-end;
+    width: 47%;
+    margin: 5px;
+    background-color: #23A6BD;
+}
+
 .deleteQrCodeSubmit {
     color: white;
     border: none;
@@ -91,4 +101,17 @@ ul {
 .qrTable{
     border: border-dark;
     border-width: 2px;
+}
+
+.tempThumbnail{
+    display: inline;
+    max-width:120px;
+    max-height:120px;
+    padding: 5px;
+    width: auto;
+    height: auto;   
+}
+
+.tempThumbnail:hover{
+    cursor: pointer;
 }
