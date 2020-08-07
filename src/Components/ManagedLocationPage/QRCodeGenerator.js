@@ -9,13 +9,12 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 class QRCodeGenerator extends Component {
-  // TODO: GET URL FROM DB, NOT PASSED IN AS PROP
   constructor(props) {
     super(props);
     this.state = {
-      sublocations: '',
+      sublocations: this.props.sublocations,
       environmentURL: '',
-      menus: '',
+      menus: this.props.menus,
     };
 
     this.addSublocation = this.addSublocation.bind(this)
@@ -27,14 +26,13 @@ class QRCodeGenerator extends Component {
   }
 
   addSublocation = (values) => {
-    console.log('Adding sublocation...')
     let currentSublocations = this.state.sublocations
     currentSublocations.push({
       name: values.name,
       id: uuid(),
       color: values.color,
       active: 1,
-      menu: this.values.menu
+      menu: values.menu === 'none' ? 'none': JSON.parse(values.menu),
     })
 
     this.updateSublocations(currentSublocations)
@@ -124,10 +122,12 @@ class QRCodeGenerator extends Component {
       return (<p>Looking for QR codes...</p>)
     }
 
-    const sublocationRow = (name, color, sublocId, menu) => { // TODO
+    this.updateDataFromDB()
+
+    const sublocationRow = (name, color, sublocId, menu) => {
       if(!menu)
         return
-        
+
       const totalId = this.props.id + '99strl99strl' + sublocId + '99menu99' + menu.name
       const apiEndpoint = "https://api.qrserver.com/v1/create-qr-code/?data=" + this.state.environmentURL + "/survey/"
       const colorParam = "&color=" + color
@@ -138,9 +138,7 @@ class QRCodeGenerator extends Component {
 
       const downloadSizeParam = "&size=500x500"
       const downloadURL = apiEndpoint + totalId + colorParam + downloadSizeParam
-      if(!menu)
-        return
-      
+
       return(
         <tr className={styles.qrRow}>
           <td className={styles.qrNameCol}>
@@ -152,13 +150,15 @@ class QRCodeGenerator extends Component {
              </a>
           </td>
           <td>
-            <a href={menu.url} target="_blank" rel="noopener noreferrer">{menu.name}</a>
+            {menu.url ? <a href={menu.url} target="_blank" rel="noopener noreferrer">{menu.name}</a> : "No menu"}
           </td>
         </tr>
       );
     }
 
     const sublocationtable = () => {
+      if(this.state.sublocations.length === 0)
+        return(<div>You don't have any QR codes yet.</div>)
       return(
         <div>
           <h4 className={styles.qrCodeSubheader}>Your QR Codes</h4>
@@ -179,7 +179,7 @@ class QRCodeGenerator extends Component {
           <tbody>
           {this.state.sublocations.map((sublocation) => {
             if(sublocation.active)
-              return sublocationRow(sublocation.name, sublocation.color, sublocation.id, sublocation.menu) // TODO
+              return sublocationRow(sublocation.name, sublocation.color, sublocation.id, sublocation.menu)
           })}
           </tbody>
         </Table>
@@ -274,7 +274,10 @@ class AddNewSublocation extends Component {
                   <label className={styles.qrField}>Menu </label>
                   <Field as="select" name="menu" class="form-control">
                     <option value="select">Select</option>
-                    {this.props.menus.map((menu) => <option value={menu} key={menu.name}>{menu.name}</option>)}
+                    {!this.props.menus ? "" : 
+                    this.props.menus.map((menu) => {
+                      return(<option value={JSON.stringify(menu)} key={menu.name}>{menu.name}</option>)
+                    })}
                     <option value="none">No Menu</option>
                   </Field>
                 </div>

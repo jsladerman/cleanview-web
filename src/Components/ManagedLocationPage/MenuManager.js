@@ -106,6 +106,7 @@ class MenuManager extends Component {
         API.patch(apiName, path, requestData)
             .then(response => {
                 this.updateDataFromDB()
+                this.props.handleUpdate()
             })
             .catch(error => {
                 console.log("Error: ", error)
@@ -202,18 +203,18 @@ class AddNewMenu extends Component {
                             this.props.submitFunc(values.name, this.state.menuLink)
                     }}
                 >
-                    <Form>
+                    <Form className={styles.newMenuGeneratorWrapper}>
                         <Row>
-                            <Col>
-                                <div>
-                                    <label>Name</label>
+                            <Col className={styles.newMenuFormColumn}>
+                            <div className="form-group" class="column-contents">
+                                    <label className={styles.menuField}>Name</label>
                                     <Field type="input" name="name"></Field>
-                                    <ErrorMessage name="name" component="div" />
+                                    
                                 </div>
                             </Col>
-                            <Col>
-                                <div>
-                                    <label>Type of Menu</label>
+                            <Col className={styles.newMenuFormColumn}>
+                                <div className="form-group" class="column-contents">
+                                    <label className={styles.menuField}>Type of Menu</label>
                                     <Field as="select" name="type">
                                         <option value='none'>Select</option>
                                         <option value='pdf'>PDF Upload</option>
@@ -226,8 +227,15 @@ class AddNewMenu extends Component {
                                 url={this.state.menuLink}
                                 uploadFunc={this.uploadFile}
                                 />
-                            <Col>
+                            <Col className={styles.newMenuFormColumn}>
                                 {this.button()}
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <ErrorMessage name="name" component="div" />    
+                            </Col>
+                            <Col>
                             </Col>
                         </Row>
                     </Form>
@@ -239,15 +247,15 @@ class AddNewMenu extends Component {
     button = () => {
         if(this.state.submissionType === 'none'){
             return(
-                <Button disabled>Add</Button>
+                <Button className={styles.generateMenuSubmit} disabled>Add</Button>
             );
         } else if(this.state.loading) {
             return(
-                <Button disabled>Uploading file...</Button>
+                <Button className={styles.generateMenuSubmit} disabled>Uploading file...</Button>
             );
         } else {
             return(
-                <Button type="submit">Add</Button>
+                <Button className={styles.generateMenuSubmit} type="submit">Add</Button>
             )
         }
     }
@@ -280,8 +288,8 @@ class MenuUploadSwitch extends Component {
             case 'pdf':
                 return(
                     <div>
-                       <Col>
-                            <div>
+                       <Col className={styles.newMenuFormColumn}>
+                       <div className="form-group" class="column-contents">
                             Upload a PDF: <input 
                                             type="file" 
                                             accept='.pdf' 
@@ -293,18 +301,18 @@ class MenuUploadSwitch extends Component {
                 );
             case 'link':
                 return(
-                    <div>
-                       <Col>
+                    <div className="form-group" class="column-contents">
+                       <Col className={styles.newMenuFormColumn}>
                             <label>Type existing URL here:</label>
                             <Field type="url" name="url"></Field>
-                            <ErrorMessage name="url" component="div" />
+                            
                        </Col> 
                     </div>
                 );
             default:
                 return(
-                    <div>
-                       <Col>
+                    <div className="form-group" class="column-contents">
+                       <Col className={styles.newMenuFormColumn}>
                        No menu type selected.
                        </Col> 
                     </div>

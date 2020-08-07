@@ -53,3 +53,27 @@
     border-radius: 8px;
     padding: 20px;
 }
+
+.newMenuGeneratorWrapper{
+    background-color: #f3f3f3;
+    border-radius: 6px;
+    padding: 8px;
+}
+
+.menuField{
+    font-family: Roboto;
+    color: black
+}
+
+.newMenuFormColumn{
+    display: flex;
+}
+
+.generateMenuSubmit{
+    color: white;
+    border: none;
+    font-weight: bold;
+    align-self: flex-end;
+    width: 100%;
+    background-color: #23A6BD;
+}

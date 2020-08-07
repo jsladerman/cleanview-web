@@ -64,7 +64,11 @@ class ManagedLocationInfo extends Component {
                     </Tab>
                     <Tab tabClassName={styles.tab} eventKey='menu-manager' title='Menu Management'>
                         <MenuManager
-                            id={this.props.id}/>
+                            id={this.props.id}
+                            sublocations={this.state.data.sublocations}
+                            menus={this.state.data.menus}
+                            handleUpdate={this.setLocationInfo}
+                            />
                     </Tab>
                 </Tabs>
             </div>
