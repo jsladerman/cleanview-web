@@ -138,7 +138,7 @@ class QRCodeGenerator extends Component {
           this.buildQRTemplate();
           setTimeout(() => {
             this.toggleModal();
-          }, 20);
+          }, 30);
         });
       });
   }
@@ -157,7 +157,7 @@ class QRCodeGenerator extends Component {
       var currState = this.state;
       currState.compositeUrl = canvas.toDataURL();
       this.setState(currState);
-    }, 15);
+    }, 20);
   }
 
   downloadSelectedTemplate = () => {
@@ -210,23 +210,6 @@ class QRCodeGenerator extends Component {
       const downloadSizeParam = "&size=500x500"
       const downloadURL = apiEndpoint + totalId + colorParam + downloadSizeParam
       return(
-        <div>
-          <Modal
-            show={this.state.showModal}
-            onClose={this.toggleModal}
-            showCloseButton={true}
-            style={{borderRadius: '10px', margin: '20px'}}>
-              <h2>Like it? Click to download!</h2>
-              <a href="#">
-                <img 
-                  src={this.state.compositeUrl}
-                  width={this.state.selectedDims?.size.x * this.state.selectedDims?.scale} 
-                  height={this.state.selectedDims?.size.y * this.state.selectedDims?.scale}
-                  onClick={() => this.downloadSelectedTemplate()}
-                />
-              </a>
-          </Modal>
-          <div>
             <tr className={styles.qrRow}>
               <td className={styles.qrNameCol}>
                 {name}
@@ -237,23 +220,40 @@ class QRCodeGenerator extends Component {
                 </a>
               </td>
               <td>
-                <button class={styles.generateQrTemplate} onClick={() => this.displayQRTemplate('bold', downloadURL, name)} >Bold</button>
-                <button class={styles.generateQrTemplate} onClick={() => this.displayQRTemplate('crisp', downloadURL, name)} >Crisp</button>
-                <button class={styles.generateQrTemplate} onClick={() => this.displayQRTemplate('simple', downloadURL, name)} >Simple</button>
-                <button class={styles.generateQrTemplate} onClick={() => this.displayQRTemplate('quadrant', downloadURL, name)} >Quadrant</button>
+                <Row>
+                  <Button className={styles.generateQrTemplate} onClick={() => this.displayQRTemplate('bold', downloadURL, name)} >Bold</Button>
+                  <Button className={styles.generateQrTemplate} onClick={() => this.displayQRTemplate('crisp', downloadURL, name)} >Crisp</Button>
+                </Row>
+                <Row>
+                  <Button className={styles.generateQrTemplate} onClick={() => this.displayQRTemplate('simple', downloadURL, name)} >Simple</Button>
+                  <Button className={styles.generateQrTemplate} onClick={() => this.displayQRTemplate('quadrant', downloadURL, name)} >Quadrant</Button>
+                </Row>
               </td>
               <td>
                 <a href={menuLink ?? this.state.menuLink} target="_blank">See menu</a>
               </td>
             </tr>
-          </div>
-        </div>
       );
     }
 
     const sublocationtable = () => {
       return(
         <div>
+          <Modal
+            show={this.state.showModal}
+            onClose={this.toggleModal}
+            showCloseButton={true}
+            style={{borderRadius: '10px', margin: '20px'}}>
+              <div className={this.state.qrModalHeader}>Like it? Click to download!</div>
+              <a href="#">
+                <img 
+                  src={this.state.compositeUrl}
+                  width={this.state.selectedDims?.size.x * this.state.selectedDims?.scale} 
+                  height={this.state.selectedDims?.size.y * this.state.selectedDims?.scale}
+                  onClick={() => this.downloadSelectedTemplate()}
+                />
+              </a>
+          </Modal>
           <h4 className={styles.qrCodeSubheader}>Your QR Codes</h4>
           <Table striped bordered hover className={styles.qrTable}>
           <thead className={styles.qrTableHeaderRow}>

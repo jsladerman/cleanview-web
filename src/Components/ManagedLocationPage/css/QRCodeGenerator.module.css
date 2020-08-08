@@ -32,6 +32,11 @@
     font-size: 16px;
 }
 
+.qrModalHeader{
+    font-size: 16px;
+    padding: 10px;
+    text-align: center;
+}
 
 .qrCodeFormColumn{
     display: flex;
@@ -84,8 +89,9 @@ ul {
     border: none;
     font-weight: bold;
     align-self: flex-end;
-    width: 47%;
+    width: 20%;
     margin: 5px;
+    align-self: center;
     background-color: #23A6BD;
 }
 
