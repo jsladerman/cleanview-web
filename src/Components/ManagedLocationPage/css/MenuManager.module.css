@@ -3,7 +3,7 @@
     margin: 25px 40px 25px 40px;
     font-family: Roboto, serif;
     color: #191A25;
-    padding: 0px;
+    padding: 0;
 }
 
 #menuManagerHeader{
@@ -14,7 +14,7 @@
 .menuManagerSubheader{
     color: #23A6BD;
     font-weight: bold;
-    margin: 25px 0px 25px 0px;
+    margin: 25px 0 25px 0;
 }
 
 .textLine{
@@ -57,15 +57,17 @@
 .newMenuGeneratorWrapper{
     background-color: #f3f3f3;
     border-radius: 6px;
-    padding: 8px;
-    width: 90%;
+    padding: 12px;
+    min-width: 630px;
+
 }
 
 .deleteMenuGeneratorWrapper {
     background-color: #f3f3f3;
     border-radius: 6px;
-    padding: 8px;
-    width: fit-content;
+    padding: 12px;
+    min-width: 450px;
+    max-width: 500px;
 }
 
 .deleteField{
@@ -75,26 +77,39 @@
 .menuField{
     justify-self: start;
     text-align: left;
-    font-family: Roboto;
+    font-family: Roboto, serif;
     color: black;
-    
 }
 
 .newMenuFormColumn{
     display: flex;
     justify-self: start;
-    font-weight: 200px;
+    font-weight: 200;
 }
 
 .generateMenuSubmit{
     color: white;
     border: none;
     font-weight: bold;
-    align-self: flex-end;
-    width: 100%;
+    padding: 5px 20px;
     background-color: #23A6BD;
 }
 
 .newMenuButtonColumn{
     width: 40%
+}
+
+.formCols {
+    white-space: nowrap;
+    display: flex;
+    justify-content: space-between;
+}
+
+.formCol {
+    margin-right: 75px;
+}
+
+.formControlInput{
+    height: 34px;
+    width: 130%;
 }

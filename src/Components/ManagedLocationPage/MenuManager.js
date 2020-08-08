@@ -1,14 +1,9 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import styles from './css/MenuManager.module.css';
-import { Formik, Form, Field, ErrorMessage, validateYupSchema } from 'formik';
-import { API, Storage } from 'aws-amplify';
-import Button from "react-bootstrap/Button";
-import Table from 'react-bootstrap/Table'
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import uuid from 'react-uuid';
-
-
+import {API} from 'aws-amplify';
+import AddNewMenu from "./MenuManager/AddNewMenu";
+import MenuTable from "./MenuManager/MenuTable";
+import DeleteMenu from "./MenuManager/DeleteMenu";
 
 class MenuManager extends Component {
     constructor(props) {
@@ -26,10 +21,10 @@ class MenuManager extends Component {
 
     render() {
         return (
-            <div className="container-fluid text-wrap" id={styles.menuManagerCodeBlock}>
+            <div className='container-fluid text-wrap' id={styles.menuManagerCodeBlock}>
                 <h2 id={styles.menuManagerHeader}>Menu Manager</h2>
                 <h4 className={styles.menuManagerSubheader}>Add a new menu</h4>
-                <AddNewMenu submitFunc={this.addMenu} id={this.props.id} menus={this.state.menus} />
+                <AddNewMenu submitFunc={this.addMenu} id={this.props.id} menus={this.state.menus}/>
                 <h4 className={styles.menuManagerSubheader}>Current Menus</h4>
                 <MenuTable menus={this.state.menus} loading={this.state.loading}/>
                 <h4 className={styles.menuManagerSubheader}>Delete Menu</h4>
@@ -39,11 +34,11 @@ class MenuManager extends Component {
     }
 
     deleteMenu = (menuName) => {
-        if(!window.confirm("Are you sure you want to delete this menu?"))
+        if (!window.confirm("Are you sure you want to delete this menu?"))
             return
         let currentMenus = this.state.menus
-        for(let i=0; i<currentMenus.length; ++i) {
-            if(currentMenus[i].name === menuName) {
+        for (let i = 0; i < currentMenus.length; ++i) {
+            if (currentMenus[i].name === menuName) {
                 currentMenus.splice(i, 1)
                 break
             }
@@ -64,7 +59,7 @@ class MenuManager extends Component {
 
         API.get(apiName, path, requestData)
             .then(response => {
-                if(!response.data.body.menus)
+                if (!response.data.body.menus)
                     return
 
                 let currState = this.state
@@ -74,10 +69,9 @@ class MenuManager extends Component {
             .catch(error => {
                 console.log("Error: " + error)
             });
-        
+
         this.setState({loading: false})
     }
-
 
 
     addMenu = (newMenuName, newMenuLink) => {
@@ -102,7 +96,7 @@ class MenuManager extends Component {
             }
         }
 
-        this.setState({ loading: true })
+        this.setState({loading: true})
         API.patch(apiName, path, requestData)
             .then(response => {
                 this.updateDataFromDB()
@@ -110,280 +104,8 @@ class MenuManager extends Component {
             })
             .catch(error => {
                 console.log("Error: ", error)
-                this.setState({ loading: false })
+                this.setState({loading: false})
             })
-    }
-}
-
-class DeleteMenu extends Component {
-    render() {
-        return(
-            <div className={styles.deleteMenuGeneratorWrapper}>
-                <div className={styles.deleteTitle}><strong>Select a menu to delete</strong></div>
-                <Formik
-                initialValues={{
-                    menuName: 'none'
-                }}
-                onSubmit={(values) => this.props.deleteFunc(values.menuName)}
-                validate={(values) => {
-                    let errors = {}
-                    if(values.menuName === 'none')
-                        errors.menuName = 'Please select a valid menu to delete.'
-
-                    return errors
-                }}
-                >
-                    <Form>
-                        <Field as="select" name="menuName" className={styles.deleteField} class="form-control">
-                            <option value='none'>Select</option>
-                            {this.props.menus.map((menu) => {
-                                return(
-                                    <option value={menu.name} key={menu.name}>{menu.name}</option>
-                                );
-                            })}
-                        </Field>
-                        <Button variant="danger" type="submit">Delete</Button>
-                    </Form>
-                </Formik>
-            </div>
-        );
-    }
-}
-
-class AddNewMenu extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            submissionType: 'none',
-            menuLink: '',
-            loading: false
-        }
-    }
-
-    render() {
-        return(
-            <div>
-                <Formik
-                    initialValues={{
-                        name: '',
-                        type: 'none',
-                        url: '',
-                    }}
-                    validate={(values) => {
-                        // Formik does't have onChange() so here I am
-                        if(values.type !== this.state.submissionType) {
-                            this.setState({ submissionType: values.type })
-                            this.setState({ menuLink: '' })
-                        }
-
-                        let errors = {}
-                        if(!values.name)
-                            errors.name = "Please enter a valid menu name."
-
-                        if(!this.state.menuLink) {
-                            if (!values.url) {
-                                errors.url = 'Required'
-                            } else if (!values.url.startsWith("https://")) {
-                                errors.url = 'The link must start with "https://".'
-                            }
-                        }
-
-                        for(let i=0; i<this.props.menus.length; ++i) {
-                            if(values.name === this.props.menus[i].name) {
-                                errors.name = "There already exists a menu with this name."
-                                return errors
-                            }                            
-                        }
-                        return errors
-                    }}
-                    onSubmit={(values) => {
-                        if(this.state.menuLink === '')
-                            this.props.submitFunc(values.name, values.url)
-                        else
-                            this.props.submitFunc(values.name, this.state.menuLink)
-                    }}
-                >
-                    <Form className={styles.newMenuGeneratorWrapper}>
-                        <Row sm={5}>
-                            <Col className={styles.newMenuFormColumn}>
-                                <div className={styles.menuField}><strong>Name</strong></div>
-                            </Col>
-                            <Col  className={styles.newMenuFormColumn}>
-                                <div className={styles.menuField}><strong>Type of Menu</strong></div>
-                            </Col>
-                            <Col sm={2} className={styles.newMenuFormColumn}>
-                                <div className={styles.menuField}><strong>Menu Upload</strong></div>
-                            </Col>
-                        </Row>
-                        <Row sm={5}>
-                            <Col className={styles.newMenuFormColumn}>
-                            <div>
-                                    
-                                    <Field type="input" name="name"></Field>
-                                    
-                                </div>
-                            </Col>
-                            <Col className={styles.newMenuFormColumn}>
-                                <div>
-                                    
-                                    <Field as="select" name="type">
-                                        <option value='none'>Select</option>
-                                        <option value='pdf'>PDF Upload</option>
-                                        <option value='link'>Existing online menu</option>
-                                    </Field>
-                                </div>
-                            </Col>
-                            <MenuUploadSwitch 
-                                switchVal={this.state.submissionType} 
-                                url={this.state.menuLink}
-                                uploadFunc={this.uploadFile}
-                                />
-                            <Col sm={1}>
-                            {' '}
-                            </Col>
-                            <Col className={styles.newMenuButtonColumn} style={{'justify-self': 'end'}}>
-                                {this.button()}
-                            </Col>
-                        </Row>
-                        <Row sm={5}>
-                            <Col>
-                                <ErrorMessage name="name" component="div" />    
-                            </Col>
-                            <Col>
-                            {" "}
-                            </Col>
-                            <Col>
-                                <ErrorMessage name="url" component="div" />    
-                            </Col>
-                            <Col>
-                            {" "}
-                            </Col>
-                        </Row>
-                    </Form>
-                </Formik>
-            </div>
-        );
-    }
-
-    button = () => {
-        if(this.state.submissionType === 'none'){
-            return(
-                <Button block={false} className={styles.generateMenuSubmit} disabled>Add</Button>
-            );
-        } else if(this.state.loading) {
-            return(
-                <Button block={false} className={styles.generateMenuSubmit} disabled>Uploading file...</Button>
-            );
-        } else {
-            return(
-                <Button block={false} className={styles.generateMenuSubmit} type="submit">Add</Button>
-            )
-        }
-    }
-
-    uploadFile = async (e) => {
-        this.setState({loading: true})
-        const file = e.target.files[0];
-        const filename = this.props.id + "STRL" + uuid() + '.pdf'
-        await Storage.put(filename, file, {
-            level: 'public',
-            contentDisposition: 'inline; filename="' + filename + '"',
-            contentType: 'application/pdf'
-        })
-            .catch(err => console.log(err))
-
-        await Storage.get(filename)
-            .then(resultURL => {
-                const idx = resultURL.indexOf(filename)
-                const url = resultURL.substring(0, idx) + '' + filename
-                this.setState({ menuLink: url })
-            })
-            .catch(err => console.log(err))
-        this.setState({loading: false})
-    }
-}
-
-class MenuUploadSwitch extends Component {
-    render() {
-        switch (this.props.switchVal) {
-            case 'pdf':
-                return(
-                    <div>
-                       <Col sm={2} className={styles.newMenuFormColumn}>
-                       <div>
-                            Upload a PDF: <input 
-                                            type="file" 
-                                            accept='.pdf' 
-                                            onChange={(evt) => this.props.uploadFunc(evt)}/>
-                            <Field type="hidden" name="url"></Field>
-                            </div>
-                       </Col> 
-                    </div>
-                );
-            case 'link':
-                return(
-                    <div className="form-group" class="column-contents">
-                       <Col className={styles.newMenuFormColumn}>
-                            <label>Type existing URL here:</label>
-                            <Field type="url" name="url"></Field>
-                            
-                       </Col> 
-                    </div>
-                );
-            default:
-                return(
-                    <div className="form-group" class="column-contents">
-                       <Col className={styles.newMenuFormColumn}>
-                       No menu type selected.
-                       </Col> 
-                    </div>
-                );
-        }
-    }
-}
-
-class MenuTable extends Component {
-    render() {
-        if(this.props.loading) {
-            return(
-                <div>Loading...</div>
-            );
-        }
-        if(this.props.menus.length === 0)
-            return(
-                <div>
-                    <h5>You don't have any menus right now :)</h5>
-                </div>
-            );
-        
-        return(
-            <Table striped bordered hover>
-               <thead>
-                   <tr>
-                       <th>
-                           Name
-                       </th>
-                       <th>
-                            Link
-                       </th>
-                   </tr>
-                </thead> 
-                <tbody>
-                    {this.props.menus.map((menu) => {
-                        return(
-                            <tr key={menu.name}>
-                                <td>
-                                    {menu.name}
-                                </td>
-                                <td>
-                                    <a href={menu.url} target="_blank" rel="noopener noreferrer">{menu.url}</a>
-                                </td>
-                            </tr>
-                        );
-                    })}
-                </tbody>
-            </Table>
-        );
     }
 }
 
