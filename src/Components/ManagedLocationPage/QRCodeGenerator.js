@@ -122,8 +122,6 @@ class QRCodeGenerator extends Component {
       return (<p>Looking for QR codes...</p>)
     }
 
-    this.updateDataFromDB()
-
     const sublocationRow = (name, color, sublocId, menu) => {
       if(!menu)
         return

@@ -46,7 +46,7 @@ class ManagedLocationInfo extends Component {
 
         return (
             <div>
-                <Tabs activeKey={this.state.tab} onSelect={this.setTabURL}>
+                <Tabs activeKey={this.state.tab} onSelect={this.setTabURL} unmountOnExit={true}>
                     <Tab tabClassName={styles.tab} eventKey='info' title='Info'>
                         <LocationInfo
                             data={this.state.data}

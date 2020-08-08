@@ -118,8 +118,8 @@ class MenuManager extends Component {
 class DeleteMenu extends Component {
     render() {
         return(
-            <div>
-                <h4>Delete Menu</h4>
+            <div className={styles.deleteMenuGeneratorWrapper}>
+                <div className={styles.deleteTitle}><strong>Select a menu to delete</strong></div>
                 <Formik
                 initialValues={{
                     menuName: 'none'
@@ -134,7 +134,7 @@ class DeleteMenu extends Component {
                 }}
                 >
                     <Form>
-                        <Field as="select" name="menuName">
+                        <Field as="select" name="menuName" className={styles.deleteField} class="form-control">
                             <option value='none'>Select</option>
                             {this.props.menus.map((menu) => {
                                 return(
@@ -204,17 +204,28 @@ class AddNewMenu extends Component {
                     }}
                 >
                     <Form className={styles.newMenuGeneratorWrapper}>
-                        <Row>
+                        <Row sm={5}>
                             <Col className={styles.newMenuFormColumn}>
-                            <div className="form-group" class="column-contents">
-                                    <label className={styles.menuField}>Name</label>
+                                <div className={styles.menuField}><strong>Name</strong></div>
+                            </Col>
+                            <Col  className={styles.newMenuFormColumn}>
+                                <div className={styles.menuField}><strong>Type of Menu</strong></div>
+                            </Col>
+                            <Col sm={2} className={styles.newMenuFormColumn}>
+                                <div className={styles.menuField}><strong>Menu Upload</strong></div>
+                            </Col>
+                        </Row>
+                        <Row sm={5}>
+                            <Col className={styles.newMenuFormColumn}>
+                            <div>
+                                    
                                     <Field type="input" name="name"></Field>
                                     
                                 </div>
                             </Col>
                             <Col className={styles.newMenuFormColumn}>
-                                <div className="form-group" class="column-contents">
-                                    <label className={styles.menuField}>Type of Menu</label>
+                                <div>
+                                    
                                     <Field as="select" name="type">
                                         <option value='none'>Select</option>
                                         <option value='pdf'>PDF Upload</option>
@@ -227,15 +238,25 @@ class AddNewMenu extends Component {
                                 url={this.state.menuLink}
                                 uploadFunc={this.uploadFile}
                                 />
-                            <Col className={styles.newMenuFormColumn}>
+                            <Col sm={1}>
+                            {' '}
+                            </Col>
+                            <Col className={styles.newMenuButtonColumn} style={{'justify-self': 'end'}}>
                                 {this.button()}
                             </Col>
                         </Row>
-                        <Row>
+                        <Row sm={5}>
                             <Col>
                                 <ErrorMessage name="name" component="div" />    
                             </Col>
                             <Col>
+                            {" "}
+                            </Col>
+                            <Col>
+                                <ErrorMessage name="url" component="div" />    
+                            </Col>
+                            <Col>
+                            {" "}
                             </Col>
                         </Row>
                     </Form>
@@ -247,15 +268,15 @@ class AddNewMenu extends Component {
     button = () => {
         if(this.state.submissionType === 'none'){
             return(
-                <Button className={styles.generateMenuSubmit} disabled>Add</Button>
+                <Button block={false} className={styles.generateMenuSubmit} disabled>Add</Button>
             );
         } else if(this.state.loading) {
             return(
-                <Button className={styles.generateMenuSubmit} disabled>Uploading file...</Button>
+                <Button block={false} className={styles.generateMenuSubmit} disabled>Uploading file...</Button>
             );
         } else {
             return(
-                <Button className={styles.generateMenuSubmit} type="submit">Add</Button>
+                <Button block={false} className={styles.generateMenuSubmit} type="submit">Add</Button>
             )
         }
     }
@@ -288,8 +309,8 @@ class MenuUploadSwitch extends Component {
             case 'pdf':
                 return(
                     <div>
-                       <Col className={styles.newMenuFormColumn}>
-                       <div className="form-group" class="column-contents">
+                       <Col sm={2} className={styles.newMenuFormColumn}>
+                       <div>
                             Upload a PDF: <input 
                                             type="file" 
                                             accept='.pdf' 
