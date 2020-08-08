@@ -36,7 +36,7 @@
             "x": 1210,
             "y": 233
         },
-        "scale": 0.15
+        "scale": 0.10
     },
     "quadrant": {
         "filename": "./qrTemplates/Quadrant.png",
