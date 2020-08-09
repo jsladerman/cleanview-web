@@ -177,8 +177,8 @@ class QRCodeGenerator extends Component {
                     this.state.selectedDims.qrSize,
                     this.state.selectedDims.qrSize
                 );
+                resolve('QR Drawn');
             }
-            resolve('QR Drawn');
         });
 
         tempPromise.then(() => {
