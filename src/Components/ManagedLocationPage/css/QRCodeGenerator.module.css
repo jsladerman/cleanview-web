@@ -33,9 +33,19 @@
 }
 
 .qrModalHeader{
-    font-size: 16px;
-    padding: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 10px;
     text-align: center;
+}
+
+.templateAnchor {
+    color: black;
+}
+
+.templateAnchor:hover {
+    color: black;
+    text-decoration: none;
 }
 
 .qrCodeFormColumn{
@@ -89,10 +99,11 @@ ul {
     border: none;
     font-weight: bold;
     align-self: flex-end;
-    width: 20%;
-    margin: 5px;
+    width: 25%;
+    margin: 5px 10px;
     align-self: center;
     background-color: #23A6BD;
+    min-width: 100px;
 }
 
 .deleteQrCodeSubmit {

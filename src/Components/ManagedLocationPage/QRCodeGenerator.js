@@ -138,32 +138,40 @@ class QRCodeGenerator extends Component {
           this.buildQRTemplate();
           setTimeout(() => {
             this.toggleModal();
-          }, 30);
+          }, 60);
         });
       });
   }
 
   buildQRTemplate = () => {
-    var qrImg = new Image(); qrImg.crossOrigin = "Anonymous"; qrImg.src = this.state.selectedQRLink;
-    var tempImg = new Image(); tempImg.crossOrigin = "Anonymous"; tempImg.src = this.state.selectedTemplate;
-    var canvas = document.createElement('canvas')
+    let qrImg = new Image(); qrImg.crossOrigin = "Anonymous"; qrImg.src = this.state.selectedQRLink;
+    let tempImg = new Image(); tempImg.crossOrigin = "Anonymous"; tempImg.src = this.state.selectedTemplate;
+    let canvas = document.createElement('canvas')
     canvas.setAttribute('width', this.state.selectedDims.size.x);
     canvas.setAttribute('height', this.state.selectedDims.size.y);
     console.log(typeof(canvas));
-    var ctx = canvas.getContext('2d');
-    tempImg.onload = () => {console.log('loaded'); ctx.drawImage(tempImg, 0, 0);}
+    let ctx = canvas.getContext('2d');
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(0, 0, this.state.selectedDims.size.x, this.state.selectedDims.size.y)
+    tempImg.onload = () => {console.log('loaded'); ctx.drawImage(
+      tempImg, 
+      this.state.selectedDims.size.sx, this.state.selectedDims.size.sy, 
+      this.state.selectedDims.size.x, this.state.selectedDims.size.y, 
+      0, 0,
+      this.state.selectedDims.size.x, this.state.selectedDims.size.y
+      );}
     qrImg.onload = () => {ctx.drawImage(qrImg, this.state.selectedDims.loc.x, this.state.selectedDims.loc.y, this.state.selectedDims.qrSize, this.state.selectedDims.qrSize);}
     setTimeout(() => {
-      var currState = this.state;
-      currState.compositeUrl = canvas.toDataURL();
+      let currState = this.state;
+      currState.compositeUrl = canvas.toDataURL('image/jpeg');
       this.setState(currState);
-    }, 20);
+    }, 40);
   }
 
   downloadSelectedTemplate = () => {
     let a = document.createElement("a");
     a.href = this.state.compositeUrl;
-    a.download = this.state.selectedName + '_' + this.state.selectedTemplateName + ".png";
+    a.download = this.state.selectedName + '_' + this.state.selectedTemplateName + ".jpg";
     a.click();
   }
 
@@ -220,14 +228,16 @@ class QRCodeGenerator extends Component {
                 </a>
               </td>
               <td>
-                <Row>
-                  <Button className={styles.generateQrTemplate} onClick={() => this.displayQRTemplate('bold', downloadURL, name)} >Bold</Button>
-                  <Button className={styles.generateQrTemplate} onClick={() => this.displayQRTemplate('crisp', downloadURL, name)} >Crisp</Button>
-                </Row>
-                <Row>
-                  <Button className={styles.generateQrTemplate} onClick={() => this.displayQRTemplate('simple', downloadURL, name)} >Simple</Button>
-                  <Button className={styles.generateQrTemplate} onClick={() => this.displayQRTemplate('quadrant', downloadURL, name)} >Quadrant</Button>
-                </Row>
+                <div style={{marginLeft: '5px'}}>
+                  <Row >
+                    <Button className={styles.generateQrTemplate} onClick={() => this.displayQRTemplate('bold', downloadURL, name)} >Bold</Button>
+                    <Button className={styles.generateQrTemplate} onClick={() => this.displayQRTemplate('crisp', downloadURL, name)} >Crisp</Button>
+                  </Row>
+                  <Row>
+                    <Button className={styles.generateQrTemplate} onClick={() => this.displayQRTemplate('simple', downloadURL, name)} >Simple</Button>
+                    <Button className={styles.generateQrTemplate} onClick={() => this.displayQRTemplate('quadrant', downloadURL, name)} >Quadrant</Button>
+                  </Row>
+                </div>
               </td>
               <td>
                 <a href={menuLink ?? this.state.menuLink} target="_blank">See menu</a>
@@ -243,16 +253,23 @@ class QRCodeGenerator extends Component {
             show={this.state.showModal}
             onClose={this.toggleModal}
             showCloseButton={true}
-            style={{borderRadius: '10px', margin: '20px'}}>
-              <div className={this.state.qrModalHeader}>Like it? Click to download!</div>
-              <a href="#">
-                <img 
-                  src={this.state.compositeUrl}
-                  width={this.state.selectedDims?.size.x * this.state.selectedDims?.scale} 
-                  height={this.state.selectedDims?.size.y * this.state.selectedDims?.scale}
-                  onClick={() => this.downloadSelectedTemplate()}
-                />
+            style={{
+              borderRadius: '10px', 
+              margin: '20px', 
+              justifyContent: 'center',
+              padding: '5px'
+            }}
+            >
+              <a href='#' className={styles.templateAnchor}>
+                <div className={styles.qrModalHeader}>Like it? Click to download!</div>
+                  <img 
+                    src={this.state.compositeUrl}
+                    width={this.state.selectedDims?.size.x * this.state.selectedDims?.scale} 
+                    height={this.state.selectedDims?.size.y * this.state.selectedDims?.scale}
+                    onClick={() => this.downloadSelectedTemplate()}
+                  />
               </a>
+              
           </Modal>
           <h4 className={styles.qrCodeSubheader}>Your QR Codes</h4>
           <Table striped bordered hover className={styles.qrTable}>

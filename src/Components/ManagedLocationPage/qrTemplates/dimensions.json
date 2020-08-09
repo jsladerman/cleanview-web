@@ -3,33 +3,39 @@
         "filename": "./qrTemplates/Crisp.png",
         "size": {
             "x": 903,
-            "y": 1923
+            "y": 1883,
+            "sx": 0,
+            "sy": 40
         },
         "qrSize": 765,
         "loc": {
             "x": 68,
             "y": 230
         },
-        "scale": 0.4
+        "scale": 0.45
     },
     "simple": {
         "filename": "./qrTemplates/Simple.png",
         "size": {
             "x": 903,
-            "y": 1731
+            "y": 1701,
+            "sx": 0,
+            "sy": 30
         },
         "qrSize": 765,
         "loc": {
             "x": 66,
             "y": 250
         },
-        "scale": 0.4
+        "scale": 0.5
     },
     "bold": {
         "filename": "./qrTemplates/Bold.png",
         "size": {
             "x": 4501,
-            "y": 6026
+            "y": 6026,
+            "sx": 0,
+            "sy": 0
         },
         "qrSize": 3050,
         "loc": {
@@ -42,7 +48,9 @@
         "filename": "./qrTemplates/Quadrant.png",
         "size": {
             "x": 3639,
-            "y": 3627
+            "y": 3627,
+            "sx": 0,
+            "sy": 0
         },
         "qrSize": 1700,
         "loc": {
