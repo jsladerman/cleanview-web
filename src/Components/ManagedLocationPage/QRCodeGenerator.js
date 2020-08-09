@@ -136,9 +136,6 @@ class QRCodeGenerator extends Component {
           console.log(currState);
           this.setState(currState);
           this.buildQRTemplate();
-          setTimeout(() => {
-            this.toggleModal();
-          }, 60);
         });
       });
   }
@@ -154,9 +151,9 @@ class QRCodeGenerator extends Component {
     ctx.fillStyle = "#FFFFFF";
     ctx.fillRect(0, 0, this.state.selectedDims.size.x, this.state.selectedDims.size.y)
     tempImg.onload = () => {console.log('loaded'); ctx.drawImage(
-      tempImg, 
-      this.state.selectedDims.size.sx, this.state.selectedDims.size.sy, 
-      this.state.selectedDims.size.x, this.state.selectedDims.size.y, 
+      tempImg,
+      this.state.selectedDims.size.sx, this.state.selectedDims.size.sy,
+      this.state.selectedDims.size.x, this.state.selectedDims.size.y,
       0, 0,
       this.state.selectedDims.size.x, this.state.selectedDims.size.y
       );}
@@ -165,6 +162,7 @@ class QRCodeGenerator extends Component {
       let currState = this.state;
       currState.compositeUrl = canvas.toDataURL('image/jpeg');
       this.setState(currState);
+      this.toggleModal();
     }, 40);
   }
 
@@ -254,22 +252,22 @@ class QRCodeGenerator extends Component {
             onClose={this.toggleModal}
             showCloseButton={true}
             style={{
-              borderRadius: '10px', 
-              margin: '20px', 
+              borderRadius: '10px',
+              margin: '20px',
               justifyContent: 'center',
               padding: '5px'
             }}
             >
               <a href='#' className={styles.templateAnchor}>
                 <div className={styles.qrModalHeader}>Like it? Click to download!</div>
-                  <img 
+                  <img
                     src={this.state.compositeUrl}
-                    width={this.state.selectedDims?.size.x * this.state.selectedDims?.scale} 
+                    width={this.state.selectedDims?.size.x * this.state.selectedDims?.scale}
                     height={this.state.selectedDims?.size.y * this.state.selectedDims?.scale}
                     onClick={() => this.downloadSelectedTemplate()}
                   />
               </a>
-              
+
           </Modal>
           <h4 className={styles.qrCodeSubheader}>Your QR Codes</h4>
           <Table striped bordered hover className={styles.qrTable}>
@@ -297,12 +295,12 @@ class QRCodeGenerator extends Component {
           </tbody>
         </Table>
         </div>
-        
+
 
       )
     }
 
-    
+
 
     return (
         <div className={styles.qrManagementBlock}>
@@ -327,7 +325,7 @@ class QRCodeGenerator extends Component {
               </Col>
             </Row>
             {sublocationtable()}
-            
+
           </div>
         </div>
     );
@@ -350,13 +348,13 @@ class AddNewSublocation extends Component {
             if(!values.name)
               errors.name = "You must name your QR code."
             else
-              for(let i=0; i<this.props.sublocations.length; ++i) 
+              for(let i=0; i<this.props.sublocations.length; ++i)
                   if(values.name.toLowerCase() === this.props.sublocations[i].name.toLowerCase())
                     if(this.props.sublocations[i].active)
                       errors.name = "This QR code name exists already"
                     else
                       errors.name = 'You can recover this QR code in the Recover section.'
-            
+
             return errors;
           }}
         >
