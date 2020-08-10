@@ -33,6 +33,10 @@ class AddNewMenu extends Component {
                             this.setState({menuLink: ''})
                         }
 
+                        // not sure the best way to approach but
+                        // if you type in website, then switch to pdf but don't upload, then click add, it still uploads the website
+                        
+
                         //     let errors = {}
                         //     if (!values.name)
                         //         errors.name = "Please enter a valid menu name."
@@ -54,11 +58,10 @@ class AddNewMenu extends Component {
                         //     return errors
                     }}
                     onSubmit={(values) => {
-                        console.log(values)
-                        // if (this.state.menuLink === '')
-                        //     this.props.submitFunc(values.name, values.url)
-                        // else
-                        //     this.props.submitFunc(values.name, this.state.menuLink)
+                        if (this.state.menuLink === '')
+                            this.props.submitFunc(values.name, values.url)
+                        else
+                            this.props.submitFunc(values.name, this.state.menuLink)
                     }}
                 >
                     <Form className={styles.newMenuGeneratorWrapper}>
@@ -142,7 +145,7 @@ class AddNewMenu extends Component {
                         <input style={{maxWidth: '210px'}}
                                type="file"
                                accept='.pdf'
-                               onChange={(evt) => this.props.uploadFunc(evt)}/>
+                               onChange={(evt) => this.uploadFile(evt)}/>
                         <Field type="hidden" name="url"/>
                     </div>
                 );

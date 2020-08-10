@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import Table from 'react-bootstrap/Table'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { treemapSquarify } from 'd3';
 
 class QRCodeGenerator extends Component {
   constructor(props) {
@@ -26,14 +27,28 @@ class QRCodeGenerator extends Component {
   }
 
   addSublocation = (values) => {
+    var alreadyExists = false
     let currentSublocations = this.state.sublocations
-    currentSublocations.push({
-      name: values.name,
-      id: uuid(),
-      color: values.color,
-      active: 1,
-      menu: values.menu === 'none' ? 'none': JSON.parse(values.menu),
-    })
+
+    for(let i=0; i<currentSublocations.length; ++i) 
+      if(values.name.toLowerCase() === currentSublocations[i].name.toLowerCase() && !currentSublocations[i].active) {
+        alreadyExists = true
+        currentSublocations[i].active = true
+        currentSublocations[i].color = values.color
+      }
+ 
+
+    if(!alreadyExists) {
+      currentSublocations.push({
+        name: values.name,
+        id: uuid(),
+        color: values.color,
+        active: 1,
+        menu: values.menu === 'none' ? 'none': JSON.parse(values.menu),
+      })
+    }
+    
+
 
     this.updateSublocations(currentSublocations)
   }
@@ -102,16 +117,6 @@ class QRCodeGenerator extends Component {
     for(let i=0; i<currentSublocations.length; ++i) {
       if(currentSublocations[i].name === name) {
         currentSublocations[i].active = 0
-      }
-    }
-    this.updateSublocations(currentSublocations)
-  }
-
-  recoverSublocation = (name) => {
-    let currentSublocations = this.state.sublocations
-    for(let i=0; i<currentSublocations.length; ++i) {
-      if(currentSublocations[i].name === name) {
-        currentSublocations[i].active = 1
       }
     }
     this.updateSublocations(currentSublocations)
@@ -211,10 +216,8 @@ class QRCodeGenerator extends Component {
                 <DeleteSublocation sublocations={this.state.sublocations} handleSubmit={this.deleteSublocation}/>
               </Col>
               <Col>
-                <RecoverSublocation sublocations={this.state.sublocations} handleSubmit={this.recoverSublocation} />
               </Col>
             </Row>
-            
           </div>
         </div>
     );
@@ -242,8 +245,6 @@ class AddNewSublocation extends Component {
                   if(values.name.toLowerCase() === this.props.sublocations[i].name.toLowerCase())
                     if(this.props.sublocations[i].active)
                       errors.name = "This QR code name exists already"
-                    else
-                      errors.name = 'You can recover this QR code in the Recover section.'
             
             return errors;
           }}
