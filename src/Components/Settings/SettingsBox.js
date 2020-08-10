@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import styles from '../Settings/css/SettingsBoxes.module.css';
+import styles from './css/SettingsBoxes.module.css';
 import {Field, Form, Formik} from "formik";
+import NumberFormat from 'react-number-format';
 import Button from "react-bootstrap/Button";
 import FormControl from "react-bootstrap/FormControl"
 
@@ -64,9 +65,16 @@ class SettingsBox extends Component {
                             <label className={styles.formLabel}
                                    style={{marginLeft: '12px'}}>Phone Number
                             </label>
-                            <Field as={FormControl}
-                                   className={styles.formInputPhone} name='phone'
-                                   placeholder='800-555-1234'/><br/>
+                            <Field name='phone' className={styles.formInputPhone}>
+                                {({field}) => (
+                                    <NumberFormat name='phone'
+                                                  {...field}
+                                                  className={styles.formInputPhone}
+                                                  format="+1 (###) ###-####"
+                                                  allowEmptyFormatting mask="_"
+                                                  customInput={FormControl}/>
+                                )}
+                            </Field><br/>
                             <Button type='submit' variant='info'
                                     className={styles.formSubmitBtn}>
                                 Update
@@ -79,17 +87,13 @@ class SettingsBox extends Component {
     }
 
     onSubmit = (values) => {
-        const phoneRegEx = /^\d{3}-\d{3}-\d{4}$/;
-        if (!phoneRegEx.test(values.phone))
+        const phoneRegEx = /\d+/g;
+        values.phone = values.phone.substr(3)
+        values.phone = values.phone.match(phoneRegEx).join('');
+        if (values.phone.length !== 10)
             this.props.errorFunc()
-        else {
-            values.phone = this.parsePhoneNumber(values.phone)
+        else
             this.props.submitFunc(values);
-        }
-    }
-
-    parsePhoneNumber = (phoneNumber) => {
-        return phoneNumber.split('-').join('');
     }
 }
 

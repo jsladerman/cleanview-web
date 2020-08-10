@@ -14,7 +14,7 @@ import Sidebar from 'react-sidebar'
 import LocationsTable from "../Components/Dashboard/LocationsTable";
 import ManagedLocationInfo from "../Components/ManagedLocationPage/ManagedLocationInfo";
 import Settings from "../Pages/Settings";
-import SettingsBox from "../Components/Dashboard/SettingsBox";
+import SettingsBox from "../Components/Settings/SettingsBox";
 import Modal from "@trendmicro/react-modal";
 import Alert from "react-bootstrap/Alert";
 import Billing from "../Pages/Billing";
@@ -89,11 +89,11 @@ class Dashboard extends Component {
                         <h4 style={{textAlign: 'center', fontFamily: 'Roboto, sans-serif'}}>
                             Please complete your profile
                         </h4><br/>
-                        {this.renderErrorAlert('Phone number must be in this format: 800-555-1234')}
+                        {this.renderErrorAlert('Phone number must be 10 digits')}
                         <SettingsBox
                             authInfo={this.state.authInfo}
                             submitFunc={(values) => this.createSettings(values)}
-                            phoneNumErrorFunc={this.triggerErrorAlert}
+                            errorFunc={this.triggerErrorAlert}
                         />
                     </div>
                 </Modal>
@@ -165,7 +165,7 @@ class Dashboard extends Component {
     signOut = () => {
         try {
             Auth.signOut()
-                .then(response => {
+                .then(() => {
                     this.setState({redirect: '/login'});
                 });
         } catch (error) {

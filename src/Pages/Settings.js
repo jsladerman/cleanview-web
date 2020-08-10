@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import styles from './css/Settings.module.css';
 import {Auth, API} from 'aws-amplify'
 import Alert from 'react-bootstrap/Alert'
-import SettingsBox from "../Components/Dashboard/SettingsBox";
+import SettingsBox from "../Components/Settings/SettingsBox";
 import ChangePasswordBox from "../Components/Settings/ChangePasswordBox";
 import ChangeEmailBox from "../Components/Settings/ChangeEmailBox";
 
@@ -37,7 +37,7 @@ class Settings extends Component {
                     {this.state.updateSettingsSuccess ?
                         this.renderSuccessAlert('Information Updated Successfully') : null}
                     {this.state.settingsError ?
-                        this.renderErrorAlert('Phone number must be in this format: 800-555-1234') : null}
+                        this.renderErrorAlert('Phone number must be 10 digits') : null}
                     <div className={styles.settingsBox}>
                         <h3>Your Information</h3>
                         <div className={styles.separator}/>
