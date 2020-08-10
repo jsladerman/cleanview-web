@@ -12,7 +12,8 @@ class AddNewMenu extends Component {
         this.state = {
             submissionType: 'none',
             menuLink: '',
-            loading: false
+            loading: false,
+            menuUploaded: false
         }
     }
 
@@ -24,51 +25,46 @@ class AddNewMenu extends Component {
                         name: '',
                         type: 'none',
                         url: '',
-                        lastName: ''
                     }}
                     validate={(values) => {
-                        // Formik does't have onChange() so here I am
                         if (values.type !== this.state.submissionType) {
                             this.setState({submissionType: values.type})
                             this.setState({menuLink: ''})
                         }
+                        let errors = {}
+                        if (!values.name)
+                            errors.name = "Please enter a valid menu name."
 
-                        // not sure the best way to approach but
-                        // if you type in website, then switch to pdf but don't upload, then click add, it still uploads the website
-                        
+                        if (!this.state.menuLink) {
+                            if (!values.url) {
+                                errors.url = 'Required'
+                            } else if (!values.url.startsWith("https://")) {
+                                errors.url = 'URL must start with "https://".'
+                            }
+                        }
 
-                        //     let errors = {}
-                        //     if (!values.name)
-                        //         errors.name = "Please enter a valid menu name."
-                        //
-                        //     if (!this.state.menuLink) {
-                        //         if (!values.url) {
-                        //             errors.url = 'Required'
-                        //         } else if (!values.url.startsWith("https://")) {
-                        //             errors.url = 'The link must start with "https://".'
-                        //         }
-                        //     }
-                        //
-                        //     for (let i = 0; i < this.props.menus.length; ++i) {
-                        //         if (values.name === this.props.menus[i].name) {
-                        //             errors.name = "There already exists a menu with this name."
-                        //             return errors
-                        //         }
-                        //     }
-                        //     return errors
+                        for (let i = 0; i < this.props.menus.length; ++i) {
+                            if (values.name === this.props.menus[i].name) {
+                                errors.name = "There already exists a menu with this name."
+                                return errors
+                            }
+                        }
+                        if (values.type !== 'link')
+                            errors = {}
+                        return errors
                     }}
                     onSubmit={(values) => {
                         if (this.state.menuLink === '')
                             this.props.submitFunc(values.name, values.url)
                         else
                             this.props.submitFunc(values.name, this.state.menuLink)
-                    }}
-                >
+                    }}>
                     <Form className={styles.newMenuGeneratorWrapper}>
                         <div className={styles.formCols}>
                             <div className={styles.formCol}>
                                 <div className={styles.menuField}><strong>Name</strong></div>
                                 <Field as={FormControl} className={styles.formControlInput} name='name'/>
+                                <ErrorMessage name='name' className={styles.errorMsg} component='div'/>
                             </div>
                             <div className={styles.formCol}>
                                 <div className={styles.menuField}><strong>Type of Menu</strong></div>
@@ -85,14 +81,13 @@ class AddNewMenu extends Component {
                             <div className={styles.formCol}>
                                 <div className={styles.menuField}><strong>Menu Upload</strong></div>
                                 {this.menuUploadSwitch(this.state.submissionType)}
+                                <ErrorMessage name='url' className={styles.errorMsg} component='div'/>
                             </div>
                             <div className={styles.formCol}>
                                 <div style={{marginTop: '16px'}}>
                                     {this.button()}
                                 </div>
                             </div>
-                            {/*<ErrorMessage name="name" component="div"/>*/}
-                            {/*<ErrorMessage name="url" component="div"/>*/}
                         </div>
                     </Form>
                 </Formik>
@@ -108,6 +103,10 @@ class AddNewMenu extends Component {
         } else if (this.state.loading) {
             return (
                 <Button block={false} className={styles.generateMenuSubmit} disabled>Uploading file...</Button>
+            );
+        } else if (this.state.submissionType === 'pdf' && !this.state.menuUploaded && !this.state.loading) {
+            return (
+                <Button block={false} className={styles.generateMenuSubmit} disabled>Add</Button>
             );
         } else {
             return (
@@ -134,7 +133,7 @@ class AddNewMenu extends Component {
                 this.setState({menuLink: url})
             })
             .catch(err => console.log(err))
-        this.setState({loading: false})
+        this.setState({menuUploaded: true, loading: false})
     }
 
     menuUploadSwitch = (switchVal) => {
@@ -150,6 +149,8 @@ class AddNewMenu extends Component {
                     </div>
                 );
             case 'link':
+                if (this.state.menuUploaded)
+                    this.setState({menuUploaded: false})
                 return (
                     <div>
                         <Field as={FormControl}
@@ -159,6 +160,8 @@ class AddNewMenu extends Component {
                     </div>
                 );
             default:
+                if (this.state.menuUploaded)
+                    this.setState({menuUploaded: false})
                 return (
                     <div>
                         No menu type selected.

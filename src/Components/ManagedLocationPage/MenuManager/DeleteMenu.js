@@ -8,7 +8,7 @@ class DeleteMenu extends Component {
     render() {
         return (
             <div className={styles.deleteMenuGeneratorWrapper}>
-                <div className={styles.deleteTitle}><strong>Select a menu to delete</strong></div>
+                <div className={styles.menuField}><strong>Select a menu to delete</strong></div>
                 <Formik
                     initialValues={{
                         menuName: 'none'
@@ -41,7 +41,7 @@ class DeleteMenu extends Component {
                                 </Field>
                             </div>
                             <div className={styles.formCol}>
-                                <Button variant="danger" type="submit">Delete</Button>
+                                <Button className={styles.menuDeleteBtn} variant="danger" type="submit">Delete</Button>
                             </div>
                         </div>
                     </Form>

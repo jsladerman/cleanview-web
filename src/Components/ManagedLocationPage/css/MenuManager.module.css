@@ -58,7 +58,7 @@
     background-color: #f3f3f3;
     border-radius: 6px;
     padding: 12px;
-    min-width: 630px;
+    min-width: 750px;
 
 }
 
@@ -95,6 +95,13 @@
     background-color: #23A6BD;
 }
 
+.menuDeleteBtn{
+    color: white;
+    border: none;
+    font-weight: bold;
+    padding: 5px 20px;
+}
+
 .newMenuButtonColumn{
     width: 40%
 }
@@ -112,4 +119,14 @@
 .formControlInput{
     height: 34px;
     width: 130%;
+    max-width: 250px;
+}
+
+.errorMsg {
+    justify-self: start;
+    text-align: left;
+    font-family: Roboto, serif;
+    color: red;
+    font-weight: bold;
+    margin-left: 8px;
 }
