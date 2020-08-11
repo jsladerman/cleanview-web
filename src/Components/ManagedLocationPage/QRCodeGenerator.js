@@ -49,6 +49,7 @@ class QRCodeGenerator extends Component {
           alreadyExists = true
           currentSublocations[i].active = true
           currentSublocations[i].color = values.color
+          currentSublocations[i].menu = values.menu === 'none' ? 'none': JSON.parse(values.menu)
         }
    
       if(!alreadyExists) {
