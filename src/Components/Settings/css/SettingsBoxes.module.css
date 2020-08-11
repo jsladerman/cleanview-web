@@ -1,0 +1,97 @@
+.verifyModalDiv {
+    position: relative;
+    background-color: white;
+    margin: 20px;
+    padding: 30px;
+    width: 612px;
+    border-radius: 10px;
+    box-shadow: 0 0 22px 0 rgba(0,0,0,0.75);
+}
+
+.formLabelInputGroup {
+    display: inline-block;
+    width: 48.1%;
+}
+
+.formLabel {
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+}
+
+.linkText {
+    display: inline;
+    color: #a1a1a1;
+    font-family: 'Roboto', sans-serif;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.formInput {
+    position: relative;
+    margin-right: 20px;
+    width: 100%;
+}
+
+.formInputName {
+    width: 100%;
+}
+
+.formInputPhone {
+    position: relative;
+    margin-right: 20px;
+    width: 100%;
+}
+
+.formSubmitBtn {
+    position: absolute;
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    border-width: 0;
+    background-color: #30B3CA;
+    padding: 5px 22px;
+    right: 30px;
+}
+
+.formSubmitBtn:hover {
+    background-color: #51cbe0;
+}
+
+.formSubmitBtn:focus {
+    background-color: #30B3CA;
+}
+
+.verifyEmailBtn {
+    position: absolute;
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    border-width: 0;
+    padding: 5px 18px;
+    right: 140px;
+}
+
+.verifyEmailSubmitBtn {
+    position: absolute;
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    border-width: 0;
+    background-color: #23C9AD;
+    padding: 5px 22px;
+    right: 30px;
+}
+
+.verifyEmailSubmitBtn:hover {
+    background-color: #31dec2;
+}
+
+.verifyEmailSubmitBtn:focus {
+    background-color: #23C9AD;
+}
+
+.verifyEmailForm {
+    font-family: Roboto, serif;
+    background-color: white;
+    padding: 20px;
+    width: 400px;
+    border-radius: 12px;
+    box-shadow: 8px 4px 35px rgba(0, 0, 0, 0.35);
+}

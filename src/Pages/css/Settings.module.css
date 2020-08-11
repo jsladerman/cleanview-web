@@ -7,9 +7,30 @@
     position: relative;
     border-radius: 8px;
     padding: 20px;
+    margin-bottom: 25px;
     height: 325px;
-    min-width: 255px;
-    box-shadow: 0 0 22px 0 rgba(0,0,0,0.75);
+    min-width: 315px;
+    box-shadow: 0 0 16px 0 rgba(0,0,0,0.50);
+}
+
+.emailBox {
+    position: relative;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 25px;
+    height: 231px;
+    min-width: 315px;
+    box-shadow: 0 0 16px 0 rgba(0,0,0,0.50);
+}
+
+.passwordBox {
+    position: relative;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 25px;
+    height: 418px;
+    min-width: 315px;
+    box-shadow: 0 0 16px 0 rgba(0,0,0,0.50);
 }
 
 .separator {

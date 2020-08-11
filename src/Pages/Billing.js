@@ -9,11 +9,11 @@ class Billing extends Component {
                 <div className={styles.body}>
                     <h1 className={styles.headerText}>Billing Dashboard</h1>
                     <br />
-                    <img 
-                    src={imgSrc} 
-                    alt={"Enjoy your first month, on us! 😊"} 
+                    <img
+                    src={imgSrc}
+                    alt={"Enjoy your first month, on us! 😊"}
                     height={600}
-                    ></img>
+                    />
                 </div>
             </div>
 

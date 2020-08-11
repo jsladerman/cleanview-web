@@ -13,6 +13,7 @@ const { uuid } = require('uuidv4')
 var awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
 var bodyParser = require('body-parser')
 var express = require('express')
+var mergeImages = require('merge-images');
 
 AWS.config.update({ region: process.env.TABLE_REGION });
 
@@ -282,6 +283,47 @@ app.patch(path + '/active', function(req, res) {
       res.json({ success: "patch call succeed!", url: req.url, data: data });
     }
   });
+});
+
+app.get(path + '/qrTemplate', function(req, res) {
+  if (userIdPresent) {
+    req.body["userId"] = req.apiGateway.event.requestContext.identity.cognityIdentityId || UNAUTH;
+  }
+  const tempNum = req.query.templateNumber;
+  const qrUrl = req.query.qrUrl;
+  const templateUrl = "https://cleanview-location214612-prod.s3.amazonaws.com/public/templates/qrt-0" + tempNum + ".jpeg";
+  const url2 = "https://cleanview-location214612-prod.s3.amazonaws.com/public/templates/qrt-02.jpeg"
+
+  const coords = {
+    1: {x: 0, y: 0},
+    2: {x: 2, y: 2},
+    3: {x: 3, y: 3},
+    4: {x: 4, y: 4}
+  }
+
+  mergeImages([
+    {src: templateUrl, x: 0, y: 0},
+    {src: url2, x: 0, y: 0}
+  ])
+    .then(b64 => {
+      res.statusCode = 200
+      res.json({
+        success: "Merged image generated",
+        url: req.url,
+        data: {
+          img: b64
+        }
+      });
+    })
+    .catch(err => {
+      console.log(err)
+      res.statusCode = 500
+      res.json({
+        error: err,
+        url: req.url,
+        body: req.body
+      });
+    });
 });
 
 // Export the app object. When executing the application local this does nothing. However,

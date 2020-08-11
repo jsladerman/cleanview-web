@@ -8,7 +8,8 @@
     "aws-serverless-express": "^3.3.5",
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
-    "uuidv4": "^6.2.0"
+    "uuidv4": "^6.2.0",
+    "merge-images": "^2.0.0"
   },
   "devDependencies": {},
   "scripts": {

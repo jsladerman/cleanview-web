@@ -200,7 +200,7 @@ app.get("/survey/:id", function (req, res) {
             /* Text properties */
             color: #666666;
             font-size: 12px;
-            font-weight: 150px;
+            font-weight: normal;
             padding: 9px 5px;
             text-align: center;
       

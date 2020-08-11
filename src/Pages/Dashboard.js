@@ -36,22 +36,7 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
-        Auth.currentUserInfo()
-            .then(user => {
-                if (user == null) {
-                    this.setState({redirect: '/login'});
-                } else {
-                    this.setState({
-                        authLoaded: true,
-                        authInfo: user
-                    });
-                    this.getSettings(user.username);
-                    this.getData();
-                }
-            })
-            .catch(error => {
-                console.log("Error: " + error)
-            });
+        this.loadAuthInfo();
     }
 
     render() {
@@ -143,6 +128,7 @@ class Dashboard extends Component {
                         <Settings
                             authInfo={this.state.authInfo}
                             authLoaded={this.state.authLoaded}
+                            authLoadFunc={this.loadAuthInfo}
                             settingsInfo={this.state.settingsInfo}
                             getSettingsFunc={this.getSettings}
                             {...props}/>}
@@ -256,6 +242,25 @@ class Dashboard extends Component {
             () => this.setState({redirect: null}));
     }
 
+    loadAuthInfo = () => {
+        Auth.currentUserInfo()
+            .then(user => {
+                if (user == null) {
+                    this.setState({redirect: '/login'});
+                } else {
+                    this.setState({
+                        authLoaded: true,
+                        authInfo: user
+                    });
+                    this.getSettings(user.username);
+                    this.getData();
+                }
+            })
+            .catch(error => {
+                console.log("Error: " + error)
+            });
+
+    }
 }
 
 const jsStyles = {

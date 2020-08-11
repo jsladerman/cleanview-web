@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import styles from './css/SettingsBox.module.css';
+import styles from '../Settings/css/SettingsBoxes.module.css';
 import {Field, Form, Formik} from "formik";
 import Button from "react-bootstrap/Button";
 import FormControl from "react-bootstrap/FormControl"
@@ -81,7 +81,7 @@ class SettingsBox extends Component {
     onSubmit = (values) => {
         const phoneRegEx = /^\d{3}-\d{3}-\d{4}$/;
         if (!phoneRegEx.test(values.phone))
-            this.props.phoneNumErrorFunc()
+            this.props.errorFunc()
         else {
             values.phone = this.parsePhoneNumber(values.phone)
             this.props.submitFunc(values);
