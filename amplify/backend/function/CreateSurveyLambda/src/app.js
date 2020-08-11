@@ -58,12 +58,15 @@ app.get("/survey/:id", function (req, res) {
   // loc_id + '99strl99strl' + subloc_id = total_id
   const tot_id = id
   const divIdx = tot_id.indexOf('99strl99strl')
+  const menuIdx = tot_id.indexOf('99menu99')
   const loc_id = tot_id.substring(0, divIdx)
-  const sub_id = tot_id.substring(divIdx + ('99strl99strl').length)
+  const sub_id = tot_id.substring(divIdx + ('99strl99strl').length, menuIdx)
+  const menuName = tot_id.substring(menuIdx + ('99menu99').length)
+
 
   var params = {
     TableName: tableName,
-    ProjectionExpression: "loc_name, menu_link",
+    ProjectionExpression: "loc_name, menus",
     Key: { "id": loc_id },
   };
 
@@ -95,9 +98,18 @@ app.get("/survey/:id", function (req, res) {
     }else {
       let itemData = data.Item;
       let name = itemData.loc_name;
-      let menu_link = Boolean(itemData.menu_link) ? itemData.menu_link : 'https://www.cleanview.io';
+      let menus = itemData.menus
+      console.log(itemData)
+      let menu_link = 'https://www.cleanview.io';
+      for(let i=0; i<menus.length; ++i) {
+        if(menus[i].name.toLowerCase() === menuName) {
+          menu_link = menus[i].url
+          break
+        }
+      }
+
       let defaultLang = Boolean(itemData.defaultLang) ? itemData.defaultLang : 'en';
-      let hasMenuLink = Boolean(itemData.menu_link);
+      let hasMenuLink = Boolean(menu_link !== 'https://www.cleanview.io');
       res.send(`<!doctype html>
       <html ⚡>
       
@@ -188,7 +200,7 @@ app.get("/survey/:id", function (req, res) {
             /* Text properties */
             color: #666666;
             font-size: 12px;
-            font-weight: 150px;
+            font-weight: normal;
             padding: 9px 5px;
             text-align: center;
       

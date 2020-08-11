@@ -3,12 +3,10 @@ import EditLocationInfo from "./EditLocationInfo";
 import styles from "./css/LocationInfo.module.css";
 import Container from "react-bootstrap/Container";
 import Modal from "@trendmicro/react-modal";
-import ClickableOverlay from "../Custom/ClickableOverlay";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import API from "@aws-amplify/api";
-import Button from "react-bootstrap/Button";
 import { Redirect } from "react-router-dom";
 import {BsPencil} from "react-icons/bs";
 
@@ -253,7 +251,7 @@ class LocationInfo extends Component {
           <Container fluid className={styles.locationInfoContainer}>
             <Row>
               <Col>
-                <h2>{this.state.data.loc_name} 
+                <h2>{this.state.data.loc_name}
                 <span onClick={this.toggleModal}><BsPencil className={styles.editButton}/></span>
                 </h2>
               </Col>
@@ -283,7 +281,7 @@ class LocationInfo extends Component {
                 </h5>
               </Col>
             </Row>
-            <Row className={styles.coividResponseRow}>
+            <Row className={styles.covidResponseRow}>
               <Col md="auto">{covidResponseFieldsCol1}</Col>
               <Col>{covidResponseFieldsCol2}</Col>
               <Col> </Col>

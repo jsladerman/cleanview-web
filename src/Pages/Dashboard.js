@@ -14,7 +14,7 @@ import Sidebar from 'react-sidebar'
 import LocationsTable from "../Components/Dashboard/LocationsTable";
 import ManagedLocationInfo from "../Components/ManagedLocationPage/ManagedLocationInfo";
 import Settings from "../Pages/Settings";
-import SettingsBox from "../Components/Dashboard/SettingsBox";
+import SettingsBox from "../Components/Settings/SettingsBox";
 import Modal from "@trendmicro/react-modal";
 import Alert from "react-bootstrap/Alert";
 import Billing from "../Pages/Billing";
@@ -36,22 +36,7 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
-        Auth.currentUserInfo()
-            .then(user => {
-                if (user == null) {
-                    this.setState({redirect: '/login'});
-                } else {
-                    this.setState({
-                        authLoaded: true,
-                        authInfo: user
-                    });
-                    this.getSettings(user.username);
-                    this.getData();
-                }
-            })
-            .catch(error => {
-                console.log("Error: " + error)
-            });
+        this.loadAuthInfo();
     }
 
     render() {
@@ -104,11 +89,11 @@ class Dashboard extends Component {
                         <h4 style={{textAlign: 'center', fontFamily: 'Roboto, sans-serif'}}>
                             Please complete your profile
                         </h4><br/>
-                        {this.renderErrorAlert('Phone number must be in this format: 800-555-1234')}
+                        {this.renderErrorAlert('Phone number must be 10 digits')}
                         <SettingsBox
                             authInfo={this.state.authInfo}
                             submitFunc={(values) => this.createSettings(values)}
-                            phoneNumErrorFunc={this.triggerErrorAlert}
+                            errorFunc={this.triggerErrorAlert}
                         />
                     </div>
                 </Modal>
@@ -143,6 +128,7 @@ class Dashboard extends Component {
                         <Settings
                             authInfo={this.state.authInfo}
                             authLoaded={this.state.authLoaded}
+                            authLoadFunc={this.loadAuthInfo}
                             settingsInfo={this.state.settingsInfo}
                             getSettingsFunc={this.getSettings}
                             {...props}/>}
@@ -179,7 +165,7 @@ class Dashboard extends Component {
     signOut = () => {
         try {
             Auth.signOut()
-                .then(response => {
+                .then(() => {
                     this.setState({redirect: '/login'});
                 });
         } catch (error) {
@@ -256,6 +242,25 @@ class Dashboard extends Component {
             () => this.setState({redirect: null}));
     }
 
+    loadAuthInfo = () => {
+        Auth.currentUserInfo()
+            .then(user => {
+                if (user == null) {
+                    this.setState({redirect: '/login'});
+                } else {
+                    this.setState({
+                        authLoaded: true,
+                        authInfo: user
+                    });
+                    this.getSettings(user.username);
+                    this.getData();
+                }
+            })
+            .catch(error => {
+                console.log("Error: " + error)
+            });
+
+    }
 }
 
 const jsStyles = {

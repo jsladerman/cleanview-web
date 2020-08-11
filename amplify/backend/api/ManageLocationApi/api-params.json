@@ -24,8 +24,8 @@
     "privacy": {
         "auth": 1,
         "unauth": 0,
-        "authRoleName": "amplify-cleanviewweb-staging-170737-authRole",
-        "unAuthRoleName": "amplify-cleanviewweb-staging-170737-unauthRole"
+        "authRoleName": "amplify-cleanviewweb-develop-162445-authRole",
+        "unAuthRoleName": "amplify-cleanviewweb-develop-162445-unauthRole"
     },
     "dependsOn": [
         {
@@ -37,5 +37,5 @@
             ]
         }
     ],
-    "uuid": "4bb95626"
+    "uuid": "06d59101"
 }

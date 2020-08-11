@@ -46,7 +46,7 @@ class ManagedLocationInfo extends Component {
 
         return (
             <div>
-                <Tabs activeKey={this.state.tab} onSelect={this.setTabURL}>
+                <Tabs activeKey={this.state.tab} onSelect={this.setTabURL} unmountOnExit={true}>
                     <Tab tabClassName={styles.tab} eventKey='info' title='Info'>
                         <LocationInfo
                             data={this.state.data}
@@ -64,7 +64,11 @@ class ManagedLocationInfo extends Component {
                     </Tab>
                     <Tab tabClassName={styles.tab} eventKey='menu-manager' title='Menu Management'>
                         <MenuManager
-                            id={this.props.id}/>
+                            id={this.props.id}
+                            sublocations={this.state.data.sublocations}
+                            menus={this.state.data.menus}
+                            handleUpdate={this.setLocationInfo}
+                            />
                     </Tab>
                 </Tabs>
             </div>
