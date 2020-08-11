@@ -4,6 +4,7 @@ import {Field, Form, Formik, ErrorMessage} from "formik";
 import styles from "./css/EditLocationInfo.module.css";
 import Button from "react-bootstrap/Button";
 import Alert from 'react-bootstrap/Alert';
+import NumberFormat from "react-number-format";
 
 
 class EditLocationInfo extends Component {
@@ -209,8 +210,10 @@ class EditLocationInfo extends Component {
 
         this.setState({valueEmptyError: false})
 
-        const phoneRegEx = /^\d{3}-\d{3}-\d{4}$/;
-        if (!phoneRegEx.test(values.businessPhoneNum)) {
+        const phoneRegEx = /\d+/g;
+        values.businessPhoneNum = values.businessPhoneNum.substr(3)
+        values.businessPhoneNum = values.businessPhoneNum.match(phoneRegEx)?.join('');
+        if (values.businessPhoneNum?.length !== 10) {
             this.setState({phoneNumError: true})
             return
         }
@@ -226,7 +229,7 @@ class EditLocationInfo extends Component {
                 imageUrl: this.state.imageUrl,
                 loc_name: values.businessName,
                 email: values.businessEmail,
-                phone: this.parsePhoneNumber(values.businessPhoneNum),
+                phone: values.businessPhoneNum,
                 loc_type: values.businessType,
                 addrLine1: values.addr.line1,
                 addrLine2: values.addr.line2,
@@ -276,20 +279,11 @@ class EditLocationInfo extends Component {
                        style={{whiteSpace: 'normal'}}>
                     <Alert.Heading>Error</Alert.Heading>
                     <div>
-                        Phone number must be in this format: 800-555-1234
+                        Phone number must be 10 digits
                     </div>
                 </Alert>
             )
     }
-
-    parsePhoneNumber = (phoneNumber) => {
-        return phoneNumber.split('-').join('');
-    }
-
-    formatPhoneNumber = (phoneNumber) => {
-        return phoneNumber.substr(0, 3) + '-' + phoneNumber.substr(3, 3) + '-' + phoneNumber.substr(6, 4);
-    }
-
 
     render() {
         return (
@@ -301,7 +295,7 @@ class EditLocationInfo extends Component {
                         businessName: this.state.data.loc_name,
                         businessType: this.state.data.loc_type,
                         businessEmail: this.state.data.email,
-                        businessPhoneNum: this.formatPhoneNumber(this.state.data.phone),
+                        businessPhoneNum: this.state.data.phone,
                         addr: {
                             line1: this.state.data.addrLine1,
                             line2: this.state.data.addrLine2,
@@ -348,11 +342,15 @@ class EditLocationInfo extends Component {
                                     name="businessEmail"
                                 />
                                 <div className={styles.formLabel}>Business Phone #</div>
-                                <Field
-                                    className={styles.formInput}
-                                    type="input"
-                                    name="businessPhoneNum"
-                                />
+                                <Field name='businessPhoneNum' className={styles.formInput}>
+                                    {({field}) => (
+                                        <NumberFormat name='businessPhoneNum'
+                                                      {...field}
+                                                      className={styles.formInput}
+                                                      format="+1 (###) ###-####"
+                                                      allowEmptyFormatting mask="_"/>
+                                    )}
+                                </Field>
                             </div>
                             <div className={styles.formCol}>
                                 <div className={styles.formColHeader}>Business Address</div>
