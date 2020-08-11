@@ -11,7 +11,8 @@ class LoginBox extends Component {
         super(props);
         this.state = {
             redirect: null,
-            errorMessage: null
+            errorMessage: null,
+            loading: false
         };
     }
 
@@ -34,7 +35,7 @@ class LoginBox extends Component {
                     </Form.Group>
                     <Form.Group controlId="password">
                         <Form.Label className={styles.formLabel}>Password</Form.Label>
-                        <Form.Label style={{float:'right', marginTop:'1.5px', cursor: 'pointer'}}
+                        <Form.Label style={{float: 'right', marginTop: '1.5px', cursor: 'pointer'}}
                                     className={styles.linkText}
                                     onClick={() => this.props.changeFunc("forgotPassword")}>Forgot password?
                         </Form.Label>
@@ -45,9 +46,8 @@ class LoginBox extends Component {
                     </Form.Group>
                 </Form>
                 {this.displayError()}
-                <Button onClick={this.logIn} style={submitBtn} type='submit' variant="primary">
-                    Enter
-                </Button><br/>
+                {this.renderButton()}
+                <br/>
                 <div>
                     Don't have an account yet? {' '}
                     <div className={styles.linkText}
@@ -60,6 +60,7 @@ class LoginBox extends Component {
     }
 
     logIn = () => {
+        this.setState({loading: true});
         this.props.setEmailFunc(this.emailVal.value);
         Auth.signIn(this.emailVal.value, this.passwordVal.value)
             .then(() => this.setState({redirect: '/home/locations'}))
@@ -67,7 +68,7 @@ class LoginBox extends Component {
                 if (error.message === 'User is not confirmed.')
                     this.props.changeFunc("verifyAccount");
                 else
-                    this.setState({errorMessage: error.message});
+                    this.setState({errorMessage: error.message, loading: false});
             });
     };
 
@@ -82,6 +83,22 @@ class LoginBox extends Component {
         return (
             <Alert variant='danger'>{message}</Alert>
         );
+    }
+
+    renderButton = () => {
+        if (this.state.loading)
+            return <img
+                src={require("../../images/loadingSpinner.svg")}
+                alt=''
+                height='40px'
+            />
+        else
+            return <Button onClick={this.logIn}
+                           style={submitBtn}
+                           type='submit'
+                           variant="primary">
+                Enter
+            </Button>
     }
 
 }
