@@ -6,7 +6,7 @@ import uuid from "react-uuid";
 import {Field, Form, Formik, ErrorMessage} from "formik";
 import Button from "react-bootstrap/Button";
 import Alert from 'react-bootstrap/Alert'
-
+import NumberFormat from "react-number-format";
 
 class AddLocation extends Component {
     constructor(props) {
@@ -85,11 +85,15 @@ class AddLocation extends Component {
                                     name="businessEmail"
                                 />
                                 <div className={styles.formLabel}>Business Phone #</div>
-                                <Field
-                                    className={styles.formInput}
-                                    type="input"
-                                    name="businessPhoneNum"
-                                />
+                                <Field name='businessPhoneNum' className={styles.formInput}>
+                                    {({field}) => (
+                                        <NumberFormat name='businessPhoneNum'
+                                                      {...field}
+                                                      className={styles.formInput}
+                                                      format="+1 (###) ###-####"
+                                                      allowEmptyFormatting mask="_"/>
+                                    )}
+                                </Field>
                             </div>
                             <div className={styles.formCol}>
                                 <div className={styles.formColHeader}>Business Address</div>
@@ -367,13 +371,13 @@ class AddLocation extends Component {
 
         this.setState({valueEmptyError: false})
 
-        const phoneRegEx = /^\d{3}-\d{3}-\d{4}$/;
-        if (!phoneRegEx.test(values.businessPhoneNum)) {
+        const phoneRegEx = /\d+/g;
+        values.businessPhoneNum = values.businessPhoneNum.substr(3)
+        values.businessPhoneNum = values.businessPhoneNum.match(phoneRegEx)?.join('');
+        if (values.businessPhoneNum?.length !== 10) {
             this.setState({phoneNumError: true})
             return
         }
-
-        this.setState({phoneNumError: false})
 
         const apiName = "ManageLocationApi"; // replace this with your api name.
         const path = "/location"; //replace this with the path you have configured on your API
@@ -383,7 +387,7 @@ class AddLocation extends Component {
                 imageUrl: this.state.imageUrl,
                 loc_name: values.businessName,
                 email: values.businessEmail,
-                phone: this.parsePhoneNumber(values.businessPhoneNum),
+                phone: values.businessPhoneNum,
                 loc_type: values.businessType,
                 manager: await Auth.currentAuthenticatedUser()
                     .then((user) => user["username"])
@@ -543,7 +547,7 @@ class AddLocation extends Component {
                        style={{whiteSpace: 'normal'}}>
                     <Alert.Heading>Error</Alert.Heading>
                     <div>
-                        Phone number must be in this format: 800-555-1234
+                        Phone number must be 10 digits
                     </div>
                 </Alert>
             )
