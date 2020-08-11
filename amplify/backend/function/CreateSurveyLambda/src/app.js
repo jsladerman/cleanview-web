@@ -102,7 +102,7 @@ app.get("/survey/:id", function (req, res) {
       console.log(itemData)
       let menu_link = 'https://www.cleanview.io';
       for(let i=0; i<menus.length; ++i) {
-        if(menus[i].name.toLowerCase() === menuName) {
+        if(menus[i].name.toLowerCase().trim() === menuName.toLowerCase().trim()) {
           menu_link = menus[i].url
           break
         }
