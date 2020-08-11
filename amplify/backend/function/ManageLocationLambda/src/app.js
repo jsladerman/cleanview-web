@@ -152,7 +152,7 @@ app.post(path, function (req, res) {
 });
 
 /************************************
-* HTTP patch to update menu_link *
+* HTTP patch to update menus *
 *************************************/
 
 app.patch(path + '/menu', function(req, res) {
@@ -160,21 +160,22 @@ app.patch(path + '/menu', function(req, res) {
     req.body["userId"] =
       req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
   }
+  
   var params = {
     TableName: tableName,
     Key: {
-      "id": req.body.loc_id
+      "id": req.body.id
     },
-    UpdateExpression: "set menu_link = :url",
+    UpdateExpression: "set menus = :M",
     ExpressionAttributeValues: {
-      ":url": req.body.menu_link
+      ":M": req.body.menus
     },
     ReturnValues:"UPDATED_NEW"
   }
   dynamodb.update(params, function(err, data) {
     if (err) {
       res.statusCode = 500;
-      res.json({ error: err, url: req.url, body: req.body, url: req.body.menu_link});
+      res.json({ error: err, url: req.url, body: req.body});
     } else {
       res.json({ success: "patch call succeed!", url: req.url, data: data });
     }
