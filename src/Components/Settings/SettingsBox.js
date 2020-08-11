@@ -88,7 +88,8 @@ class SettingsBox extends Component {
 
     onSubmit = (values) => {
         const phoneRegEx = /\d+/g;
-        values.phone = values.phone.substr(3)
+        if (values.phone?.length > 10)
+            values.phone = values.phone.substr(3)
         values.phone = values.phone.match(phoneRegEx).join('');
         if (values.phone.length !== 10)
             this.props.errorFunc()

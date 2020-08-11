@@ -211,7 +211,8 @@ class EditLocationInfo extends Component {
         this.setState({valueEmptyError: false})
 
         const phoneRegEx = /\d+/g;
-        values.businessPhoneNum = values.businessPhoneNum.substr(3)
+        if (values.businessPhoneNum?.length > 10)
+            values.businessPhoneNum = values.businessPhoneNum.substr(3)
         values.businessPhoneNum = values.businessPhoneNum.match(phoneRegEx)?.join('');
         if (values.businessPhoneNum?.length !== 10) {
             this.setState({phoneNumError: true})
