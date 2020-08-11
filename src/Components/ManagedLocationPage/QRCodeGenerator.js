@@ -134,6 +134,7 @@ class QRCodeGenerator extends Component {
 
     displayQRTemplate = (template, link, name) => {
         let currState = this.state;
+        currState.selectedName = name;
         currState.loadingModal[template] = true;
         this.setState(currState);
         const styleMap = {
@@ -146,7 +147,6 @@ class QRCodeGenerator extends Component {
             .then((response) => {
                 response.blob().then((blob) => {
                     let qrUrl = window.URL.createObjectURL(blob);
-                    currState.selectedName = name;
                     currState.selectedTemplate = styleMap[template];
                     currState.selectedQRLink = qrUrl;
                     currState.selectedDims = qrTemplates[template];
@@ -236,7 +236,7 @@ class QRCodeGenerator extends Component {
     }
 
     renderTemplateBtn = (tempType, downloadURL, rowName) => {
-        if (this.state.loadingModal[tempType])
+        if (this.state.loadingModal[tempType] && this.state.selectedName === rowName)
             return (
                 <div className={styles.generateQrLoaderDiv}>
                     <img
