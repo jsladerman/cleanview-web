@@ -63,7 +63,6 @@ app.get("/survey/:id", function (req, res) {
   const sub_id = tot_id.substring(divIdx + ('99strl99strl').length, menuIdx)
   const menuName = tot_id.substring(menuIdx + ('99menu99').length)
 
-
   var params = {
     TableName: tableName,
     ProjectionExpression: "loc_name, menus",
@@ -102,7 +101,7 @@ app.get("/survey/:id", function (req, res) {
       console.log(itemData)
       let menu_link = 'https://www.cleanview.io';
       for(let i=0; i<menus.length; ++i) {
-        if(menus[i].name.toLowerCase() === menuName) {
+        if(menus[i].name.toLowerCase().trim() === menuName.toLowerCase().trim()) {
           menu_link = menus[i].url
           break
         }
