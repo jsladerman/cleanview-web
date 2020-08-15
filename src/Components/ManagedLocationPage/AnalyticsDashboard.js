@@ -152,8 +152,8 @@ class AnalyticsDashboard extends Component {
                                         {this.renderSingleCheckbox("input1", "66+", this.state.ageExcludeFilter, '66+')}
 
                                         {/* QR CODE */}
-                                        <p className={styles.filteringCategories}>QR Code</p>
-                                        {this.renderQRCodeCheckboxes()}
+                                        {/* <p className={styles.filteringCategories}>QR Code</p>
+                                        {this.renderQRCodeCheckboxes()} */}
                                     </Col>
                                     <Col>
                                         {/* HOURS */}
@@ -176,7 +176,8 @@ class AnalyticsDashboard extends Component {
             let name = sublocations[i].name;
             let id = sublocations[i].id;
             let checkbox = this.renderSingleCheckbox("qrCheckName", name, this.state.qrExcludeFilter, id);
-            qrCheckboxes.push(checkbox);
+            if(sublocations[i].active)
+                qrCheckboxes.push(checkbox);
         }
 
         return qrCheckboxes;
@@ -305,10 +306,10 @@ class AnalyticsDashboard extends Component {
                     </Row>
                     <Row>
                         <Col>
-                            <FilteredDataToQRBarChart
+                            {/* <FilteredDataToQRBarChart
                                 filteredData={this.state.filteredDataForDemographicCharts}
-                                sublocations={this.props.sublocations}
-                            />
+                                sublocations={this.props.sublocations.filter((sublocation) => sublocation.active)}
+                            /> */}
                         </Col>
                     </Row>
                 </div>

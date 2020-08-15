@@ -23,6 +23,12 @@ class QRCodeGenerator extends Component {
             environmentURL: '',
             menus: this.props.menus,
             showModal: false,
+            loadingModal: {
+                bold: false,
+                crisp: false,
+                simple: false,
+                quadrant: false
+            },
             selectedQRLink: '',
             selectedTemplate: '',
             selectedName: '',
@@ -127,6 +133,10 @@ class QRCodeGenerator extends Component {
     }
 
     displayQRTemplate = (template, link, name) => {
+        let currState = this.state;
+        currState.selectedName = name;
+        currState.loadingModal[template] = true;
+        this.setState(currState);
         const styleMap = {
             'bold': bold,
             'crisp': crisp,
@@ -137,20 +147,21 @@ class QRCodeGenerator extends Component {
             .then((response) => {
                 response.blob().then((blob) => {
                     let qrUrl = window.URL.createObjectURL(blob);
-                    let currState = this.state;
-                    currState.selectedName = name;
                     currState.selectedTemplate = styleMap[template];
                     currState.selectedQRLink = qrUrl;
                     currState.selectedDims = qrTemplates[template];
                     currState.selectedTemplateName = template;
-                    console.log(currState);
                     this.setState(currState);
-                    this.buildQRTemplate();
+                    this.buildQRTemplate(template);
                 });
+            })
+            .catch(() => {
+                currState.loadingModal[template] = false;
+                this.setState(currState);
             });
     }
 
-    buildQRTemplate = () => {
+    buildQRTemplate = (template) => {
         let qrImg = new Image();
         qrImg.crossOrigin = "Anonymous";
         qrImg.src = this.state.selectedQRLink;
@@ -189,12 +200,12 @@ class QRCodeGenerator extends Component {
                 resolve('QR Drawn');
             }
         });
-
         tempPromise.then(() => {
             qrPromise.then(() => {
                 let currState = this.state;
                 currState.compositeUrl = canvas.toDataURL('image/jpeg');
                 currState.showModal = !this.state.showModal;
+                currState.loadingModal[template] = false;
                 this.setState(currState);
             })
         })
@@ -221,6 +232,28 @@ class QRCodeGenerator extends Component {
         this.setState({
             showModal: !this.state.showModal,
         });
+    }
+
+    renderTemplateBtn = (tempType, downloadURL, rowName) => {
+        if (this.state.loadingModal[tempType] && this.state.selectedName === rowName)
+            return (
+                <div className={styles.generateQrLoaderDiv}>
+                    <img
+                        src={require("../../images/loadingSpinner.svg")}
+                        alt=''
+                        height='35px'
+                        style={{
+                            margin: 'auto',
+                            display: 'block'
+                        }}
+                    />
+                </div>
+            )
+        else
+            return <Button className={styles.generateQrTemplate}
+                           onClick={() => this.displayQRTemplate(tempType, downloadURL, rowName)}>
+                {tempType.charAt(0).toUpperCase() + tempType.slice(1)}
+            </Button>
     }
 
     render() {
@@ -264,16 +297,12 @@ class QRCodeGenerator extends Component {
                     <td>
                         <div style={{marginLeft: '5px'}}>
                             <Row>
-                                <Button className={styles.generateQrTemplate}
-                                        onClick={() => this.displayQRTemplate('bold', downloadURL, name)}>Bold</Button>
-                                <Button className={styles.generateQrTemplate}
-                                        onClick={() => this.displayQRTemplate('crisp', downloadURL, name)}>Crisp</Button>
+                                {this.renderTemplateBtn('bold', downloadURL, name)}
+                                {this.renderTemplateBtn('crisp', downloadURL, name)}
                             </Row>
                             <Row>
-                                <Button className={styles.generateQrTemplate}
-                                        onClick={() => this.displayQRTemplate('simple', downloadURL, name)}>Simple</Button>
-                                <Button className={styles.generateQrTemplate}
-                                        onClick={() => this.displayQRTemplate('quadrant', downloadURL, name)}>Quadrant</Button>
+                                {this.renderTemplateBtn('simple', downloadURL, name)}
+                                {this.renderTemplateBtn('quadrant', downloadURL, name)}
                             </Row>
                         </div>
                     </td>

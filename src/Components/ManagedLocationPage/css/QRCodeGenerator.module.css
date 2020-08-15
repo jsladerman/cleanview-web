@@ -55,7 +55,7 @@
 ul {
     list-style-type: none;
   }
-  
+
   ul li:before {
     content: '\2014';
     position: absolute;
@@ -98,11 +98,17 @@ ul {
     color: white;
     border: none;
     font-weight: bold;
-    align-self: flex-end;
     width: 25%;
     margin: 5px 10px;
     align-self: center;
     background-color: #23A6BD;
+    min-width: 100px;
+}
+
+.generateQrLoaderDiv {
+    width: 25%;
+    margin: 5px 10px;
+    align-self: center;
     min-width: 100px;
 }
 
@@ -126,7 +132,7 @@ ul {
     max-height:120px;
     padding: 5px;
     width: auto;
-    height: auto;   
+    height: auto;
 }
 
 .tempThumbnail:hover{

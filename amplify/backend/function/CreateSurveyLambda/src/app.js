@@ -63,7 +63,6 @@ app.get("/survey/:id", function (req, res) {
   const sub_id = tot_id.substring(divIdx + ('99strl99strl').length, menuIdx)
   const menuName = tot_id.substring(menuIdx + ('99menu99').length)
 
-
   var params = {
     TableName: tableName,
     ProjectionExpression: "loc_name, menus",
