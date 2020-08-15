@@ -62,7 +62,8 @@ class ManagedLocationInfo extends Component {
                     />
                 </Modal>
                 <div style={{padding: '35px 70px'}}>
-                    <div style={{cursor: 'pointer'}} onClick={() => this.setState({redirect: '/home/locations'})}>
+                    <div style={{cursor: 'pointer', width:'85px'}}
+                         onClick={() => this.setState({redirect: '/home/locations'})}>
                         <img src={require('../../images/back-arrow.svg')}
                              style={{
                                  float: 'left',
