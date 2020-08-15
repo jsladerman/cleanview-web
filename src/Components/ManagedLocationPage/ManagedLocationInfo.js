@@ -10,6 +10,7 @@ import {Redirect} from 'react-router-dom';
 import MenuManager from './MenuManager';
 import {API} from 'aws-amplify';
 import Auth from '@aws-amplify/auth';
+import {BsPencil} from "react-icons/bs/index";
 
 class ManagedLocationInfo extends Component {
     constructor(props) {
@@ -26,7 +27,7 @@ class ManagedLocationInfo extends Component {
         const tab = this.state.tab;
 
         if (tab !== 'info' && tab !== 'qr'
-            && tab !== 'analytics' && tab !== 'menu-manager'){
+            && tab !== 'analytics' && tab !== 'menu-manager') {
             this.setTabURL('info')
         }
     }
@@ -45,30 +46,52 @@ class ManagedLocationInfo extends Component {
         }
 
         return (
-            <div>
-                <Tabs activeKey={this.state.tab} onSelect={this.setTabURL} unmountOnExit={true}>
-                    <Tab tabClassName={styles.tab} eventKey='info' title='Info'>
-                        <LocationInfo
-                            data={this.state.data}
-                            handleUpdate={this.props.handleUpdate}/>
+            <div style={{padding: '40px'}}>
+                <div>
+                    Locations
+                </div>
+                <div style={{display: 'flex', margin: '5px 0'}}>
+                    <h2 style={{fontWeight: '900', fontFamily: 'Roboto, serif'}}>{this.state.data.loc_name}
+                        <span style={{marginLeft: '100px'}} onClick={this.toggleModal}><BsPencil
+                            className={styles.editButton}/></span>
+                    </h2>
+                </div>
+                <Tabs className={styles.tabsWrapper} activeKey={this.state.tab} onSelect={this.setTabURL}
+                      unmountOnExit={true} variant='pills'>
+                    <Tab tabClassName={this.state.tab === 'info' ? styles.active : null}
+                         eventKey='info' title='Information'>
+                        <div style={{marginLeft: '-30px'}}>
+                            <LocationInfo
+                                data={this.state.data}
+                                handleUpdate={this.props.handleUpdate}/>
+                        </div>
                     </Tab>
-                    <Tab tabClassName={styles.tab} eventKey='qr' title='QR Code'>
-                        <QRCodeGenerator
-                            name={this.state.data.loc_name}
-                            id={this.props.id}/>
+                    <Tab tabClassName={this.state.tab === 'qr' ? styles.active : null}
+                         eventKey='qr' title='QR Code'>
+                        <div style={{marginLeft: '-30px'}}>
+                            <QRCodeGenerator
+                                name={this.state.data.loc_name}
+                                id={this.props.id}/>
+                        </div>
                     </Tab>
-                    <Tab tabClassName={styles.tab} eventKey='analytics' title='Analytics' unmountOnExit>
-                        <AnalyticsDashboard
-                            id={this.props.id}
-                            sublocations={this.state.data.sublocations}/>
+                    <Tab tabClassName={this.state.tab === 'analytics' ? styles.active : null}
+                         eventKey='analytics' title='Analytics' unmountOnExit>
+                        <div style={{marginLeft: '-30px'}}>
+                            <AnalyticsDashboard
+                                id={this.props.id}
+                                sublocations={this.state.data.sublocations}/>
+                        </div>
                     </Tab>
-                    <Tab tabClassName={styles.tab} eventKey='menu-manager' title='Menu Management'>
-                        <MenuManager
-                            id={this.props.id}
-                            sublocations={this.state.data.sublocations}
-                            menus={this.state.data.menus}
-                            handleUpdate={this.setLocationInfo}
+                    <Tab tabClassName={this.state.tab === 'menu-manager' ? styles.active : null}
+                         eventKey='menu-manager' title='Menu Management'>
+                        <div style={{marginLeft: '-30px'}}>
+                            <MenuManager
+                                id={this.props.id}
+                                sublocations={this.state.data.sublocations}
+                                menus={this.state.data.menus}
+                                handleUpdate={this.setLocationInfo}
                             />
+                        </div>
                     </Tab>
                 </Tabs>
             </div>
