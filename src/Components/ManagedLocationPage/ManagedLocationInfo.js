@@ -61,13 +61,13 @@ class ManagedLocationInfo extends Component {
                         handleDelete={this.handleDelete}
                     />
                 </Modal>
-                <div style={{padding: '35px 70px'}}>
+                <div style={{padding: '35px 60px'}}>
                     <div style={{cursor: 'pointer', width:'85px'}}
                          onClick={() => this.setState({redirect: '/home/locations'})}>
                         <img src={require('../../images/back-arrow.svg')}
                              style={{
                                  float: 'left',
-                                 margin: '1px 0 8px -33px',
+                                 margin: '1px 0 8px -35px',
                                  height: '20px'
                              }}
                              alt=''/>
