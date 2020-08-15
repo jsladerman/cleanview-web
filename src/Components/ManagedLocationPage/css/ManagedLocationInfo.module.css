@@ -1,7 +1,7 @@
 .tabsWrapper {
     background-color: #e5e5e5;
     border-radius: 25px;
-    width: 391px;
+    width: 400px;
     /*height: 25px;*/
 }
 
@@ -12,6 +12,7 @@
     background-color: transparent !important;
     font-family: Roboto, serif;
     font-size: 12px;
+    font-weight: 500;
     text-align: right;
     /*margin: auto;*/
     /*height: 25px;*/
@@ -19,7 +20,7 @@
 
 .active {
     text-decoration: underline;
-    font-weight: bold;
+    font-weight: 900 !important;
     color: #2853A8 !important;
 }
 
