@@ -1,35 +1,29 @@
 .tabsWrapper {
     background-color: #e5e5e5;
     border-radius: 25px;
-    width: 440px;
-    /*height: 25px;*/
+    width: 436px;
+    overflow: hidden;
 }
 
 .tabsWrapper > a {
-    border-bottom-color: transparent;
-    border: none !important;
+    outline: none;
     color: black;
-    background-color: transparent !important;
+    background-color: transparent;
     font-family: Roboto, serif;
     font-size: 14px;
     font-weight: 500;
     text-align: right;
-    /*margin: auto;*/
-    /*height: 25px;*/
 }
 
 .active {
-    text-decoration: underline;
+    text-decoration: none !important;
     font-weight: 900 !important;
-    color: #2853A8 !important;
+    color: white !important;
+    background-color: #2853A8 !important;
 }
 
 .tabsWrapper > a:hover {
     text-decoration: underline;
-}
-
-.tabsWrapper > a:visited {
-    text-decoration: underline !important;
 }
 
 .tabsWrapper > a:focus {
