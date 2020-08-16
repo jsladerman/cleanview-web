@@ -20,272 +20,6 @@ class EditLocationInfo extends Component {
         this.editLocation = this.editLocation.bind(this);
     }
 
-    renderStateDropdown = () => {
-        return (
-            <Field
-                as="select"
-                style={{width: "100%", height: "26px"}}
-                name="addr.state"
-            >
-                <option value=""/>
-                <option value="AK">AK</option>
-                <option value="AL">AL</option>
-                <option value="AR">AR</option>
-                <option value="AZ">AZ</option>
-                <option value="CA">CA</option>
-                <option value="CO">CO</option>
-                <option value="CT">CT</option>
-                <option value="DC">District of Columbia</option>
-                <option value="DE">DE</option>
-                <option value="FL">FL</option>
-                <option value="GA">GA</option>
-                <option value="HI">HI</option>
-                <option value="IA">IA</option>
-                <option value="ID">ID</option>
-                <option value="IL">IL</option>
-                <option value="IN">IN</option>
-                <option value="KS">KS</option>
-                <option value="KY">KY</option>
-                <option value="LA">LA</option>
-                <option value="MA">MA</option>
-                <option value="MD">MD</option>
-                <option value="ME">ME</option>
-                <option value="MI">MI</option>
-                <option value="MN">MN</option>
-                <option value="MO">MO</option>
-                <option value="MS">MS</option>
-                <option value="MT">MT</option>
-                <option value="NC">NC</option>
-                <option value="ND">ND</option>
-                <option value="NE">NE</option>
-                <option value="NH">NH</option>
-                <option value="NJ">NJ</option>
-                <option value="NM">NM</option>
-                <option value="NV">NV</option>
-                <option value="NY">NY</option>
-                <option value="OH">OH</option>
-                <option value="OK">OK</option>
-                <option value="OR">OR</option>
-                <option value="PA">PA</option>
-                <option value="PR">PR</option>
-                <option value="RI">RI</option>
-                <option value="SC">SC</option>
-                <option value="SD">SD</option>
-                <option value="TN">TN</option>
-                <option value="TX">TX</option>
-                <option value="UT">UT</option>
-                <option value="VA">VA</option>
-                <option value="VT">VT</option>
-                <option value="WA">WA</option>
-                <option value="WI">WI</option>
-                <option value="WV">WV</option>
-                <option value="WY">WY</option>
-            </Field>
-        );
-    };
-
-    uploadFile = async (e) => {
-        this.setState({imageLoading: true});
-        const file = e.target.files[0];
-        if (!file) {
-            return
-        }
-
-        const loadingUrl = require("../../images/dashboardLoader.svg");
-        this.setState({imageUrl: loadingUrl});
-
-        const name = e.target.files[0].name ?? "no_name";
-        const lastDot = name.lastIndexOf(".");
-        const dotExt = name.substring(lastDot);
-        const filename = "profile_picture_" + this.state.id + "_" + Math.floor(100000 + Math.random() * 900000) + dotExt;
-
-
-        await Storage.put(filename, file, {
-            level: "public",
-            contentDisposition: 'inline; filename="' + filename + '"',
-            contentType: "image/" + dotExt.substring(1),
-        })
-            .then((result) => {
-
-            })
-            .catch((err) => console.log("Upload error: " + err));
-
-        await Storage.get(filename).then((resultURL) => {
-            const idx = resultURL.indexOf(filename);
-            const url = resultURL.substring(0, idx) + "" + filename;
-            this.setState({imageUrl: url});
-        });
-
-        this.setState({imageLoading: false});
-    };
-
-    validateFieldsFilled = (values) => {
-        if (!values) {
-            return false
-        }
-        if (!values.businessName) {
-            return false
-        }
-        if (!values.businessType) {
-            return false
-        }
-        if (!values.businessEmail) {
-            return false
-        }
-        if (!values.businessPhoneNum) {
-            return false
-        }
-        if (!values.addr) {
-            return false
-        }
-        if (!values.addr.line1) {
-            return false
-        }
-        if (!values.addr.city) {
-            return false
-        }
-        if (!values.addr.state) {
-            return false
-        }
-        if (!values.addr.zip) {
-            return false
-        }
-        if (!values.employeeMasks) {
-            return false
-        }
-        if (!values.employeeTemp) {
-            return false
-        }
-        if (!values.socialDistance) {
-            return false
-        }
-        if (!values.sanitizeTables) {
-            return false
-        }
-        if (!values.outsideSeating) {
-            return false
-        }
-        if (!values.indoorCapacity) {
-            return false
-        }
-        return true
-    }
-
-    deleteFunc = () => {
-        const theyAreSure = window.confirm("Are you sure you want to delete this?")
-        if (!theyAreSure)
-            return
-        const theyAreReallySure = window.confirm("This cannot be undone. Are you 100% sure?")
-        if (!theyAreReallySure)
-            return
-
-        const apiName = 'ManageLocationApi';
-        const path = '/location/active';
-        const requestData = {
-            headers: {},
-            response: true,
-            body: {
-                id: this.props.data.id
-            },
-        }
-
-        API.patch(apiName, path, requestData)
-            .then(response => {
-                window.alert("Delete successful.");
-                this.props.handleDelete();
-            })
-            .catch(error => {
-                console.log("Error: ", error);
-                window.alert("Delete unsuccessful.");
-            })
-
-    }
-
-    editLocation = async (values) => {
-        const allValuesFilled = this.validateFieldsFilled(values)
-        if (!allValuesFilled) {
-            this.setState({valueEmptyError: true})
-            return
-        }
-
-        this.setState({valueEmptyError: false})
-
-        const phoneRegEx = /\d+/g;
-        if (values.businessPhoneNum?.length > 10)
-            values.businessPhoneNum = values.businessPhoneNum.substr(3)
-        values.businessPhoneNum = values.businessPhoneNum.match(phoneRegEx)?.join('');
-        if (values.businessPhoneNum?.length !== 10) {
-            this.setState({phoneNumError: true})
-            return
-        }
-
-        this.setState({phoneNumError: false})
-
-        const apiName = "ManageLocationApi"
-        const path = "/location/info"
-        const requestData = {
-            headers: {},
-            body: {
-                id: this.state.data.id,
-                imageUrl: this.state.imageUrl,
-                loc_name: values.businessName,
-                email: values.businessEmail,
-                phone: values.businessPhoneNum,
-                loc_type: values.businessType,
-                addrLine1: values.addr.line1,
-                addrLine2: values.addr.line2,
-                addrCity: values.addr.city,
-                addrState: values.addr.state,
-                addrZip: values.addr.zip,
-                covidResponseSurvey: {
-                    employeeMasks: values.employeeMasks,
-                    socialDistancing: values.socialDistance,
-                    outsideSeating: values.outsideSeating,
-                    employeeTemp: values.employeeTemp,
-                    sanitizeTables: values.sanitizeTables,
-                    indoorCapacity: values.indoorCapacity,
-                    outdoorCapacity: this.state.noOutdoorSeating
-                        ? ""
-                        : values.outdoorCapacity,
-                }
-            }
-        }
-
-        API.patch(apiName, path, requestData)
-            .then(response => {
-                this.props.handleUpdate()
-            })
-            .catch((error) => {
-                console.log("Error: " + error)
-            })
-    };
-
-    renderAlert = () => {
-        if (this.state.valueEmptyError) {
-            return (
-                <Alert variant="danger" dismissible
-                       onClose={() => this.setState({valueEmptyError: false})}
-                       style={{whiteSpace: 'normal'}}>
-                    <Alert.Heading>Error</Alert.Heading>
-                    <div>
-                        All values must be filled in.
-                    </div>
-                </Alert>
-            )
-        }
-        if (this.state.phoneNumError)
-            return (
-                <Alert variant="danger" dismissible
-                       onClose={() => this.setState({phoneNumError: false})}
-                       style={{whiteSpace: 'normal'}}>
-                    <Alert.Heading>Error</Alert.Heading>
-                    <div>
-                        Phone number must be 10 digits
-                    </div>
-                </Alert>
-            )
-    }
-
     render() {
         return (
             <div className={styles.editLocation}>
@@ -567,6 +301,272 @@ class EditLocationInfo extends Component {
                 </Formik>
             </div>
         );
+    }
+
+    renderStateDropdown = () => {
+        return (
+            <Field
+                as="select"
+                style={{width: "100%", height: "26px"}}
+                name="addr.state"
+            >
+                <option value=""/>
+                <option value="AK">AK</option>
+                <option value="AL">AL</option>
+                <option value="AR">AR</option>
+                <option value="AZ">AZ</option>
+                <option value="CA">CA</option>
+                <option value="CO">CO</option>
+                <option value="CT">CT</option>
+                <option value="DC">District of Columbia</option>
+                <option value="DE">DE</option>
+                <option value="FL">FL</option>
+                <option value="GA">GA</option>
+                <option value="HI">HI</option>
+                <option value="IA">IA</option>
+                <option value="ID">ID</option>
+                <option value="IL">IL</option>
+                <option value="IN">IN</option>
+                <option value="KS">KS</option>
+                <option value="KY">KY</option>
+                <option value="LA">LA</option>
+                <option value="MA">MA</option>
+                <option value="MD">MD</option>
+                <option value="ME">ME</option>
+                <option value="MI">MI</option>
+                <option value="MN">MN</option>
+                <option value="MO">MO</option>
+                <option value="MS">MS</option>
+                <option value="MT">MT</option>
+                <option value="NC">NC</option>
+                <option value="ND">ND</option>
+                <option value="NE">NE</option>
+                <option value="NH">NH</option>
+                <option value="NJ">NJ</option>
+                <option value="NM">NM</option>
+                <option value="NV">NV</option>
+                <option value="NY">NY</option>
+                <option value="OH">OH</option>
+                <option value="OK">OK</option>
+                <option value="OR">OR</option>
+                <option value="PA">PA</option>
+                <option value="PR">PR</option>
+                <option value="RI">RI</option>
+                <option value="SC">SC</option>
+                <option value="SD">SD</option>
+                <option value="TN">TN</option>
+                <option value="TX">TX</option>
+                <option value="UT">UT</option>
+                <option value="VA">VA</option>
+                <option value="VT">VT</option>
+                <option value="WA">WA</option>
+                <option value="WI">WI</option>
+                <option value="WV">WV</option>
+                <option value="WY">WY</option>
+            </Field>
+        );
+    };
+
+    uploadFile = async (e) => {
+        this.setState({imageLoading: true});
+        const file = e.target.files[0];
+        if (!file) {
+            return
+        }
+
+        const loadingUrl = require("../../images/dashboardLoader.svg");
+        this.setState({imageUrl: loadingUrl});
+
+        const name = e.target.files[0].name ?? "no_name";
+        const lastDot = name.lastIndexOf(".");
+        const dotExt = name.substring(lastDot);
+        const filename = "profile_picture_" + this.state.id + "_" + Math.floor(100000 + Math.random() * 900000) + dotExt;
+
+
+        await Storage.put(filename, file, {
+            level: "public",
+            contentDisposition: 'inline; filename="' + filename + '"',
+            contentType: "image/" + dotExt.substring(1),
+        })
+            .then((result) => {
+
+            })
+            .catch((err) => console.log("Upload error: " + err));
+
+        await Storage.get(filename).then((resultURL) => {
+            const idx = resultURL.indexOf(filename);
+            const url = resultURL.substring(0, idx) + "" + filename;
+            this.setState({imageUrl: url});
+        });
+
+        this.setState({imageLoading: false});
+    };
+
+    validateFieldsFilled = (values) => {
+        if (!values) {
+            return false
+        }
+        if (!values.businessName) {
+            return false
+        }
+        if (!values.businessType) {
+            return false
+        }
+        if (!values.businessEmail) {
+            return false
+        }
+        if (!values.businessPhoneNum) {
+            return false
+        }
+        if (!values.addr) {
+            return false
+        }
+        if (!values.addr.line1) {
+            return false
+        }
+        if (!values.addr.city) {
+            return false
+        }
+        if (!values.addr.state) {
+            return false
+        }
+        if (!values.addr.zip) {
+            return false
+        }
+        if (!values.employeeMasks) {
+            return false
+        }
+        if (!values.employeeTemp) {
+            return false
+        }
+        if (!values.socialDistance) {
+            return false
+        }
+        if (!values.sanitizeTables) {
+            return false
+        }
+        if (!values.outsideSeating) {
+            return false
+        }
+        if (!values.indoorCapacity) {
+            return false
+        }
+        return true
+    }
+
+    deleteFunc = () => {
+        const theyAreSure = window.confirm("Are you sure you want to delete this?")
+        if (!theyAreSure)
+            return
+        const theyAreReallySure = window.confirm("This cannot be undone. Are you 100% sure?")
+        if (!theyAreReallySure)
+            return
+
+        const apiName = 'ManageLocationApi';
+        const path = '/location/active';
+        const requestData = {
+            headers: {},
+            response: true,
+            body: {
+                id: this.props.data.id
+            },
+        }
+
+        API.patch(apiName, path, requestData)
+            .then(response => {
+                window.alert("Delete successful.");
+                this.props.handleDelete();
+            })
+            .catch(error => {
+                console.log("Error: ", error);
+                window.alert("Delete unsuccessful.");
+            })
+
+    }
+
+    editLocation = async (values) => {
+        const allValuesFilled = this.validateFieldsFilled(values)
+        if (!allValuesFilled) {
+            this.setState({valueEmptyError: true})
+            return
+        }
+
+        this.setState({valueEmptyError: false})
+
+        const phoneRegEx = /\d+/g;
+        if (values.businessPhoneNum?.length > 10)
+            values.businessPhoneNum = values.businessPhoneNum.substr(3)
+        values.businessPhoneNum = values.businessPhoneNum.match(phoneRegEx)?.join('');
+        if (values.businessPhoneNum?.length !== 10) {
+            this.setState({phoneNumError: true})
+            return
+        }
+
+        this.setState({phoneNumError: false})
+
+        const apiName = "ManageLocationApi"
+        const path = "/location/info"
+        const requestData = {
+            headers: {},
+            body: {
+                id: this.state.data.id,
+                imageUrl: this.state.imageUrl,
+                loc_name: values.businessName,
+                email: values.businessEmail,
+                phone: values.businessPhoneNum,
+                loc_type: values.businessType,
+                addrLine1: values.addr.line1,
+                addrLine2: values.addr.line2,
+                addrCity: values.addr.city,
+                addrState: values.addr.state,
+                addrZip: values.addr.zip,
+                covidResponseSurvey: {
+                    employeeMasks: values.employeeMasks,
+                    socialDistancing: values.socialDistance,
+                    outsideSeating: values.outsideSeating,
+                    employeeTemp: values.employeeTemp,
+                    sanitizeTables: values.sanitizeTables,
+                    indoorCapacity: values.indoorCapacity,
+                    outdoorCapacity: this.state.noOutdoorSeating
+                        ? ""
+                        : values.outdoorCapacity,
+                }
+            }
+        }
+
+        API.patch(apiName, path, requestData)
+            .then(response => {
+                this.props.handleUpdate()
+            })
+            .catch((error) => {
+                console.log("Error: " + error)
+            })
+    };
+
+    renderAlert = () => {
+        if (this.state.valueEmptyError) {
+            return (
+                <Alert variant="danger" dismissible
+                       onClose={() => this.setState({valueEmptyError: false})}
+                       style={{whiteSpace: 'normal'}}>
+                    <Alert.Heading>Error</Alert.Heading>
+                    <div>
+                        All values must be filled in.
+                    </div>
+                </Alert>
+            )
+        }
+        if (this.state.phoneNumError)
+            return (
+                <Alert variant="danger" dismissible
+                       onClose={() => this.setState({phoneNumError: false})}
+                       style={{whiteSpace: 'normal'}}>
+                    <Alert.Heading>Error</Alert.Heading>
+                    <div>
+                        Phone number must be 10 digits
+                    </div>
+                </Alert>
+            )
     }
 }
 
