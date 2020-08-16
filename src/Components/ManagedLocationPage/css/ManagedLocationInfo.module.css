@@ -2,7 +2,6 @@
     background-color: #e5e5e5;
     border-radius: 25px;
     width: 436px;
-    overflow: hidden;
 }
 
 .tabsWrapper > a {
@@ -19,6 +18,7 @@
     text-decoration: none !important;
     font-weight: 900 !important;
     color: white !important;
+    border-radius: 25px !important;
     background-color: #2853A8 !important;
 }
 
