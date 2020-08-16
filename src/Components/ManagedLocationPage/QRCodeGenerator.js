@@ -200,7 +200,6 @@ class QRCodeGenerator extends Component {
                 resolve('QR Drawn');
             }
         });
-
         tempPromise.then(() => {
             qrPromise.then(() => {
                 let currState = this.state;
@@ -259,7 +258,14 @@ class QRCodeGenerator extends Component {
 
     render() {
         if (!this.state.sublocations) {
-            return (<p>Looking for QR codes...</p>)
+            return (
+                <img
+                    src={require("../../images/dashboardLoader.svg")}
+                    alt=''
+                    height='100%'
+                    width='100%'
+                />
+            )
         }
 
         const sublocationRow = (name, color, sublocId, menu) => {
