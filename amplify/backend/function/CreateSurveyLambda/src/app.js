@@ -98,7 +98,6 @@ app.get("/survey/:id", function (req, res) {
       let itemData = data.Item;
       let name = itemData.loc_name;
       let menus = itemData.menus
-      console.log(itemData)
       let menu_link = 'https://www.cleanview.io';
       for(let i=0; i<menus.length; ++i) {
         if(menus[i].name.toLowerCase().trim() === menuName.toLowerCase().trim()) {
