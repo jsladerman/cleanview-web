@@ -22,19 +22,22 @@ class EditLocationInfo extends Component {
     }
 
     render() {
+        const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const zipRegex = /^[0-9]{5}$/;
+        const phoneRegex = /^(?:\+?1]?)\s\(?([0-9]{3})\)\s[-.●]?([0-9]{3})[-.●]?([0-9]{4})$/;
         const yup = require('yup');
         const editLocationSchema = yup.object({
             businessName: yup.string().required(),
             businessType: yup.string().required(),
-            businessEmail: yup.string().required(),
+            businessEmail: yup.string().matches(emailRegex).required(),
             addr: yup.object({
                 line1: yup.string().required(),
                 city: yup.string().required(),
                 state: yup.string().required(),
-                zip: yup.string().matches(/^[0-9]{5}$/).required()
+                zip: yup.string().matches(zipRegex).required()
             }),
             businessPhoneNum: yup.string()
-                .matches(/^(?:\+?1]?)\s\(?([0-9]{3})\)\s[-.●]?([0-9]{3})[-.●]?([0-9]{4})$/).required(),
+                .matches(phoneRegex).required(),
         });
         return (
             <div className={styles.editLocation}>
