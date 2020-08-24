@@ -46,11 +46,24 @@
 }
 
 .formInput {
+    height: 25px;
+    width: 170px;
+    border-color: black;
+    border-width: 1px;
+    border-radius: 4px;
+    padding-left: 3px;
+    color: black !important;
+    margin-top: 3px;
     margin-bottom: 8px;
 }
 
 .formNum {
     width: 50px;
+}
+
+.validationErrorMsg {
+    white-space: nowrap;
+    color: red;
 }
 
 .imageLabel {
