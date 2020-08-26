@@ -12,6 +12,7 @@ import Auth from '@aws-amplify/auth';
 import {BsPencil} from "react-icons/bs/index";
 import EditLocationInfo from "./EditLocationInfo";
 import Modal from "@trendmicro/react-modal";
+import Scheduler from "./Scheduler";
 
 class ManagedLocationInfo extends Component {
     constructor(props) {
@@ -30,7 +31,8 @@ class ManagedLocationInfo extends Component {
         const tab = this.state.tab;
 
         if (tab !== 'info' && tab !== 'qr'
-            && tab !== 'analytics' && tab !== 'menu-manager') {
+            && tab !== 'analytics' && tab !== 'menu-manager'
+            && tab !== 'schedules') {
             this.setTabURL('info')
         }
     }
@@ -53,7 +55,7 @@ class ManagedLocationInfo extends Component {
                     show={this.state.showModal}
                     onClose={this.toggleModal}
                     showCloseButton={true}
-                    style={{ borderRadius: "100px" }}
+                    style={{borderRadius: "100px"}}
                 >
                     <EditLocationInfo
                         data={this.state.data}
@@ -62,7 +64,7 @@ class ManagedLocationInfo extends Component {
                     />
                 </Modal>
                 <div style={{padding: '35px 60px'}}>
-                    <div style={{cursor: 'pointer', width:'85px'}}
+                    <div style={{cursor: 'pointer', width: '85px'}}
                          onClick={() => this.setState({redirect: '/home/locations'})}>
                         <img src={require('../../images/back-arrow.svg')}
                              style={{
@@ -117,6 +119,15 @@ class ManagedLocationInfo extends Component {
                                     sublocations={this.state.data.sublocations}
                                     menus={this.state.data.menus}
                                     handleUpdate={this.setLocationInfo}
+                                />
+                            </div>
+                        </Tab>
+                        <Tab tabClassName={this.state.tab === 'schedules' ? styles.active : null}
+                             eventKey='schedules' title='Schedules'>
+                            <div style={{marginLeft: '-30px'}}>
+                                <Scheduler
+                                    id={this.props.id}
+                                    menus={this.state.data.menus}
                                 />
                             </div>
                         </Tab>
@@ -185,7 +196,7 @@ class ManagedLocationInfo extends Component {
     handleDelete = async () => {
         this.toggleModal();
         this.props.handleUpdate();
-        this.setState({ redirect: '/home/locations' });
+        this.setState({redirect: '/home/locations'});
     }
 
     toggleModal = () => {
