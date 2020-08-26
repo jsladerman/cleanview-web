@@ -3,10 +3,9 @@ import {API, Storage} from 'aws-amplify';
 import {Field, Form, Formik, getIn} from 'formik';
 import styles from './css/EditLocationInfo.module.css';
 import Button from 'react-bootstrap/Button';
-import Alert from 'react-bootstrap/Alert';
 import NumberFormat from 'react-number-format';
 import {FormControl} from 'react-bootstrap';
-import {string, object} from 'yup';
+import {string, object, number} from 'yup';
 
 class EditLocationInfo extends Component {
     constructor(props) {
@@ -16,9 +15,7 @@ class EditLocationInfo extends Component {
             imageUrl: this.props.data.imageUrl,
             imageLoading: false,
             noOutdoorSeating: this.props.data.covidResponseSurvey.outsideSeating === 'n',
-            phoneNumError: false,
         };
-        this.editLocation = this.editLocation.bind(this);
     }
 
     render() {
@@ -30,14 +27,25 @@ class EditLocationInfo extends Component {
             businessName: yup.string().required(),
             businessType: yup.string().required(),
             businessEmail: yup.string().matches(emailRegex).required(),
+            businessPhoneNum: yup.string().matches(phoneRegex).required(),
             addr: yup.object({
                 line1: yup.string().required(),
                 city: yup.string().required(),
                 state: yup.string().required(),
                 zip: yup.string().matches(zipRegex).required()
             }),
-            businessPhoneNum: yup.string()
-                .matches(phoneRegex).required(),
+            employeeMasks: yup.string().required(),
+            employeeTemp: yup.string().required(),
+            socialDistance: yup.string().required(),
+            sanitizeTables: yup.string().required(),
+            outsideSeating: yup.string().required(),
+            indoorCapacity: yup.number().required(),
+            outdoorCapacity: yup.number()
+                .when('outsideSeating', {
+                    is: 'y',
+                    then: yup.number().required()
+                })
+
         });
         return (
             <div className={styles.editLocation}>
@@ -61,15 +69,14 @@ class EditLocationInfo extends Component {
                         sanitizeTables: this.state.data.covidResponseSurvey.sanitizeTables,
                         outsideSeating: this.state.data.covidResponseSurvey.outsideSeating,
                         indoorCapacity: this.state.data.covidResponseSurvey.indoorCapacity,
-                        outdoorCapacity: this.state.data.covidResponseSurvey
-                            .outdoorCapacity,
+                        outdoorCapacity: this.state.data.covidResponseSurvey.outdoorCapacity
                     }}
                     validationSchema={editLocationSchema}
                     validateOnChange={false}
                     validateOnBlur={false}
                     onSubmit={this.editLocation}
                 >
-                    {({values, errors, touched, isValid}) => (
+                    {({errors, isValid}) => (
                         <Form className={styles.form}>
                             <div className={styles.formCols}>
                                 <div className={styles.formCol}>
@@ -79,7 +86,7 @@ class EditLocationInfo extends Component {
                                         className={styles.formInput}
                                         as={FormControl}
                                         name='businessName'
-                                        style={errors.businessName && touched.businessName ?
+                                        style={errors.businessName ?
                                             (editLocationInputErrorStyle) : null}
                                     />
                                     <div className={styles.formLabel}>Business Type</div>
@@ -87,7 +94,7 @@ class EditLocationInfo extends Component {
                                         as='select'
                                         className={styles.formInput}
                                         name='businessType'
-                                        style={errors.businessType && touched.businessType ?
+                                        style={errors.businessType ?
                                             (editLocationInputErrorStyle) : null}
                                     >
                                         <option value=''/>
@@ -99,7 +106,7 @@ class EditLocationInfo extends Component {
                                         className={styles.formInput}
                                         as={FormControl}
                                         name='businessEmail'
-                                        style={errors.businessEmail && touched.businessEmail ?
+                                        style={errors.businessEmail ?
                                             (editLocationInputErrorStyle) : null}/>
                                     <div className={styles.formLabel}>Business Phone #</div>
                                     <Field name='businessPhoneNum' className={styles.formInput}>
@@ -110,7 +117,7 @@ class EditLocationInfo extends Component {
                                                           format='+1 (###) ###-####'
                                                           allowEmptyFormatting mask='_'
                                                           customInput={FormControl}
-                                                          style={errors.businessPhoneNum && touched.businessPhoneNum ?
+                                                          style={errors.businessPhoneNum ?
                                                               (editLocationInputErrorStyle) : null}/>
                                         )}
                                     </Field>
@@ -122,7 +129,7 @@ class EditLocationInfo extends Component {
                                         className={styles.formInput}
                                         as={FormControl}
                                         name='addr.line1'
-                                        style={getIn(errors, 'addr.line1') && getIn(touched, 'addr.line1') ?
+                                        style={getIn(errors, 'addr.line1') ?
                                             (editLocationInputErrorStyle) : null}
                                     />
                                     <div className={styles.formLabel}>Apt, Suite, etc.</div>
@@ -136,15 +143,14 @@ class EditLocationInfo extends Component {
                                         className={styles.formInput}
                                         as={FormControl}
                                         name='addr.city'
-                                        style={getIn(errors, 'addr.city') && getIn(touched, 'addr.city') ?
+                                        style={getIn(errors, 'addr.city') ?
                                             (editLocationInputErrorStyle) : null}
                                     />
                                     <div
                                         style={{width: '40%', float: 'left', marginRight: '12px'}}
                                     >
                                         <div className={styles.formLabel}>State</div>
-                                        {this.renderStateDropdown(getIn(errors, 'addr.state'),
-                                            getIn(touched, 'addr.state'))}
+                                        {this.renderStateDropdown(getIn(errors, 'addr.state'))}
                                     </div>
                                     <div style={{width: '50%', float: 'left'}}>
                                         <div className={styles.formLabel}>Zip Code</div>
@@ -153,7 +159,7 @@ class EditLocationInfo extends Component {
                                             maxLength={5}
                                             as={FormControl}
                                             name='addr.zip'
-                                            style={getIn(errors, 'addr.zip') && getIn(touched, 'addr.zip') ?
+                                            style={getIn(errors, 'addr.zip') ?
                                                 (Object.assign({},
                                                     editLocationInputErrorStyle,
                                                     {width: '100%'})) : {width: '100%'}}
@@ -198,13 +204,14 @@ class EditLocationInfo extends Component {
                                 {isValid ? null :
                                     <div className={styles.validationErrorMsg}>
                                         Please fill in all required values.
-                                    </div> }
+                                    </div>}
                                 <br/>
                                 <div className={styles.formColHeader}>COVID Response Survey</div>
                                 <div className={styles.formQuestions}>
                                     <div className={styles.formQuestionsCols}>
                                         <div className={styles.formQuestionsCol}>
-                                            <div>
+                                            <div style={errors.employeeMasks ?
+                                                ({color: 'red'}) : null}>
                                                 <div className={styles.formRadioQuestion}>
                                                     Are your employees required to wear masks?
                                                 </div>
@@ -220,7 +227,8 @@ class EditLocationInfo extends Component {
                                                 <label className={styles.formRadioLabel}>No</label> <br/>
                                                 <br/>
                                             </div>
-                                            <div>
+                                            <div style={errors.employeeTemp ?
+                                                ({color: 'red'}) : null}>
                                                 <div className={styles.formRadioQuestion}>
                                                     Do you take the temperature of your employees every day?
                                                 </div>
@@ -238,7 +246,8 @@ class EditLocationInfo extends Component {
                                             </div>
                                         </div>
                                         <div className={styles.formQuestionsCol}>
-                                            <div>
+                                            <div style={errors.socialDistance ?
+                                                ({color: 'red'}) : null}>
                                                 <div className={styles.formRadioQuestion}>
                                                     Do you enforce social distancing guidelines?
                                                 </div>
@@ -253,6 +262,9 @@ class EditLocationInfo extends Component {
                                                 </label>
                                                 <label className={styles.formRadioLabel}>No</label> <br/>
                                                 <br/>
+                                            </div>
+                                            <div style={errors.outsideSeating ?
+                                                ({color: 'red'}) : null}>
                                                 <div className={styles.formRadioQuestion}>
                                                     Do you have outside seating?
                                                 </div>
@@ -284,7 +296,8 @@ class EditLocationInfo extends Component {
                                             </div>
                                         </div>
                                         <div className={styles.formQuestionsCol}>
-                                            <div>
+                                            <div style={errors.sanitizeTables ?
+                                                ({color: 'red'}) : null}>
                                                 <div className={styles.formRadioQuestion}>
                                                     Do you sanitize tables after every meal?
                                                 </div>
@@ -299,7 +312,12 @@ class EditLocationInfo extends Component {
                                                 </label>
                                                 <label className={styles.formRadioLabel}>No</label> <br/>
                                                 <br/>
-                                                <div className={styles.formRadioQuestion}>Capacity:</div>
+                                            </div>
+                                            <div>
+                                                <div className={styles.formRadioQuestion}
+                                                     style={errors.outdoorCapacity || errors.indoorCapacity ?
+                                                         ({color: 'red'}) : null}>Capacity:
+                                                </div>
                                                 <br/>
                                                 <div
                                                     style={{
@@ -315,8 +333,18 @@ class EditLocationInfo extends Component {
                                                         min={0}
                                                         disabled={this.state.noOutdoorSeating}
                                                         onKeyDown={this.preventNonNums}
+                                                        style={errors.outdoorCapacity ?
+                                                            (Object.assign({},
+                                                                editLocationInputErrorStyle,
+                                                                {
+                                                                    borderWidth: '1px',
+                                                                    borderRadius: '3px'
+                                                                })) : null}
                                                     />
-                                                    <div className={styles.formCapacityLabel}>Outdoor</div>
+                                                    <div className={styles.formCapacityLabel}
+                                                         style={errors.outdoorCapacity ?
+                                                             ({color: 'red'}) : null}>Outdoor
+                                                    </div>
                                                 </div>
                                                 <Field
                                                     className={styles.formNum}
@@ -324,8 +352,18 @@ class EditLocationInfo extends Component {
                                                     name='indoorCapacity'
                                                     min={0}
                                                     onKeyDown={this.preventNonNums}
+                                                    style={errors.indoorCapacity ?
+                                                        (Object.assign({},
+                                                            editLocationInputErrorStyle,
+                                                            {
+                                                                borderWidth: '1px',
+                                                                borderRadius: '3px'
+                                                            })) : null}
                                                 />
-                                                <div className={styles.formCapacityLabel}>Indoor</div>
+                                                <div className={styles.formCapacityLabel}
+                                                     style={errors.indoorCapacity ?
+                                                         ({color: 'red'}) : null}>Indoor
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -345,73 +383,6 @@ class EditLocationInfo extends Component {
             </div>
         );
     }
-
-    renderStateDropdown = (errors, touched) => {
-        const mainStyle = {width: '100%', height: '25px'};
-        return (
-            <Field
-                as='select'
-                className={styles.formInput}
-                name='addr.state'
-                style={errors && touched ? (Object.assign({},
-                    editLocationInputErrorStyle, mainStyle)) : mainStyle}
-            >
-                <option value=''/>
-                <option value='AK'>AK</option>
-                <option value='AL'>AL</option>
-                <option value='AR'>AR</option>
-                <option value='AZ'>AZ</option>
-                <option value='CA'>CA</option>
-                <option value='CO'>CO</option>
-                <option value='CT'>CT</option>
-                <option value='DC'>District of Columbia</option>
-                <option value='DE'>DE</option>
-                <option value='FL'>FL</option>
-                <option value='GA'>GA</option>
-                <option value='HI'>HI</option>
-                <option value='IA'>IA</option>
-                <option value='ID'>ID</option>
-                <option value='IL'>IL</option>
-                <option value='IN'>IN</option>
-                <option value='KS'>KS</option>
-                <option value='KY'>KY</option>
-                <option value='LA'>LA</option>
-                <option value='MA'>MA</option>
-                <option value='MD'>MD</option>
-                <option value='ME'>ME</option>
-                <option value='MI'>MI</option>
-                <option value='MN'>MN</option>
-                <option value='MO'>MO</option>
-                <option value='MS'>MS</option>
-                <option value='MT'>MT</option>
-                <option value='NC'>NC</option>
-                <option value='ND'>ND</option>
-                <option value='NE'>NE</option>
-                <option value='NH'>NH</option>
-                <option value='NJ'>NJ</option>
-                <option value='NM'>NM</option>
-                <option value='NV'>NV</option>
-                <option value='NY'>NY</option>
-                <option value='OH'>OH</option>
-                <option value='OK'>OK</option>
-                <option value='OR'>OR</option>
-                <option value='PA'>PA</option>
-                <option value='PR'>PR</option>
-                <option value='RI'>RI</option>
-                <option value='SC'>SC</option>
-                <option value='SD'>SD</option>
-                <option value='TN'>TN</option>
-                <option value='TX'>TX</option>
-                <option value='UT'>UT</option>
-                <option value='VA'>VA</option>
-                <option value='VT'>VT</option>
-                <option value='WA'>WA</option>
-                <option value='WI'>WI</option>
-                <option value='WV'>WV</option>
-                <option value='WY'>WY</option>
-            </Field>
-        );
-    };
 
     uploadFile = async (e) => {
         this.setState({imageLoading: true});
@@ -484,6 +455,9 @@ class EditLocationInfo extends Component {
             values.businessPhoneNum = values.businessPhoneNum.substr(3)
         values.businessPhoneNum = values.businessPhoneNum.match(phoneRegEx)?.join('');
 
+        if (this.state.noOutdoorSeating)
+            values.outdoorCapacity = '';
+
         const apiName = 'ManageLocationApi'
         const path = '/location/info'
         const requestData = {
@@ -507,9 +481,7 @@ class EditLocationInfo extends Component {
                     employeeTemp: values.employeeTemp,
                     sanitizeTables: values.sanitizeTables,
                     indoorCapacity: values.indoorCapacity,
-                    outdoorCapacity: this.state.noOutdoorSeating
-                        ? ''
-                        : values.outdoorCapacity,
+                    outdoorCapacity: values.outdoorCapacity,
                 }
             }
         }
@@ -523,12 +495,85 @@ class EditLocationInfo extends Component {
             })
     };
 
+    preventNonNums = (e) => {
+        const code = e.keyCode;
+        if (code === 69 || code === 187 || code === 189 || code === 190)
+            e.preventDefault();
+    };
+
     unformatPhoneNum = (phoneNum) => {
         // not pretty but easiest way to handle this
-        return '+1 (' + phoneNum.substr(0,3)
-            + ') ' + phoneNum.substr(3,3) + '-'
+        return '+1 (' + phoneNum.substr(0, 3)
+            + ') ' + phoneNum.substr(3, 3) + '-'
             + phoneNum.substr(6)
     }
+
+    renderStateDropdown = (errors) => {
+        const mainStyle = {width: '100%', height: '25px'};
+        return (
+            <Field
+                as='select'
+                className={styles.formInput}
+                name='addr.state'
+                style={errors ? (Object.assign({},
+                    editLocationInputErrorStyle, mainStyle)) : mainStyle}
+            >
+                <option value=''/>
+                <option value='AK'>AK</option>
+                <option value='AL'>AL</option>
+                <option value='AR'>AR</option>
+                <option value='AZ'>AZ</option>
+                <option value='CA'>CA</option>
+                <option value='CO'>CO</option>
+                <option value='CT'>CT</option>
+                <option value='DC'>District of Columbia</option>
+                <option value='DE'>DE</option>
+                <option value='FL'>FL</option>
+                <option value='GA'>GA</option>
+                <option value='HI'>HI</option>
+                <option value='IA'>IA</option>
+                <option value='ID'>ID</option>
+                <option value='IL'>IL</option>
+                <option value='IN'>IN</option>
+                <option value='KS'>KS</option>
+                <option value='KY'>KY</option>
+                <option value='LA'>LA</option>
+                <option value='MA'>MA</option>
+                <option value='MD'>MD</option>
+                <option value='ME'>ME</option>
+                <option value='MI'>MI</option>
+                <option value='MN'>MN</option>
+                <option value='MO'>MO</option>
+                <option value='MS'>MS</option>
+                <option value='MT'>MT</option>
+                <option value='NC'>NC</option>
+                <option value='ND'>ND</option>
+                <option value='NE'>NE</option>
+                <option value='NH'>NH</option>
+                <option value='NJ'>NJ</option>
+                <option value='NM'>NM</option>
+                <option value='NV'>NV</option>
+                <option value='NY'>NY</option>
+                <option value='OH'>OH</option>
+                <option value='OK'>OK</option>
+                <option value='OR'>OR</option>
+                <option value='PA'>PA</option>
+                <option value='PR'>PR</option>
+                <option value='RI'>RI</option>
+                <option value='SC'>SC</option>
+                <option value='SD'>SD</option>
+                <option value='TN'>TN</option>
+                <option value='TX'>TX</option>
+                <option value='UT'>UT</option>
+                <option value='VA'>VA</option>
+                <option value='VT'>VT</option>
+                <option value='WA'>WA</option>
+                <option value='WI'>WI</option>
+                <option value='WV'>WV</option>
+                <option value='WY'>WY</option>
+            </Field>
+        );
+    };
 
 }
 
@@ -536,6 +581,5 @@ const editLocationInputErrorStyle = {
     borderColor: 'red',
     boxShadow: '0 0 0 0.16rem rgba(255,0,0,.25)'
 }
-
 
 export default EditLocationInfo;
