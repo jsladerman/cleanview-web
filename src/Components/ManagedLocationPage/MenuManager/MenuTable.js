@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Table from 'react-bootstrap/Table'
+import Button from "react-bootstrap/Button"
 
 class MenuTable extends Component {
     render() {
@@ -25,6 +26,8 @@ class MenuTable extends Component {
                     <th>
                         Link
                     </th>
+                    <th>
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -36,6 +39,12 @@ class MenuTable extends Component {
                             </td>
                             <td>
                                 <a href={menu.url} target="_blank" rel="noopener noreferrer">{menu.url}</a>
+                            </td>
+                            <td>
+                                <Button onClick={() => {
+                                    this.props.setIdFunc(menu.id)
+                                    this.props.toggleFunc()
+                                }}>Edit</Button>
                             </td>
                         </tr>
                     );

@@ -1,9 +1,14 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import styles from './css/MenuManager.module.css';
-import {API} from 'aws-amplify';
-import AddNewMenu from "./MenuManager/AddNewMenu";
+import { API } from 'aws-amplify';
+import uuid from 'react-uuid';
+import Modal from "@trendmicro/react-modal";
+
 import MenuTable from "./MenuManager/MenuTable";
+import AddNewMenu from "./MenuManager/AddNewMenu";
 import DeleteMenu from "./MenuManager/DeleteMenu";
+import EditMenu from './MenuManager/EditMenu'
+
 
 class MenuManager extends Component {
     constructor(props) {
@@ -12,6 +17,8 @@ class MenuManager extends Component {
             loading: true,
             switchVal: 'pdf',
             menus: [],
+            showModal: false,
+            editingMenu: {}
         }
     }
 
@@ -21,16 +28,59 @@ class MenuManager extends Component {
 
     render() {
         return (
-            <div className='container-fluid text-wrap' id={styles.menuManagerCodeBlock}>
-                <h2 id={styles.menuManagerHeader}>Menu Manager</h2>
-                <h4 className={styles.menuManagerSubheader}>Add a new menu</h4>
-                <AddNewMenu submitFunc={this.addMenu} id={this.props.id} menus={this.state.menus}/>
-                <h4 className={styles.menuManagerSubheader}>Current Menus</h4>
-                <MenuTable menus={this.state.menus} loading={this.state.loading}/>
-                <h4 className={styles.menuManagerSubheader}>Delete Menu</h4>
-                <DeleteMenu menus={this.state.menus} deleteFunc={this.deleteMenu}/>
+            <div>
+                <Modal
+                    show={this.state.showModal}
+                    onClose={this.toggleModal}
+                    showCloseButton={true}
+                    style={{ borderRadius: "100px" }}
+                >
+                    <EditMenu 
+                        currentMenus={this.state.menus}
+                        menu={this.state.editingMenu}
+                        updateFunc={this.updateMenus}
+                        toggleFunc={this.toggleModal}
+                    />
+                </Modal>
+                <div className='container-fluid text-wrap' id={styles.menuManagerCodeBlock}>
+                    <h2 id={styles.menuManagerHeader}>Menu Manager</h2>
+                    <h4 className={styles.menuManagerSubheader}>Add a new menu</h4>
+                    <AddNewMenu 
+                        submitFunc={this.addMenu} 
+                        id={this.props.id} 
+                        menus={this.state.menus}
+                    />
+                    <h4 className={styles.menuManagerSubheader}>Current Menus</h4>
+                    <MenuTable 
+                        menus={this.state.menus} 
+                        loading={this.state.loading} 
+                        toggleFunc={this.toggleModal} 
+                        setIdFunc={this.setEditId}
+                    />
+                    <h4 className={styles.menuManagerSubheader}>Delete Menu</h4>
+                    <DeleteMenu 
+                        menus={this.state.menus} 
+                        deleteFunc={this.deleteMenu}
+                    />
+                </div>
             </div>
         )
+    }
+
+    setEditId = (id) => {
+        console.log(id)
+        const currentMenus = this.state.menus
+        for(let i=0; i<currentMenus.length; ++i) {
+            console.log(currentMenus[i])
+            if(currentMenus[i].id === id)
+                this.setState({ editingMenu: currentMenus[i]})
+        }
+    }
+    
+    toggleModal = () => {
+        this.setState({
+            showModal: !this.state.showModal
+        })
     }
 
     deleteMenu = (menuName) => {
@@ -78,7 +128,8 @@ class MenuManager extends Component {
         let currentMenus = this.state.menus
         let newMenu = {
             name: newMenuName,
-            url: newMenuLink
+            url: newMenuLink,
+            id: uuid()
         }
         currentMenus.push(newMenu)
         this.updateMenus(currentMenus)
