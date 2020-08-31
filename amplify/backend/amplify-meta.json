@@ -38,7 +38,7 @@
 				"IdentityPoolName": "cleanviewwebdd68a0c2_identitypool_dd68a0c2__dev",
 				"UserPoolName": "cleanviewwebdd68a0c2_userpool_dd68a0c2"
 			},
-			"lastPushTimeStamp": "2020-08-31T02:07:45.019Z",
+			"lastPushTimeStamp": "2020-08-31T02:15:59.492Z",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/auth/cleanviewwebdd68a0c2-cloudformation-template.yml",
 				"logicalId": "authcleanviewwebdd68a0c2"
@@ -57,7 +57,7 @@
 				"PartitionKeyType": "S",
 				"Name": "responses-dev"
 			},
-			"lastPushTimeStamp": "2020-08-31T02:07:45.027Z",
+			"lastPushTimeStamp": "2020-08-31T02:15:59.504Z",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/storage/responses-cloudformation-template.json",
 				"logicalId": "storageresponses"
@@ -74,7 +74,7 @@
 				"PartitionKeyType": "S",
 				"Name": "locations-dev"
 			},
-			"lastPushTimeStamp": "2020-08-31T02:07:45.029Z",
+			"lastPushTimeStamp": "2020-08-31T02:15:59.507Z",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/storage/locations-cloudformation-template.json",
 				"logicalId": "storagelocations"
@@ -87,7 +87,7 @@
 				"BucketName": "cleanview-location143211-dev",
 				"Region": "us-east-1"
 			},
-			"lastPushTimeStamp": "2020-08-31T02:07:45.030Z",
+			"lastPushTimeStamp": "2020-08-31T02:15:59.508Z",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/storage/s3-cloudformation-template.json",
 				"logicalId": "storageLocationStorage"
@@ -104,7 +104,7 @@
 				"PartitionKeyType": "S",
 				"Name": "accounts-dev"
 			},
-			"lastPushTimeStamp": "2020-08-31T02:07:45.032Z",
+			"lastPushTimeStamp": "2020-08-31T02:15:59.513Z",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/storage/accounts-cloudformation-template.json",
 				"logicalId": "storageaccounts"
@@ -136,7 +136,7 @@
 				"Name": "SubmitResponseLambda-dev",
 				"LambdaExecutionRole": "cleanviewwebLambdaRoled3dbc5ad-dev"
 			},
-			"lastPushTimeStamp": "2020-08-31T02:07:45.033Z",
+			"lastPushTimeStamp": "2020-08-31T02:15:59.523Z",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/function/SubmitResponseLambda-cloudformation-template.json",
 				"logicalId": "functionSubmitResponseLambda"
@@ -166,7 +166,7 @@
 				"Name": "ManageLocationLambda-dev",
 				"LambdaExecutionRole": "cleanviewwebLambdaRole10a8f873-dev"
 			},
-			"lastPushTimeStamp": "2020-08-31T02:07:45.052Z",
+			"lastPushTimeStamp": "2020-08-31T02:15:59.525Z",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/function/ManageLocationLambda-cloudformation-template.json",
 				"logicalId": "functionManageLocationLambda"
@@ -200,7 +200,7 @@
 				"Name": "CreateSurveyLambda-dev",
 				"LambdaExecutionRole": "cleanviewwebLambdaRole35b80e6f-dev"
 			},
-			"lastPushTimeStamp": "2020-08-31T02:07:45.036Z",
+			"lastPushTimeStamp": "2020-08-31T02:15:59.526Z",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/function/CreateSurveyLambda-cloudformation-template.json",
 				"logicalId": "functionCreateSurveyLambda"
@@ -230,7 +230,7 @@
 				"Name": "GetSurveyResponses-dev",
 				"LambdaExecutionRole": "cleanviewwebLambdaRole5c565d29-dev"
 			},
-			"lastPushTimeStamp": "2020-08-31T02:07:45.037Z",
+			"lastPushTimeStamp": "2020-08-31T02:15:59.527Z",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/function/GetSurveyResponses-cloudformation-template.json",
 				"logicalId": "functionGetSurveyResponses"
@@ -260,7 +260,7 @@
 				"Name": "AccountSettingsLambda-dev",
 				"LambdaExecutionRole": "cleanviewwebLambdaRole52683388-dev"
 			},
-			"lastPushTimeStamp": "2020-08-31T02:07:45.052Z",
+			"lastPushTimeStamp": "2020-08-31T02:15:59.532Z",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/function/AccountSettingsLambda-cloudformation-template.json",
 				"logicalId": "functionAccountSettingsLambda"
@@ -294,15 +294,15 @@
 				"Name": "ScanQrCodeLambda-dev",
 				"LambdaExecutionRole": "cleanviewwebLambdaRole1be3b01a-dev"
 			},
-			"lastPushTimeStamp": "2020-08-31T02:07:45.052Z",
+			"lastPushTimeStamp": "2020-08-31T02:15:59.577Z",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/function/ScanQrCodeLambda-cloudformation-template.json",
 				"logicalId": "functionScanQrCodeLambda"
 			},
-			"lastBuildTimeStamp": "2020-08-31T02:05:45.479Z",
-			"lastPackageTimeStamp": "2020-08-31T02:06:21.176Z",
-			"distZipFilename": "ScanQrCodeLambda-53726946355338496362-build.zip",
-			"lastPushDirHash": "tJM3hjTQ5bxr+4TIcmIK3nHuGGs="
+			"lastBuildTimeStamp": "2020-08-31T02:14:14.954Z",
+			"lastPackageTimeStamp": "2020-08-31T02:14:31.814Z",
+			"distZipFilename": "ScanQrCodeLambda-7458464f2f4358785037-build.zip",
+			"lastPushDirHash": "fTR16W6oULb5Ijh5jFrEvbdgAEU="
 		}
 	},
 	"api": {
@@ -324,7 +324,7 @@
 				"RootUrl": "https://8apxjv9kd5.execute-api.us-east-1.amazonaws.com/dev",
 				"ApiId": "8apxjv9kd5"
 			},
-			"lastPushTimeStamp": "2020-08-31T02:07:45.042Z",
+			"lastPushTimeStamp": "2020-08-31T02:15:59.552Z",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/api/ManageLocationApi-cloudformation-template.json",
 				"logicalId": "apiManageLocationApi"
@@ -356,7 +356,7 @@
 				"RootUrl": "https://d9uqja1id6.execute-api.us-east-1.amazonaws.com/dev",
 				"ApiId": "d9uqja1id6"
 			},
-			"lastPushTimeStamp": "2020-08-31T02:07:45.044Z",
+			"lastPushTimeStamp": "2020-08-31T02:15:59.555Z",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/api/SurveyApi-cloudformation-template.json",
 				"logicalId": "apiSurveyApi"
@@ -380,7 +380,7 @@
 				"RootUrl": "https://sk24vxvzld.execute-api.us-east-1.amazonaws.com/dev",
 				"ApiId": "sk24vxvzld"
 			},
-			"lastPushTimeStamp": "2020-08-31T02:07:45.046Z",
+			"lastPushTimeStamp": "2020-08-31T02:15:59.564Z",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/api/GetSurveyResponses-cloudformation-template.json",
 				"logicalId": "apiGetSurveyResponses"
@@ -404,7 +404,7 @@
 				"RootUrl": "https://1gi9k7rs2g.execute-api.us-east-1.amazonaws.com/dev",
 				"ApiId": "1gi9k7rs2g"
 			},
-			"lastPushTimeStamp": "2020-08-31T02:07:45.047Z",
+			"lastPushTimeStamp": "2020-08-31T02:15:59.571Z",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/api/AccountSettingsApi-cloudformation-template.json",
 				"logicalId": "apiAccountSettingsApi"
@@ -428,7 +428,7 @@
 				"RootUrl": "https://nshroh49fg.execute-api.us-east-1.amazonaws.com/dev",
 				"ApiId": "nshroh49fg"
 			},
-			"lastPushTimeStamp": "2020-08-31T02:07:45.049Z",
+			"lastPushTimeStamp": "2020-08-31T02:15:59.573Z",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/api/ScanQrCodeApi-cloudformation-template.json",
 				"logicalId": "apiScanQrCodeApi"
