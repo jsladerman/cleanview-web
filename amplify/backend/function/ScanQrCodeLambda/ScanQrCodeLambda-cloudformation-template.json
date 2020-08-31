@@ -41,12 +41,12 @@
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"ManageLocationLambda",
+						"ScanQrCodeLambda",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"ManageLocationLambda",
+									"ScanQrCodeLambda",
 									"-",
 									{
 										"Ref": "env"
@@ -77,7 +77,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-cleanviewweb-dev-143211-deployment",
-					"S3Key": "amplify-builds/ManageLocationLambda-7534727659496748504e-build.zip"
+					"S3Key": "amplify-builds/ScanQrCodeLambda-53726946355338496362-build.zip"
 				}
 			}
 		},
@@ -87,12 +87,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"cleanviewwebLambdaRole10a8f873",
+						"cleanviewwebLambdaRole1be3b01a",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"cleanviewwebLambdaRole10a8f873",
+									"cleanviewwebLambdaRole1be3b01a",
 									"-",
 									{
 										"Ref": "env"

@@ -1,0 +1,34 @@
+{
+    "paths": [
+        {
+            "name": "/landing",
+            "lambdaFunction": "ScanQrCodeLambda",
+            "privacy": {
+                "open": true
+            }
+        }
+    ],
+    "resourceName": "ScanQrCodeApi",
+    "apiName": "ScanQrCodeApi",
+    "functionArns": [
+        {
+            "lambdaFunction": "ScanQrCodeLambda"
+        }
+    ],
+    "privacy": {
+        "auth": 0,
+        "unauth": 0,
+        "authRoleName": "amplify-cleanviewweb-dev-143211-authRole",
+        "unAuthRoleName": "amplify-cleanviewweb-dev-143211-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "ScanQrCodeLambda",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}
