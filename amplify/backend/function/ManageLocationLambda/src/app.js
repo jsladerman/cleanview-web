@@ -32,7 +32,7 @@ if(process.env.ENV === 'dev') {
 } else if(process.env.ENV === 'develop') {
   environmentURLSurvey = "https://pu8du42pz4.execute-api.us-east-1.amazonaws.com/develop"
 } else if(process.env.ENV === 'staging') {
-  environmentURLSurvey = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
+  environmentURLSurvey = "https://7qze6sod1c.execute-api.us-east-1.amazonaws.com/staging"
 } else if(process.env.ENV === 'prod') {
   environmentURLSurvey = "https://pk58tyr64h.execute-api.us-east-1.amazonaws.com/prod"
 }

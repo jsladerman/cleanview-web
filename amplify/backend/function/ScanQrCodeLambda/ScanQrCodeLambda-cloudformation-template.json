@@ -76,8 +76,8 @@
 				"Layers": [],
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-cleanviewweb-develop-162445-deployment",
-					"S3Key": "amplify-builds/ScanQrCodeLambda-774c38724c494d724365-build.zip"
+					"S3Bucket": "amplify-cleanviewweb-staging-170737-deployment",
+					"S3Key": "amplify-builds/ScanQrCodeLambda-6c442f4876496b6c536c-build.zip"
 				}
 			}
 		},

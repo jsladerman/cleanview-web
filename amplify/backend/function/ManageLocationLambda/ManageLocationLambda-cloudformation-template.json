@@ -76,8 +76,8 @@
 				"Layers": [],
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-cleanviewweb-develop-162445-deployment",
-					"S3Key": "amplify-builds/ManageLocationLambda-2f77744835354c796642-build.zip"
+					"S3Bucket": "amplify-cleanviewweb-staging-170737-deployment",
+					"S3Key": "amplify-builds/ManageLocationLambda-5a306b666e722f6a6d36-build.zip"
 				}
 			}
 		},

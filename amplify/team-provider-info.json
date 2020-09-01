@@ -20,7 +20,9 @@
                 "SubmitResponseLambda": {},
                 "ManageLocationLambda": {},
                 "CreateSurveyLambda": {},
-                "GetSurveyResponses": {}
+                "GetSurveyResponses": {},
+                "ScanQrCodeLambda": {},
+                "AccountSettingsLambda": {}
             }
         }
     },
