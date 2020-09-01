@@ -1,452 +1,428 @@
 {
-	"providers": {
-		"awscloudformation": {
-			"AuthRoleName": "amplify-cleanviewweb-staging-170737-authRole",
-			"UnauthRoleArn": "arn:aws:iam::676044961909:role/amplify-cleanviewweb-staging-170737-unauthRole",
-			"AuthRoleArn": "arn:aws:iam::676044961909:role/amplify-cleanviewweb-staging-170737-authRole",
-			"Region": "us-east-1",
-			"DeploymentBucketName": "amplify-cleanviewweb-staging-170737-deployment",
-			"UnauthRoleName": "amplify-cleanviewweb-staging-170737-unauthRole",
-			"StackName": "amplify-cleanviewweb-staging-170737",
-			"StackId": "arn:aws:cloudformation:us-east-1:676044961909:stack/amplify-cleanviewweb-staging-170737/5ee1e650-d116-11ea-8871-12342204bca9",
-			"AmplifyAppId": "d3jrprdg7dypqc"
-		},
-		"categories": {
-			"auth": {
-				"cleanviewweb856f9a2c": {},
-				"cleanviewwebdd68a0c2": {}
-			},
-			"function": {
-				"SubmitResponseLambda": {},
-				"ManageLocationLambda": {},
-				"CreateSurveyLambda": {},
-				"GetSurveyResponses": {}
-			}
-		}
-	},
-	"auth": {
-		"cleanviewwebdd68a0c2": {
-			"service": "Cognito",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [],
-			"customAuth": false,
-			"output": {
-				"AppClientSecret": "1dah85annbu8n58funsr71p4bo2olghn0cisu5g705c45plb3ont",
-				"UserPoolId": "us-east-1_f3YbgoYYA",
-				"AppClientIDWeb": "54rtnda36ppk0nago6a126mksj",
-				"AppClientID": "1f6h8iiun5bddfgqdvhrapfvm0",
-				"IdentityPoolId": "us-east-1:24d295ed-84d3-4df6-8570-3fd712319378",
-				"IdentityPoolName": "cleanviewwebdd68a0c2_identitypool_dd68a0c2__staging",
-				"UserPoolName": "cleanviewwebdd68a0c2_userpool_dd68a0c2"
-			},
-			"lastPushTimeStamp": "2020-09-01T02:39:51.936Z",
-			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-staging-170737-deployment/amplify-cfn-templates/auth/cleanviewwebdd68a0c2-cloudformation-template.yml",
-				"logicalId": "authcleanviewwebdd68a0c2"
-			}
-		}
-	},
-	"storage": {
-		"responses": {
-			"service": "DynamoDB",
-			"providerPlugin": "awscloudformation",
-			"output": {
-				"PartitionKeyName": "id",
-				"Region": "us-east-1",
-				"Arn": "arn:aws:dynamodb:us-east-1:676044961909:table/responses-staging",
-				"StreamArn": "arn:aws:dynamodb:us-east-1:676044961909:table/responses-staging/stream/2020-07-28T21:44:27.896",
-				"PartitionKeyType": "S",
-				"Name": "responses-staging"
-			},
-			"lastPushTimeStamp": "2020-09-01T02:39:51.939Z",
-			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-staging-170737-deployment/amplify-cfn-templates/storage/responses-cloudformation-template.json",
-				"logicalId": "storageresponses"
-			}
-		},
-		"locations": {
-			"service": "DynamoDB",
-			"providerPlugin": "awscloudformation",
-			"output": {
-				"PartitionKeyName": "id",
-				"Region": "us-east-1",
-				"Arn": "arn:aws:dynamodb:us-east-1:676044961909:table/locations-staging",
-				"StreamArn": "arn:aws:dynamodb:us-east-1:676044961909:table/locations-staging/stream/2020-07-29T00:13:23.553",
-				"PartitionKeyType": "S",
-				"Name": "locations-staging"
-			},
-			"lastPushTimeStamp": "2020-09-01T02:39:51.941Z",
-			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-staging-170737-deployment/amplify-cfn-templates/storage/locations-cloudformation-template.json",
-				"logicalId": "storagelocations"
-			}
-		},
-		"LocationStorage": {
-			"service": "S3",
-			"providerPlugin": "awscloudformation",
-			"output": {
-				"BucketName": "cleanview-location170737-staging",
-				"Region": "us-east-1"
-			},
-			"lastPushTimeStamp": "2020-09-01T02:39:51.943Z",
-			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-staging-170737-deployment/amplify-cfn-templates/storage/s3-cloudformation-template.json",
-				"logicalId": "storageLocationStorage"
-			}
-		},
-		"accounts": {
-			"service": "DynamoDB",
-			"providerPlugin": "awscloudformation",
-			"output": {
-				"PartitionKeyName": "id",
-				"Region": "us-east-1",
-				"Arn": "arn:aws:dynamodb:us-east-1:676044961909:table/accounts-staging",
-				"StreamArn": "arn:aws:dynamodb:us-east-1:676044961909:table/accounts-staging/stream/2020-08-01T02:54:08.342",
-				"PartitionKeyType": "S",
-				"Name": "accounts-staging"
-			},
-			"lastPushTimeStamp": "2020-09-01T02:39:51.944Z",
-			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-staging-170737-deployment/amplify-cfn-templates/storage/accounts-cloudformation-template.json",
-				"logicalId": "storageaccounts"
-			}
-		}
-	},
-	"function": {
-		"SubmitResponseLambda": {
-			"build": true,
-			"providerPlugin": "awscloudformation",
-			"service": "Lambda",
-			"dependsOn": [
-				{
-					"category": "storage",
-					"resourceName": "responses",
-					"attributes": [
-						"Name",
-						"Arn"
-					],
-					"attributeEnvMap": {
-						"Name": "TABLE_NAME",
-						"Arn": "TABLE_ARN"
-					}
-				}
-			],
-			"output": {
-				"Region": "us-east-1",
-				"Arn": "arn:aws:lambda:us-east-1:676044961909:function:SubmitResponseLambda-staging",
-				"Name": "SubmitResponseLambda-staging",
-				"LambdaExecutionRole": "cleanviewwebLambdaRoled3dbc5ad-staging"
-			},
-			"lastPushTimeStamp": "2020-09-01T02:39:51.946Z",
-			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-staging-170737-deployment/amplify-cfn-templates/function/SubmitResponseLambda-cloudformation-template.json",
-				"logicalId": "functionSubmitResponseLambda"
-			},
-			"lastBuildTimeStamp": "2020-09-01T02:31:38.630Z",
-			"lastPackageTimeStamp": "2020-09-01T02:32:15.034Z",
-			"distZipFilename": "SubmitResponseLambda-676643673851496f3954-build.zip",
-			"lastPushDirHash": "dj64HgiJe4RHFP4o+RTDVkM01Ns="
-		},
-		"ManageLocationLambda": {
-			"build": true,
-			"providerPlugin": "awscloudformation",
-			"service": "Lambda",
-			"dependsOn": [
-				{
-					"category": "storage",
-					"resourceName": "locations",
-					"attributes": [
-						"Name",
-						"Arn"
-					],
-					"attributeEnvMap": {
-						"Name": "TABLE_NAME",
-						"Arn": "TABLE_ARN"
-					}
-				}
-			],
-			"output": {
-				"Region": "us-east-1",
-				"Arn": "arn:aws:lambda:us-east-1:676044961909:function:ManageLocationLambda-staging",
-				"Name": "ManageLocationLambda-staging",
-				"LambdaExecutionRole": "cleanviewwebLambdaRole10a8f873-staging"
-			},
-			"lastPushTimeStamp": "2020-09-01T02:39:51.967Z",
-			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-staging-170737-deployment/amplify-cfn-templates/function/ManageLocationLambda-cloudformation-template.json",
-				"logicalId": "functionManageLocationLambda"
-			},
-			"lastBuildTimeStamp": "2020-09-01T02:38:07.934Z",
-			"lastPackageTimeStamp": "2020-09-01T02:38:23.477Z",
-			"distZipFilename": "ManageLocationLambda-5a306b666e722f6a6d36-build.zip",
-			"lastPushDirHash": "GIXg9xontFlCR5FmsY50wsed/BI="
-		},
-		"CreateSurveyLambda": {
-			"build": true,
-			"providerPlugin": "awscloudformation",
-			"service": "Lambda",
-			"dependsOn": [
-				{
-					"category": "storage",
-					"resourceName": "locations",
-					"attributes": [
-						"Name",
-						"Arn"
-					],
-					"attributeEnvMap": {
-						"Name": "TABLE_NAME",
-						"Arn": "TABLE_ARN"
-					}
-				}
-			],
-			"output": {
-				"Region": "us-east-1",
-				"Arn": "arn:aws:lambda:us-east-1:676044961909:function:CreateSurveyLambda-staging",
-				"Name": "CreateSurveyLambda-staging",
-				"LambdaExecutionRole": "cleanviewwebLambdaRole35b80e6f-staging"
-			},
-			"lastPushTimeStamp": "2020-09-01T02:39:51.950Z",
-			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-staging-170737-deployment/amplify-cfn-templates/function/CreateSurveyLambda-cloudformation-template.json",
-				"logicalId": "functionCreateSurveyLambda"
-			},
-			"lastBuildTimeStamp": "2020-09-01T02:31:38.632Z",
-			"lastPackageTimeStamp": "2020-09-01T02:32:15.766Z",
-			"distZipFilename": "CreateSurveyLambda-53395747693677786847-build.zip",
-			"lastPushDirHash": "/eCyN7DyBImFqS9uKvUp0B/7sQs="
-		},
-		"GetSurveyResponses": {
-			"build": true,
-			"providerPlugin": "awscloudformation",
-			"service": "Lambda",
-			"dependsOn": [
-				{
-					"category": "storage",
-					"resourceName": "responses",
-					"attributes": [
-						"Name",
-						"Arn"
-					],
-					"attributeEnvMap": {
-						"Name": "TABLE_NAME",
-						"Arn": "TABLE_ARN"
-					}
-				}
-			],
-			"output": {
-				"Region": "us-east-1",
-				"Arn": "arn:aws:lambda:us-east-1:676044961909:function:GetSurveyResponses-staging",
-				"Name": "GetSurveyResponses-staging",
-				"LambdaExecutionRole": "cleanviewwebLambdaRole5c565d29-staging"
-			},
-			"lastPushTimeStamp": "2020-09-01T02:39:51.952Z",
-			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-staging-170737-deployment/amplify-cfn-templates/function/GetSurveyResponses-cloudformation-template.json",
-				"logicalId": "functionGetSurveyResponses"
-			},
-			"lastBuildTimeStamp": "2020-09-01T02:31:38.633Z",
-			"lastPackageTimeStamp": "2020-09-01T02:32:12.835Z",
-			"distZipFilename": "GetSurveyResponses-37485a30526372383251-build.zip",
-			"lastPushDirHash": "lILSVwKpjSIr7F0Q1aEEn9XwPBk="
-		},
-		"AccountSettingsLambda": {
-			"build": true,
-			"providerPlugin": "awscloudformation",
-			"service": "Lambda",
-			"dependsOn": [
-				{
-					"category": "storage",
-					"resourceName": "accounts",
-					"attributes": [
-						"Name",
-						"Arn"
-					],
-					"attributeEnvMap": {
-						"Name": "TABLE_NAME",
-						"Arn": "TABLE_ARN"
-					}
-				}
-			],
-			"output": {
-				"Region": "us-east-1",
-				"Arn": "arn:aws:lambda:us-east-1:676044961909:function:AccountSettingsLambda-staging",
-				"Name": "AccountSettingsLambda-staging",
-				"LambdaExecutionRole": "cleanviewwebLambdaRole52683388-staging"
-			},
-			"lastPushTimeStamp": "2020-09-01T02:39:51.954Z",
-			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-staging-170737-deployment/amplify-cfn-templates/function/AccountSettingsLambda-cloudformation-template.json",
-				"logicalId": "functionAccountSettingsLambda"
-			},
-			"lastBuildTimeStamp": "2020-09-01T02:31:38.634Z",
-			"lastPackageTimeStamp": "2020-09-01T02:32:16.207Z",
-			"distZipFilename": "AccountSettingsLambda-4e6f34627a48316b3471-build.zip",
-			"lastPushDirHash": "+PEqwzX9LIa2sKcRbF0d5v7yfSg="
-		},
-		"ScanQrCodeLambda": {
-			"build": true,
-			"providerPlugin": "awscloudformation",
-			"service": "Lambda",
-			"dependsOn": [
-				{
-					"category": "storage",
-					"resourceName": "locations",
-					"attributes": [
-						"Name",
-						"Arn"
-					],
-					"attributeEnvMap": {
-						"Name": "TABLE_NAME",
-						"Arn": "TABLE_ARN"
-					}
-				}
-			],
-			"lastBuildTimeStamp": "2020-09-01T02:38:07.938Z",
-			"lastPackageTimeStamp": "2020-09-01T02:38:22.636Z",
-			"distZipFilename": "ScanQrCodeLambda-6c442f4876496b6c536c-build.zip",
-			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-staging-170737-deployment/amplify-cfn-templates/function/ScanQrCodeLambda-cloudformation-template.json",
-				"logicalId": "functionScanQrCodeLambda"
-			},
-			"lastPushTimeStamp": "2020-09-01T02:39:51.967Z",
-			"output": {
-				"Region": "us-east-1",
-				"Arn": "arn:aws:lambda:us-east-1:676044961909:function:ScanQrCodeLambda-staging",
-				"Name": "ScanQrCodeLambda-staging",
-				"LambdaExecutionRole": "cleanviewwebLambdaRole1be3b01a-staging"
-			},
-			"lastPushDirHash": "PIpj1/knI341k8adDpyQu8DA9+M="
-		}
-	},
-	"api": {
-		"ManageLocationApi": {
-			"service": "API Gateway",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [
-				{
-					"category": "function",
-					"resourceName": "ManageLocationLambda",
-					"attributes": [
-						"Name",
-						"Arn"
-					]
-				}
-			],
-			"output": {
-				"ApiName": "ManageLocationApi",
-				"RootUrl": "https://bc0xk5ftd2.execute-api.us-east-1.amazonaws.com/staging",
-				"ApiId": "bc0xk5ftd2"
-			},
-			"lastPushTimeStamp": "2020-09-01T02:39:51.957Z",
-			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-staging-170737-deployment/amplify-cfn-templates/api/ManageLocationApi-cloudformation-template.json",
-				"logicalId": "apiManageLocationApi"
-			}
-		},
-		"SurveyApi": {
-			"service": "API Gateway",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [
-				{
-					"category": "function",
-					"resourceName": "CreateSurveyLambda",
-					"attributes": [
-						"Name",
-						"Arn"
-					]
-				},
-				{
-					"category": "function",
-					"resourceName": "SubmitResponseLambda",
-					"attributes": [
-						"Name",
-						"Arn"
-					]
-				}
-			],
-			"output": {
-				"ApiName": "SurveyApi",
-				"RootUrl": "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging",
-				"ApiId": "n4ye0be6kd"
-			},
-			"lastPushTimeStamp": "2020-09-01T02:39:51.959Z",
-			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-staging-170737-deployment/amplify-cfn-templates/api/SurveyApi-cloudformation-template.json",
-				"logicalId": "apiSurveyApi"
-			}
-		},
-		"GetSurveyResponses": {
-			"service": "API Gateway",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [
-				{
-					"category": "function",
-					"resourceName": "GetSurveyResponses",
-					"attributes": [
-						"Name",
-						"Arn"
-					]
-				}
-			],
-			"output": {
-				"ApiName": "GetSurveyResponses",
-				"RootUrl": "https://coho4z01ue.execute-api.us-east-1.amazonaws.com/staging",
-				"ApiId": "coho4z01ue"
-			},
-			"lastPushTimeStamp": "2020-09-01T02:39:51.961Z",
-			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-staging-170737-deployment/amplify-cfn-templates/api/GetSurveyResponses-cloudformation-template.json",
-				"logicalId": "apiGetSurveyResponses"
-			}
-		},
-		"AccountSettingsApi": {
-			"service": "API Gateway",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [
-				{
-					"category": "function",
-					"resourceName": "AccountSettingsLambda",
-					"attributes": [
-						"Name",
-						"Arn"
-					]
-				}
-			],
-			"output": {
-				"ApiName": "AccountSettingsApi",
-				"RootUrl": "https://q9emfvxcl5.execute-api.us-east-1.amazonaws.com/staging",
-				"ApiId": "q9emfvxcl5"
-			},
-			"lastPushTimeStamp": "2020-09-01T02:39:51.962Z",
-			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-staging-170737-deployment/amplify-cfn-templates/api/AccountSettingsApi-cloudformation-template.json",
-				"logicalId": "apiAccountSettingsApi"
-			}
-		},
-		"ScanQrCodeApi": {
-			"service": "API Gateway",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [
-				{
-					"category": "function",
-					"resourceName": "ScanQrCodeLambda",
-					"attributes": [
-						"Name",
-						"Arn"
-					]
-				}
-			],
-			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-staging-170737-deployment/amplify-cfn-templates/api/ScanQrCodeApi-cloudformation-template.json",
-				"logicalId": "apiScanQrCodeApi"
-			},
-			"lastPushTimeStamp": "2020-09-01T02:39:51.964Z",
-			"output": {
-				"ApiName": "ScanQrCodeApi",
-				"RootUrl": "https://7qze6sod1c.execute-api.us-east-1.amazonaws.com/staging",
-				"ApiId": "7qze6sod1c"
-			},
-			"lastPushDirHash": "537cwud/Vser49Nhh1GZ1nYN1Ok="
-		}
-	}
+    "providers": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-cleanviewweb-dev-143211-authRole",
+            "UnauthRoleArn": "arn:aws:iam::676044961909:role/amplify-cleanviewweb-dev-143211-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::676044961909:role/amplify-cleanviewweb-dev-143211-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-cleanviewweb-dev-143211-deployment",
+            "UnauthRoleName": "amplify-cleanviewweb-dev-143211-unauthRole",
+            "StackName": "amplify-cleanviewweb-dev-143211",
+            "StackId": "arn:aws:cloudformation:us-east-1:676044961909:stack/amplify-cleanviewweb-dev-143211/d1c2aed0-d1c9-11ea-a3c1-0e403b617781",
+            "AmplifyAppId": "d3jrprdg7dypqc"
+        },
+        "categories": {
+            "auth": {
+                "cleanviewwebdd68a0c2": {}
+            },
+            "function": {
+                "SubmitResponseLambda": {},
+                "ManageLocationLambda": {},
+                "CreateSurveyLambda": {},
+                "GetSurveyResponses": {},
+                "AccountSettingsLambda": {},
+                "ScanQrCodeLambda": {}
+            }
+        }
+    },
+    "auth": {
+        "cleanviewwebdd68a0c2": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [],
+            "customAuth": false,
+            "output": {
+                "AppClientSecret": "jp8bv3ctivek6vfn3nuhvrtcknr8p0radicq2makj1fg8ldmdu7",
+                "UserPoolId": "us-east-1_miR5kLebz",
+                "AppClientIDWeb": "337ll7fa2dgjb0ge5l20danqf8",
+                "AppClientID": "4nabqfeu4ig5rhloqgm2i6ha5t",
+                "IdentityPoolId": "us-east-1:e2ea3e08-7294-4554-9b3f-993fd5b438d9",
+                "IdentityPoolName": "cleanviewwebdd68a0c2_identitypool_dd68a0c2__dev",
+                "UserPoolName": "cleanviewwebdd68a0c2_userpool_dd68a0c2"
+            },
+            "lastPushTimeStamp": "2020-09-01T02:41:03.842Z",
+            "providerMetadata": {
+                "s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/auth/cleanviewwebdd68a0c2-cloudformation-template.yml",
+                "logicalId": "authcleanviewwebdd68a0c2"
+            }
+        }
+    },
+    "storage": {
+        "responses": {
+            "service": "DynamoDB",
+            "providerPlugin": "awscloudformation",
+            "output": {
+                "PartitionKeyName": "id",
+                "Region": "us-east-1",
+                "Arn": "arn:aws:dynamodb:us-east-1:676044961909:table/responses-dev",
+                "StreamArn": "arn:aws:dynamodb:us-east-1:676044961909:table/responses-dev/stream/2020-07-29T18:34:53.239",
+                "PartitionKeyType": "S",
+                "Name": "responses-dev"
+            },
+            "lastPushTimeStamp": "2020-09-01T02:41:03.846Z",
+            "providerMetadata": {
+                "s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/storage/responses-cloudformation-template.json",
+                "logicalId": "storageresponses"
+            }
+        },
+        "locations": {
+            "service": "DynamoDB",
+            "providerPlugin": "awscloudformation",
+            "output": {
+                "PartitionKeyName": "id",
+                "Region": "us-east-1",
+                "Arn": "arn:aws:dynamodb:us-east-1:676044961909:table/locations-dev",
+                "StreamArn": "arn:aws:dynamodb:us-east-1:676044961909:table/locations-dev/stream/2020-07-29T18:34:58.421",
+                "PartitionKeyType": "S",
+                "Name": "locations-dev"
+            },
+            "lastPushTimeStamp": "2020-09-01T02:41:03.847Z",
+            "providerMetadata": {
+                "s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/storage/locations-cloudformation-template.json",
+                "logicalId": "storagelocations"
+            }
+        },
+        "LocationStorage": {
+            "service": "S3",
+            "providerPlugin": "awscloudformation",
+            "output": {
+                "BucketName": "cleanview-location143211-dev",
+                "Region": "us-east-1"
+            },
+            "lastPushTimeStamp": "2020-09-01T02:41:03.871Z",
+            "providerMetadata": {
+                "s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/storage/s3-cloudformation-template.json",
+                "logicalId": "storageLocationStorage"
+            }
+        },
+        "accounts": {
+            "service": "DynamoDB",
+            "providerPlugin": "awscloudformation",
+            "output": {
+                "PartitionKeyName": "id",
+                "Region": "us-east-1",
+                "Arn": "arn:aws:dynamodb:us-east-1:676044961909:table/accounts-dev",
+                "StreamArn": "arn:aws:dynamodb:us-east-1:676044961909:table/accounts-dev/stream/2020-08-02T16:38:46.467",
+                "PartitionKeyType": "S",
+                "Name": "accounts-dev"
+            },
+            "lastPushTimeStamp": "2020-09-01T02:41:03.897Z",
+            "providerMetadata": {
+                "s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/storage/accounts-cloudformation-template.json",
+                "logicalId": "storageaccounts"
+            }
+        }
+    },
+    "function": {
+        "SubmitResponseLambda": {
+            "build": true,
+            "providerPlugin": "awscloudformation",
+            "service": "Lambda",
+            "dependsOn": [
+                {
+                    "category": "storage",
+                    "resourceName": "responses",
+                    "attributes": [
+                        "Name",
+                        "Arn"
+                    ],
+                    "attributeEnvMap": {
+                        "Name": "TABLE_NAME",
+                        "Arn": "TABLE_ARN"
+                    }
+                }
+            ],
+            "output": {
+                "Region": "us-east-1",
+                "Arn": "arn:aws:lambda:us-east-1:676044961909:function:SubmitResponseLambda-dev",
+                "Name": "SubmitResponseLambda-dev",
+                "LambdaExecutionRole": "cleanviewwebLambdaRoled3dbc5ad-dev"
+            },
+            "lastPushTimeStamp": "2020-09-01T02:41:03.899Z",
+            "providerMetadata": {
+                "s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/function/SubmitResponseLambda-cloudformation-template.json",
+                "logicalId": "functionSubmitResponseLambda"
+            }
+        },
+        "ManageLocationLambda": {
+            "build": true,
+            "providerPlugin": "awscloudformation",
+            "service": "Lambda",
+            "dependsOn": [
+                {
+                    "category": "storage",
+                    "resourceName": "locations",
+                    "attributes": [
+                        "Name",
+                        "Arn"
+                    ],
+                    "attributeEnvMap": {
+                        "Name": "TABLE_NAME",
+                        "Arn": "TABLE_ARN"
+                    }
+                }
+            ],
+            "output": {
+                "Region": "us-east-1",
+                "Arn": "arn:aws:lambda:us-east-1:676044961909:function:ManageLocationLambda-dev",
+                "Name": "ManageLocationLambda-dev",
+                "LambdaExecutionRole": "cleanviewwebLambdaRole10a8f873-dev"
+            },
+            "lastPushTimeStamp": "2020-09-01T02:41:03.901Z",
+            "providerMetadata": {
+                "s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/function/ManageLocationLambda-cloudformation-template.json",
+                "logicalId": "functionManageLocationLambda"
+            }
+        },
+        "CreateSurveyLambda": {
+            "build": true,
+            "providerPlugin": "awscloudformation",
+            "service": "Lambda",
+            "dependsOn": [
+                {
+                    "category": "storage",
+                    "resourceName": "locations",
+                    "attributes": [
+                        "Name",
+                        "Arn"
+                    ],
+                    "attributeEnvMap": {
+                        "Name": "TABLE_NAME",
+                        "Arn": "TABLE_ARN"
+                    }
+                }
+            ],
+            "output": {
+                "Region": "us-east-1",
+                "Arn": "arn:aws:lambda:us-east-1:676044961909:function:CreateSurveyLambda-dev",
+                "Name": "CreateSurveyLambda-dev",
+                "LambdaExecutionRole": "cleanviewwebLambdaRole35b80e6f-dev"
+            },
+            "lastPushTimeStamp": "2020-09-01T02:41:03.905Z",
+            "providerMetadata": {
+                "s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/function/CreateSurveyLambda-cloudformation-template.json",
+                "logicalId": "functionCreateSurveyLambda"
+            }
+        },
+        "GetSurveyResponses": {
+            "build": true,
+            "providerPlugin": "awscloudformation",
+            "service": "Lambda",
+            "dependsOn": [
+                {
+                    "category": "storage",
+                    "resourceName": "responses",
+                    "attributes": [
+                        "Name",
+                        "Arn"
+                    ],
+                    "attributeEnvMap": {
+                        "Name": "TABLE_NAME",
+                        "Arn": "TABLE_ARN"
+                    }
+                }
+            ],
+            "output": {
+                "Region": "us-east-1",
+                "Arn": "arn:aws:lambda:us-east-1:676044961909:function:GetSurveyResponses-dev",
+                "Name": "GetSurveyResponses-dev",
+                "LambdaExecutionRole": "cleanviewwebLambdaRole5c565d29-dev"
+            },
+            "lastPushTimeStamp": "2020-09-01T02:41:03.907Z",
+            "providerMetadata": {
+                "s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/function/GetSurveyResponses-cloudformation-template.json",
+                "logicalId": "functionGetSurveyResponses"
+            }
+        },
+        "AccountSettingsLambda": {
+            "build": true,
+            "providerPlugin": "awscloudformation",
+            "service": "Lambda",
+            "dependsOn": [
+                {
+                    "category": "storage",
+                    "resourceName": "accounts",
+                    "attributes": [
+                        "Name",
+                        "Arn"
+                    ],
+                    "attributeEnvMap": {
+                        "Name": "TABLE_NAME",
+                        "Arn": "TABLE_ARN"
+                    }
+                }
+            ],
+            "output": {
+                "Region": "us-east-1",
+                "Arn": "arn:aws:lambda:us-east-1:676044961909:function:AccountSettingsLambda-dev",
+                "Name": "AccountSettingsLambda-dev",
+                "LambdaExecutionRole": "cleanviewwebLambdaRole52683388-dev"
+            },
+            "lastPushTimeStamp": "2020-09-01T02:41:03.915Z",
+            "providerMetadata": {
+                "s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/function/AccountSettingsLambda-cloudformation-template.json",
+                "logicalId": "functionAccountSettingsLambda"
+            }
+        },
+        "ScanQrCodeLambda": {
+            "build": true,
+            "providerPlugin": "awscloudformation",
+            "service": "Lambda",
+            "dependsOn": [
+                {
+                    "category": "storage",
+                    "resourceName": "locations",
+                    "attributes": [
+                        "Name",
+                        "Arn"
+                    ],
+                    "attributeEnvMap": {
+                        "Name": "TABLE_NAME",
+                        "Arn": "TABLE_ARN"
+                    }
+                }
+            ],
+            "output": {
+                "Region": "us-east-1",
+                "Arn": "arn:aws:lambda:us-east-1:676044961909:function:ScanQrCodeLambda-dev",
+                "Name": "ScanQrCodeLambda-dev",
+                "LambdaExecutionRole": "cleanviewwebLambdaRole1be3b01a-dev"
+            },
+            "lastPushTimeStamp": "2020-09-01T02:41:03.916Z",
+            "providerMetadata": {
+                "s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/function/ScanQrCodeLambda-cloudformation-template.json",
+                "logicalId": "functionScanQrCodeLambda"
+            }
+        }
+    },
+    "api": {
+        "ManageLocationApi": {
+            "service": "API Gateway",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [
+                {
+                    "category": "function",
+                    "resourceName": "ManageLocationLambda",
+                    "attributes": [
+                        "Name",
+                        "Arn"
+                    ]
+                }
+            ],
+            "output": {
+                "ApiName": "ManageLocationApi",
+                "RootUrl": "https://8apxjv9kd5.execute-api.us-east-1.amazonaws.com/dev",
+                "ApiId": "8apxjv9kd5"
+            },
+            "lastPushTimeStamp": "2020-09-01T02:41:03.917Z",
+            "providerMetadata": {
+                "s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/api/ManageLocationApi-cloudformation-template.json",
+                "logicalId": "apiManageLocationApi"
+            }
+        },
+        "SurveyApi": {
+            "service": "API Gateway",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [
+                {
+                    "category": "function",
+                    "resourceName": "CreateSurveyLambda",
+                    "attributes": [
+                        "Name",
+                        "Arn"
+                    ]
+                },
+                {
+                    "category": "function",
+                    "resourceName": "SubmitResponseLambda",
+                    "attributes": [
+                        "Name",
+                        "Arn"
+                    ]
+                }
+            ],
+            "output": {
+                "ApiName": "SurveyApi",
+                "RootUrl": "https://d9uqja1id6.execute-api.us-east-1.amazonaws.com/dev",
+                "ApiId": "d9uqja1id6"
+            },
+            "lastPushTimeStamp": "2020-09-01T02:41:03.919Z",
+            "providerMetadata": {
+                "s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/api/SurveyApi-cloudformation-template.json",
+                "logicalId": "apiSurveyApi"
+            }
+        },
+        "GetSurveyResponses": {
+            "service": "API Gateway",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [
+                {
+                    "category": "function",
+                    "resourceName": "GetSurveyResponses",
+                    "attributes": [
+                        "Name",
+                        "Arn"
+                    ]
+                }
+            ],
+            "output": {
+                "ApiName": "GetSurveyResponses",
+                "RootUrl": "https://sk24vxvzld.execute-api.us-east-1.amazonaws.com/dev",
+                "ApiId": "sk24vxvzld"
+            },
+            "lastPushTimeStamp": "2020-09-01T02:41:03.920Z",
+            "providerMetadata": {
+                "s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/api/GetSurveyResponses-cloudformation-template.json",
+                "logicalId": "apiGetSurveyResponses"
+            }
+        },
+        "AccountSettingsApi": {
+            "service": "API Gateway",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [
+                {
+                    "category": "function",
+                    "resourceName": "AccountSettingsLambda",
+                    "attributes": [
+                        "Name",
+                        "Arn"
+                    ]
+                }
+            ],
+            "output": {
+                "ApiName": "AccountSettingsApi",
+                "RootUrl": "https://1gi9k7rs2g.execute-api.us-east-1.amazonaws.com/dev",
+                "ApiId": "1gi9k7rs2g"
+            },
+            "lastPushTimeStamp": "2020-09-01T02:41:03.921Z",
+            "providerMetadata": {
+                "s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/api/AccountSettingsApi-cloudformation-template.json",
+                "logicalId": "apiAccountSettingsApi"
+            }
+        },
+        "ScanQrCodeApi": {
+            "service": "API Gateway",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [
+                {
+                    "category": "function",
+                    "resourceName": "ScanQrCodeLambda",
+                    "attributes": [
+                        "Name",
+                        "Arn"
+                    ]
+                }
+            ],
+            "output": {
+                "ApiName": "ScanQrCodeApi",
+                "RootUrl": "https://nshroh49fg.execute-api.us-east-1.amazonaws.com/dev",
+                "ApiId": "nshroh49fg"
+            },
+            "lastPushTimeStamp": "2020-09-01T02:41:03.922Z",
+            "providerMetadata": {
+                "s3TemplateURL": "https://s3.amazonaws.com/amplify-cleanviewweb-dev-143211-deployment/amplify-cfn-templates/api/ScanQrCodeApi-cloudformation-template.json",
+                "logicalId": "apiScanQrCodeApi"
+            }
+        }
+    }
 }
