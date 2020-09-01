@@ -20,7 +20,9 @@
                 "SubmitResponseLambda": {},
                 "ManageLocationLambda": {},
                 "CreateSurveyLambda": {},
-                "GetSurveyResponses": {}
+                "GetSurveyResponses": {},
+                "ScanQrCodeLambda": {},
+                "AccountSettingsLambda": {}
             }
         }
     },
@@ -67,7 +69,9 @@
                 "SubmitResponseLambda": {},
                 "ManageLocationLambda": {},
                 "CreateSurveyLambda": {},
-                "GetSurveyResponses": {}
+                "GetSurveyResponses": {},
+                "AccountSettingsLambda": {},
+                "ScanQrCodeLambda": {}
             }
         }
     },
@@ -92,7 +96,8 @@
                 "ManageLocationLambda": {},
                 "CreateSurveyLambda": {},
                 "GetSurveyResponses": {},
-                "AccountSettingsLambda": {}
+                "AccountSettingsLambda": {},
+                "ScanQrCodeLambda": {}
             }
         }
     }
