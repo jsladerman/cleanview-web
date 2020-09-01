@@ -18,8 +18,8 @@
     "privacy": {
         "auth": 0,
         "unauth": 0,
-        "authRoleName": "amplify-cleanviewweb-dev-143211-authRole",
-        "unAuthRoleName": "amplify-cleanviewweb-dev-143211-unauthRole"
+        "authRoleName": "amplify-cleanviewweb-develop-162445-authRole",
+        "unAuthRoleName": "amplify-cleanviewweb-develop-162445-unauthRole"
     },
     "dependsOn": [
         {
@@ -30,5 +30,6 @@
                 "Arn"
             ]
         }
-    ]
+    ],
+    "uuid": "8189278e"
 }

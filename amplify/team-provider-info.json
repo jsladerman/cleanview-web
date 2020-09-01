@@ -94,7 +94,8 @@
                 "ManageLocationLambda": {},
                 "CreateSurveyLambda": {},
                 "GetSurveyResponses": {},
-                "AccountSettingsLambda": {}
+                "AccountSettingsLambda": {},
+                "ScanQrCodeLambda": {}
             }
         }
     }

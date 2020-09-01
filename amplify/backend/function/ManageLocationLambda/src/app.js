@@ -24,12 +24,13 @@ if(process.env.ENV && process.env.ENV !== "NONE") {
   tableName = tableName + '-' + process.env.ENV;
 }
 
+// scanQr endpoint
 // HARD CODED: url endpoints
 let environmentURLSurvey = "https://nshroh49fg.execute-api.us-east-1.amazonaws.com/dev"
 if(process.env.ENV === 'dev') {
   environmentURLSurvey = "https://nshroh49fg.execute-api.us-east-1.amazonaws.com/dev"
 } else if(process.env.ENV === 'develop') {
-  environmentURLSurvey = "https://tsro629xid.execute-api.us-east-1.amazonaws.com/develop"
+  environmentURLSurvey = "https://pu8du42pz4.execute-api.us-east-1.amazonaws.com/develop"
 } else if(process.env.ENV === 'staging') {
   environmentURLSurvey = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
 } else if(process.env.ENV === 'prod') {

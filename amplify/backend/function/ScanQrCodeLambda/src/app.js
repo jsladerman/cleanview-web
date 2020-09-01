@@ -34,11 +34,12 @@ if(process.ENV === 'dev') {
 }
 
 
+// scanQr endpoint
 let scanQrUrl = "https://nshroh49fg.execute-api.us-east-1.amazonaws.com/dev"
 if(process.ENV === 'dev') {
   scanQrUrl = "https://nshroh49fg.execute-api.us-east-1.amazonaws.com/dev"
 } else if(process.env.ENV === 'develop') {
-  scanQrUrl = "https://tsro629xid.execute-api.us-east-1.amazonaws.com/develop"
+  scanQrUrl = "https://pu8du42pz4.execute-api.us-east-1.amazonaws.com/develop"
 } else if(process.env.ENV === 'staging') {
   scanQrUrl = "https://n4ye0be6kd.execute-api.us-east-1.amazonaws.com/staging"
 } else if(process.env.ENV === 'prod') {
