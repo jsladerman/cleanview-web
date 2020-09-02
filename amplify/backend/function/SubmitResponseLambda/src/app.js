@@ -170,6 +170,8 @@ app.put(path, function(req, res) {
 app.post(path, async function(req, res) {
   res.setHeader('Access-Control-Allow-Origin', req.header('origin') );
   res.setHeader('Access-Control-Expose-Headers', 'AMP-Redirect-To')
+  res.setHeader('Access-Control-Allow-Credentials',  'true')
+  
   if (userIdPresent) {
     req.body['userId'] = req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
   }
