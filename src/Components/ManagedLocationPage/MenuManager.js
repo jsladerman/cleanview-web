@@ -33,7 +33,7 @@ class MenuManager extends Component {
                     show={this.state.showModal}
                     onClose={this.toggleModal}
                     showCloseButton={true}
-                    style={{ borderRadius: "100px" }}
+                    style={{ borderRadius: "20px" }}
                 >
                     <EditMenu 
                         currentMenus={this.state.menus}
