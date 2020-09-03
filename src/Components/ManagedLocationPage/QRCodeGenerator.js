@@ -13,6 +13,7 @@ import bold from './qrTemplates/Bold.png';
 import crisp from './qrTemplates/Crisp.png';
 import quadrant from './qrTemplates/Quadrant.png';
 import simple from './qrTemplates/Simple.png';
+import {BsPencil} from 'react-icons/bs/index';
 
 
 class QRCodeGenerator extends Component {
@@ -286,13 +287,16 @@ class QRCodeGenerator extends Component {
             return (
                 <tr className={styles.qrRow}>
                     <td className={styles.qrNameCol}>
-                        {name}
+                        {name} <BsPencil className={styles.editButton}/>
                     </td>
                     <td className={styles.qrCodeCol}>
                         <a href="#">
                             <img src={inBrowserURL} alt="" title=""
                                  onClick={() => this.downloadQRCode(name, downloadURL)}/>
                         </a>
+                    </td>
+                    <td>
+                        Placeholder Value
                     </td>
                     <td>
                         <div style={{marginLeft: '5px'}}>
@@ -354,7 +358,10 @@ class QRCodeGenerator extends Component {
                                 QR Code Image (click to download)
                             </th>
                             <th>
-                                QR Templates (click to download)
+                                Schedule Attached
+                            </th>
+                            <th>
+                                Sample QR Prints (click to download)
                             </th>
                             <th>
                                 Menu Link
