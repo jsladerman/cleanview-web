@@ -10,13 +10,13 @@
     "env": {
       "Type": "String"
     },
-    "storageresponsesName": {
+    "storagelocationsName": {
       "Type": "String",
-      "Default": "storageresponsesName"
+      "Default": "storagelocationsName"
     },
-    "storageresponsesArn": {
+    "storagelocationsArn": {
       "Type": "String",
-      "Default": "storageresponsesArn"
+      "Default": "storagelocationsArn"
     },
     "deploymentBucketName": {
       "Type": "String"
@@ -47,12 +47,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "GetSurveyResponses",
+            "ScanQrCodeLambda",
             {
               "Fn::Join": [
                 "",
                 [
-                  "GetSurveyResponses",
+                  "ScanQrCodeLambda",
                   "-",
                   {
                     "Ref": "env"
@@ -97,12 +97,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "cleanviewwebLambdaRole5c565d29",
+            "cleanviewwebLambdaRole1be3b01a",
             {
               "Fn::Join": [
                 "",
                 [
-                  "cleanviewwebLambdaRole5c565d29",
+                  "cleanviewwebLambdaRole1be3b01a",
                   "-",
                   {
                     "Ref": "env"
@@ -182,14 +182,14 @@
               ],
               "Resource": [
                 {
-                  "Ref": "storageresponsesArn"
+                  "Ref": "storagelocationsArn"
                 },
                 {
                   "Fn::Join": [
                     "/",
                     [
                       {
-                        "Ref": "storageresponsesArn"
+                        "Ref": "storagelocationsArn"
                       },
                       "index/*"
                     ]

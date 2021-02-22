@@ -272,8 +272,8 @@ class QRCodeGenerator extends Component {
             if (!menu)
                 return
 
-            const totalId = this.props.id + '99strl99strl' + sublocId + '99menu99' + menu.name
-            const apiEndpoint = "https://api.qrserver.com/v1/create-qr-code/?data=" + this.state.environmentURL + "/survey/"
+            const totalId = this.props.id + '99strl99strl' + sublocId
+            const apiEndpoint = "https://api.qrserver.com/v1/create-qr-code/?data=" + this.state.environmentURL + "/landing/"
             const colorParam = "&color=" + color
 
 
